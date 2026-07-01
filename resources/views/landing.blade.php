@@ -153,6 +153,20 @@
             background-image: radial-gradient(rgba(18,60,58,.06) 1.5px, transparent 1.5px);
             background-size: 28px 28px;
         }
+        .landing-photo {
+            display: block;
+            width: 100%;
+            object-fit: cover;
+            background: #DDEFE8;
+        }
+        .photo-sheen { position: relative; overflow: hidden; }
+        .photo-sheen::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,.18), transparent 42%, rgba(18,60,58,.18));
+            pointer-events: none;
+        }
     </style>
     <script>
         (function() {
@@ -265,21 +279,21 @@
 </nav>
 
 {{-- ===== HERO ===== --}}
-<section class="relative min-h-screen flex items-center overflow-hidden pt-16">
+<section class="relative min-h-[calc(100vh-72px)] flex items-center overflow-hidden pt-16">
     <div class="absolute inset-0 -z-10 dot-pattern"></div>
     {{-- Abstract orbs suggesting two banks connection --}}
     <div class="absolute top-0 left-0 w-[500px] h-[500px] rounded-full blur-[100px] opacity-20" style="background:radial-gradient(#123C3A,transparent);"></div>
     <div class="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full blur-[100px] opacity-15" style="background:radial-gradient(#E66B4F,transparent);"></div>
 
-    <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-24 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-12 pb-20 lg:pt-10 lg:pb-16 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         {{-- Left: text --}}
         <div>
-            <div class="hero-in hero-in-1 inline-flex items-center gap-2 bg-mint-100 border border-mint-200 text-brand-600 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-8 tracking-wide">
+            <div class="hero-in hero-in-1 inline-flex items-center gap-2 bg-mint-100 border border-mint-200 text-brand-600 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 tracking-wide">
                 <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>
                 Women Entrepreneurs Platform of the Two Banks
             </div>
 
-            <h1 class="heading text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.08] tracking-tight mb-6 hero-in hero-in-2">
+            <h1 class="heading text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.04] tracking-tight mb-5 hero-in hero-in-2">
                 <span data-lang="ru">Цифровое пространство, где<br><em class="grad-text not-italic">женский бизнес</em><br>растёт и находит связи</span>
                 <span data-lang="en">A digital space where<br><em class="grad-text not-italic">women's businesses</em><br>connect, learn and grow</span>
                 <span data-lang="ro">Un spațiu digital unde<br><em class="grad-text not-italic">afacerile femeilor</em><br>se conectează, învață și cresc</span>
@@ -308,59 +322,60 @@
             <p class="text-xs text-gray-400 mt-6 hero-in hero-in-4" data-lang="ru">Для женщин-предпринимательниц, ММСП под руководством женщин, начинающих предпринимательниц, самозанятых, менторов, экспертов и партнёрских организаций.</p>
             <p class="text-xs text-gray-400 mt-6 hero-in hero-in-4" data-lang="en">For women entrepreneurs, women-led MSMEs, aspiring entrepreneurs, self-employed women, mentors, experts and partner organisations.</p>
             <p class="text-xs text-gray-400 mt-6 hero-in hero-in-4" data-lang="ro">Pentru femei antreprenoare, IMM-uri conduse de femei, aspirante la antreprenoriat, femei liber-profesioniste, mentori, experți și organizații partenere.</p>
+
+            <div class="lg:hidden hero-in hero-in-4 mt-8 photo-sheen rounded-3xl overflow-hidden shadow-xl border border-white">
+                <img
+                    src="{{ asset('images/hero-community.webp') }}"
+                    alt="Women entrepreneurs working together"
+                    class="landing-photo h-64 sm:h-80"
+                    fetchpriority="high"
+                >
+            </div>
         </div>
 
-        {{-- Right: visual mockup --}}
+        {{-- Right: photo collage --}}
         <div class="hidden lg:flex items-center justify-center hero-in-right">
-            <div class="relative w-[420px]">
-                {{-- Abstract connection lines between two banks --}}
-                <svg class="absolute inset-0 w-full h-full -z-10 opacity-20" viewBox="0 0 420 420" fill="none">
-                    <path d="M50 80 Q210 180 370 80" stroke="#123C3A" stroke-width="1.5" stroke-dasharray="6 8"/>
-                    <path d="M50 210 Q210 310 370 210" stroke="#123C3A" stroke-width="1.5" stroke-dasharray="6 8"/>
-                    <path d="M50 340 Q210 440 370 340" stroke="#123C3A" stroke-width="1.5" stroke-dasharray="6 8"/>
-                    <circle cx="50" cy="80" r="12" fill="#DDEFE8" stroke="#123C3A" stroke-width="1"/>
-                    <circle cx="370" cy="80" r="12" fill="#DDEFE8" stroke="#123C3A" stroke-width="1"/>
-                    <circle cx="50" cy="210" r="12" fill="#DDEFE8" stroke="#123C3A" stroke-width="1"/>
-                    <circle cx="370" cy="210" r="12" fill="#DDEFE8" stroke="#123C3A" stroke-width="1"/>
-                    <circle cx="50" cy="340" r="12" fill="#DDEFE8" stroke="#123C3A" stroke-width="1"/>
-                    <circle cx="370" cy="340" r="12" fill="#DDEFE8" stroke="#123C3A" stroke-width="1"/>
-                </svg>
+            <div class="relative w-[440px] h-[520px]">
+                <div class="absolute -top-8 -right-8 w-44 h-44 rounded-full bg-mint-100 blur-3xl opacity-80"></div>
+                <div class="absolute -bottom-8 -left-8 w-44 h-44 rounded-full bg-accent-100 blur-3xl opacity-70"></div>
 
-                {{-- Profile card mockup --}}
-                <div class="glass rounded-2xl p-6 shadow-xl mb-4 -rotate-1">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 rounded-xl grad-bg flex items-center justify-center text-white font-bold text-sm">EM</div>
-                        <div>
-                            <div class="font-semibold text-ink text-sm">Elena M.</div>
-                            <div class="text-xs text-gray-400">Founder, local food brand</div>
-                        </div>
-                    </div>
-                    <div class="space-y-2 text-xs">
-                        <div class="flex items-center gap-2"><span class="w-16 text-gray-400">I represent</span><span class="font-medium text-brand-600">Food production</span></div>
-                        <div class="flex items-center gap-2"><span class="w-16 text-gray-400">Looking for</span><span class="font-medium text-accent-500">Export partners</span></div>
-                        <div class="flex items-center gap-2"><span class="w-16 text-gray-400">Can offer</span><span class="font-medium text-brand-600">Mentoring</span></div>
-                    </div>
+                <div class="photo-sheen absolute inset-x-0 top-0 rounded-[2rem] overflow-hidden shadow-2xl border border-white rotate-1">
+                    <img
+                        src="{{ asset('images/hero-community.webp') }}"
+                        alt="Women entrepreneurs working together"
+                        class="landing-photo h-[340px]"
+                        fetchpriority="high"
+                    >
                 </div>
 
-                {{-- Learning card mockup --}}
-                <div class="glass rounded-2xl p-5 shadow-lg mb-4 rotate-1 ml-8">
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="w-6 h-6 rounded-lg bg-mint-100 flex items-center justify-center text-xs">📚</div>
-                        <span class="text-xs font-semibold text-ink">Business Planning</span>
-                    </div>
-                    <div class="w-full h-1.5 bg-mint-100 rounded-full"><div class="w-3/5 h-full grad-bg rounded-full"></div></div>
-                    <span class="text-[10px] text-gray-400 mt-1 block">Module 3 of 11</span>
+                <div class="absolute left-2 bottom-12 w-44 photo-sheen rounded-3xl overflow-hidden shadow-xl border-4 border-white -rotate-3">
+                    <img
+                        src="{{ asset('images/member-digital.webp') }}"
+                        alt="Digital entrepreneur profile"
+                        class="landing-photo h-48"
+                        loading="lazy"
+                    >
                 </div>
 
-                {{-- Event card mockup --}}
-                <div class="glass rounded-2xl p-5 shadow-lg -rotate-1 mr-8">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-accent-50 flex items-center justify-center text-accent-500 font-bold text-sm">28</div>
-                        <div>
-                            <div class="text-xs font-semibold text-ink">B2B Networking</div>
-                            <div class="text-[10px] text-gray-400">October · Online</div>
-                        </div>
-                        <span class="ml-auto text-[10px] bg-mint-100 text-brand-600 px-2 py-0.5 rounded-full font-medium">Free</span>
+                <div class="absolute right-2 bottom-0 w-48 photo-sheen rounded-3xl overflow-hidden shadow-xl border-4 border-white rotate-3">
+                    <img
+                        src="{{ asset('images/member-fashion.webp') }}"
+                        alt="Woman-led fashion business"
+                        class="landing-photo h-52"
+                        loading="lazy"
+                    >
+                </div>
+
+                <div class="glass absolute left-1/2 -translate-x-1/2 bottom-5 w-[360px] rounded-3xl px-5 py-4 shadow-xl text-center">
+                    <div class="text-[10px] uppercase tracking-widest text-gray-400 font-semibold">
+                        <span data-lang="ru">Два берега · одна сеть</span>
+                        <span data-lang="en">Two banks · one network</span>
+                        <span data-lang="ro">Două maluri · o rețea</span>
+                    </div>
+                    <div class="heading text-base font-bold text-ink mt-1">
+                        <span data-lang="ru">Менторство, события и партнёрства для женского бизнеса</span>
+                        <span data-lang="en">Mentoring, events and partnerships for women-led businesses</span>
+                        <span data-lang="ro">Mentorat, evenimente și parteneriate pentru afaceri conduse de femei</span>
                     </div>
                 </div>
             </div>
@@ -777,6 +792,9 @@
         </div>
         <div class="grid md:grid-cols-3 gap-6">
             <div class="glass rounded-3xl p-8 card-hover reveal delay-1">
+                <div class="photo-sheen rounded-2xl overflow-hidden mb-6 -mx-2 -mt-2">
+                    <img src="{{ asset('images/event-workshop.webp') }}" alt="Business workshop for women entrepreneurs" class="landing-photo h-44" loading="lazy">
+                </div>
                 <div class="w-12 h-12 rounded-2xl bg-accent-50 flex items-center justify-center mb-6">
                     <svg class="w-6 h-6 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 </div>
@@ -790,6 +808,9 @@
                 <p class="text-sm text-gray-500 leading-relaxed" data-lang="ro">Găsiți traininguri, consultații, webinare, forumuri și întâlniri de afaceri viitoare.</p>
             </div>
             <div class="glass rounded-3xl p-8 card-hover reveal delay-2">
+                <div class="photo-sheen rounded-2xl overflow-hidden mb-6 -mx-2 -mt-2">
+                    <img src="{{ asset('images/event-esg.webp') }}" alt="ESG and business opportunity session" class="landing-photo h-44" loading="lazy">
+                </div>
                 <div class="w-12 h-12 rounded-2xl bg-mint-100 flex items-center justify-center mb-6">
                     <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                 </div>
@@ -803,6 +824,9 @@
                 <p class="text-sm text-gray-500 leading-relaxed" data-lang="ro">Descoperiți granturi, programe de sprijin, expoziții, sprijin pentru export și oferte ale partenerilor.</p>
             </div>
             <div class="glass rounded-3xl p-8 card-hover reveal delay-3">
+                <div class="photo-sheen rounded-2xl overflow-hidden mb-6 -mx-2 -mt-2">
+                    <img src="{{ asset('images/event-networking.webp') }}" alt="Networking among women entrepreneurs" class="landing-photo h-44" loading="lazy">
+                </div>
                 <div class="w-12 h-12 rounded-2xl bg-warm-50 flex items-center justify-center mb-6">
                     <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                 </div>
@@ -898,6 +922,9 @@
         </div>
         <div class="grid md:grid-cols-3 gap-6">
             <div class="glass rounded-3xl p-8 card-hover reveal delay-1 text-center">
+                <div class="photo-sheen rounded-2xl overflow-hidden mb-6 -mx-2 -mt-2">
+                    <img src="{{ asset('images/story-export.webp') }}" alt="Woman entrepreneur preparing export growth" class="landing-photo h-48" loading="lazy">
+                </div>
                 <div class="w-14 h-14 rounded-2xl bg-mint-100 flex items-center justify-center mx-auto mb-5">
                     <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
                 </div>
@@ -913,6 +940,9 @@
                 </p>
             </div>
             <div class="glass rounded-3xl p-8 card-hover reveal delay-2 text-center">
+                <div class="photo-sheen rounded-2xl overflow-hidden mb-6 -mx-2 -mt-2">
+                    <img src="{{ asset('images/story-mentor.webp') }}" alt="Mentoring conversation for business growth" class="landing-photo h-48" loading="lazy">
+                </div>
                 <div class="w-14 h-14 rounded-2xl bg-accent-50 flex items-center justify-center mx-auto mb-5">
                     <svg class="w-6 h-6 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                 </div>
@@ -928,6 +958,9 @@
                 </p>
             </div>
             <div class="glass rounded-3xl p-8 card-hover reveal delay-3 text-center">
+                <div class="photo-sheen rounded-2xl overflow-hidden mb-6 -mx-2 -mt-2">
+                    <img src="{{ asset('images/member-agrifood.webp') }}" alt="Agri-food woman-led business profile" class="landing-photo h-48" loading="lazy">
+                </div>
                 <div class="w-14 h-14 rounded-2xl bg-mint-100 flex items-center justify-center mx-auto mb-5">
                     <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                 </div>
