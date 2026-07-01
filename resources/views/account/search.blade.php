@@ -1,21 +1,20 @@
 @extends('account.layout')
-@section('title', 'AI-поиск')
+@section('title', 'Поиск контактов')
 
 @section('content')
 <div class="max-w-2xl">
 
     <div class="mb-8">
-        <h1 class="text-2xl font-bold tracking-tight text-[#0f172a]">AI-поиск</h1>
-        <p class="mt-1.5 text-sm text-gray-500">Опиши кого ищешь — AI найдёт подходящих участников</p>
+        <h1 class="text-2xl font-bold tracking-tight text-[#0f172a]">Поиск контактов</h1>
+        <p class="mt-1.5 text-sm text-gray-500">Опишите, кого или какую экспертизу вы ищете. Платформа предложит участниц с близкими профилями.</p>
     </div>
 
-    {{-- Search form --}}
     <form method="GET" action="{{ route('account.search') }}" class="mb-8">
         <div class="flex flex-col gap-3 sm:flex-row">
             <input type="text"
                    name="q"
                    value="{{ $query }}"
-                   placeholder="Например: ищу опытного маркетолога для запуска продукта"
+                   placeholder="Например: ищу партнёрку для экспорта или эксперта по маркетингу"
                    autofocus
                    maxlength="500"
                    class="min-w-0 flex-1 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm
@@ -34,9 +33,7 @@
         </div>
     </form>
 
-    {{-- Results --}}
     @if($results === null)
-    {{-- Initial state --}}
     <div class="rounded-2xl border border-gray-100 bg-white p-10 text-center shadow-sm">
         <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl"
              style="background:linear-gradient(135deg,#f5f3ff,#ede9fe)">
@@ -45,10 +42,10 @@
                       d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
             </svg>
         </div>
-        <p class="text-sm font-medium text-[#0f172a]">Введи запрос</p>
-        <p class="mt-1 text-xs text-gray-400">AI проанализирует профили всех участников и найдёт подходящих</p>
+        <p class="text-sm font-medium text-[#0f172a]">Введите запрос</p>
+        <p class="mt-1 text-xs text-gray-400">Поиск помогает ориентироваться в профилях участниц и находить полезные контакты.</p>
         <div class="mt-5 flex flex-wrap justify-center gap-2">
-            @foreach(['Ищу CTO для стартапа', 'Нужен инвестор', 'Ищу партнёра по бизнесу', 'Нужен маркетолог'] as $example)
+            @foreach(['Ищу партнёрку для совместного проекта', 'Нужен эксперт по продвижению', 'Ищу поставщиков упаковки', 'Хочу найти ментора по финансам'] as $example)
             <a href="{{ route('account.search', ['q' => $example]) }}"
                class="rounded-full border border-brand-200 bg-brand-50 px-3 py-1.5 text-xs font-medium text-brand-700
                       transition hover:bg-brand-100">
@@ -59,7 +56,6 @@
     </div>
 
     @elseif($results->isEmpty())
-    {{-- No results --}}
     <div class="rounded-2xl border border-gray-100 bg-white p-10 text-center shadow-sm">
         <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-50">
             <svg class="h-6 w-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,13 +63,12 @@
                       d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
         </div>
-        <p class="text-sm font-medium text-[#0f172a]">Никого не найдено</p>
-        <p class="mt-1 text-xs text-gray-400">В сообществе пока нет людей, достаточно близких к твоему запросу.<br>Попробуй переформулировать или задать более общий вопрос.</p>
+        <p class="text-sm font-medium text-[#0f172a]">Ничего не найдено</p>
+        <p class="mt-1 text-xs text-gray-400">Попробуйте изменить формулировку: укажите сферу, тип контакта, задачу или формат сотрудничества.</p>
     </div>
 
     @else
-    {{-- Results list --}}
-    <p class="mb-4 text-xs text-gray-400">Найдено {{ $results->count() }} участников по запросу «{{ $query }}»</p>
+    <p class="mb-4 text-xs text-gray-400">Найдено {{ $results->count() }} {{ trans_choice('профиль|профиля|профилей', $results->count()) }} по запросу «{{ $query }}»</p>
 
     <div class="space-y-4">
         @foreach($results as $match)
@@ -86,11 +81,9 @@
         <div class="relative flex gap-4 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm
                     transition-all duration-200 hover:border-brand-200 hover:shadow-md">
 
-            {{-- Stretched link --}}
             <a href="{{ route('account.people.show', $person) }}"
                class="absolute inset-0 rounded-2xl" aria-label="{{ $person->full_name }}"></a>
 
-            {{-- Avatar --}}
             <div class="shrink-0">
                 @if($person->avatar_path)
                 <img src="{{ Storage::url($person->avatar_path) }}"
@@ -105,7 +98,6 @@
                 @endif
             </div>
 
-            {{-- Content --}}
             <div class="min-w-0 flex-1">
                 <div class="flex items-start justify-between gap-2">
                     <div class="min-w-0">
@@ -116,7 +108,6 @@
                         </p>
                         @endif
                     </div>
-                    {{-- Score badge --}}
                     <span class="inline-flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold
                                  {{ $pct >= 80 ? 'bg-emerald-50 text-emerald-700' : ($pct >= 60 ? 'bg-brand-50 text-brand-700' : 'bg-gray-100 text-gray-500') }}">
                         <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

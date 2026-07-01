@@ -1,18 +1,17 @@
 @extends('account.layout')
-@section('title', 'AI-матчи')
+@section('title', 'Рекомендации')
 
 @section('content')
 <div class="max-w-2xl">
 
     <div class="mb-8">
-        <h1 class="text-2xl font-bold tracking-tight text-[#0f172a]">AI-матчи</h1>
-        <p class="mt-1.5 text-sm text-gray-500">Участники с наибольшим потенциалом для партнёрства</p>
+        <h1 class="text-2xl font-bold tracking-tight text-[#0f172a]">Рекомендации</h1>
+        <p class="mt-1.5 text-sm text-gray-500">Участницы, чьи профили могут быть близки к вашим интересам, запросам и возможностям для сотрудничества.</p>
     </div>
 
     @if($matches->isEmpty())
 
         @if(empty($accountUser->embedding))
-        {{-- Embedding not yet computed --}}
         <div class="rounded-2xl border border-gray-100 bg-white p-10 text-center shadow-sm">
             <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl"
                  style="background:linear-gradient(135deg,#f5f3ff,#ede9fe)">
@@ -21,10 +20,10 @@
                 </svg>
             </div>
             @if(empty($accountUser->description))
-            <p class="text-xs font-semibold uppercase tracking-widest text-brand-500">Нужны данные</p>
-            <h2 class="mt-2 text-base font-semibold text-[#0f172a]">Заполни профиль для матчинга</h2>
+            <p class="text-xs font-semibold uppercase tracking-widest text-brand-500">Нужен профиль</p>
+            <h2 class="mt-2 text-base font-semibold text-[#0f172a]">Заполните профиль, чтобы получать более релевантные рекомендации</h2>
             <p class="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-gray-500">
-                Алгоритм подбирает партнёров на основе твоего описания и ожиданий. Чем подробнее — тем точнее результат.
+                Укажите, что вы представляете, что ищете и чем можете быть полезны. Это помогает платформе предлагать более подходящие контакты.
             </p>
             <a href="{{ route('account.profile.edit') }}"
                class="mt-6 inline-flex h-10 items-center gap-2 rounded-xl px-5 text-sm font-semibold text-white
@@ -34,17 +33,16 @@
             </a>
             @else
             <p class="text-xs font-semibold uppercase tracking-widest text-brand-500">Готовится</p>
-            <h2 class="mt-2 text-base font-semibold text-[#0f172a]">Матчи рассчитываются</h2>
+            <h2 class="mt-2 text-base font-semibold text-[#0f172a]">Рекомендации рассчитываются</h2>
             <p class="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-gray-500">
-                AI анализирует твой профиль. Обычно занимает меньше минуты — загляни чуть позже.
+                Платформа анализирует ваш профиль. Обычно это занимает меньше минуты. Загляните чуть позже.
             </p>
             @endif
         </div>
 
         @else
-        {{-- Has embedding, no matches yet (community too small) --}}
         <div class="rounded-2xl border border-gray-100 bg-white p-10 text-center shadow-sm">
-            <p class="text-sm text-gray-400">Пока нет других участников с заполненными профилями.</p>
+            <p class="text-sm text-gray-400">Пока нет других участниц с заполненными профилями.</p>
         </div>
         @endif
 
@@ -61,11 +59,9 @@
         <div class="relative flex gap-4 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm
                     transition-all duration-200 hover:border-brand-200 hover:shadow-md">
 
-            {{-- Stretched link covering entire card --}}
             <a href="{{ route('account.people.show', $person) }}"
                class="absolute inset-0 rounded-2xl" aria-label="{{ $person->full_name }}"></a>
 
-            {{-- Avatar --}}
             <div class="shrink-0">
                 @if($person->avatar_path)
                 <img src="{{ Storage::url($person->avatar_path) }}"
@@ -80,7 +76,6 @@
                 @endif
             </div>
 
-            {{-- Content --}}
             <div class="min-w-0 flex-1">
                 <div class="flex items-start justify-between gap-2">
                     <div class="min-w-0">
@@ -91,7 +86,6 @@
                         </p>
                         @endif
                     </div>
-                    {{-- Match score badge --}}
                     <div class="shrink-0 text-right">
                         <span class="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold
                                      {{ $pct >= 80 ? 'bg-emerald-50 text-emerald-700' : ($pct >= 60 ? 'bg-brand-50 text-brand-700' : 'bg-gray-100 text-gray-500') }}">
@@ -131,12 +125,12 @@
     </div>
 
     <div class="mt-6 rounded-2xl border border-gray-100 bg-white p-5 text-sm text-gray-500 shadow-sm">
-        <p class="mb-2 font-semibold text-[#0f172a]">Как работают матчи</p>
+        <p class="mb-2 font-semibold text-[#0f172a]">Как работают рекомендации</p>
         <ul class="space-y-1.5 text-xs leading-relaxed text-gray-500">
-            <li>· AI анализирует твоё описание и ожидания, сравнивает с профилями других участников</li>
-            <li>· Когда ты меняешь профиль — твои матчи пересчитываются автоматически в течение ~1 минуты</li>
-            <li>· Рекомендации для других участников обновляются в течение 24 часов</li>
-            <li>· Чем подробнее заполнен профиль — тем точнее подбор</li>
+            <li>· AI помогает сравнить описание профиля с профилями других участниц.</li>
+            <li>· Рекомендации не заменяют личное решение, экспертную оценку или модерацию проекта.</li>
+            <li>· После изменения профиля ваши рекомендации пересчитываются автоматически.</li>
+            <li>· Чем точнее профиль, тем полезнее подсказки для поиска контактов и возможностей.</li>
         </ul>
     </div>
 
@@ -144,4 +138,3 @@
 
 </div>
 @endsection
-

@@ -10,107 +10,48 @@ use App\Telegram\Conversations\RegistrationConversation;
 use App\Telegram\Conversations\SearchConversation;
 use App\Telegram\TelegramKeyboards;
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
-use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
 
-/*
-|--------------------------------------------------------------------------
-| Nutgram Telegram Bot Handlers
-|--------------------------------------------------------------------------
-*/
-
-// Inline button: "Вернуться" после удаления профиля — запускает регистрацию заново
 $bot->onCallbackQueryData('restart', function (Nutgram $bot) {
     $bot->answerCallbackQuery();
     RegistrationConversation::begin($bot);
 });
 
-// Inline button: "С чего начать?" — инструкция для новых участников
 $bot->onCallbackQueryData('start_guide', function (Nutgram $bot) {
     $bot->answerCallbackQuery();
 
     $bot->sendMessage(
-        "🚀 Как начать работу в Инспайр?\n\n"
-        . "1️⃣ Зайди в личный кабинет\n"
-        . "Открой мини-приложение через \"Кабинет\" — там твой личный кабинет участника.\n\n"
-        . "2️⃣ Заполни профиль\n"
-        . "Укажи своё имя, чем занимаешься и чем можешь быть полезен сообществу. "
-        . "Чем подробнее — тем точнее AI найдёт тебе нужных людей.\n\n"
-        . "3️⃣ Получай рекомендации\n"
-        . "AI анализирует профили всех участников и подбирает тех, с кем у тебя больше всего точек пересечения — "
-        . "партнёры, единомышленники, потенциальные клиенты.\n\n"
-        . "💡 Всё просто: зашёл → заполнил → нашёл нужных людей.\n\n"
-        . "4️⃣ Раскрой меню нажав ⊞, если оно не открылось\n"
-        . "Там ты увидишь кнопки для матчей, общего чата, и твоей визитки."
+        "Как начать работу с Women Entrepreneurs Platform of the Two Banks?\n\n"
+        . "1. Откройте личный кабинет\n"
+        . "Используйте кнопку входа или ссылку из этого бота.\n\n"
+        . "2. Заполните профиль\n"
+        . "Расскажите, что вы представляете, что ищете и чем можете быть полезны другим участницам.\n\n"
+        . "3. Ищите контакты и возможности\n"
+        . "Платформа помогает находить предпринимательниц, запросы, предложения, события и полезные материалы.\n\n"
+        . "4. Оставайтесь на связи\n"
+        . "Telegram будет присылать важные обновления, приглашения и публикации сообщества."
     );
 });
 
-// /start login — deep link from login page (?start=login)
 $bot->onText('/start login', function (Nutgram $bot) {
-    $telegramId = $bot->userId();
-    $user = BotUser::where('telegram_id', $telegramId)->first();
-
-    if ($user === null) {
-        RegistrationConversation::begin($bot);
-        return;
-    }
-
-    if ($user->isPending()) {
-        $firstName = explode(' ', (string) $user->full_name)[0];
-        $bot->sendMessage(
-            "{$firstName}, твоя заявка уже в работе 🙌\n\nАдминистратор лично рассматривает и свяжется в течение 24 часов.\nЕсли есть срочный вопрос — @lesnichenkoP"
-        );
-        return;
-    }
-
-    if ($user->isApproved()) {
-        sendLoginLink($bot, $user);
-        return;
-    }
-
-    $bot->sendMessage('🔒 Ваш доступ был закрыт.' . "\n\n" . 'Если у тебя есть вопросы или ты хочешь узнать причину — напиши напрямую: @lesnichenkoP');
+    handleStartOrLogin($bot, shouldSendLoginLink: true);
 });
 
 $bot->onCommand('start', function (Nutgram $bot) {
-    $telegramId = $bot->userId();
-    $user = BotUser::where('telegram_id', $telegramId)->first();
+    handleStartOrLogin($bot, shouldSendLoginLink: true);
+})->description('Подать заявку или войти');
 
-    if ($user === null) {
-        RegistrationConversation::begin($bot);
-        return;
-    }
-
-    if ($user->isPending()) {
-        $firstName = explode(' ', (string) $user->full_name)[0];
-        $bot->sendMessage(
-            "{$firstName}, твоя заявка уже в работе 🙌\n\nАдминистратор лично рассматривает и свяжется в течение 24 часов.\nЕсли есть срочный вопрос — @lesnichenkoP"
-        );
-        return;
-    }
-
-    if ($user->isApproved()) {
-        sendLoginLink($bot, $user);
-        return;
-    }
-
-    $bot->sendMessage('🔒 Ваш доступ был закрыт.' . "\n\n" . 'Если у тебя есть вопросы или ты хочешь узнать причину — напиши напрямую: @lesnichenkoP');
-})->description('Запустить бота');
-
-// /login — send magic link to approved users
 $bot->onCommand('login', function (Nutgram $bot) {
     $telegramId = $bot->userId();
     $user = BotUser::where('telegram_id', $telegramId)->first();
 
     if (! $user || ! $user->isApproved()) {
-        $bot->sendMessage('🔒 Вход доступен только одобренным участникам сообщества.');
+        $bot->sendMessage('Вход доступен только одобренным участницам платформы. Чтобы подать заявку, отправьте /start.');
         return;
     }
 
     sendLoginLink($bot, $user);
 })->description('Войти в личный кабинет');
 
-// Fallback: обрабатывает все сообщения, не попавшие в другие обработчики
 $bot->fallback(function (Nutgram $bot) {
     $telegramId = $bot->userId();
     $user = BotUser::where('telegram_id', $telegramId)->first();
@@ -121,10 +62,7 @@ $bot->fallback(function (Nutgram $bot) {
     }
 
     if ($user->isPending()) {
-        $firstName = explode(' ', (string) $user->full_name)[0];
-        $bot->sendMessage(
-            "{$firstName}, твоя заявка уже в работе 🙌\n\nАдминистратор лично рассматривает и свяжется в течение 24 часов.\nЕсли есть срочный вопрос — @lesnichenkoP"
-        );
+        sendPendingMessage($bot, $user);
         return;
     }
 
@@ -132,19 +70,54 @@ $bot->fallback(function (Nutgram $bot) {
         $text = $bot->message()?->text;
         match ($text) {
             TelegramKeyboards::BTN_MATCHES => SearchConversation::begin($bot),
-            TelegramKeyboards::BTN_CHAT    => $bot->sendMessage("Раздел в разработке 🚧"),
+            TelegramKeyboards::BTN_CHAT    => $bot->sendMessage('Чат сообщества будет доступен после подключения команды проекта.'),
             default                        => null,
         };
         return;
     }
 
-    // Отклонённый пользователь
-    $bot->sendMessage('🔒 Ваш доступ был закрыт.' . "\n\n" . 'Если у тебя есть вопросы или ты хочешь узнать причину — напиши напрямую: @lesnichenkoP');
+    sendRejectedMessage($bot);
 });
 
-/**
- * Generate a magic login link and send it to the user.
- */
+function handleStartOrLogin(Nutgram $bot, bool $shouldSendLoginLink): void
+{
+    $telegramId = $bot->userId();
+    $user = BotUser::where('telegram_id', $telegramId)->first();
+
+    if ($user === null) {
+        RegistrationConversation::begin($bot);
+        return;
+    }
+
+    if ($user->isPending()) {
+        sendPendingMessage($bot, $user);
+        return;
+    }
+
+    if ($user->isApproved() && $shouldSendLoginLink) {
+        sendLoginLink($bot, $user);
+        return;
+    }
+
+    sendRejectedMessage($bot);
+}
+
+function sendPendingMessage(Nutgram $bot, BotUser $user): void
+{
+    $firstName = explode(' ', (string) $user->full_name)[0];
+
+    $bot->sendMessage(
+        "{$firstName}, ваша заявка уже на рассмотрении.\n\nКоманда проекта проверит профиль и откроет доступ после одобрения. Если есть вопрос, напишите: @lesnichenkoP"
+    );
+}
+
+function sendRejectedMessage(Nutgram $bot): void
+{
+    $bot->sendMessage(
+        "Доступ к платформе закрыт.\n\nЕсли у вас есть вопросы по заявке или участию, напишите команде проекта: @lesnichenkoP"
+    );
+}
+
 function sendLoginLink(Nutgram $bot, BotUser $user): void
 {
     $token = LoginToken::generateFor((int) $user->telegram_id);
@@ -153,7 +126,7 @@ function sendLoginLink(Nutgram $bot, BotUser $user): void
     $firstName = explode(' ', (string) $user->full_name)[0];
 
     $bot->sendMessage(
-        "Привет, {$firstName}! Нажми ссылку ниже, чтобы войти в личный кабинет.\n\n🔐 {$url}\n\n⏱ Ссылка действует 24 часа.",
+        "Здравствуйте, {$firstName}! Перейдите по ссылке ниже, чтобы открыть личный кабинет Women Entrepreneurs Platform of the Two Banks.\n\n🔐 {$url}\n\n⏱ Ссылка действует 24 часа.",
         reply_markup: TelegramKeyboards::mainMenu()
     );
 }

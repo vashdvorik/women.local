@@ -31,9 +31,9 @@ class Opportunity extends Model
     public function typeLabel(): string
     {
         return match ($this->type) {
-            'project' => 'Проект',
-            'meeting' => 'Встреча',
-            'event'   => 'Мероприятие',
+            'project' => 'Запрос',
+            'meeting' => 'Партнёрство',
+            'event'   => 'Событие',
             default   => $this->type,
         };
     }
@@ -41,9 +41,9 @@ class Opportunity extends Model
     public function typeEmoji(): string
     {
         return match ($this->type) {
-            'project' => '🚀',
+            'project' => '💼',
             'meeting' => '🤝',
-            'event'   => '🎉',
+            'event'   => '📅',
             default   => '📌',
         };
     }

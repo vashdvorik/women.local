@@ -4,7 +4,6 @@
 @section('content')
 <div class="max-w-2xl">
 
-    {{-- Header --}}
     <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div class="flex items-center gap-4">
             @if($accountUser->avatar_path)
@@ -19,7 +18,7 @@
             @endif
             <div>
                 <h1 class="text-2xl font-bold tracking-tight text-[#0f172a]">Мой профиль</h1>
-                <p class="mt-1 text-sm text-gray-500">Информация о тебе, видимая участникам сообщества</p>
+                <p class="mt-1 text-sm text-gray-500">Ваша деловая визитка для участниц Women Entrepreneurs Platform of the Two Banks</p>
             </div>
         </div>
         <a href="{{ route('account.profile.edit') }}"
@@ -40,9 +39,8 @@
     </div>
     @endif
 
-    {{-- Identity --}}
     <div class="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-        <h2 class="mb-5 text-xs font-semibold uppercase tracking-widest text-gray-400">Личные данные</h2>
+        <h2 class="mb-5 text-xs font-semibold uppercase tracking-widest text-gray-400">Контактная информация</h2>
         <div class="space-y-4">
 
             <div>
@@ -69,32 +67,30 @@
         </div>
     </div>
 
-    {{-- About --}}
     <div class="mt-5 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-        <h2 class="mb-5 text-xs font-semibold uppercase tracking-widest text-gray-400">О себе</h2>
+        <h2 class="mb-5 text-xs font-semibold uppercase tracking-widest text-gray-400">Бизнес-профиль</h2>
         <div class="space-y-5">
 
             <div>
-                <p class="text-[10px] font-semibold uppercase tracking-widest text-gray-400">Кто ты и чем занимаешься?</p>
+                <p class="text-[10px] font-semibold uppercase tracking-widest text-gray-400">Что вы представляете</p>
                 <p class="mt-1 whitespace-pre-line text-sm text-[#0f172a]">
-                    {{ $accountUser->description ?: '—' }}
+                    {{ $accountUser->description ?: 'Профиль пока не заполнен.' }}
                 </p>
             </div>
 
             <div>
-                <p class="text-[10px] font-semibold uppercase tracking-widest text-gray-400">Что ждёшь от сообщества?</p>
+                <p class="text-[10px] font-semibold uppercase tracking-widest text-gray-400">Что вы ищете и чем можете быть полезны</p>
                 <p class="mt-1 whitespace-pre-line text-sm text-[#0f172a]">
-                    {{ $accountUser->expectation ?: '—' }}
+                    {{ $accountUser->expectation ?: 'Добавьте запросы, интересы и возможные форматы сотрудничества.' }}
                 </p>
             </div>
 
         </div>
     </div>
 
-    {{-- Danger zone --}}
     <div class="mt-10 rounded-2xl border border-red-100 bg-red-50 p-6">
         <h2 class="mb-1 text-sm font-semibold text-red-700">Удалить профиль</h2>
-        <p class="mb-4 text-sm text-red-500">Все ваши данные будут безвозвратно удалены. Это действие нельзя отменить.</p>
+        <p class="mb-4 text-sm text-red-500">Профиль, данные и доступ к кабинету будут удалены. Это действие нельзя отменить.</p>
 
         <form id="delete-profile-form" action="{{ route('account.profile.delete') }}" method="POST">
             @csrf
@@ -116,7 +112,7 @@
 @push('scripts')
 <script>
 function confirmDelete() {
-    if (confirm('Вы уверены? Профиль и все данные будут удалены безвозвратно.')) {
+    if (confirm('Удалить профиль и все связанные данные без возможности восстановления?')) {
         document.getElementById('delete-profile-form').submit();
     }
 }

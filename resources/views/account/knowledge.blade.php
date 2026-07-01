@@ -1,12 +1,12 @@
 @extends('account.layout')
-@section('title', 'База знаний')
+@section('title', 'Обучение')
 
 @section('content')
 <div class="max-w-2xl">
 
     <div class="mb-8">
-        <h1 class="text-2xl font-bold tracking-tight text-[#0f172a]">База знаний</h1>
-        <p class="mt-1.5 text-sm text-gray-500">Ресурсы и материалы для участников сообщества</p>
+        <h1 class="text-2xl font-bold tracking-tight text-[#0f172a]">Обучение и ресурсы</h1>
+        <p class="mt-1.5 text-sm text-gray-500">Практические материалы, контакты и обновления для развития бизнеса и участия в платформе.</p>
     </div>
 
     <div class="space-y-3">
@@ -22,7 +22,7 @@
             </div>
             <div class="flex-1 min-w-0">
                 <p class="text-sm font-semibold text-[#0f172a] transition group-hover:text-brand-700">
-                    Telegram-бот сообщества
+                    Telegram-бот платформы
                 </p>
                 <p class="mt-0.5 truncate text-xs text-gray-400">@WomenComBot</p>
             </div>
@@ -43,7 +43,7 @@
             </div>
             <div class="flex-1 min-w-0">
                 <p class="text-sm font-semibold text-[#0f172a] transition group-hover:text-brand-700">
-                    Сайт проекта INSPIRE
+                    Сайт Women Entrepreneurs Platform of the Two Banks
                 </p>
                 <p class="mt-0.5 truncate text-xs text-gray-400">peace.education.md</p>
             </div>
@@ -61,8 +61,8 @@
                 </svg>
             </div>
             <div>
-                <p class="text-sm font-medium text-gray-400">Обучающие материалы</p>
-                <p class="mt-0.5 text-xs text-gray-400">Скоро появятся</p>
+                <p class="text-sm font-medium text-gray-400">Практические материалы</p>
+                <p class="mt-0.5 text-xs text-gray-400">Модули, чек-листы и записи мероприятий появятся здесь позже.</p>
             </div>
         </div>
 

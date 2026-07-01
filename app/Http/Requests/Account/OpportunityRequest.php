@@ -28,16 +28,16 @@ class OpportunityRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'type.required'             => 'Выберите тип возможности.',
-            'type.in'                   => 'Недопустимый тип.',
-            'title.required'            => 'Введите заголовок.',
-            'title.max'                 => 'Заголовок не более 200 символов.',
-            'body.required'             => 'Введите описание.',
-            'body.max'                  => 'Описание не более 2000 символов.',
+            'type.required'             => 'Выберите тип публикации.',
+            'type.in'                   => 'Выбранный тип публикации недоступен.',
+            'title.required'            => 'Введите короткий заголовок.',
+            'title.max'                 => 'Заголовок не должен быть длиннее 200 символов.',
+            'body.required'             => 'Опишите запрос, предложение или событие.',
+            'body.max'                  => 'Описание не должно быть длиннее 2000 символов.',
             'event_date.date'           => 'Введите корректную дату.',
             'event_date.after_or_equal' => 'Дата не может быть в прошлом.',
-            'contact_url.url'           => 'Введите корректный URL (https://...).',
-            'contact_url.max'           => 'URL не более 500 символов.',
+            'contact_url.url'           => 'Введите корректную ссылку, например https://t.me/username.',
+            'contact_url.max'           => 'Ссылка не должна быть длиннее 500 символов.',
         ];
     }
 }

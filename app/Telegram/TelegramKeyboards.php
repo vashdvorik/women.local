@@ -9,9 +9,9 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
 
 class TelegramKeyboards
 {
-    public const BTN_CABINET  = '📋 Войти в кабинет';
-    public const BTN_MATCHES  = '🤝 Матчи';
-    public const BTN_CHAT     = '💬 Чат';
+    public const BTN_CABINET = '📋 Войти в кабинет';
+    public const BTN_MATCHES = '🔎 Найти контакты';
+    public const BTN_CHAT    = '💬 Чат сообщества';
 
     public static function mainMenu(): ReplyKeyboardMarkup
     {

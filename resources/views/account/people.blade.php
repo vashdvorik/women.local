@@ -1,12 +1,14 @@
 @extends('account.layout')
-@section('title', 'Люди')
+@section('title', 'Предпринимательницы')
 
 @section('content')
 <div class="max-w-3xl">
 
     <div class="mb-8">
-        <h1 class="text-2xl font-bold tracking-tight text-[#0f172a]">Люди</h1>
-        <p class="mt-1.5 text-sm text-gray-500">{{ $people->count() }} {{ trans_choice('участник|участника|участников', $people->count()) }} сообщества</p>
+        <h1 class="text-2xl font-bold tracking-tight text-[#0f172a]">Каталог предпринимательниц</h1>
+        <p class="mt-1.5 text-sm text-gray-500">
+            {{ $people->count() }} {{ trans_choice('профиль|профиля|профилей', $people->count()) }} участниц, с которыми можно знакомиться, обмениваться опытом и искать сотрудничество.
+        </p>
     </div>
 
     @if($people->isEmpty())
@@ -15,14 +17,13 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                   d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
         </svg>
-        <p class="text-sm text-gray-400">Пока нет других участников</p>
+        <p class="text-sm text-gray-400">Пока нет других опубликованных профилей.</p>
     </div>
     @else
     <div class="grid gap-4 sm:grid-cols-2">
         @foreach($people as $person)
         <div class="relative flex flex-col rounded-2xl border border-gray-100 bg-white p-5 shadow-sm
                     transition-all duration-200 hover:border-brand-200 hover:shadow-md">
-            {{-- Stretched link covering entire card --}}
             <a href="{{ route('account.people.show', $person) }}"
                class="absolute inset-0 rounded-2xl" aria-label="{{ $person->full_name }}"></a>
 
@@ -50,7 +51,7 @@
             @if($person->description)
             <p class="flex-1 text-xs leading-relaxed text-gray-500 line-clamp-3">{{ $person->description }}</p>
             @else
-            <p class="text-xs italic text-gray-300">Профиль не заполнен</p>
+            <p class="text-xs italic text-gray-300">Профиль пока не заполнен.</p>
             @endif
             @if($person->telegram_username)
             <div class="relative z-10 mt-4 border-t border-gray-50 pt-3">

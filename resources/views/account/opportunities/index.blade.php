@@ -4,11 +4,10 @@
 @section('content')
 <div class="max-w-3xl">
 
-    {{-- Header --}}
     <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <h1 class="text-2xl font-bold tracking-tight text-[#0f172a]">Возможности</h1>
-            <p class="mt-1.5 text-sm text-gray-500">Проекты, встречи и мероприятия от участников сообщества</p>
+            <p class="mt-1.5 text-sm text-gray-500">Запросы, предложения, события и партнёрские инициативы от участниц сообщества.</p>
         </div>
         <a href="{{ route('account.opportunities.create') }}"
            class="inline-flex shrink-0 items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-white
@@ -17,12 +16,11 @@
             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
-            Опубликовать
+            Добавить возможность
         </a>
     </div>
 
     @if($opportunities->isEmpty())
-    {{-- Empty state --}}
     <div class="rounded-2xl border border-gray-100 bg-white p-12 text-center shadow-sm">
         <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl"
              style="background:linear-gradient(135deg,#f5f3ff,#ede9fe)">
@@ -31,15 +29,15 @@
                       d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
         </div>
-        <h2 class="text-base font-semibold text-[#0f172a]">Пока нет возможностей</h2>
+        <h2 class="text-base font-semibold text-[#0f172a]">Пока нет опубликованных возможностей</h2>
         <p class="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-gray-400">
-            Будь первым — опубликуй проект, встречу или мероприятие для сообщества.
+            Новые запросы, предложения, события и партнёрские инициативы будут появляться здесь.
         </p>
         <a href="{{ route('account.opportunities.create') }}"
            class="mt-6 inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold text-white
                   transition-all hover:-translate-y-px hover:shadow-md"
            style="background:linear-gradient(135deg,#7c3aed,#4f46e5)">
-            Опубликовать первым →
+            Опубликовать первую →
         </a>
     </div>
 
@@ -59,7 +57,6 @@
         <div class="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm
                     transition-all duration-200 hover:border-brand-200 hover:shadow-md">
 
-            {{-- Card header: type badge + title + delete button --}}
             <div class="flex items-start justify-between gap-3">
                 <div class="flex min-w-0 items-center gap-2.5">
                     <span class="shrink-0 text-lg leading-none">{{ $opp->typeEmoji() }}</span>
@@ -70,7 +67,7 @@
                 </div>
                 @if($isOwn)
                 <form action="{{ route('account.opportunities.destroy', $opp) }}" method="POST"
-                      onsubmit="return confirm('Удалить эту возможность?')">
+                      onsubmit="return confirm('Удалить эту публикацию?')">
                     @csrf
                     @method('DELETE')
                     <button type="submit"
@@ -85,10 +82,8 @@
                 @endif
             </div>
 
-            {{-- Description --}}
             <p class="mt-3 text-sm leading-relaxed text-gray-600 line-clamp-4">{{ $opp->body }}</p>
 
-            {{-- Date & location --}}
             @if($opp->event_date || $opp->location)
             <div class="mt-3 flex flex-wrap gap-3 text-xs text-gray-400">
                 @if($opp->event_date)
@@ -112,7 +107,6 @@
             </div>
             @endif
 
-            {{-- Footer: author + contact link + time --}}
             <div class="mt-4 flex items-center justify-between border-t border-gray-50 pt-3">
                 <div class="flex items-center gap-2">
                     @if($opp->author?->avatar_path)
@@ -126,7 +120,7 @@
                     </div>
                     @endif
                     <span class="text-xs font-medium text-gray-500">
-                        {{ explode(' ', (string) ($opp->author?->full_name ?? 'Участник'))[0] }}
+                        {{ explode(' ', (string) ($opp->author?->full_name ?? 'Участница'))[0] }}
                     </span>
                     <span class="text-xs text-gray-300">·</span>
                     <span class="text-xs text-gray-400">{{ $opp->created_at->diffForHumans() }}</span>
@@ -139,7 +133,7 @@
                 @if($contactHref)
                 <a href="{{ $contactHref }}" target="_blank" rel="noopener"
                    class="text-xs font-semibold text-brand-600 transition hover:text-brand-700">
-                    Написать →
+                    Связаться →
                 </a>
                 @endif
             </div>
@@ -147,7 +141,6 @@
         @endforeach
     </div>
 
-    {{-- Pagination --}}
     @if($opportunities->hasPages())
     <div class="mt-6">
         {{ $opportunities->links() }}

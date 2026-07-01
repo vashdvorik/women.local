@@ -4,16 +4,14 @@
 @section('content')
 <div class="max-w-2xl">
 
-    {{-- Back --}}
     <a href="{{ route('account.people') }}"
        class="mb-6 inline-flex items-center gap-2 text-sm text-gray-500 transition hover:text-brand-600">
         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
         </svg>
-        Назад к людям
+        Назад к каталогу
     </a>
 
-    {{-- Header --}}
     <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div class="flex items-center gap-4">
             @if($person->avatar_path)
@@ -49,22 +47,21 @@
         @endif
     </div>
 
-    {{-- Info --}}
     <div class="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-        <h2 class="mb-5 text-xs font-semibold uppercase tracking-widest text-gray-400">О себе</h2>
+        <h2 class="mb-5 text-xs font-semibold uppercase tracking-widest text-gray-400">Бизнес-профиль</h2>
         <div class="space-y-5">
 
             <div>
-                <p class="text-[10px] font-semibold uppercase tracking-widest text-gray-400">Кто и чем занимается</p>
+                <p class="text-[10px] font-semibold uppercase tracking-widest text-gray-400">Что представляет</p>
                 <p class="mt-1 whitespace-pre-line text-sm text-[#0f172a]">
-                    {{ $person->description ?: '—' }}
+                    {{ $person->description ?: 'Профиль пока не заполнен.' }}
                 </p>
             </div>
 
             <div>
-                <p class="text-[10px] font-semibold uppercase tracking-widest text-gray-400">Что ищет в сообществе</p>
+                <p class="text-[10px] font-semibold uppercase tracking-widest text-gray-400">Что ищет и чем может быть полезна</p>
                 <p class="mt-1 whitespace-pre-line text-sm text-[#0f172a]">
-                    {{ $person->expectation ?: '—' }}
+                    {{ $person->expectation ?: 'Информация пока не добавлена.' }}
                 </p>
             </div>
 

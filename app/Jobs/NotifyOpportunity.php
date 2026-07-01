@@ -27,20 +27,20 @@ class NotifyOpportunity implements ShouldQueue
     {
         $opportunity = $this->opportunity->load('author');
 
-        $emoji     = $opportunity->typeEmoji();
-        $label     = $opportunity->typeLabel();
-        $title     = htmlspecialchars($opportunity->title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-        $body      = mb_strlen($opportunity->body) > 300
+        $emoji = $opportunity->typeEmoji();
+        $label = $opportunity->typeLabel();
+        $title = htmlspecialchars($opportunity->title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $body = mb_strlen($opportunity->body) > 300
             ? mb_substr($opportunity->body, 0, 300) . '...'
             : $opportunity->body;
-        $body      = htmlspecialchars($body, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $body = htmlspecialchars($body, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         $authorName = htmlspecialchars(
-            $opportunity->author?->full_name ?? 'Участник',
+            $opportunity->author?->full_name ?? 'Участница',
             ENT_QUOTES | ENT_SUBSTITUTE,
             'UTF-8'
         );
 
-        $text = "🔔 <b>Новое в Возможностях!</b>\n\n"
+        $text = "🔔 <b>Новая публикация на платформе</b>\n\n"
             . "{$emoji} <b>{$label}:</b> {$title}\n\n"
             . "{$body}";
 
@@ -52,7 +52,7 @@ class NotifyOpportunity implements ShouldQueue
             $text .= "\n📍 " . htmlspecialchars($opportunity->location, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         }
 
-        $text .= "\n\n👤 Опубликовал: " . $authorName;
+        $text .= "\n\n👤 Опубликовала: " . $authorName;
 
         $pageUrl = url('/app/account/opportunities');
         $token   = config('nutgram.token');
@@ -69,7 +69,7 @@ class NotifyOpportunity implements ShouldQueue
                     'parse_mode' => 'HTML',
                     'reply_markup' => json_encode([
                         'inline_keyboard' => [[
-                            ['text' => '👀 Посмотреть возможность', 'url' => $pageUrl],
+                            ['text' => 'Посмотреть в кабинете', 'url' => $pageUrl],
                         ]],
                     ]),
                 ]);
@@ -79,7 +79,6 @@ class NotifyOpportunity implements ShouldQueue
                 ]);
             }
 
-            // Stay within Telegram's 30 msg/sec global rate limit
             usleep(50_000);
         }
     }

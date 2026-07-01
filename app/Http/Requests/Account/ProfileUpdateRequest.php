@@ -21,4 +21,14 @@ class ProfileUpdateRequest extends FormRequest
             'expectation' => ['nullable', 'string', 'max:1000'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'full_name.required' => 'Введите имя и фамилию.',
+            'full_name.max'      => 'Имя не должно быть длиннее 120 символов.',
+            'description.max'    => 'Описание бизнеса не должно быть длиннее 1000 символов.',
+            'expectation.max'    => 'Запросы и предложения не должны быть длиннее 1000 символов.',
+        ];
+    }
 }

@@ -21,12 +21,10 @@ class RegistrationConversation extends Conversation
 
     public function start(Nutgram $bot): void
     {
-        $firstName = $bot->user()?->first_name ?? '';
-
         $bot->sendMessage(
-            text: "Привет! 👋\n\nРад что ты здесь — это первый шаг к вступлению в Инспайр сообщество.\n\nИнспайр — сообщество для молодых людей, которые ищут вдохновляющее сообщество, партнерства и интересные мероприятия.\n\nЗадам несколько коротких вопросов — займёт 2-3 минуты.\n\nГотов?",
+            text: "Здравствуйте! 👋\n\nЭто заявка на участие в Women Entrepreneurs Platform of the Two Banks — цифровом пространстве для женщин-предпринимательниц, где можно представить бизнес, учиться, находить контакты и узнавать о возможностях.\n\nЯ задам несколько коротких вопросов. Это займёт 2-3 минуты.\n\nГотовы начать?",
             reply_markup: InlineKeyboardMarkup::make()
-                ->addRow(InlineKeyboardButton::make('Да', callback_data: 'reg:yes')),
+                ->addRow(InlineKeyboardButton::make('Да, начать', callback_data: 'reg:yes')),
         );
 
         $this->next('waitForConfirmation');
@@ -37,13 +35,12 @@ class RegistrationConversation extends Conversation
         if ($bot->callbackQuery()?->data === 'reg:yes') {
             $bot->answerCallbackQuery();
 
-            $bot->sendMessage('Как тебя зовут? (имя и фамилия)');
+            $bot->sendMessage('Как вас зовут? Укажите имя и фамилию.');
             $this->next('handleName');
 
             return;
         }
 
-        // Пользователь написал что-то до нажатия кнопки — повторяем вопрос
         $this->next('waitForConfirmation');
     }
 
@@ -52,7 +49,7 @@ class RegistrationConversation extends Conversation
         $text = $bot->message()?->text;
 
         if (empty($text)) {
-            $bot->sendMessage('Пожалуйста, введи имя и фамилию текстом.');
+            $bot->sendMessage('Пожалуйста, отправьте имя и фамилию текстом.');
             $this->next('handleName');
 
             return;
@@ -61,7 +58,7 @@ class RegistrationConversation extends Conversation
         $this->fullName = $text;
 
         $bot->sendMessage(
-            text: "Кто ты и чем занимаешься?\n\nРоль, сфера, компания — в 2-3 предложениях.\nСайт или соцсеть — приложи ссылкой если есть.",
+            text: "Что вы представляете?\n\nРасскажите о бизнесе, сфере, продуктах, услугах, опыте или идее. Можно добавить ссылку.",
         );
 
         $this->next('handleDescription');
@@ -72,7 +69,7 @@ class RegistrationConversation extends Conversation
         $text = $bot->message()?->text;
 
         if (empty($text)) {
-            $bot->sendMessage('Пожалуйста, расскажи о себе текстом.');
+            $bot->sendMessage('Пожалуйста, опишите ваш бизнес, опыт или идею текстом.');
             $this->next('handleDescription');
 
             return;
@@ -81,7 +78,7 @@ class RegistrationConversation extends Conversation
         $this->description = $text;
 
         $bot->sendMessage(
-            text: "Что ждёшь от Инспайр и чем можешь быть полезен сообществу?",
+            text: "Что вы ищете на платформе и чем можете быть полезны другим участницам?\n\nНапример: партнёры, клиенты, поставщики, знания, менторство, новые рынки, услуги или опыт.",
             reply_markup: InlineKeyboardMarkup::make()
                 ->addRow(InlineKeyboardButton::make('Пропустить', callback_data: 'reg:skip')),
         );
@@ -123,13 +120,12 @@ class RegistrationConversation extends Conversation
 
         $this->downloadAvatar($bot, $botUser);
 
-        // Compute embedding asynchronously — non-blocking
         ComputeUserEmbedding::dispatch($botUser);
 
         $firstName = explode(' ', (string) $this->fullName)[0];
 
         $bot->sendMessage(
-            "Спасибо, {$firstName}!\n\nЗаявка принята. Мы рассмотрим её и свяжемся с тобой в Telegram в течение 24 часов.\n\nПока можешь посмотреть сайт сообщества:\n".config('nutgram.community_url', config('app.url')),
+            "Спасибо, {$firstName}!\n\nЗаявка отправлена на рассмотрение. После одобрения вы получите доступ к кабинету, каталогу участниц, рекомендациям и возможностям платформы.\n\nЕсли есть вопрос, напишите команде проекта: @lesnichenkoP\n\nСайт платформы:\n" . config('nutgram.community_url', config('app.url')),
         );
 
         $this->end();
@@ -144,7 +140,6 @@ class RegistrationConversation extends Conversation
                 return;
             }
 
-            // Largest size is the last in the first photo set
             $photoSizes = $photos->photos[0];
             $largest    = $photoSizes[count($photoSizes) - 1];
 
@@ -168,7 +163,7 @@ class RegistrationConversation extends Conversation
 
             $botUser->update(['avatar_path' => $path]);
         } catch (\Throwable) {
-            // Не блокируем регистрацию из-за ошибки загрузки фото
+            // Avatar download must not block registration.
         }
     }
 }

@@ -15,8 +15,6 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 class SearchConversation extends Conversation
 {
     /**
-     * Cached search results: array of plain data arrays to avoid serializing Eloquent models.
-     *
      * @var array<int, array{name: string, username: string|null, description: string|null, expectation: string|null, score: float}>
      */
     protected array $results = [];
@@ -24,12 +22,13 @@ class SearchConversation extends Conversation
     public function start(Nutgram $bot): void
     {
         $bot->sendMessage(
-            "🔍 <b>AI-поиск по сообществу</b>\n\n"
-            . "Опиши кого ищешь — AI проанализирует профили всех участников и найдёт подходящих.\n\n"
+            "🔍 <b>Поиск контактов</b>\n\n"
+            . "Опишите, кого или какую экспертизу вы ищете. AI поможет сориентироваться в профилях участниц и предложит близкие варианты.\n\n"
             . "<i>Например:\n"
-            . "· ищу CTO для технического стартапа\n"
-            . "· нужен инвестор на раннюю стадию\n"
-            . "· ищу партнёра по маркетингу</i>",
+            . "· ищу партнёрку для экспорта\n"
+            . "· нужен эксперт по маркетингу\n"
+            . "· хочу найти поставщиков упаковки\n"
+            . "· ищу ментора по финансам</i>",
             parse_mode: 'HTML',
         );
 
@@ -38,7 +37,6 @@ class SearchConversation extends Conversation
 
     public function handleQuery(Nutgram $bot): void
     {
-        // Skip callback queries — wait for a text message
         if ($bot->callbackQuery()) {
             $bot->answerCallbackQuery();
             $this->next('handleQuery');
@@ -48,18 +46,18 @@ class SearchConversation extends Conversation
         $query = trim((string) ($bot->message()?->text ?? ''));
 
         if ($query === '') {
-            $bot->sendMessage('Пожалуйста, напиши текстом кого ищешь.');
+            $bot->sendMessage('Пожалуйста, напишите текстом, кого или какую поддержку вы ищете.');
             $this->next('handleQuery');
             return;
         }
 
-        $bot->sendMessage('⏳ Ищу подходящих участников...');
+        $bot->sendMessage('⏳ Ищу подходящие профили...');
 
         $telegramId  = $bot->userId();
         $currentUser = BotUser::where('telegram_id', $telegramId)->first();
 
         if (! $currentUser) {
-            $bot->sendMessage('⚠️ Профиль не найден. Попробуй позже.');
+            $bot->sendMessage('⚠️ Профиль не найден. Откройте @WomenComBot и отправьте /start, чтобы подать заявку.');
             $this->end();
             return;
         }
@@ -76,16 +74,14 @@ class SearchConversation extends Conversation
             if ($matches->isEmpty()) {
                 $escapedQuery = htmlspecialchars($query, ENT_QUOTES | ENT_HTML5, 'UTF-8');
                 $bot->sendMessage(
-                    "😔 По запросу «{$escapedQuery}» никого не нашлось.\n\n"
-                    . "В сообществе пока нет участников, достаточно близких к твоему запросу. "
-                    . "Попробуй переформулировать — укажи роль, сферу или конкретную задачу.",
+                    "По запросу «{$escapedQuery}» пока нет близких результатов.\n\n"
+                    . "Попробуйте переформулировать: укажите сферу, задачу, тип контакта или формат сотрудничества.",
                     parse_mode: 'HTML',
                 );
                 $this->end();
                 return;
             }
 
-            // Store plain data (no Eloquent models — conversation is serialized to cache)
             $this->results = $matches->map(fn (array $item) => [
                 'name'        => (string) ($item['user']->full_name ?? ''),
                 'username'    => $item['user']->telegram_username,
@@ -94,7 +90,6 @@ class SearchConversation extends Conversation
                 'score'       => (float) $item['score'],
             ])->values()->all();
 
-            // Show first result
             $this->sendResult($bot, $this->results[0], 1, count($this->results));
 
             if (count($this->results) > 1) {
@@ -104,7 +99,7 @@ class SearchConversation extends Conversation
             }
         } catch (\Throwable $e) {
             logger()->warning('Bot AI search failed', ['error' => $e->getMessage()]);
-            $bot->sendMessage('⚠️ Что-то пошло не так при поиске. Попробуй ещё раз.');
+            $bot->sendMessage('⚠️ Поиск сейчас недоступен. Попробуйте ещё раз позже.');
             $this->end();
         }
     }
@@ -122,7 +117,6 @@ class SearchConversation extends Conversation
             return;
         }
 
-        // User sent a new text query — start over
         $this->handleQuery($bot);
     }
 
@@ -138,14 +132,14 @@ class SearchConversation extends Conversation
             : null;
 
         $text  = "👤 <b>{$name}</b>";
-        $text .= "\n🎯 Совпадение: <b>{$pct}%</b>";
+        $text .= "\nСовпадение по профилю: <b>{$pct}%</b>";
 
         if ($desc) {
             $text .= "\n\n{$desc}";
         }
 
         if ($exp) {
-            $text .= "\n\n🔍 <b>Ищет:</b> {$exp}";
+            $text .= "\n\n🔎 <b>Ищет или предлагает:</b> {$exp}";
         }
 
         $keyboard = InlineKeyboardMarkup::make();
@@ -153,7 +147,7 @@ class SearchConversation extends Conversation
         if ($result['username']) {
             $keyboard->addRow(
                 InlineKeyboardButton::make(
-                    "✉️ Написать @{$result['username']}",
+                    "Написать @{$result['username']}",
                     url: "https://t.me/{$result['username']}"
                 )
             );

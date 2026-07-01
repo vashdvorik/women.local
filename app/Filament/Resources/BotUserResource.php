@@ -6,6 +6,13 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BotUserResource\Pages;
 use App\Models\BotUser;
+use App\Telegram\TelegramKeyboards;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -14,15 +21,8 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Filament\Actions\Action;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
 use Filament\Tables;
 use Filament\Tables\Table;
-use App\Telegram\TelegramKeyboards;
 use Illuminate\Support\Facades\Log;
 use Nutgram\Laravel\Facades\Telegram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
@@ -35,11 +35,11 @@ class BotUserResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $navigationLabel = 'Заявки';
+    protected static ?string $navigationLabel = 'Профили участниц';
 
-    protected static ?string $modelLabel = 'Заявка';
+    protected static ?string $modelLabel = 'профиль участницы';
 
-    protected static ?string $pluralModelLabel = 'Заявки';
+    protected static ?string $pluralModelLabel = 'профили участниц';
 
     protected static ?int $navigationSort = 1;
 
@@ -55,24 +55,24 @@ class BotUserResource extends Resource
                     ->disabled(),
             ])->columns(2),
 
-            Section::make('Анкета')->schema([
+            Section::make('Бизнес-профиль')->schema([
                 TextInput::make('full_name')
                     ->label('Имя и фамилия'),
                 Textarea::make('description')
-                    ->label('О себе')
+                    ->label('Что представляет')
                     ->rows(3),
                 Textarea::make('expectation')
-                    ->label('Ожидания и польза')
+                    ->label('Что ищет и чем может быть полезна')
                     ->rows(3),
             ]),
 
-            Section::make('Статус')->schema([
+            Section::make('Статус участия')->schema([
                 Select::make('status')
                     ->label('Статус')
                     ->options([
-                        BotUser::STATUS_PENDING  => 'Ожидает',
-                        BotUser::STATUS_APPROVED => 'Одобрен',
-                        BotUser::STATUS_REJECTED => 'Отклонён',
+                        BotUser::STATUS_PENDING  => 'Ожидает рассмотрения',
+                        BotUser::STATUS_APPROVED => 'Одобрена',
+                        BotUser::STATUS_REJECTED => 'Отклонена',
                     ]),
                 DateTimePicker::make('approved_at')
                     ->label('Дата одобрения')
@@ -102,12 +102,12 @@ class BotUserResource extends Resource
                     ])
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         BotUser::STATUS_PENDING  => 'Ожидает',
-                        BotUser::STATUS_APPROVED => 'Одобрен',
-                        BotUser::STATUS_REJECTED => 'Отклонён',
+                        BotUser::STATUS_APPROVED => 'Одобрена',
+                        BotUser::STATUS_REJECTED => 'Отклонена',
                         default                  => $state,
                     }),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Подал заявку')
+                    ->label('Дата заявки')
                     ->dateTime('d.m.Y H:i')
                     ->sortable(),
             ])
@@ -116,9 +116,9 @@ class BotUserResource extends Resource
                 Tables\Filters\SelectFilter::make('status')
                     ->label('Статус')
                     ->options([
-                        BotUser::STATUS_PENDING  => 'Ожидает',
-                        BotUser::STATUS_APPROVED => 'Одобрен',
-                        BotUser::STATUS_REJECTED => 'Отклонён',
+                        BotUser::STATUS_PENDING  => 'Ожидает рассмотрения',
+                        BotUser::STATUS_APPROVED => 'Одобрена',
+                        BotUser::STATUS_REJECTED => 'Отклонена',
                     ]),
             ])
             ->actions([
@@ -137,7 +137,7 @@ class BotUserResource extends Resource
                         self::sendApprovalMessage($record);
 
                         Notification::make()
-                            ->title('Заявка одобрена')
+                            ->title('Профиль участницы одобрен')
                             ->success()
                             ->send();
                     }),
@@ -160,7 +160,7 @@ class BotUserResource extends Resource
                         }
 
                         Notification::make()
-                            ->title('Заявка отклонена')
+                            ->title('Профиль участницы отклонён')
                             ->warning()
                             ->send();
                     }),
@@ -199,17 +199,17 @@ class BotUserResource extends Resource
         try {
             Telegram::sendMessage(
                 chat_id: $record->telegram_id,
-                text: "🎉 {$firstName}, добро пожаловать в Инспайр!\n\nТы принят в сообщество активных молодых людей.\n\nЭто значит, что у тебя есть доступ:\n\n✅ Полный доступ в закрытый чат сообщества\n✅ Доступ к закрытым обучающим материалам академии\n✅ AI-нетворкинг — когда заполнишь профиль.",
+                text: "🎉 {$firstName}, ваша заявка одобрена.\n\nДобро пожаловать в Women Entrepreneurs Platform of the Two Banks. Теперь вам доступен личный кабинет, каталог участниц, поиск контактов, рекомендации и публикация возможностей.\n\nЗаполните профиль подробнее, чтобы другие участницы лучше понимали ваш бизнес, запросы и возможные форматы сотрудничества.",
                 reply_markup: $mainMenu,
             );
 
             Telegram::sendMessage(
                 chat_id: $record->telegram_id,
-                text: "С чего начать?",
+                text: 'С чего начать?',
                 reply_markup: $inlineKeyboard,
             );
         } catch (\Throwable $e) {
-            Log::error('Telegram: не удалось отправить сообщение об одобрении', [
+            Log::error('Telegram: не удалось отправить сообщение об одобрении профиля участницы', [
                 'telegram_id' => $record->telegram_id,
                 'error'       => $e->getMessage(),
             ]);
@@ -223,10 +223,10 @@ class BotUserResource extends Resource
         try {
             Telegram::sendMessage(
                 chat_id: $record->telegram_id,
-                text: "😔 {$firstName}, к сожалению твоя заявка не была одобрена.\n\nЕсли у тебя есть вопросы или ты хочешь узнать причину — напиши напрямую: @lesnichenkoP",
+                text: "{$firstName}, спасибо за интерес к Women Entrepreneurs Platform of the Two Banks.\n\nСейчас ваша заявка не была одобрена. Если хотите уточнить детали или задать вопрос команде проекта, напишите: @lesnichenkoP",
             );
         } catch (\Throwable $e) {
-            Log::error('Telegram: не удалось отправить сообщение об отклонении', [
+            Log::error('Telegram: не удалось отправить сообщение об отклонении профиля участницы', [
                 'telegram_id' => $record->telegram_id,
                 'error'       => $e->getMessage(),
             ]);
@@ -238,7 +238,7 @@ class BotUserResource extends Resource
         try {
             Telegram::sendMessage(
                 chat_id: $record->telegram_id,
-                text: "🔒 Ваш доступ был закрыт.\n\nЕсли у тебя есть вопросы или ты хочешь узнать причину — напиши напрямую: @lesnichenkoP",
+                text: "Доступ к Women Entrepreneurs Platform of the Two Banks закрыт.\n\nЕсли у вас есть вопросы по участию, напишите команде проекта: @lesnichenkoP",
                 reply_markup: ReplyKeyboardRemove::make(remove_keyboard: true),
             );
         } catch (\Throwable $e) {

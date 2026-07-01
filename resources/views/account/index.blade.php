@@ -4,15 +4,15 @@
 @section('content')
 <div class="max-w-3xl">
 
-    {{-- Header --}}
     <div class="mb-8">
         <h1 class="text-2xl font-bold tracking-tight text-[#0f172a]">
-            Привет, {{ explode(' ', (string) $accountUser->full_name)[0] }} 👋
+            Здравствуйте, {{ explode(' ', (string) $accountUser->full_name)[0] }}
         </h1>
-        <p class="mt-1.5 text-sm text-gray-500">Добро пожаловать в личный кабинет INSPIRE Community</p>
+        <p class="mt-1.5 text-sm text-gray-500">
+            Личный кабинет Women Entrepreneurs Platform of the Two Banks помогает представить бизнес, найти полезные контакты и отслеживать возможности.
+        </p>
     </div>
 
-    {{-- Profile completeness banner --}}
     @if(empty($accountUser->description))
     <div class="mb-8 flex items-start gap-4 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4">
         <div class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-100">
@@ -22,9 +22,9 @@
             </svg>
         </div>
         <div class="flex-1 min-w-0">
-            <p class="text-sm font-semibold text-amber-900">Заполни профиль</p>
+            <p class="text-sm font-semibold text-amber-900">Заполните профиль</p>
             <p class="mt-0.5 text-xs text-amber-700 leading-relaxed">
-                Расскажи о себе — алгоритм использует эти данные для подбора партнёров.
+                Расскажите о себе, своём бизнесе, запросах и возможностях для сотрудничества. Так другим участницам будет проще понять, как с вами связаться.
             </p>
         </div>
         <a href="{{ route('account.profile') }}"
@@ -34,7 +34,6 @@
     </div>
     @endif
 
-    {{-- Quick nav cards --}}
     <div class="grid gap-4 sm:grid-cols-3">
 
         <a href="{{ route('account.profile') }}"
@@ -49,7 +48,7 @@
             </div>
             <div>
                 <p class="text-sm font-semibold text-[#0f172a] transition group-hover:text-brand-700">Мой профиль</p>
-                <p class="mt-1 text-xs leading-relaxed text-gray-400">Обновить данные о себе</p>
+                <p class="mt-1 text-xs leading-relaxed text-gray-400">Представить себя и свой бизнес</p>
             </div>
         </a>
 
@@ -62,8 +61,8 @@
                 </svg>
             </div>
             <div>
-                <p class="text-sm font-semibold text-[#0f172a] transition group-hover:text-brand-700">AI-матчи</p>
-                <p class="mt-1 text-xs leading-relaxed text-gray-400">Рекомендованные партнёры</p>
+                <p class="text-sm font-semibold text-[#0f172a] transition group-hover:text-brand-700">Рекомендации</p>
+                <p class="mt-1 text-xs leading-relaxed text-gray-400">Участницы с близкими интересами</p>
             </div>
         </a>
 
@@ -77,8 +76,8 @@
                 </svg>
             </div>
             <div>
-                <p class="text-sm font-semibold text-[#0f172a] transition group-hover:text-brand-700">Люди</p>
-                <p class="mt-1 text-xs leading-relaxed text-gray-400">Участники сообщества</p>
+                <p class="text-sm font-semibold text-[#0f172a] transition group-hover:text-brand-700">Предпринимательницы</p>
+                <p class="mt-1 text-xs leading-relaxed text-gray-400">Каталог участниц сообщества</p>
             </div>
         </a>
 

@@ -4,7 +4,6 @@
 @section('content')
 <div class="max-w-2xl">
 
-    {{-- Back link + title --}}
     <div class="mb-8">
         <a href="{{ route('account.opportunities.index') }}"
            class="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-gray-400 transition hover:text-brand-600">
@@ -15,7 +14,7 @@
         </a>
         <h1 class="text-2xl font-bold tracking-tight text-[#0f172a]">Новая возможность</h1>
         <p class="mt-1.5 text-sm text-gray-500">
-            Все участники сообщества получат уведомление в боте сразу после публикации
+            Опубликуйте запрос, предложение, встречу или событие. Участницы получат уведомление в Telegram.
         </p>
     </div>
 
@@ -23,13 +22,12 @@
           class="space-y-5 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
         @csrf
 
-        {{-- Type selector --}}
         <div x-data="{ selected: '{{ old('type', '') }}' }">
             <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">Тип *</p>
             <div class="grid grid-cols-3 gap-3">
-                @foreach(['project' => ['emoji' => '🚀', 'label' => 'Проект'],
-                          'meeting' => ['emoji' => '🤝', 'label' => 'Встреча'],
-                          'event'   => ['emoji' => '🎉', 'label' => 'Мероприятие']] as $val => $meta)
+                @foreach(['project' => ['emoji' => '💼', 'label' => 'Запрос'],
+                          'meeting' => ['emoji' => '🤝', 'label' => 'Партнёрство'],
+                          'event'   => ['emoji' => '📅', 'label' => 'Событие']] as $val => $meta)
                 <label @click="selected = '{{ $val }}'"
                        :class="selected === '{{ $val }}'
                            ? 'border-brand-500 bg-brand-50 shadow-sm'
@@ -47,14 +45,13 @@
             @enderror
         </div>
 
-        {{-- Title --}}
         <div>
             <label for="title" class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500">
                 Заголовок *
             </label>
             <input id="title" name="title" type="text" maxlength="200"
                    value="{{ old('title') }}"
-                   placeholder="Например: Ищу дизайнера для стартапа"
+                   placeholder="Например: ищу партнёров для участия в выставке"
                    class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-[#0f172a] placeholder-gray-300
                           transition focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100
                           @error('title') border-red-300 @enderror">
@@ -63,13 +60,12 @@
             @enderror
         </div>
 
-        {{-- Body --}}
         <div>
             <label for="body" class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500">
                 Описание *
             </label>
             <textarea id="body" name="body" rows="5" maxlength="2000"
-                      placeholder="Расскажи подробнее: что за проект, что ищешь, чем можно помочь..."
+                      placeholder="Опишите, что вы ищете или предлагаете, кому это может быть полезно и как с вами связаться."
                       class="w-full resize-none rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-[#0f172a] placeholder-gray-300
                              transition focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100
                              @error('body') border-red-300 @enderror">{{ old('body') }}</textarea>
@@ -78,7 +74,6 @@
             @enderror
         </div>
 
-        {{-- Date + Location --}}
         <div class="grid gap-4 sm:grid-cols-2">
             <div>
                 <label for="event_date" class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500">
@@ -100,7 +95,7 @@
                 </label>
                 <input id="location" name="location" type="text" maxlength="200"
                        value="{{ old('location') }}"
-                       placeholder="Кишинёв, онлайн..."
+                       placeholder="Кишинёв, онлайн, Бельцы..."
                        class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-[#0f172a] placeholder-gray-300
                               transition focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100
                               @error('location') border-red-300 @enderror">
@@ -110,14 +105,13 @@
             </div>
         </div>
 
-        {{-- Contact URL --}}
         <div>
             <label for="contact_url" class="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500">
                 Ссылка для связи <span class="font-normal normal-case text-gray-400">(необязательно)</span>
             </label>
             <input id="contact_url" name="contact_url" type="url"
                    value="{{ old('contact_url') }}"
-                   placeholder="https://t.me/username или ссылка на форму..."
+                   placeholder="https://t.me/username или ссылка на форму"
                    class="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-[#0f172a] placeholder-gray-300
                           transition focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100
                           @error('contact_url') border-red-300 @enderror">
@@ -126,7 +120,6 @@
             @enderror
         </div>
 
-        {{-- Submit --}}
         <div class="border-t border-gray-100 pt-5">
             <button type="submit"
                     class="inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold
@@ -136,7 +129,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                 </svg>
-                Опубликовать и уведомить участников
+                Опубликовать и уведомить участниц
             </button>
         </div>
 

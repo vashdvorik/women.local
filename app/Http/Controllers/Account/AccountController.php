@@ -18,17 +18,11 @@ use Illuminate\View\View;
 
 class AccountController extends Controller
 {
-    /**
-     * Show the login page (unauthenticated entry point).
-     */
     public function login(): View
     {
         return view('account.login');
     }
 
-    /**
-     * Receive @username, generate token, send magic link via bot API.
-     */
     public function sendLink(Request $request): RedirectResponse
     {
         $request->validate([
@@ -44,18 +38,17 @@ class AccountController extends Controller
             ->where('status', BotUser::STATUS_APPROVED)
             ->first();
 
-        // Always show success to prevent username enumeration
         if (! $user) {
             return redirect()->route('account.login')->with('sent', true);
         }
 
-        $token    = LoginToken::generateFor((int) $user->telegram_id);
-        $url      = url('/go/' . substr($token->token, 0, 8));
+        $token     = LoginToken::generateFor((int) $user->telegram_id);
+        $url       = url('/go/' . substr($token->token, 0, 8));
         $firstName = explode(' ', (string) $user->full_name)[0];
 
         Http::post('https://api.telegram.org/bot' . config('nutgram.token') . '/sendMessage', [
             'chat_id'      => $user->telegram_id,
-            'text'         => "Привет, {$firstName}! Нажми кнопку ниже, чтобы войти в личный кабинет.\n\n⏱ Ссылка действует 24 часа.",
+            'text'         => "Здравствуйте, {$firstName}! Нажмите кнопку ниже, чтобы войти в личный кабинет Women Entrepreneurs Platform of the Two Banks.\n\n⏱ Ссылка действует 24 часа.",
             'reply_markup' => json_encode([
                 'inline_keyboard' => [[
                     ['text' => '🔐 Войти в кабинет →', 'url' => $url],
@@ -66,9 +59,6 @@ class AccountController extends Controller
         return redirect()->route('account.login')->with('sent', true);
     }
 
-    /**
-     * Validate the magic token and start a session.
-     */
     public function auth(Request $request): RedirectResponse
     {
         $token = (string) $request->query('token', '');
@@ -82,7 +72,7 @@ class AccountController extends Controller
 
         if (! $loginToken || ! $loginToken->isValid()) {
             return redirect()->route('account.login')
-                ->with('error', 'Ссылка истекла. Запросите новую через бот командой /login.');
+                ->with('error', 'Ссылка истекла. Запросите новую через @WomenComBot командой /login.');
         }
 
         $user = BotUser::where('telegram_id', $loginToken->telegram_id)
@@ -94,7 +84,6 @@ class AccountController extends Controller
                 ->with('error', 'Доступ закрыт. Ваша заявка ещё не одобрена или была отозвана.');
         }
 
-        // Start session (7 days)
         $request->session()->regenerate();
         session(['account_telegram_id' => $user->telegram_id]);
         session()->put('_account_expires', now()->addDays(7)->timestamp);
@@ -102,49 +91,33 @@ class AccountController extends Controller
         return redirect()->route('account.index');
     }
 
-    /**
-     * Dashboard / home page.
-     */
     public function index(): View
     {
         return view('account.index');
     }
 
-    /**
-     * Show profile view (read-only).
-     */
     public function profile(): View
     {
         return view('account.profile');
     }
 
-    /**
-     * Show profile edit form.
-     */
     public function profileEdit(): View
     {
         return view('account.profile-edit');
     }
 
-    /**
-     * Update profile.
-     */
     public function updateProfile(ProfileUpdateRequest $request): RedirectResponse
     {
         /** @var BotUser $user */
         $user = view()->shared('accountUser');
         $user->update($request->validated());
 
-        // Recompute embedding since profile text changed
         ComputeUserEmbedding::dispatch($user);
 
         return redirect()->route('account.profile')
-            ->with('success', 'Профиль обновлён.');
+            ->with('success', 'Профиль обновлён. Другие участницы смогут лучше понять ваш бизнес и запросы.');
     }
 
-    /**
-     * AI matches page.
-     */
     public function matches(MatchingService $matcher): View
     {
         /** @var BotUser $accountUser */
@@ -155,9 +128,6 @@ class AccountController extends Controller
         return view('account.matches', compact('matches'));
     }
 
-    /**
-     * Community members page.
-     */
     public function people(): View
     {
         /** @var BotUser $accountUser */
@@ -171,9 +141,6 @@ class AccountController extends Controller
         return view('account.people', compact('people'));
     }
 
-    /**
-     * Show a single community member's public profile.
-     */
     public function showPerson(BotUser $botUser): View
     {
         abort_if($botUser->status !== BotUser::STATUS_APPROVED, 404);
@@ -181,9 +148,6 @@ class AccountController extends Controller
         return view('account.person', ['person' => $botUser]);
     }
 
-    /**
-     * AI search page — find people by arbitrary text query.
-     */
     public function search(Request $request, EmbeddingService $embedder, MatchingService $matcher): View
     {
         /** @var BotUser $accountUser */
@@ -207,30 +171,23 @@ class AccountController extends Controller
         return view('account.search', compact('query', 'results'));
     }
 
-    /**
-     * Knowledge base / resources page.
-     */
     public function knowledge(): View
     {
         return view('account.knowledge');
     }
 
-    /**
-     * Delete account and clear session.
-     */
     public function deleteProfile(Request $request): RedirectResponse
     {
         /** @var BotUser $user */
         $user = view()->shared('accountUser');
 
-        // Remove the bot keyboard from the user's Telegram chat
         Http::post('https://api.telegram.org/bot' . config('nutgram.token') . '/sendMessage', [
             'chat_id'      => $user->telegram_id,
-            'text'         => "✅ Ваш профиль удалён.\n\nСпасибо, что были с нами — будем рады видеть вас снова 🙏",
+            'text'         => "✅ Ваш профиль удалён.\n\nЕсли вы захотите снова присоединиться к Women Entrepreneurs Platform of the Two Banks, откройте @WomenComBot и отправьте /start.",
             'reply_markup' => json_encode([
                 'remove_keyboard' => true,
                 'inline_keyboard' => [[
-                    ['text' => '↩️ Вернуться', 'callback_data' => 'restart'],
+                    ['text' => '↩️ Подать заявку снова', 'callback_data' => 'restart'],
                 ]],
             ]),
         ]);
@@ -246,9 +203,6 @@ class AccountController extends Controller
             ->with('success', 'Ваш профиль удалён.');
     }
 
-    /**
-     * Destroy session and log out.
-     */
     public function logout(Request $request): RedirectResponse
     {
         session()->forget('account_telegram_id');
