@@ -42,7 +42,7 @@ Telegram Bot Token (@BotFather)
 3. ПРОДАКШЕН (.env)
 ------------------------------------------------------------
 
-  APP_NAME="INSPIRE Community"
+  APP_NAME="Women Community"
   APP_ENV=production
   APP_DEBUG=false
   APP_URL=https://ваш-домен.com
@@ -74,10 +74,22 @@ Telegram Bot Token (@BotFather)
 
 
 ------------------------------------------------------------
-4. ПРОДАКШЕН: первый деплой
+4. ПРОДАКШЕН: первый деплой (shared hosting / cPanel)
 ------------------------------------------------------------
 
-  composer install --no-dev --optimize-autoloader
+  # ВАЖНО: на shared hosting composer недоступен глобально.
+  # Все команды — через /usr/local/bin/php
+
+  # 1. Скачать composer (один раз)
+  /usr/local/bin/php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  /usr/local/bin/php composer-setup.php
+  /usr/local/bin/php -r "unlink('composer-setup.php');"
+
+  # 2. Зависимости
+  /usr/local/bin/php composer.phar install --no-dev --optimize-autoloader
+
+  # 3. Далее — как обычно
+  php artisan key:generate
   php artisan key:generate
   php artisan migrate --force
   php artisan storage:link
