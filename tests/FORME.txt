@@ -1,0 +1,36 @@
+КОМАНДЫ НА ЛОКАЛЬНОМ 
+
+php artisan nutgram:run    - запуск бота
+
+На реальном сервере:
+
+11111
+composer instal
+
+22222
+Прописать в .env:
+APP_URL=https://твой-домен.ru
+TELEGRAM_TOKEN=токен
+APP_ENV=production
+
+также баху данных
+
+Установить webhook одной командой:
+php artisan nutgram:hook:set
+
+Nutgram сам возьмёт URL из APP_URL и зарегистрирует его в Telegram.
+
+
+ПОЛНАЯ ИНСТРАКШИН
+
+php artisan config:clear
+php artisan config:cache 
+
+php artisan optimize:clear
+
+Gemini API Key → прописан в .env как GEMINI_API_KEY
+
+Сидер
+php artisan db:seed --class=CommunitySeeder
+Пересчет
+php artisan ai:recompute-embeddings

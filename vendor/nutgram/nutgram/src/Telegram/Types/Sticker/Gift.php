@@ -1,0 +1,85 @@
+<?php
+
+namespace SergiX44\Nutgram\Telegram\Types\Sticker;
+
+use SergiX44\Nutgram\Telegram\Types\BaseType;
+use SergiX44\Nutgram\Telegram\Types\Chat\Chat;
+
+/**
+ * This object represents a gift that can be sent by the bot.
+ * @see https://core.telegram.org/bots/api#gift
+ */
+class Gift extends BaseType
+{
+    /**
+     * Unique identifier of the gift
+     */
+    public string $id;
+
+    /**
+     * The sticker that represents the gift
+     */
+    public Sticker $sticker;
+
+    /**
+     * The number of Telegram Stars that must be paid to send the sticker
+     */
+    public int $star_count;
+
+    /**
+     * Optional.
+     * The number of Telegram Stars that must be paid to upgrade the gift to a unique one
+     */
+    public ?int $upgrade_star_count = null;
+
+    /**
+     * Optional.
+     * True, if the gift can only be purchased by Telegram Premium subscribers
+     */
+    public ?bool $is_premium = null;
+
+    /**
+     * Optional. True, if the gift can be used (after being upgraded) to customize a user's appearance
+     */
+    public ?bool $has_colors = null;
+
+    /**
+     * Optional.
+     * The total number of the gifts of this type that can be sent; for limited gifts only
+     */
+    public ?int $total_count = null;
+
+    /**
+     * Optional.
+     * The number of remaining gifts of this type that can be sent; for limited gifts only
+     */
+    public ?int $remaining_count = null;
+
+    /**
+     * Optional.
+     * The total number of gifts of this type that can be sent by the bot; for limited gifts only
+     */
+    public ?int $personal_total_count = null;
+
+    /**
+     * Optional.
+     * The number of remaining gifts of this type that can be sent by the bot; for limited gifts only
+     */
+    public ?int $personal_remaining_count = null;
+
+    /**
+     * Optional. Background of the gift
+     */
+    public ?GiftBackground $background = null;
+
+    /**
+     * Optional. The total number of different unique gifts that can be obtained by upgrading the gift
+     */
+    public ?int $unique_gift_variant_count = null;
+
+    /**
+     * Optional.
+     * Information about the chat that published the gift
+     */
+    public ?Chat $publisher_chat = null;
+}
