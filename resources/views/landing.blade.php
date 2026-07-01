@@ -215,7 +215,7 @@
             <p class="text-lg text-gray-500 leading-relaxed max-w-md mb-10 hero-in hero-in-3" data-lang="ro">Unim tineri lideri și antreprenori ai Moldovei prin tehnologia de matching AI.</p>
 
             <div class="flex flex-wrap items-center gap-4 hero-in hero-in-4">
-                <a href="https://t.me/Inspiremoldova_bot" target="_blank"
+                <a href="https://t.me/WomenComBot" target="_blank"
                    class="inline-flex items-center gap-2 grad-bg text-white font-semibold text-sm px-7 py-3.5 rounded-full shadow-lg shadow-brand-600/25 hover:shadow-brand-600/45 hover:-translate-y-0.5 transition-all">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                     <span data-lang="ru">Присоединиться</span>
@@ -403,7 +403,7 @@
             </div>
         </div>
         <div class="text-center mt-14 reveal delay-4">
-            <a href="https://t.me/Inspiremoldova_bot" target="_blank"
+            <a href="https://t.me/WomenComBot" target="_blank"
                class="inline-flex items-center gap-2.5 grad-bg text-white font-semibold px-8 py-4 rounded-full shadow-xl shadow-brand-600/30 hover:shadow-brand-600/50 hover:-translate-y-0.5 transition-all">
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                 <span data-lang="ru">Начать сейчас</span>
@@ -664,7 +664,7 @@
         <p class="text-gray-400 mb-10 max-w-xl mx-auto" data-lang="ru">Начните свой путь прямо сейчас — зарегистрируйтесь через Telegram-бот за одну минуту.</p>
         <p class="text-gray-400 mb-10 max-w-xl mx-auto" data-lang="en">Start your journey right now — register via Telegram bot in one minute.</p>
         <p class="text-gray-400 mb-10 max-w-xl mx-auto" data-lang="ro">Începe-ți călătoria chiar acum — înregistrează-te prin bot-ul Telegram în un minut.</p>
-        <a href="https://t.me/Inspiremoldova_bot" target="_blank"
+        <a href="https://t.me/WomenComBot" target="_blank"
            class="inline-flex items-center gap-3 grad-bg text-white font-semibold text-lg px-10 py-4 rounded-full shadow-2xl shadow-brand-600/40 hover:shadow-brand-600/60 hover:-translate-y-0.5 transition-all">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
             Подать заявку
@@ -699,10 +699,10 @@
                 <span data-lang="ro">Contacte</span>
             </p>
             <div class="flex flex-col gap-2.5">
-                <a href="https://t.me/Inspiremoldova_bot" target="_blank"
+                <a href="https://t.me/WomenComBot" target="_blank"
                    class="flex items-center gap-2 text-sm text-gray-500 hover:text-brand-600 transition">
                     <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                    @Inspiremoldova_bot
+                    @WomenComBot
                 </a>
                 <a href="https://peace.education.md/" target="_blank"
                    class="flex items-center gap-2 text-sm text-gray-500 hover:text-brand-600 transition">
@@ -776,7 +776,7 @@
     (function () {
         if (!window.Telegram || !window.Telegram.WebApp) return;
         var tg = window.Telegram.WebApp;
-        document.querySelectorAll('a[href*="t.me/Inspiremoldova_bot"]').forEach(function (link) {
+        document.querySelectorAll('a[href*="t.me/WomenComBot"]').forEach(function (link) {
             link.addEventListener('click', function (e) {
                 e.preventDefault();
                 tg.openTelegramLink(link.href);

@@ -11,7 +11,7 @@
 
     <div class="space-y-3">
 
-        <a href="https://t.me/Inspiremoldova_bot" target="_blank"
+        <a href="https://t.me/WomenComBot" target="_blank"
            class="group flex items-center gap-4 rounded-2xl border border-gray-100 bg-white px-5 py-4 shadow-sm
                   transition-all duration-200 hover:border-brand-200 hover:shadow-md">
             <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
@@ -24,7 +24,7 @@
                 <p class="text-sm font-semibold text-[#0f172a] transition group-hover:text-brand-700">
                     Telegram-бот сообщества
                 </p>
-                <p class="mt-0.5 truncate text-xs text-gray-400">@Inspiremoldova_bot</p>
+                <p class="mt-0.5 truncate text-xs text-gray-400">@WomenComBot</p>
             </div>
             <svg class="h-4 w-4 shrink-0 text-gray-300 transition group-hover:text-brand-500"
                  fill="none" stroke="currentColor" viewBox="0 0 24 24">

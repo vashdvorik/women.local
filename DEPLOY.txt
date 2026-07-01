@@ -77,19 +77,11 @@ Telegram Bot Token (@BotFather)
 4. ПРОДАКШЕН: первый деплой (shared hosting / cPanel)
 ------------------------------------------------------------
 
-  # ВАЖНО: на shared hosting composer недоступен глобально.
+  # composer.phar уже в проекте (из git), vendor/ НЕ в гите.
   # Все команды — через /usr/local/bin/php
 
-  # 1. Скачать composer (один раз)
-  /usr/local/bin/php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-  /usr/local/bin/php composer-setup.php
-  /usr/local/bin/php -r "unlink('composer-setup.php');"
-
-  # 2. Зависимости
   /usr/local/bin/php composer.phar install --no-dev --optimize-autoloader
 
-  # 3. Далее — как обычно
-  php artisan key:generate
   php artisan key:generate
   php artisan migrate --force
   php artisan storage:link
@@ -98,8 +90,8 @@ Telegram Bot Token (@BotFather)
   # Админ-панель Filament (/admin)
   php artisan make:filament-user
 
-  # Telegram webhook
-  php artisan nutgram:hook:set
+  # Telegram webhook (указать свой домен)
+  php artisan nutgram:hook:set https://women.granatlab.com/telegram/webhook
 
   # AI-эмбеддинги (после появления пользователей)
   php artisan ai:recompute-embeddings
@@ -109,8 +101,8 @@ Telegram Bot Token (@BotFather)
 5. CRON (shared hosting)
 ------------------------------------------------------------
 
-  * * * * * /usr/local/bin/php /путь/к/проекту/artisan schedule:run >> /dev/null 2>&1
-  * * * * * /usr/local/bin/php /путь/к/проекту/artisan queue:work database --stop-when-empty --tries=3 >> /dev/null 2>&1
+  * * * * * /usr/local/bin/php /home/tirastyl/public_html/women.granatlab.com/artisan schedule:run >> /dev/null 2>&1
+  * * * * * /usr/local/bin/php /home/tirastyl/public_html/women.granatlab.com/artisan queue:work database --stop-when-empty --tries=3 >> /dev/null 2>&1
 
 
 ------------------------------------------------------------
