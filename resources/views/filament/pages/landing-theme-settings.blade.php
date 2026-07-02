@@ -22,7 +22,7 @@
     }
 
     .theme-settings__intro p {
-        max-width: 760px;
+        max-width: 820px;
         margin: 8px 0 0;
         color: #6b7280;
         line-height: 1.6;
@@ -30,7 +30,7 @@
 
     .theme-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 18px;
     }
 
@@ -75,7 +75,9 @@
     }
 
     .theme-preview__logo,
-    .theme-preview__button {
+    .theme-preview__button,
+    .theme-preview__line,
+    .theme-preview__photo {
         border-radius: 999px;
     }
 
@@ -91,7 +93,6 @@
 
     .theme-preview__line {
         height: 12px;
-        border-radius: 999px;
         margin-bottom: 10px;
     }
 
@@ -104,8 +105,7 @@
         width: 48%;
         height: 78px;
         margin-top: 20px;
-        border-radius: 18px;
-        opacity: .9;
+        opacity: .92;
     }
 
     .theme-preview.is-classic {
@@ -151,6 +151,21 @@
     .theme-preview.is-dark .theme-preview__line,
     .theme-preview.is-dark .theme-preview__photo {
         background: #334155;
+    }
+
+    .theme-preview.is-platform {
+        background: radial-gradient(circle at 78% 20%, rgba(13, 148, 136, .24), transparent 32%), #f9fafb;
+    }
+
+    .theme-preview.is-platform .theme-preview__logo,
+    .theme-preview.is-platform .theme-preview__button,
+    .theme-preview.is-platform .theme-preview__line.is-lg {
+        background: #4a1d96;
+    }
+
+    .theme-preview.is-platform .theme-preview__line,
+    .theme-preview.is-platform .theme-preview__photo {
+        background: #ccfbf1;
     }
 
     .theme-card__body {
@@ -200,7 +215,13 @@
         box-shadow: 0 12px 28px rgba(217, 119, 6, .22);
     }
 
-    @media (max-width: 980px) {
+    @media (max-width: 1180px) {
+        .theme-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 760px) {
         .theme-grid {
             grid-template-columns: 1fr;
         }
@@ -212,12 +233,21 @@
     }
 </style>
 
+@php
+    $descriptions = [
+        'classic' => 'Спокойная зелёная тема: базовый вариант для деловой и институциональной подачи.',
+        'warm' => 'Тёплая гранатово-песочная тема: мягче, ярче и эмоциональнее.',
+        'dark' => 'Контрастная тёмная тема: премиальная подача для презентаций и донорских показов.',
+        'platform' => 'Новый дизайн из docs: фиолетово-бирюзовая структура с карточками, событиями и историями.',
+    ];
+@endphp
+
 <form wire:submit.prevent="save" class="theme-settings">
     <section class="theme-settings__intro">
         <h2>Выбор дизайна публичного лендинга</h2>
         <p>
             Выберите визуальную тему. Настройка сохраняется в базе данных и применяется для всех посетителей публичной страницы.
-            Бизнес-логика, тексты, ссылки Telegram и формы при этом не меняются.
+            Старые дизайны не удаляются: можно переключаться между ними в любой момент.
         </p>
     </section>
 
@@ -239,22 +269,14 @@
 
                 <div class="theme-card__body">
                     <strong>{{ $label }}</strong>
-                    <span>
-                        @if($key === 'classic')
-                            Спокойная зелёная тема: базовый вариант для деловой и институциональной подачи.
-                        @elseif($key === 'warm')
-                            Более тёплая гранатово-песочная тема: мягче, ярче и эмоциональнее.
-                        @else
-                            Контрастная тёмная тема: премиальная подача для презентаций и донорских показов.
-                        @endif
-                    </span>
+                    <span>{{ $descriptions[$key] ?? 'Публичный дизайн лендинга.' }}</span>
                 </div>
             </label>
         @endforeach
     </section>
 
     <section class="theme-actions">
-        <p>Текущая выбранная тема: <strong>{{ $this->themes()[$theme] ?? 'Классическая зелёная' }}</strong></p>
+        <p>Текущая выбранная тема: <strong>{{ $this->themes()[$theme] ?? $this->themes()['classic'] }}</strong></p>
         <button type="submit" class="theme-save">Сохранить тему</button>
     </section>
 </form>

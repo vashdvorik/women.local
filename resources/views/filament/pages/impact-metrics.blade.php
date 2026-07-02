@@ -1,24 +1,25 @@
 <x-filament-panels::page>
 @php
     $formatNumber = fn (int|float $value): string => number_format((float) $value, 0, ',', ' ');
+    $safePercent = fn (int|float $value): int => max(0, min(100, (int) round($value)));
 
     $statusRows = [
-        ['label' => 'Одобренные участницы', 'value' => $approvedCount, 'percent' => $approvalRate, 'class' => 'is-green'],
+        ['label' => 'Одобренные участницы', 'value' => $approvedCount, 'percent' => $approvalRate, 'class' => 'is-emerald'],
         ['label' => 'Ожидают рассмотрения', 'value' => $pendingCount, 'percent' => $totalApplications > 0 ? round($pendingCount / $totalApplications * 100) : 0, 'class' => 'is-amber'],
-        ['label' => 'Отклонённые заявки', 'value' => $rejectedCount, 'percent' => $totalApplications > 0 ? round($rejectedCount / $totalApplications * 100) : 0, 'class' => 'is-rose'],
+        ['label' => 'Отклонённые заявки', 'value' => $rejectedCount, 'percent' => $totalApplications > 0 ? round($rejectedCount / $totalApplications * 100) : 0, 'class' => 'is-muted'],
     ];
 
     $qualityRows = [
-        ['label' => 'Полные бизнес-профили', 'caption' => 'Описание бизнеса и запрос к сообществу', 'value' => $completeProfiles, 'total' => $approvedCount, 'percent' => $profileCompletionRate, 'class' => 'is-pink'],
-        ['label' => 'AI-готовые профили', 'caption' => 'Есть embedding для рекомендаций и поиска', 'value' => $withEmbedding, 'total' => $approvedCount, 'percent' => $aiReadinessRate, 'class' => 'is-violet'],
-        ['label' => 'Активировали кабинет', 'caption' => 'Хотя бы один успешный вход по Telegram-токену', 'value' => $activeCabinetUsers, 'total' => $approvedCount, 'percent' => $cabinetActivationRate, 'class' => 'is-cyan'],
-        ['label' => 'Публиковали возможности', 'caption' => 'Создали запрос, партнёрство или событие', 'value' => $opportunityAuthors, 'total' => $approvedCount, 'percent' => $publicationActivationRate, 'class' => 'is-green'],
+        ['label' => 'Полные бизнес-профили', 'caption' => 'Есть описание бизнеса и запрос к сообществу', 'value' => $completeProfiles, 'total' => $approvedCount, 'percent' => $profileCompletionRate, 'class' => 'is-granat'],
+        ['label' => 'AI-готовые профили', 'caption' => 'Сформированы embeddings для рекомендаций и поиска', 'value' => $withEmbedding, 'total' => $approvedCount, 'percent' => $aiReadinessRate, 'class' => 'is-copper'],
+        ['label' => 'Активировали кабинет', 'caption' => 'Есть хотя бы один успешный вход по Telegram-токену', 'value' => $activeCabinetUsers, 'total' => $approvedCount, 'percent' => $cabinetActivationRate, 'class' => 'is-amber'],
+        ['label' => 'Публиковали возможности', 'caption' => 'Создали запрос, партнёрство или событие', 'value' => $opportunityAuthors, 'total' => $approvedCount, 'percent' => $publicationActivationRate, 'class' => 'is-emerald'],
     ];
 
     $typeMeta = [
-        'project' => ['label' => 'Запросы', 'icon' => '💼', 'color' => '#ec4899', 'class' => 'is-pink'],
-        'meeting' => ['label' => 'Партнёрства', 'icon' => '🤝', 'color' => '#10b981', 'class' => 'is-green'],
-        'event' => ['label' => 'События', 'icon' => '📅', 'color' => '#8b5cf6', 'class' => 'is-violet'],
+        'project' => ['label' => 'Запросы', 'icon' => '💼', 'color' => '#9f2534', 'class' => 'is-granat'],
+        'meeting' => ['label' => 'Партнёрства', 'icon' => '🤝', 'color' => '#d66a3f', 'class' => 'is-copper'],
+        'event' => ['label' => 'События', 'icon' => '📅', 'color' => '#d7a348', 'class' => 'is-amber'],
     ];
 
     $opportunityTypeRows = collect($typeMeta)->map(function (array $meta, string $type) use ($opportunitiesByType, $opportunitiesTotal) {
@@ -43,7 +44,7 @@
 
     $donutGradient = $opportunitiesTotal > 0
         ? 'conic-gradient(' . implode(', ', $donutParts) . ')'
-        : 'conic-gradient(#e5e7eb 0deg 360deg)';
+        : 'conic-gradient(#eadfd4 0deg 360deg)';
 
     $maxMemberChart = max(
         1,
@@ -54,28 +55,40 @@
     $maxOpportunityChart = max(1, (int) collect($opportunityChart)->max('opportunities'));
 
     $headlineCards = [
-        ['label' => 'Одобренных участниц', 'value' => $approvedCount, 'note' => $approvedLast30 . ' за 30 дней', 'class' => 'is-pink', 'icon' => '♀'],
-        ['label' => 'Заявок всего', 'value' => $totalApplications, 'note' => $newApplicationsLast30 . ' новых за 30 дней', 'class' => 'is-amber', 'icon' => '↗'],
-        ['label' => 'Возможностей', 'value' => $opportunitiesTotal, 'note' => $opportunitiesLast30 . ' опубликовано за 30 дней', 'class' => 'is-violet', 'icon' => '✦'],
-        ['label' => 'Индекс готовности', 'value' => $platformReadiness . '%', 'note' => 'профили, AI, кабинет, активность', 'class' => 'is-green', 'icon' => '✓'],
+        ['label' => 'Одобренных участниц', 'value' => $approvedCount, 'note' => $approvedLast30 . ' за 30 дней', 'class' => 'is-granat', 'icon' => '♀'],
+        ['label' => 'Заявок всего', 'value' => $totalApplications, 'note' => $newApplicationsLast30 . ' новых за 30 дней', 'class' => 'is-copper', 'icon' => '↗'],
+        ['label' => 'Возможностей', 'value' => $opportunitiesTotal, 'note' => $opportunitiesLast30 . ' опубликовано за 30 дней', 'class' => 'is-amber', 'icon' => '✦'],
+        ['label' => 'Индекс готовности', 'value' => $platformReadiness . '%', 'note' => 'профили, AI, кабинет, активность', 'class' => 'is-emerald', 'icon' => '✓'],
+    ];
+
+    $reportItems = [
+        ['label' => 'Одобрение заявок', 'value' => $approvalRate . '%'],
+        ['label' => 'Заполненность профилей', 'value' => $profileCompletionRate . '%'],
+        ['label' => 'AI-готовность', 'value' => $aiReadinessRate . '%'],
+        ['label' => 'Активность кабинета', 'value' => $cabinetActivationRate . '%'],
+        ['label' => 'Авторы публикаций', 'value' => $formatNumber($opportunityAuthors)],
+        ['label' => 'Сформировано', 'value' => $generatedAt],
     ];
 @endphp
 
 <style>
     .impact-page {
-        --impact-bg: #fff7fb;
-        --impact-border: #f4d7e8;
-        --impact-text: #111827;
-        --impact-muted: #6b7280;
-        --impact-pink: #ec4899;
-        --impact-rose: #f43f5e;
-        --impact-violet: #8b5cf6;
-        --impact-green: #10b981;
-        --impact-cyan: #06b6d4;
-        --impact-amber: #f59e0b;
+        --granat-950: #2f0d14;
+        --granat-900: #49151f;
+        --granat-800: #6f1d2c;
+        --granat-700: #952838;
+        --granat-600: #b73a45;
+        --copper: #d66a3f;
+        --amber: #d7a348;
+        --sand: #f7eadb;
+        --cream: #fffaf3;
+        --line: #ead8ca;
+        --text: #24161a;
+        --muted: #7e6a61;
+        --emerald: #1f8a68;
         display: grid;
         gap: 24px;
-        color: var(--impact-text);
+        color: var(--text);
     }
 
     .impact-page * {
@@ -83,25 +96,35 @@
     }
 
     .impact-hero,
-    .impact-card,
     .impact-panel,
     .impact-report {
-        border: 1px solid rgba(244, 215, 232, 0.95);
-        border-radius: 28px;
-        background: #fff;
-        box-shadow: 0 18px 55px rgba(236, 72, 153, 0.12);
         overflow: hidden;
+        border: 1px solid rgba(234, 216, 202, 0.95);
+        border-radius: 30px;
+        background: linear-gradient(180deg, #fffdf8 0%, #fff7ee 100%);
+        box-shadow: 0 22px 55px rgba(73, 21, 31, 0.12);
     }
 
     .impact-hero__top {
         position: relative;
-        overflow: hidden;
-        padding: 36px;
-        color: #fff;
+        padding: 40px;
+        color: #fff8ef;
         background:
-            radial-gradient(circle at 85% 0%, rgba(255, 255, 255, 0.28), transparent 28%),
-            radial-gradient(circle at 12% 110%, rgba(253, 230, 138, 0.22), transparent 30%),
-            linear-gradient(135deg, #f43f5e 0%, #d946ef 48%, #7c3aed 100%);
+            radial-gradient(circle at 12% 18%, rgba(255, 244, 219, 0.22), transparent 24%),
+            radial-gradient(circle at 88% 0%, rgba(214, 106, 63, 0.35), transparent 30%),
+            radial-gradient(circle at 88% 88%, rgba(255, 255, 255, 0.12), transparent 22%),
+            linear-gradient(135deg, var(--granat-950) 0%, var(--granat-800) 48%, var(--copper) 100%);
+    }
+
+    .impact-hero__top::after {
+        position: absolute;
+        inset: auto -80px -170px auto;
+        width: 360px;
+        height: 360px;
+        border: 1px solid rgba(255, 250, 243, 0.18);
+        border-radius: 999px;
+        background: rgba(255, 250, 243, 0.08);
+        content: "";
     }
 
     .impact-hero__content {
@@ -110,139 +133,162 @@
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
-        gap: 28px;
+        gap: 30px;
     }
 
     .impact-eyebrow {
-        margin: 0 0 12px;
-        color: #ffe4f1;
+        display: inline-flex;
+        margin: 0 0 16px;
+        padding: 9px 13px;
+        border: 1px solid rgba(255, 250, 243, 0.18);
+        border-radius: 999px;
+        background: rgba(255, 250, 243, 0.1);
+        color: #f7d7bd;
         font-size: 12px;
-        font-weight: 800;
-        letter-spacing: 0.24em;
+        font-weight: 900;
+        letter-spacing: 0.22em;
         text-transform: uppercase;
     }
 
     .impact-title {
-        max-width: 880px;
+        max-width: 900px;
         margin: 0;
-        font-size: clamp(32px, 5vw, 56px);
+        font-size: clamp(34px, 5vw, 58px);
         font-weight: 950;
         line-height: 0.98;
-        letter-spacing: -0.045em;
+        letter-spacing: -0.05em;
     }
 
     .impact-lead {
-        max-width: 720px;
+        max-width: 760px;
         margin: 18px 0 0;
-        color: #fff1f7;
+        color: #f6ddcd;
         font-size: 17px;
         line-height: 1.65;
     }
 
     .impact-stamp {
-        min-width: 230px;
+        min-width: 245px;
         padding: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.24);
-        border-radius: 22px;
-        background: rgba(255, 255, 255, 0.16);
-        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 250, 243, 0.22);
+        border-radius: 24px;
+        background: rgba(255, 250, 243, 0.12);
+        backdrop-filter: blur(18px);
     }
 
     .impact-stamp span {
         display: block;
-        color: #ffe4f1;
+        color: #f6ddcd;
         font-size: 13px;
+        font-weight: 750;
     }
 
     .impact-stamp strong {
         display: block;
-        margin-top: 4px;
+        margin-top: 5px;
         font-size: 24px;
-        font-weight: 900;
+        font-weight: 950;
     }
 
     .impact-print-button {
         width: 100%;
-        margin-top: 14px;
-        padding: 11px 14px;
+        margin-top: 15px;
+        padding: 12px 15px;
         border: 0;
-        border-radius: 14px;
-        background: #fff;
-        color: #be185d;
+        border-radius: 16px;
+        background: var(--cream);
+        color: var(--granat-800);
         cursor: pointer;
-        font-weight: 850;
-        box-shadow: 0 12px 28px rgba(17, 24, 39, 0.18);
+        font-weight: 900;
+        box-shadow: 0 14px 30px rgba(47, 13, 20, 0.24);
     }
 
-    .impact-kpis {
+    .impact-kpis,
+    .impact-quality-grid,
+    .impact-facts,
+    .impact-report-grid {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 16px;
-        padding: 20px;
+    }
+
+    .impact-kpis {
+        padding: 22px;
+        background:
+            radial-gradient(circle at 0% 100%, rgba(183, 58, 69, 0.08), transparent 26%),
+            var(--cream);
+    }
+
+    .impact-kpi,
+    .impact-quality,
+    .impact-person,
+    .impact-opportunity,
+    .impact-report-item {
+        border: 1px solid rgba(234, 216, 202, 0.9);
+        background: rgba(255, 253, 248, 0.84);
+        box-shadow: 0 14px 28px rgba(73, 21, 31, 0.06);
     }
 
     .impact-kpi {
         padding: 22px;
-        border: 1px solid #f3f4f6;
         border-radius: 24px;
-        background: linear-gradient(180deg, #fff 0%, #fafafa 100%);
+    }
+
+    .impact-kpi__head,
+    .impact-quality__head,
+    .impact-section-head,
+    .impact-report__head {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
     }
 
     .impact-kpi__head {
-        display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 14px;
         margin-bottom: 22px;
     }
 
     .impact-kpi__label {
-        color: var(--impact-muted);
+        color: var(--muted);
         font-size: 14px;
-        font-weight: 750;
+        font-weight: 800;
     }
 
     .impact-icon {
         display: inline-flex;
-        width: 44px;
-        height: 44px;
+        width: 46px;
+        height: 46px;
         align-items: center;
         justify-content: center;
-        border-radius: 16px;
+        border-radius: 17px;
         color: #fff;
         font-size: 20px;
-        font-weight: 900;
-        box-shadow: 0 12px 24px rgba(17, 24, 39, 0.16);
+        font-weight: 950;
+        box-shadow: 0 14px 26px rgba(73, 21, 31, 0.18);
     }
 
-    .impact-icon.is-pink,
-    .impact-fill.is-pink {
-        background: linear-gradient(135deg, var(--impact-pink), var(--impact-rose));
+    .impact-icon.is-granat,
+    .impact-fill.is-granat {
+        background: linear-gradient(135deg, var(--granat-900), var(--granat-600));
+    }
+
+    .impact-icon.is-copper,
+    .impact-fill.is-copper {
+        background: linear-gradient(135deg, var(--granat-700), var(--copper));
     }
 
     .impact-icon.is-amber,
     .impact-fill.is-amber {
-        background: linear-gradient(135deg, #fbbf24, var(--impact-amber));
+        background: linear-gradient(135deg, var(--copper), var(--amber));
     }
 
-    .impact-icon.is-violet,
-    .impact-fill.is-violet {
-        background: linear-gradient(135deg, var(--impact-violet), #4f46e5);
+    .impact-icon.is-emerald,
+    .impact-fill.is-emerald {
+        background: linear-gradient(135deg, #185c4b, var(--emerald));
     }
 
-    .impact-icon.is-green,
-    .impact-fill.is-green {
-        background: linear-gradient(135deg, var(--impact-green), var(--impact-cyan));
-    }
-
-    .impact-icon.is-rose,
-    .impact-fill.is-rose {
-        background: linear-gradient(135deg, #fb7185, var(--impact-rose));
-    }
-
-    .impact-icon.is-cyan,
-    .impact-fill.is-cyan {
-        background: linear-gradient(135deg, var(--impact-cyan), #2563eb);
+    .impact-fill.is-muted {
+        background: linear-gradient(135deg, #9a7a70, #c3a391);
     }
 
     .impact-kpi__value {
@@ -252,10 +298,17 @@
         letter-spacing: -0.04em;
     }
 
+    .impact-kpi__note,
+    .impact-copy,
+    .impact-section-head p,
+    .impact-report__head p {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
     .impact-kpi__note {
         margin-top: 10px;
-        color: var(--impact-muted);
-        font-size: 14px;
     }
 
     .impact-grid {
@@ -267,30 +320,36 @@
         grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
     }
 
-    .impact-grid.is-even {
+    .impact-grid.is-even,
+    .impact-list-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .impact-panel {
-        padding: 26px;
+    .impact-panel,
+    .impact-report {
+        padding: 28px;
     }
 
     .impact-panel.is-dark {
-        border-color: #1f2937;
-        color: #fff;
+        border-color: rgba(73, 21, 31, 0.9);
+        color: #fff8ef;
         background:
-            radial-gradient(circle at 100% 0%, rgba(236, 72, 153, 0.25), transparent 28%),
-            linear-gradient(135deg, #111827 0%, #334155 100%);
+            radial-gradient(circle at 100% 0%, rgba(214, 106, 63, 0.32), transparent 30%),
+            linear-gradient(135deg, var(--granat-950) 0%, var(--granat-800) 100%);
     }
 
-    .impact-section-head {
-        display: flex;
-        justify-content: space-between;
-        gap: 20px;
+    .impact-panel.is-dark .impact-copy,
+    .impact-panel.is-dark .impact-section-head p {
+        color: #f1d7c6;
+    }
+
+    .impact-section-head,
+    .impact-report__head {
         margin-bottom: 24px;
     }
 
-    .impact-section-head h2 {
+    .impact-section-head h2,
+    .impact-report__head h2 {
         margin: 0;
         font-size: 24px;
         font-weight: 950;
@@ -298,16 +357,9 @@
     }
 
     .impact-section-head p,
+    .impact-report__head p,
     .impact-copy {
         margin: 7px 0 0;
-        color: var(--impact-muted);
-        font-size: 14px;
-        line-height: 1.6;
-    }
-
-    .impact-panel.is-dark .impact-copy,
-    .impact-panel.is-dark .impact-section-head p {
-        color: #cbd5e1;
     }
 
     .impact-badge {
@@ -316,10 +368,10 @@
         align-self: flex-start;
         padding: 12px 16px;
         border-radius: 18px;
-        background: #ecfdf5;
-        color: #047857;
+        background: #f7eadb;
+        color: var(--granat-800);
         font-size: 12px;
-        font-weight: 850;
+        font-weight: 900;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         white-space: nowrap;
@@ -329,7 +381,6 @@
         margin-left: 8px;
         font-size: 24px;
         line-height: 1;
-        letter-spacing: -0.03em;
     }
 
     .impact-bars {
@@ -342,14 +393,14 @@
         justify-content: space-between;
         gap: 16px;
         margin-bottom: 8px;
-        color: #374151;
+        color: #4b3435;
         font-size: 14px;
-        font-weight: 750;
+        font-weight: 800;
     }
 
     .impact-bar__value {
-        color: #111827;
-        font-weight: 900;
+        color: var(--granat-900);
+        font-weight: 950;
         white-space: nowrap;
     }
 
@@ -357,7 +408,7 @@
         height: 14px;
         overflow: hidden;
         border-radius: 999px;
-        background: #f3f4f6;
+        background: #eadfd4;
     }
 
     .impact-fill {
@@ -366,17 +417,22 @@
         border-radius: inherit;
     }
 
-    .impact-donor-grid {
+    .impact-donor-grid,
+    .impact-list-grid {
         display: grid;
+        gap: 16px;
+    }
+
+    .impact-donor-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
         margin-top: 24px;
     }
 
     .impact-donor-item {
         padding: 18px;
-        border-radius: 20px;
-        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 250, 243, 0.13);
+        border-radius: 22px;
+        background: rgba(255, 250, 243, 0.1);
     }
 
     .impact-donor-item strong {
@@ -389,7 +445,7 @@
     .impact-donor-item span {
         display: block;
         margin-top: 7px;
-        color: #cbd5e1;
+        color: #f1d7c6;
         font-size: 12px;
         line-height: 1.45;
     }
@@ -397,20 +453,30 @@
     .impact-note {
         margin-top: 22px;
         padding: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 20px;
-        background: rgba(255, 255, 255, 0.1);
-        color: #e5e7eb;
+        border: 1px solid rgba(255, 250, 243, 0.14);
+        border-radius: 22px;
+        background: rgba(255, 250, 243, 0.1);
+        color: #f6ddcd;
         font-size: 14px;
         line-height: 1.65;
     }
 
-    .impact-chart {
+    .impact-chart,
+    .impact-mini-chart {
         display: flex;
-        height: 290px;
         align-items: flex-end;
+    }
+
+    .impact-chart {
+        height: 290px;
         gap: 9px;
         padding-top: 16px;
+    }
+
+    .impact-mini-chart {
+        height: 145px;
+        gap: 12px;
+        margin-top: 18px;
     }
 
     .impact-chart__item {
@@ -428,26 +494,31 @@
         height: 235px;
         align-items: flex-end;
         justify-content: center;
-        gap: 3px;
+        gap: 4px;
     }
 
     .impact-chart__bar {
         width: 46%;
         min-height: 5px;
-        border-radius: 10px 10px 0 0;
-        background: linear-gradient(180deg, #f9a8d4 0%, #ec4899 100%);
+        border-radius: 12px 12px 0 0;
+        background: linear-gradient(180deg, #dc8c5e 0%, var(--granat-700) 100%);
     }
 
     .impact-chart__bar.is-approved {
-        background: linear-gradient(180deg, #5eead4 0%, #10b981 100%);
+        background: linear-gradient(180deg, #6bc5a0 0%, var(--emerald) 100%);
+    }
+
+    .impact-mini-chart .impact-chart__bar {
+        width: 100%;
+        background: linear-gradient(180deg, #e1ad69 0%, var(--copper) 100%);
     }
 
     .impact-chart__label {
         width: 100%;
         overflow: hidden;
-        color: #9ca3af;
+        color: #9b867a;
         font-size: 10px;
-        font-weight: 700;
+        font-weight: 800;
         text-align: center;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -457,9 +528,9 @@
         display: flex;
         gap: 18px;
         margin-top: 16px;
-        color: var(--impact-muted);
+        color: var(--muted);
         font-size: 12px;
-        font-weight: 700;
+        font-weight: 800;
     }
 
     .impact-legend span {
@@ -473,11 +544,11 @@
         width: 12px;
         height: 12px;
         border-radius: 999px;
-        background: var(--impact-pink);
+        background: var(--granat-700);
     }
 
-    .impact-dot.is-green {
-        background: var(--impact-green);
+    .impact-dot.is-emerald {
+        background: var(--emerald);
     }
 
     .impact-opportunity-layout {
@@ -494,7 +565,7 @@
         align-items: center;
         justify-content: center;
         border-radius: 999px;
-        box-shadow: inset 0 0 24px rgba(17, 24, 39, 0.14);
+        box-shadow: inset 0 0 26px rgba(73, 21, 31, 0.18);
     }
 
     .impact-donut__inner {
@@ -505,8 +576,8 @@
         align-items: center;
         justify-content: center;
         border-radius: 999px;
-        background: #fff;
-        box-shadow: 0 18px 34px rgba(17, 24, 39, 0.13);
+        background: var(--cream);
+        box-shadow: 0 18px 34px rgba(73, 21, 31, 0.18);
         text-align: center;
     }
 
@@ -516,58 +587,33 @@
         font-weight: 950;
     }
 
-    .impact-donut__inner span {
-        margin-top: 4px;
-        color: #9ca3af;
+    .impact-donut__inner span,
+    .impact-report-item span {
+        color: #9b867a;
         font-size: 11px;
-        font-weight: 800;
+        font-weight: 900;
         letter-spacing: 0.1em;
         text-transform: uppercase;
     }
 
-    .impact-mini-chart {
-        display: flex;
-        height: 145px;
-        align-items: flex-end;
-        gap: 12px;
-        margin-top: 18px;
-    }
-
-    .impact-mini-chart .impact-chart__bar {
-        width: 100%;
-        background: linear-gradient(180deg, #f0abfc 0%, #8b5cf6 100%);
-    }
-
-    .impact-quality-grid,
-    .impact-list-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
+    .impact-donut__inner span {
+        margin-top: 4px;
     }
 
     .impact-quality {
         padding: 20px;
-        border: 1px solid #f3f4f6;
-        border-radius: 22px;
-        background: #f9fafb;
-    }
-
-    .impact-quality__head {
-        display: flex;
-        justify-content: space-between;
-        gap: 18px;
-        margin-bottom: 14px;
+        border-radius: 24px;
     }
 
     .impact-quality h3 {
         margin: 0;
         font-size: 16px;
-        font-weight: 900;
+        font-weight: 950;
     }
 
     .impact-quality p {
         margin: 5px 0 0;
-        color: var(--impact-muted);
+        color: var(--muted);
         font-size: 13px;
         line-height: 1.5;
     }
@@ -586,38 +632,35 @@
     .impact-quality__value span {
         display: block;
         margin-top: 4px;
-        color: var(--impact-muted);
+        color: var(--muted);
         font-size: 11px;
         white-space: nowrap;
     }
 
     .impact-facts {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 12px;
         margin-top: 16px;
     }
 
     .impact-fact {
-        padding: 16px;
-        border-radius: 18px;
-        background: #fdf2f8;
-        color: #9d174d;
+        padding: 17px;
+        border-radius: 20px;
+        background: #f8eadc;
+        color: var(--granat-800);
     }
 
     .impact-fact.is-amber {
-        background: #fffbeb;
-        color: #92400e;
+        background: #fff3d5;
+        color: #8d5c10;
     }
 
-    .impact-fact.is-cyan {
-        background: #ecfeff;
-        color: #155e75;
+    .impact-fact.is-emerald {
+        background: #e6f5ef;
+        color: #166548;
     }
 
-    .impact-fact.is-violet {
-        background: #f5f3ff;
-        color: #5b21b6;
+    .impact-fact.is-copper {
+        background: #fbe4d5;
+        color: #944220;
     }
 
     .impact-fact strong {
@@ -638,9 +681,7 @@
         display: flex;
         gap: 14px;
         padding: 16px;
-        border: 1px solid #f3f4f6;
-        border-radius: 20px;
-        background: #f9fafb;
+        border-radius: 22px;
     }
 
     .impact-avatar {
@@ -650,8 +691,8 @@
         flex: 0 0 auto;
         align-items: center;
         justify-content: center;
-        border-radius: 16px;
-        background: linear-gradient(135deg, #ec4899, #8b5cf6);
+        border-radius: 17px;
+        background: linear-gradient(135deg, var(--granat-900), var(--copper));
         color: #fff;
         font-weight: 950;
     }
@@ -666,15 +707,19 @@
     .impact-opportunity h3 {
         margin: 0;
         font-size: 15px;
-        font-weight: 900;
+        font-weight: 950;
     }
 
     .impact-person p,
     .impact-opportunity p {
+        display: -webkit-box;
+        overflow: hidden;
         margin: 6px 0 0;
-        color: var(--impact-muted);
+        color: var(--muted);
         font-size: 13px;
         line-height: 1.55;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
     }
 
     .impact-tag-row {
@@ -689,90 +734,58 @@
         display: inline-flex;
         padding: 5px 10px;
         border-radius: 999px;
-        background: #fff;
-        color: #4b5563;
+        background: #f8eadc;
+        color: var(--granat-800);
         font-size: 12px;
-        font-weight: 850;
+        font-weight: 900;
     }
 
     .impact-date {
-        color: #9ca3af;
+        color: #9b867a;
         font-size: 12px;
-        font-weight: 750;
+        font-weight: 800;
         white-space: nowrap;
     }
 
     .impact-empty {
         padding: 22px;
-        border: 1px dashed #d1d5db;
-        border-radius: 20px;
-        background: #f9fafb;
-        color: var(--impact-muted);
+        border: 1px dashed #cbb6a8;
+        border-radius: 22px;
+        background: rgba(255, 250, 243, 0.68);
+        color: var(--muted);
         font-size: 14px;
     }
 
     .impact-report {
-        padding: 26px;
         background:
-            radial-gradient(circle at 0% 0%, rgba(236, 72, 153, 0.12), transparent 28%),
-            radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.12), transparent 26%),
-            #fff;
+            radial-gradient(circle at 0% 0%, rgba(183, 58, 69, 0.11), transparent 28%),
+            radial-gradient(circle at 100% 100%, rgba(214, 106, 63, 0.14), transparent 26%),
+            var(--cream);
     }
 
     .impact-report__head {
-        display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 18px;
-        margin-bottom: 20px;
-    }
-
-    .impact-report__head h2 {
-        margin: 0;
-        font-size: 24px;
-        font-weight: 950;
-    }
-
-    .impact-report__head p {
-        margin: 6px 0 0;
-        color: var(--impact-muted);
-        font-size: 14px;
     }
 
     .impact-report__ready {
         padding: 10px 14px;
         border-radius: 999px;
-        background: #fff;
-        color: #be185d;
+        background: var(--granat-800);
+        color: #fff8ef;
         font-size: 11px;
-        font-weight: 900;
+        font-weight: 950;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        box-shadow: 0 10px 22px rgba(236, 72, 153, 0.12);
         white-space: nowrap;
     }
 
     .impact-report-grid {
-        display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 12px;
     }
 
     .impact-report-item {
         padding: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.75);
-        border-radius: 18px;
-        background: rgba(255, 255, 255, 0.86);
-        box-shadow: 0 8px 20px rgba(17, 24, 39, 0.05);
-    }
-
-    .impact-report-item span {
-        display: block;
-        color: #9ca3af;
-        font-size: 11px;
-        font-weight: 850;
-        letter-spacing: 0.09em;
-        text-transform: uppercase;
+        border-radius: 20px;
     }
 
     .impact-report-item strong {
@@ -846,7 +859,6 @@
         }
 
         .impact-hero,
-        .impact-card,
         .impact-panel,
         .impact-report {
             break-inside: avoid;
@@ -909,7 +921,7 @@
                             <span class="impact-bar__value">{{ $formatNumber($row['value']) }} · {{ $row['percent'] }}%</span>
                         </div>
                         <div class="impact-track">
-                            <div class="impact-fill {{ $row['class'] }}" style="width: {{ $row['percent'] }}%"></div>
+                            <div class="impact-fill {{ $row['class'] }}" style="width: {{ $safePercent($row['percent']) }}%"></div>
                         </div>
                     </div>
                 @endforeach
@@ -919,32 +931,32 @@
         <article class="impact-panel is-dark">
             <div class="impact-section-head">
                 <div>
-                    <h2>Донорский срез</h2>
-                    <p>Короткие показатели, которые легко вынести в отчёт или презентацию.</p>
+                    <h2>Что важно для доноров</h2>
+                    <p>Короткая интерпретация данных без технических деталей.</p>
                 </div>
             </div>
 
             <div class="impact-donor-grid">
                 <div class="impact-donor-item">
+                    <strong>{{ $formatNumber($approvedCount) }}</strong>
+                    <span>одобренных участниц уже представлены в экосистеме</span>
+                </div>
+                <div class="impact-donor-item">
                     <strong>{{ $profileCompletionRate }}%</strong>
-                    <span>профилей готовы для анализа потребностей</span>
+                    <span>участниц имеют достаточно данных для видимости и нетворкинга</span>
                 </div>
                 <div class="impact-donor-item">
                     <strong>{{ $aiReadinessRate }}%</strong>
-                    <span>участниц доступны для AI-рекомендаций</span>
+                    <span>профилей готовы к AI-поиску и рекомендациям</span>
                 </div>
                 <div class="impact-donor-item">
-                    <strong>{{ $publicationActivationRate }}%</strong>
-                    <span>участниц уже создавали возможности</span>
-                </div>
-                <div class="impact-donor-item">
-                    <strong>{{ $cabinetActivationRate }}%</strong>
-                    <span>активировали личный кабинет</span>
+                    <strong>{{ $opportunitiesLast30 }}</strong>
+                    <span>новых возможностей опубликовано за последние 30 дней</span>
                 </div>
             </div>
 
             <p class="impact-note">
-                Чем выше полнота профилей и AI-готовность, тем точнее платформа может связывать предпринимательниц с релевантными контактами, событиями и партнёрскими запросами.
+                Платформа уже измеряет не только регистрацию, но и качество профилей, цифровую активность, публикации возможностей и готовность к масштабируемому сопровождению участниц.
             </p>
         </article>
     </section>
@@ -953,16 +965,16 @@
         <article class="impact-panel">
             <div class="impact-section-head">
                 <div>
-                    <h2>Рост за 12 месяцев</h2>
-                    <p>Новые заявки и одобренные участницы по месяцам.</p>
+                    <h2>Динамика участниц</h2>
+                    <p>Заявки и одобрения по месяцам.</p>
                 </div>
             </div>
 
             <div class="impact-chart">
                 @foreach($registrationChart as $month)
                     @php
-                        $applicationHeight = max(8, (int) round($month['applications'] / $maxMemberChart * 220));
-                        $approvedHeight = max(4, (int) round($month['approved'] / $maxMemberChart * 220));
+                        $applicationHeight = max(5, (int) round($month['applications'] / $maxMemberChart * 235));
+                        $approvedHeight = max(5, (int) round($month['approved'] / $maxMemberChart * 235));
                     @endphp
                     <div class="impact-chart__item">
                         <div class="impact-chart__bars">
@@ -976,14 +988,14 @@
 
             <div class="impact-legend">
                 <span><i class="impact-dot"></i> Заявки</span>
-                <span><i class="impact-dot is-green"></i> Одобрено</span>
+                <span><i class="impact-dot is-emerald"></i> Одобрено</span>
             </div>
         </article>
 
         <article class="impact-panel">
             <div class="impact-section-head">
                 <div>
-                    <h2>Возможности и активность</h2>
+                    <h2>Возможности и партнёрства</h2>
                     <p>Что участницы публикуют внутри платформы.</p>
                 </div>
             </div>
@@ -1004,19 +1016,19 @@
                                 <span class="impact-bar__value">{{ $formatNumber($row['count']) }} · {{ $row['percent'] }}%</span>
                             </div>
                             <div class="impact-track">
-                                <div class="impact-fill {{ $row['class'] }}" style="width: {{ $row['percent'] }}%"></div>
+                                <div class="impact-fill {{ $row['class'] }}" style="width: {{ $safePercent($row['percent']) }}%"></div>
                             </div>
                         </div>
                     @endforeach
                 </div>
             </div>
 
-            <h3 class="impact-copy" style="margin-top: 26px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em;">
+            <h3 class="impact-copy" style="margin-top: 26px; font-weight: 950; text-transform: uppercase; letter-spacing: 0.08em;">
                 Публикации за 6 месяцев
             </h3>
             <div class="impact-mini-chart">
                 @foreach($opportunityChart as $month)
-                    @php $height = max(5, (int) round($month['opportunities'] / $maxOpportunityChart * 96)); @endphp
+                    @php($height = max(5, (int) round($month['opportunities'] / $maxOpportunityChart * 130)))
                     <div class="impact-chart__item">
                         <div class="impact-chart__bar" style="height: {{ $height }}px" title="{{ $month['label'] }}: {{ $month['opportunities'] }} публикаций"></div>
                         <div class="impact-chart__label">{{ $month['label'] }}</div>
@@ -1029,8 +1041,8 @@
     <section class="impact-panel">
         <div class="impact-section-head">
             <div>
-                <h2>Качество базы и готовность к масштабированию</h2>
-                <p>Эти показатели показывают не просто размер сообщества, а пригодность данных для matchmaking, программ поддержки и отчётности.</p>
+                <h2>Качество цифровой базы</h2>
+                <p>Метрики, которые показывают готовность платформы к полезным рекомендациям, поиску и donor reporting.</p>
             </div>
         </div>
 
@@ -1048,7 +1060,7 @@
                         </div>
                     </div>
                     <div class="impact-track">
-                        <div class="impact-fill {{ $row['class'] }}" style="width: {{ $row['percent'] }}%"></div>
+                        <div class="impact-fill {{ $row['class'] }}" style="width: {{ $safePercent($row['percent']) }}%"></div>
                     </div>
                 </article>
             @endforeach
@@ -1057,19 +1069,19 @@
         <div class="impact-facts">
             <div class="impact-fact">
                 <strong>{{ $formatNumber($withBusinessDescription) }}</strong>
-                <span>описали бизнес и экспертизу</span>
+                <span>описали бизнес, проект или экспертизу</span>
             </div>
             <div class="impact-fact is-amber">
                 <strong>{{ $formatNumber($withExpectations) }}</strong>
-                <span>сформулировали запрос к платформе</span>
+                <span>указали запросы и форматы сотрудничества</span>
             </div>
-            <div class="impact-fact is-cyan">
+            <div class="impact-fact is-emerald">
                 <strong>{{ $formatNumber($withUsername) }}</strong>
-                <span>имеют Telegram username для связи</span>
+                <span>имеют Telegram-контакт для связи</span>
             </div>
-            <div class="impact-fact is-violet">
+            <div class="impact-fact is-copper">
                 <strong>{{ $formatNumber($withAvatar) }}</strong>
-                <span>добавили аватар для доверия в сети</span>
+                <span>добавили визуальный профиль</span>
             </div>
         </div>
     </section>
@@ -1078,8 +1090,8 @@
         <article class="impact-panel">
             <div class="impact-section-head">
                 <div>
-                    <h2>Последние одобренные участницы</h2>
-                    <p>Срез помогает быстро показать живое наполнение платформы.</p>
+                    <h2>Новые одобренные участницы</h2>
+                    <p>Последние профили, добавленные в сообщество.</p>
                 </div>
             </div>
 
@@ -1092,12 +1104,12 @@
                             <div class="impact-avatar">{{ mb_strtoupper(mb_substr($member->full_name ?? '?', 0, 1)) }}</div>
                             <div class="impact-person__body">
                                 <div class="impact-tag-row">
-                                    <h3>{{ $member->full_name ?? 'Без имени' }}</h3>
+                                    <h3>{{ $member->full_name ?: 'Без имени' }}</h3>
                                     @if($member->telegram_username)
                                         <span class="impact-tag">@{{ $member->telegram_username }}</span>
                                     @endif
                                 </div>
-                                <p>{{ $member->description ? \Illuminate\Support\Str::limit($member->description, 120) : 'Описание пока не заполнено.' }}</p>
+                                <p>{{ $member->description ?: 'Описание профиля пока не заполнено.' }}</p>
                             </div>
                             <span class="impact-date">{{ $member->approved_at?->format('d.m.Y') }}</span>
                         </article>
@@ -1110,7 +1122,7 @@
             <div class="impact-section-head">
                 <div>
                     <h2>Последние возможности</h2>
-                    <p>Показывает, как участницы используют платформу для практических связей.</p>
+                    <p>Свежие публикации, которые показывают практическую активность сообщества.</p>
                 </div>
             </div>
 
@@ -1119,7 +1131,7 @@
             @else
                 <div class="impact-bars">
                     @foreach($latestOpportunities as $opportunity)
-                        @php $type = $typeMeta[$opportunity->type] ?? ['label' => $opportunity->type, 'icon' => '📌']; @endphp
+                        @php($type = $typeMeta[$opportunity->type] ?? ['label' => $opportunity->type, 'icon' => '📌'])
                         <article class="impact-opportunity">
                             <div class="impact-opportunity__body">
                                 <div class="impact-tag-row">
@@ -1127,7 +1139,7 @@
                                     <span class="impact-date">{{ $opportunity->created_at?->format('d.m.Y') }}</span>
                                 </div>
                                 <h3>{{ $opportunity->title }}</h3>
-                                <p>Автор: {{ $opportunity->author?->full_name ?? 'участница платформы' }}</p>
+                                <p>{{ $opportunity->author?->full_name ? 'Опубликовала: ' . $opportunity->author->full_name : 'Автор не указан' }}</p>
                             </div>
                         </article>
                     @endforeach
@@ -1139,28 +1151,17 @@
     <section class="impact-report">
         <div class="impact-report__head">
             <div>
-                <h2>Сводка для отчёта</h2>
-                <p>Все значения рассчитываются из текущей базы данных платформы.</p>
+                <h2>Краткий donor snapshot</h2>
+                <p>Блок можно использовать для быстрой демонстрации прогресса платформы.</p>
             </div>
             <span class="impact-report__ready">готово к печати</span>
         </div>
 
         <div class="impact-report-grid">
-            @foreach([
-                ['Всего заявок на участие', $formatNumber($totalApplications)],
-                ['Одобренных участниц', $formatNumber($approvedCount)],
-                ['Заявок на модерации', $formatNumber($pendingCount)],
-                ['Полных бизнес-профилей', $formatNumber($completeProfiles) . ' (' . $profileCompletionRate . '%)'],
-                ['AI-готовых профилей', $formatNumber($withEmbedding) . ' (' . $aiReadinessRate . '%)'],
-                ['Активных пользователей кабинета', $formatNumber($activeCabinetUsers) . ' (' . $cabinetActivationRate . '%)'],
-                ['Опубликованных возможностей', $formatNumber($opportunitiesTotal)],
-                ['Публикаций за 30 дней', $formatNumber($opportunitiesLast30)],
-                ['Запрошенных входов в кабинет', $formatNumber($loginTokensIssued) . ' всего / ' . $formatNumber($loginTokensIssuedLast30) . ' за 30 дней'],
-                ['Успешных входов в кабинет', $formatNumber($loginTokensUsed)],
-            ] as [$label, $value])
+            @foreach($reportItems as $item)
                 <article class="impact-report-item">
-                    <span>{{ $label }}</span>
-                    <strong>{{ $value }}</strong>
+                    <span>{{ $item['label'] }}</span>
+                    <strong>{{ $item['value'] }}</strong>
                 </article>
             @endforeach
         </div>

@@ -1,3 +1,6 @@
+@if(($landingTheme ?? 'classic') === 'platform')
+    @include('landing-platform')
+@else
 <!DOCTYPE html>
 <html lang="ru" class="scroll-smooth">
 <head>
@@ -1333,3 +1336,4 @@
 </script>
 </body>
 </html>
+@endif

@@ -13,9 +13,10 @@ class SiteSetting extends Model
     public const LANDING_THEME_KEY = 'landing_theme';
 
     public const LANDING_THEMES = [
-        'classic' => 'Классическая зелёная',
-        'warm'    => 'Тёплая гранатовая',
-        'dark'    => 'Премиальная тёмная',
+        'classic'  => 'Классическая зелёная',
+        'warm'     => 'Тёплая гранатовая',
+        'dark'     => 'Премиальная тёмная',
+        'platform' => 'Новый дизайн из docs',
     ];
 
     protected $fillable = [
