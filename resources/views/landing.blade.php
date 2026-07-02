@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Women Entrepreneurs Platform of the Two Banks</title>
+    <title>Women Entrepreneurs Platform</title>
     <meta name="description" content="A digital ecosystem for women entrepreneurs from both banks, combining learning, networking, business visibility, mentoring, opportunities, AI-supported recommendations and Telegram-based communication.">
     <meta property="og:title" content="A digital space where women's businesses connect, learn and grow">
     <meta property="og:description" content="Join a long-term platform for women entrepreneurs, women-led MSMEs, mentors, experts and partner organisations.">
@@ -167,6 +167,131 @@
             background: linear-gradient(135deg, rgba(255,255,255,.18), transparent 42%, rgba(18,60,58,.18));
             pointer-events: none;
         }
+
+        /* Admin-controlled landing themes */
+        body.theme-warm {
+            background: #fff7ed;
+            color: #2f1f1a;
+        }
+        body.theme-warm .grad-text {
+            background: linear-gradient(135deg, #9a3412 0%, #c2410c 52%, #f97316 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        body.theme-warm .grad-bg,
+        body.theme-warm .grad-dark {
+            background: linear-gradient(135deg, #7c2d12 0%, #9a3412 52%, #ea580c 100%) !important;
+        }
+        body.theme-warm .grad-accent {
+            background: linear-gradient(135deg, #be123c 0%, #f97316 100%) !important;
+        }
+        body.theme-warm .grad-mint {
+            background: linear-gradient(160deg, #ffedd5 0%, #fff7ed 100%) !important;
+        }
+        body.theme-warm #navbar {
+            background: rgba(255,247,237,.76);
+        }
+        body.theme-warm #navbar.scrolled {
+            background: rgba(255,247,237,.97);
+            box-shadow: 0 1px 0 rgba(154,52,18,.12);
+        }
+        body.theme-warm .glass {
+            background: rgba(255,255,255,.82);
+            border-color: rgba(154,52,18,.12);
+            box-shadow: 0 18px 52px rgba(154,52,18,.12);
+        }
+        body.theme-warm .text-brand-600,
+        body.theme-warm .hover\:text-brand-600:hover {
+            color: #9a3412 !important;
+        }
+        body.theme-warm .text-accent-500 {
+            color: #e11d48 !important;
+        }
+        body.theme-warm .bg-mint-100,
+        body.theme-warm .bg-mint-50,
+        body.theme-warm .bg-brand-50 {
+            background-color: #ffedd5 !important;
+        }
+        body.theme-warm .border-mint-100,
+        body.theme-warm .border-brand-100,
+        body.theme-warm .border-brand-200 {
+            border-color: #fed7aa !important;
+        }
+        body.theme-warm .dot-pattern {
+            background-image: radial-gradient(rgba(154,52,18,.08) 1.5px, transparent 1.5px);
+        }
+
+        body.theme-dark {
+            background: #020617;
+            color: #e5e7eb;
+        }
+        body.theme-dark .bg-soft,
+        body.theme-dark .bg-white {
+            background-color: #020617 !important;
+        }
+        body.theme-dark .text-ink,
+        body.theme-dark .heading {
+            color: #f8fafc !important;
+        }
+        body.theme-dark .text-gray-500 {
+            color: #cbd5e1 !important;
+        }
+        body.theme-dark .text-gray-400 {
+            color: #94a3b8 !important;
+        }
+        body.theme-dark .grad-text {
+            background: linear-gradient(135deg, #f8fafc 0%, #93c5fd 48%, #f9a8d4 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        body.theme-dark .grad-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 52%, #334155 100%) !important;
+        }
+        body.theme-dark .grad-dark {
+            background: linear-gradient(160deg, #020617 0%, #111827 100%) !important;
+        }
+        body.theme-dark .grad-accent {
+            background: linear-gradient(135deg, #db2777 0%, #7c3aed 100%) !important;
+        }
+        body.theme-dark .grad-mint {
+            background: linear-gradient(160deg, #111827 0%, #1e293b 100%) !important;
+        }
+        body.theme-dark #navbar {
+            background: rgba(2,6,23,.72);
+            border-bottom: 1px solid rgba(148,163,184,.12);
+        }
+        body.theme-dark #navbar.scrolled {
+            background: rgba(2,6,23,.96);
+            box-shadow: 0 1px 0 rgba(148,163,184,.12);
+        }
+        body.theme-dark .glass,
+        body.theme-dark .glass-dark {
+            background: rgba(15,23,42,.78);
+            border-color: rgba(148,163,184,.16);
+            box-shadow: 0 18px 52px rgba(0,0,0,.26);
+        }
+        body.theme-dark .border-mint-100,
+        body.theme-dark .border-brand-100,
+        body.theme-dark .border-brand-200,
+        body.theme-dark .border-gray-100,
+        body.theme-dark .border-gray-200 {
+            border-color: rgba(148,163,184,.16) !important;
+        }
+        body.theme-dark .bg-mint-100,
+        body.theme-dark .bg-mint-50,
+        body.theme-dark .bg-brand-50,
+        body.theme-dark .bg-accent-50,
+        body.theme-dark .bg-warm-50 {
+            background-color: rgba(30,41,59,.9) !important;
+        }
+        body.theme-dark .text-brand-600,
+        body.theme-dark .hover\:text-brand-600:hover {
+            color: #5eead4 !important;
+        }
+        body.theme-dark .text-accent-500 {
+            color: #f9a8d4 !important;
+        }
+        body.theme-dark .dot-pattern {
+            background-image: radial-gradient(rgba(148,163,184,.10) 1.5px, transparent 1.5px);
+        }
     </style>
     <script>
         (function() {
@@ -177,7 +302,7 @@
         })();
     </script>
 </head>
-<body class="antialiased">
+<body class="antialiased theme-{{ $landingTheme ?? 'classic' }}">
 
 {{-- ===== NAVBAR ===== --}}
 <nav id="navbar" class="fixed top-0 inset-x-0 z-50 px-4">
@@ -186,7 +311,7 @@
             <span class="w-8 h-8 rounded-xl grad-bg flex items-center justify-center shadow-md">
                 <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             </span>
-            <span class="font-semibold text-ink tracking-tight text-sm hidden sm:inline">Women Entrepreneurs Platform of the Two Banks</span>
+            <span class="font-semibold text-ink tracking-tight text-sm hidden sm:inline">Women Entrepreneurs Platform</span>
         </a>
         <div class="flex items-center gap-5">
             <div class="hidden lg:flex items-center gap-5 text-sm text-gray-500">
@@ -290,7 +415,7 @@
         <div>
             <div class="hero-in hero-in-1 inline-flex items-center gap-2 bg-mint-100 border border-mint-200 text-brand-600 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6 tracking-wide">
                 <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>
-                Women Entrepreneurs Platform of the Two Banks
+                Women Entrepreneurs Platform
             </div>
 
             <h1 class="heading text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.04] tracking-tight mb-5 hero-in hero-in-2">
@@ -1137,7 +1262,7 @@
             <span class="w-7 h-7 rounded-lg grad-bg flex items-center justify-center">
                 <svg class="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             </span>
-            <span class="text-xs text-gray-400">&copy; {{ date('Y') }} Women Entrepreneurs Platform of the Two Banks</span>
+            <span class="text-xs text-gray-400">&copy; {{ date('Y') }} Women Entrepreneurs Platform</span>
         </div>
         <p class="text-xs text-gray-400" data-lang="ru">Цифровая экосистема для обучения, нетворкинга, менторства и роста бизнеса.</p>
         <p class="text-xs text-gray-400" data-lang="en">A digital ecosystem for learning, networking, mentoring and business growth.</p>

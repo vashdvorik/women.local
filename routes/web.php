@@ -5,12 +5,24 @@ use App\Http\Controllers\Account\OpportunityController;
 use App\Http\Controllers\Account\TmaAuthController;
 use App\Http\Middleware\RequireAccountAuth;
 use App\Models\LoginToken;
+use App\Models\SiteSetting;
 use Illuminate\Support\Facades\Route;
 use SergiX44\Nutgram\Nutgram;
 
 Route::get('/', function () {
-    return view('landing');
+    return view('landing', [
+        'landingTheme' => SiteSetting::landingTheme(),
+    ]);
 });
+
+Route::get('/language/{locale}', function (string $locale) {
+    abort_unless(in_array($locale, ['ru', 'en', 'ro'], true), 404);
+
+    session(['locale' => $locale]);
+    cookie()->queue(cookie('locale', $locale, 60 * 24 * 365));
+
+    return back();
+})->name('language.switch');
 
 // Telegram Webhook — POST запрос от серверов Telegram
 Route::post('/telegram/webhook', function (Nutgram $bot) {
@@ -27,7 +39,7 @@ Route::get('/go/{code}', function (string $code) {
     $token = LoginToken::where('token', 'like', $code . '%')->first();
 
     if (! $token || ! $token->isValid()) {
-        return redirect()->route('account.login')->with('error', 'Ссылка недействительна или истекла.');
+        return redirect()->route('account.login')->with('error', __('account.messages.short_link_invalid'));
     }
 
     return redirect()->route('account.auth', ['token' => $token->token]);
@@ -51,4 +63,3 @@ Route::middleware(RequireAccountAuth::class)
         Route::resource('opportunities', OpportunityController::class)->only(['index', 'create', 'store', 'destroy']);
         Route::post('/logout', [AccountController::class, 'logout'])->name('logout');
     });
-

@@ -25,7 +25,7 @@ class RequireAccountAuth
             session()->forget('_account_expires');
 
             return redirect()->route('account.login')
-                ->with('error', 'Сессия истекла. Войдите снова через Telegram.');
+                ->with('error', __('account.messages.session_expired'));
         }
 
         $user = BotUser::where('telegram_id', $telegramId)
@@ -37,7 +37,7 @@ class RequireAccountAuth
             session()->forget('_account_expires');
 
             return redirect()->route('account.login')
-                ->with('error', 'Доступ закрыт. Убедитесь, что ваша заявка на участие одобрена.');
+                ->with('error', __('account.messages.access_closed'));
         }
 
         view()->share('accountUser', $user);

@@ -28,8 +28,8 @@ class AccountController extends Controller
         $request->validate([
             'username' => ['required', 'string', 'regex:/^[a-zA-Z0-9_]{3,32}$/'],
         ], [
-            'username.required' => 'Введите Telegram username.',
-            'username.regex'    => 'Username должен содержать только буквы, цифры и _. Без @.',
+            'username.required' => __('account.validation.username_required'),
+            'username.regex'    => __('account.validation.username_regex'),
         ]);
 
         $username = ltrim($request->input('username'), '@');
@@ -48,10 +48,10 @@ class AccountController extends Controller
 
         Http::post('https://api.telegram.org/bot' . config('nutgram.token') . '/sendMessage', [
             'chat_id'      => $user->telegram_id,
-            'text'         => "Здравствуйте, {$firstName}! Нажмите кнопку ниже, чтобы войти в личный кабинет Women Entrepreneurs Platform of the Two Banks.\n\n⏱ Ссылка действует 24 часа.",
+            'text'         => __('account.telegram_messages.login_link', ['name' => $firstName]),
             'reply_markup' => json_encode([
                 'inline_keyboard' => [[
-                    ['text' => '🔐 Войти в кабинет →', 'url' => $url],
+                    ['text' => __('account.telegram_messages.login_button'), 'url' => $url],
                 ]],
             ]),
         ]);
@@ -65,14 +65,14 @@ class AccountController extends Controller
 
         if ($token === '') {
             return redirect()->route('account.login')
-                ->with('error', 'Ссылка недействительна.');
+                ->with('error', __('account.messages.invalid_link'));
         }
 
         $loginToken = LoginToken::where('token', $token)->first();
 
         if (! $loginToken || ! $loginToken->isValid()) {
             return redirect()->route('account.login')
-                ->with('error', 'Ссылка истекла. Запросите новую через @WomenComBot командой /login.');
+                ->with('error', __('account.messages.expired_link'));
         }
 
         $user = BotUser::where('telegram_id', $loginToken->telegram_id)
@@ -81,7 +81,7 @@ class AccountController extends Controller
 
         if (! $user) {
             return redirect()->route('account.login')
-                ->with('error', 'Доступ закрыт. Ваша заявка ещё не одобрена или была отозвана.');
+                ->with('error', __('account.messages.access_closed'));
         }
 
         $request->session()->regenerate();
@@ -115,7 +115,7 @@ class AccountController extends Controller
         ComputeUserEmbedding::dispatch($user);
 
         return redirect()->route('account.profile')
-            ->with('success', 'Профиль обновлён. Другие участницы смогут лучше понять ваш бизнес и запросы.');
+            ->with('success', __('account.messages.profile_updated'));
     }
 
     public function matches(MatchingService $matcher): View
@@ -183,11 +183,11 @@ class AccountController extends Controller
 
         Http::post('https://api.telegram.org/bot' . config('nutgram.token') . '/sendMessage', [
             'chat_id'      => $user->telegram_id,
-            'text'         => "✅ Ваш профиль удалён.\n\nЕсли вы захотите снова присоединиться к Women Entrepreneurs Platform of the Two Banks, откройте @WomenComBot и отправьте /start.",
+            'text'         => __('account.telegram_messages.profile_deleted'),
             'reply_markup' => json_encode([
                 'remove_keyboard' => true,
                 'inline_keyboard' => [[
-                    ['text' => '↩️ Подать заявку снова', 'callback_data' => 'restart'],
+                    ['text' => __('account.telegram_messages.restart_button'), 'callback_data' => 'restart'],
                 ]],
             ]),
         ]);
@@ -200,7 +200,7 @@ class AccountController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('account.login')
-            ->with('success', 'Ваш профиль удалён.');
+            ->with('success', __('account.messages.profile_deleted'));
     }
 
     public function logout(Request $request): RedirectResponse

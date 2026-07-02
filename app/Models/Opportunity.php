@@ -31,10 +31,10 @@ class Opportunity extends Model
     public function typeLabel(): string
     {
         return match ($this->type) {
-            'project' => 'Запрос',
-            'meeting' => 'Партнёрство',
-            'event'   => 'Событие',
-            default   => $this->type,
+            'project' => __('account.types.project'),
+            'meeting' => __('account.types.meeting'),
+            'event' => __('account.types.event'),
+            default => $this->type,
         };
     }
 
@@ -43,8 +43,8 @@ class Opportunity extends Model
         return match ($this->type) {
             'project' => '💼',
             'meeting' => '🤝',
-            'event'   => '📅',
-            default   => '📌',
+            'event' => '📅',
+            default => '📌',
         };
     }
 }

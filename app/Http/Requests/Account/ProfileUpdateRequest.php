@@ -25,10 +25,10 @@ class ProfileUpdateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'full_name.required' => 'Введите имя и фамилию.',
-            'full_name.max'      => 'Имя не должно быть длиннее 120 символов.',
-            'description.max'    => 'Описание бизнеса не должно быть длиннее 1000 символов.',
-            'expectation.max'    => 'Запросы и предложения не должны быть длиннее 1000 символов.',
+            'full_name.required' => __('account.validation.full_name_required'),
+            'full_name.max'      => __('account.validation.full_name_max'),
+            'description.max'    => __('account.validation.description_max'),
+            'expectation.max'    => __('account.validation.expectation_max'),
         ];
     }
 }

@@ -41,7 +41,7 @@ class OpportunityController extends Controller
         NotifyOpportunity::dispatch($opportunity);
 
         return redirect()->route('account.opportunities.index')
-            ->with('success', 'Публикация добавлена. Участницы получат уведомление в Telegram.');
+            ->with('success', __('account.messages.opportunity_created'));
     }
 
     public function destroy(Opportunity $opportunity): RedirectResponse
@@ -54,6 +54,6 @@ class OpportunityController extends Controller
         $opportunity->delete();
 
         return redirect()->route('account.opportunities.index')
-            ->with('success', 'Публикация удалена.');
+            ->with('success', __('account.messages.opportunity_deleted'));
     }
 }
