@@ -1,5 +1,7 @@
 @if(($landingTheme ?? 'classic') === 'platform')
     @include('landing-platform')
+@elseif(($landingTheme ?? 'classic') === 'miro')
+    @include('landing-miro')
 @else
 <!DOCTYPE html>
 <html lang="ru" class="scroll-smooth">

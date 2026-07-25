@@ -1,3 +1,6 @@
+@php
+    $accountTheme = \App\Models\SiteSetting::accountTheme();
+@endphp
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
@@ -10,9 +13,67 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>body { font-family: "Inter", sans-serif; }</style>
+    <style>
+        body { font-family: "Inter", sans-serif; }
+
+        body.account-theme-warm { background: #fff7ed; }
+        body.account-theme-warm .bg-violet-100 { background-color: #ffedd5 !important; }
+        body.account-theme-warm .text-violet-700,
+        body.account-theme-warm .hover\\:text-violet-700:hover { color: #c2410c !important; }
+        body.account-theme-warm [style*="#7c3aed"] {
+            background-color: #c2410c !important;
+            background-image: linear-gradient(135deg, #c2410c, #9a3412) !important;
+        }
+
+        body.account-theme-dark { background: #020617; color: #e5e7eb; }
+        body.account-theme-dark .bg-gray-50 { background-color: #020617 !important; }
+        body.account-theme-dark .bg-white { background-color: #111827 !important; border-color: #334155 !important; }
+        body.account-theme-dark .text-gray-900 { color: #f8fafc !important; }
+        body.account-theme-dark .text-gray-700,
+        body.account-theme-dark .text-gray-600,
+        body.account-theme-dark .text-gray-500 { color: #cbd5e1 !important; }
+        body.account-theme-dark .bg-violet-100 { background-color: #1e293b !important; }
+        body.account-theme-dark .text-violet-700 { color: #c4b5fd !important; }
+        body.account-theme-dark [style*="#7c3aed"] {
+            background-color: #8b5cf6 !important;
+            background-image: linear-gradient(135deg, #8b5cf6, #4f46e5) !important;
+        }
+
+        body.account-theme-miro {
+            background: #fafbfc !important;
+            color: #1c1c1e !important;
+            font-family: "Roobert PRO", "Noto Sans", Inter, system-ui, sans-serif !important;
+        }
+
+        body.account-theme-miro .bg-white { background-color: #fff !important; }
+        body.account-theme-miro .bg-gray-50 { background-color: #fafbfc !important; }
+        body.account-theme-miro .bg-violet-100 { background-color: #fff4c4 !important; }
+        body.account-theme-miro .text-violet-700 { color: #1c1c1e !important; }
+        body.account-theme-miro .text-gray-900 { color: #050038 !important; }
+        body.account-theme-miro .text-gray-700,
+        body.account-theme-miro .text-gray-600,
+        body.account-theme-miro .text-gray-500 { color: #555a6a !important; }
+        body.account-theme-miro .text-gray-400 { color: #6b6f7e !important; }
+        body.account-theme-miro .border-gray-100,
+        body.account-theme-miro .border-gray-200 { border-color: #eef0f3 !important; }
+        body.account-theme-miro [style*="#7c3aed"] {
+            background-color: #ffd02f !important;
+            background-image: none !important;
+            box-shadow: none !important;
+        }
+        body.account-theme-miro [style*="#7c3aed"] svg { color: #1c1c1e !important; }
+        body.account-theme-miro #tg-login-btn {
+            background: #1c1c1e !important;
+            color: #fff !important;
+            box-shadow: none !important;
+        }
+        body.account-theme-miro #tma-loading .border-4 {
+            border-color: rgba(66, 98, 255, .2) !important;
+            border-top-color: #4262ff !important;
+        }
+    </style>
 </head>
-<body class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+<body class="min-h-screen flex items-center justify-center bg-gray-50 px-4 account-theme-{{ $accountTheme }}">
     <div class="fixed right-4 top-4 flex rounded-full border border-gray-200 bg-white p-1 shadow-sm">
         @foreach(['ru' => 'RU', 'en' => 'EN', 'ro' => 'RO'] as $locale => $label)
             <a href="{{ route('language.switch', $locale) }}"

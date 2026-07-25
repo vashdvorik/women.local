@@ -12,11 +12,27 @@ class SiteSetting extends Model
 {
     public const LANDING_THEME_KEY = 'landing_theme';
 
+    public const ACCOUNT_THEME_KEY = 'account_theme';
+
     public const LANDING_THEMES = [
+        'miro'     => 'Miro',
         'classic'  => 'Классическая зелёная',
         'warm'     => 'Тёплая гранатовая',
         'dark'     => 'Премиальная тёмная',
         'platform' => 'Новый дизайн из docs',
+    ];
+
+    /**
+     * Themes for the authenticated participant cabinet.
+     *
+     * These are intentionally a separate catalogue from the public landing
+     * themes: changing the landing template must not change the cabinet UI.
+     */
+    public const ACCOUNT_THEMES = [
+        'miro'    => 'Miro',
+        'classic' => 'Классическая фиолетовая',
+        'warm'    => 'Тёплая янтарная',
+        'dark'    => 'Тёмная графитовая',
     ];
 
     protected $fillable = [
@@ -55,5 +71,34 @@ class SiteSetting extends Model
         );
 
         Cache::forget(self::LANDING_THEME_KEY);
+    }
+
+    public static function accountTheme(): string
+    {
+        return Cache::rememberForever(self::ACCOUNT_THEME_KEY, function (): string {
+            if (! Schema::hasTable('site_settings')) {
+                return 'classic';
+            }
+
+            $setting = self::where('key', self::ACCOUNT_THEME_KEY)->first();
+            $value   = $setting?->value ?? [];
+            $theme   = is_array($value) ? ($value['theme'] ?? 'classic') : 'classic';
+
+            return array_key_exists($theme, self::ACCOUNT_THEMES) ? $theme : 'classic';
+        });
+    }
+
+    public static function setAccountTheme(string $theme): void
+    {
+        if (! array_key_exists($theme, self::ACCOUNT_THEMES)) {
+            $theme = 'classic';
+        }
+
+        self::updateOrCreate(
+            ['key' => self::ACCOUNT_THEME_KEY],
+            ['value' => ['theme' => $theme]]
+        );
+
+        Cache::forget(self::ACCOUNT_THEME_KEY);
     }
 }

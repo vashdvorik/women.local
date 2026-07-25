@@ -168,6 +168,21 @@
         background: #ccfbf1;
     }
 
+    .theme-preview.is-miro {
+        background: radial-gradient(circle at 80% 18%, rgba(255, 208, 47, .48), transparent 34%), #fff;
+    }
+
+    .theme-preview.is-miro .theme-preview__logo,
+    .theme-preview.is-miro .theme-preview__button,
+    .theme-preview.is-miro .theme-preview__line.is-lg {
+        background: #1c1c1e;
+    }
+
+    .theme-preview.is-miro .theme-preview__line,
+    .theme-preview.is-miro .theme-preview__photo {
+        background: #ffd02f;
+    }
+
     .theme-card__body {
         padding: 18px;
     }
@@ -235,6 +250,7 @@
 
 @php
     $descriptions = [
+        'miro' => 'Miro: чёрные pill-кнопки, канареечный жёлтый и пастельные карточки.',
         'classic' => 'Спокойная зелёная тема: базовый вариант для деловой и институциональной подачи.',
         'warm' => 'Тёплая гранатово-песочная тема: мягче, ярче и эмоциональнее.',
         'dark' => 'Контрастная тёмная тема: премиальная подача для презентаций и донорских показов.',

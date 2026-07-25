@@ -1,3 +1,6 @@
+@php
+    $accountTheme = $accountTheme ?? 'classic';
+@endphp
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" class="h-full">
 <head>
@@ -18,19 +21,249 @@
         body { font-family: 'Inter', sans-serif; }
         :focus-visible { outline: 2px solid #7c3aed; outline-offset: 2px; border-radius: 6px; }
         @media (max-width: 1023px) { [x-cloak] { display: none !important; } }
+
+        /* The cabinet theme is independent from the public landing theme. */
+        body.account-theme-warm {
+            background: #fff7ed !important;
+            color: #2f1f1a;
+        }
+
+        body.account-theme-warm .bg-brand-50,
+        body.account-theme-warm .bg-violet-100 {
+            background-color: #ffedd5 !important;
+        }
+
+        body.account-theme-warm .bg-brand-600,
+        body.account-theme-warm .bg-violet-700,
+        body.account-theme-warm [style*="#7c3aed"] {
+            background-color: #c2410c !important;
+            background-image: linear-gradient(135deg, #c2410c, #9a3412) !important;
+        }
+
+        body.account-theme-warm .text-brand-600,
+        body.account-theme-warm .text-brand-700,
+        body.account-theme-warm .text-violet-700,
+        body.account-theme-warm .hover\\:text-brand-600:hover,
+        body.account-theme-warm .hover\\:text-violet-700:hover {
+            color: #c2410c !important;
+        }
+
+        body.account-theme-dark {
+            background: #020617 !important;
+            color: #e5e7eb;
+        }
+
+        body.account-theme-dark .bg-white,
+        body.account-theme-dark [class*="bg-white"] {
+            background-color: #111827 !important;
+            border-color: #334155 !important;
+        }
+
+        body.account-theme-dark .bg-gray-50,
+        body.account-theme-dark [class*="bg-[#f7f8fa]"] {
+            background-color: #020617 !important;
+        }
+
+        body.account-theme-dark [class*="text-[#0f172a]"],
+        body.account-theme-dark .text-slate-950,
+        body.account-theme-dark .text-slate-900 {
+            color: #f8fafc !important;
+        }
+
+        body.account-theme-dark .text-slate-700,
+        body.account-theme-dark .text-slate-600,
+        body.account-theme-dark .text-gray-500 {
+            color: #cbd5e1 !important;
+        }
+
+        body.account-theme-dark .border-gray-100,
+        body.account-theme-dark .border-gray-200,
+        body.account-theme-dark .border-slate-200,
+        body.account-theme-dark .border-slate-300 {
+            border-color: #334155 !important;
+        }
+
+        body.account-theme-dark .bg-brand-50,
+        body.account-theme-dark .bg-violet-100,
+        body.account-theme-dark .bg-teal-50 {
+            background-color: #1e293b !important;
+        }
+
+        body.account-theme-dark .bg-brand-600,
+        body.account-theme-dark .bg-violet-700,
+        body.account-theme-dark [style*="#7c3aed"] {
+            background-color: #8b5cf6 !important;
+            background-image: linear-gradient(135deg, #8b5cf6, #4f46e5) !important;
+        }
+
+        body.account-theme-dark .text-brand-600,
+        body.account-theme-dark .text-brand-700,
+        body.account-theme-dark .text-violet-700,
+        body.account-theme-dark .text-teal-700,
+        body.account-theme-dark .text-teal-800 {
+            color: #c4b5fd !important;
+        }
+
+        /* Miro cabinet theme: white canvas, black actions and pastel working surfaces. */
+        body.account-theme-miro {
+            --miro-primary: #1c1c1e;
+            --miro-yellow: #ffd02f;
+            --miro-yellow-light: #fff4c4;
+            --miro-blue: #4262ff;
+            --miro-teal: #c3faf5;
+            --miro-teal-deep: #187574;
+            --miro-coral: #ffc6c6;
+            --miro-rose: #ffd8f4;
+            --miro-orange: #ffe6cd;
+            --miro-canvas: #fafbfc;
+            --miro-hairline: #eef0f3;
+            background: var(--miro-canvas) !important;
+            color: var(--miro-primary) !important;
+            font-family: "Roobert PRO", "Noto Sans", Inter, system-ui, sans-serif !important;
+        }
+
+        body.account-theme-miro .account-sidebar,
+        body.account-theme-miro .account-mobile-header {
+            background: #fff !important;
+            border-color: var(--miro-hairline) !important;
+            box-shadow: none !important;
+        }
+
+        body.account-theme-miro .account-brand-mark {
+            background: var(--miro-yellow) !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            color: var(--miro-primary) !important;
+        }
+
+        body.account-theme-miro .account-brand-mark svg { color: var(--miro-primary) !important; }
+
+        body.account-theme-miro .account-user-card {
+            border: 1px solid #f1d46c;
+            background: var(--miro-yellow-light) !important;
+        }
+
+        body.account-theme-miro .account-user-card [style*="#7c3aed"] {
+            background: var(--miro-teal) !important;
+            background-image: none !important;
+            box-shadow: none !important;
+            color: var(--miro-teal-deep) !important;
+        }
+
+        body.account-theme-miro .account-language-switcher {
+            border-color: var(--miro-hairline) !important;
+            background: #fafbfc !important;
+        }
+
+        body.account-theme-miro .account-language-switcher .bg-brand-600,
+        body.account-theme-miro .account-language-switcher .bg-violet-700 {
+            background: var(--miro-primary) !important;
+            background-image: none !important;
+            color: #fff !important;
+        }
+
+        body.account-theme-miro .account-main { background: var(--miro-canvas) !important; }
+
+        body.account-theme-miro .bg-white { background-color: #fff !important; }
+        body.account-theme-miro .bg-gray-50,
+        body.account-theme-miro [class~="bg-[#f7f8fa]"],
+        body.account-theme-miro [class~="bg-slate-50"] { background-color: #fafbfc !important; }
+        body.account-theme-miro [class~="bg-slate-100"] { background-color: #eef0f3 !important; }
+        body.account-theme-miro [class~="bg-brand-50"],
+        body.account-theme-miro [class~="bg-violet-100"],
+        body.account-theme-miro [class~="bg-amber-50"] { background-color: var(--miro-yellow-light) !important; }
+        body.account-theme-miro [class~="bg-teal-50"] { background-color: var(--miro-teal) !important; }
+        body.account-theme-miro [class~="bg-orange-100"] { background-color: var(--miro-orange) !important; }
+
+        body.account-theme-miro [class~="bg-brand-600"],
+        body.account-theme-miro [class~="bg-violet-700"],
+        body.account-theme-miro [class~="bg-slate-950"] {
+            background-color: var(--miro-primary) !important;
+            background-image: none !important;
+            color: #fff !important;
+        }
+
+        body.account-theme-miro [class~="bg-orange-600"],
+        body.account-theme-miro [class~="bg-amber-500"] {
+            background-color: var(--miro-yellow) !important;
+            background-image: none !important;
+            color: var(--miro-primary) !important;
+            box-shadow: none !important;
+        }
+
+        body.account-theme-miro [class~="bg-teal-700"] {
+            background-color: var(--miro-teal) !important;
+            color: var(--miro-teal-deep) !important;
+        }
+
+        body.account-theme-miro [class*="hover:bg-teal-800"]:hover,
+        body.account-theme-miro [class*="hover:bg-orange-700"]:hover,
+        body.account-theme-miro [class*="hover:bg-brand-700"]:hover {
+            background-color: var(--miro-charcoal, #2c2c34) !important;
+            color: #fff !important;
+        }
+
+        body.account-theme-miro [class*="text-[#0f172a]"],
+        body.account-theme-miro [class~="text-slate-950"],
+        body.account-theme-miro [class~="text-slate-900"],
+        body.account-theme-miro [class~="text-slate-800"],
+        body.account-theme-miro [class~="text-gray-900"] { color: #050038 !important; }
+
+        body.account-theme-miro [class~="text-slate-700"],
+        body.account-theme-miro [class~="text-slate-600"],
+        body.account-theme-miro [class~="text-gray-700"],
+        body.account-theme-miro [class~="text-gray-600"],
+        body.account-theme-miro [class~="text-gray-500"] { color: #555a6a !important; }
+
+        body.account-theme-miro [class~="text-gray-400"],
+        body.account-theme-miro [class~="text-slate-500"] { color: #6b6f7e !important; }
+        body.account-theme-miro [class~="text-brand-600"] { color: var(--miro-blue) !important; }
+        body.account-theme-miro [class~="text-brand-700"] { color: var(--miro-primary) !important; }
+        body.account-theme-miro [class~="text-teal-700"],
+        body.account-theme-miro [class~="text-teal-800"],
+        body.account-theme-miro [class~="text-teal-900\/80"],
+        body.account-theme-miro [class~="text-teal-950"] { color: var(--miro-teal-deep) !important; }
+        body.account-theme-miro [class~="text-orange-700"],
+        body.account-theme-miro [class~="text-orange-800"],
+        body.account-theme-miro [class~="text-amber-700"],
+        body.account-theme-miro [class~="text-amber-900"] { color: #746019 !important; }
+
+        body.account-theme-miro [class~="border-gray-100"],
+        body.account-theme-miro [class~="border-gray-200"],
+        body.account-theme-miro [class~="border-slate-200"],
+        body.account-theme-miro [class~="border-slate-300"] { border-color: var(--miro-hairline) !important; }
+
+        body.account-theme-miro [class*="rounded-[2rem]"] { border-radius: 28px !important; }
+        body.account-theme-miro [class*="shadow-sm"],
+        body.account-theme-miro [class*="shadow-xl"] { box-shadow: 0 12px 32px rgba(5, 0, 56, .06) !important; }
+
+        body.account-theme-miro input,
+        body.account-theme-miro textarea,
+        body.account-theme-miro select {
+            border-color: #c7cad5 !important;
+            background: #fff !important;
+            color: var(--miro-primary) !important;
+        }
+
+        body.account-theme-miro input:focus,
+        body.account-theme-miro textarea:focus,
+        body.account-theme-miro select:focus {
+            border-color: var(--miro-blue) !important;
+            box-shadow: 0 0 0 4px rgba(66, 98, 255, .12) !important;
+        }
     </style>
     @stack('head')
 </head>
-<body class="h-full bg-[#f7f8fa] text-[#0f172a] antialiased" x-data="{ sidebarOpen: false }">
+<body class="h-full bg-[#f7f8fa] text-[#0f172a] antialiased account-theme-{{ $accountTheme }}" x-data="{ sidebarOpen: false }">
     <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 z-20 bg-black/50 backdrop-blur-sm lg:hidden" @click="sidebarOpen = false"></div>
 
     <div class="flex h-full">
         <aside x-cloak :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-               class="fixed inset-y-0 left-0 z-30 flex w-64 shrink-0 flex-col bg-white transition-transform duration-200 ease-out lg:static lg:translate-x-0 lg:z-auto"
+               class="account-sidebar fixed inset-y-0 left-0 z-30 flex w-64 shrink-0 flex-col bg-white transition-transform duration-200 ease-out lg:static lg:translate-x-0 lg:z-auto"
                style="box-shadow: 1px 0 0 rgba(0,0,0,.06), 4px 0 24px rgba(0,0,0,.03)">
 
             <div class="flex shrink-0 items-center gap-3 px-5 pb-5 pt-6">
-                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);box-shadow:0 4px 12px rgba(124,58,237,.3)">
+                <span class="account-brand-mark flex h-9 w-9 shrink-0 items-center justify-center rounded-xl" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);box-shadow:0 4px 12px rgba(124,58,237,.3)">
                     <svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                 </span>
                 <div class="min-w-0 leading-none">
@@ -39,7 +272,7 @@
                 </div>
             </div>
 
-            <div class="mx-3 mb-4 shrink-0 rounded-2xl p-4" style="background:linear-gradient(135deg,#f5f3ff,#ede9fe)">
+            <div class="account-user-card mx-3 mb-4 shrink-0 rounded-2xl p-4" style="background:linear-gradient(135deg,#f5f3ff,#ede9fe)">
                 <div class="flex items-center gap-3">
                     @if($accountUser->avatar_path)
                         <img src="{{ Storage::url($accountUser->avatar_path) }}" alt="{{ $accountUser->full_name }}" class="h-10 w-10 shrink-0 rounded-full object-cover">
@@ -57,7 +290,7 @@
                 </div>
             </div>
 
-            <div class="mx-3 mb-4 flex rounded-full border border-gray-200 bg-gray-50 p-1">
+            <div class="account-language-switcher mx-3 mb-4 flex rounded-full border border-gray-200 bg-gray-50 p-1">
                 @foreach(['ru' => 'RU', 'en' => 'EN', 'ro' => 'RO'] as $locale => $label)
                     <a href="{{ route('language.switch', $locale) }}"
                        class="flex-1 rounded-full px-2 py-1 text-center text-xs font-semibold transition {{ app()->getLocale() === $locale ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-500 hover:text-brand-600' }}">
@@ -102,14 +335,14 @@
         </aside>
 
         <div class="flex min-w-0 flex-1 flex-col">
-            <header class="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-3 border-b border-gray-100 bg-white px-4 lg:hidden">
+            <header class="account-mobile-header sticky top-0 z-10 flex h-14 shrink-0 items-center gap-3 border-b border-gray-100 bg-white px-4 lg:hidden">
                 <button @click="sidebarOpen = true" class="flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 transition" aria-label="{{ __('account.open_menu') }}">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
                 <span class="text-sm font-semibold text-[#0f172a]">@yield('title', __('account.cabinet'))</span>
             </header>
 
-            <main class="flex-1 overflow-y-auto px-6 py-8 lg:px-10">
+            <main class="account-main flex-1 overflow-y-auto px-6 py-8 lg:px-10">
                 @foreach(['success' => 'emerald', 'error' => 'red'] as $key => $color)
                     @if(session($key))
                         <div class="mb-6 rounded-xl border border-{{ $color }}-200 bg-{{ $color }}-50 px-4 py-3 text-sm text-{{ $color }}-800">{{ session($key) }}</div>
