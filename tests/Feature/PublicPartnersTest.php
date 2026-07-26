@@ -12,7 +12,9 @@ class PublicPartnersTest extends TestCase
 
         $response->assertOk()
             ->assertSee('miro-partners-page', false)
-            ->assertSee('Platform partners')
+            ->assertSee('Platform coordinators')
+            ->assertSee('International partners')
+            ->assertDontSee('Growth is easier with strong partners by your side')
             ->assertSee('Agency for Innovation and Development')
             ->assertSee('UN Women')
             ->assertSee('https://innovation.md/', false)

@@ -1,24 +1,24 @@
 ---
 version: alpha
 name: Miro-design-analysis
-description: Miro presents itself as the AI-powered visual workspace through a confident, almost playful brand voice — anchored by its signature canary yellow ({colors.brand-yellow}) wordmark over white canvas, broken open by colorful pastel feature tints (rose, teal, coral, orange, mint) that echo the actual sticky-note color palette used on the live whiteboard. Black-pill primary buttons dominate marketing, real Miro-board mockups serve as feature illustrations, and a 4-tier pricing grid leads into a dense comparison table. Roobert PRO carries display headlines; the system supports homepage, pricing, AI Workflows product page, agile vertical, and customer stories surfaces.
+description: Miro presents itself as the AI-powered visual workspace through a confident, almost playful brand voice — anchored by a soft pastel palette of pink, coral and teal over a white canvas, with cream used only as a rare supporting tint. Black-pill primary buttons dominate marketing, real Miro-board mockups serve as feature illustrations, and a 4-tier pricing grid leads into a dense comparison table. Roobert PRO carries display headlines; the system supports homepage, pricing, AI Workflows product page, agile vertical, and customer stories surfaces.
 
 colors:
   primary: "#1c1c1e"
   on-primary: "#ffffff"
-  brand-yellow: "#ffd02f"
-  brand-yellow-deep: "#fcb900"
-  yellow-light: "#fff4c4"
-  yellow-dark: "#746019"
+  brand-pink: "#ffd8f4"
+  brand-coral: "#ffc6c6"
+  cream-accent: "#fff4c4"
+  accent-ink: "#050038"
   brand-blue: "#4262ff"
   blue-450: "#5b76fe"
   blue-pressed: "#2a41b6"
-  brand-coral: "#ff9999"
+  coral-strong: "#ff9999"
   coral-light: "#ffc6c6"
   coral-dark: "#600000"
   brand-rose: "#ffd8f4"
   rose-light: "#fde0f0"
-  brand-pink: "#fde0f0"
+  pink-light: "#fde0f0"
   brand-teal: "#0fbcb0"
   teal-light: "#c3faf5"
   moss-dark: "#187574"
@@ -29,7 +29,7 @@ colors:
   canvas: "#ffffff"
   surface: "#f7f8fa"
   surface-soft: "#fafbfc"
-  surface-yellow: "#fff8e0"
+  surface-cream: "#fff8e0"
   surface-pricing-featured: "#f5f3ff"
   hairline: "#e0e2e8"
   hairline-soft: "#eef0f3"
@@ -181,8 +181,8 @@ components:
   button-primary-disabled:
     backgroundColor: "{colors.hairline}"
     textColor: "{colors.muted}"
-  button-yellow:
-    backgroundColor: "{colors.brand-yellow}"
+  button-pink:
+    backgroundColor: "{colors.brand-pink}"
     textColor: "{colors.primary}"
     typography: "{typography.button-md}"
     rounded: "{rounded.full}"
@@ -234,7 +234,7 @@ components:
     padding: "{spacing.xxl}"
     border: "1px solid {colors.hairline-soft}"
   card-feature-yellow:
-    backgroundColor: "{colors.brand-yellow}"
+    backgroundColor: "{colors.brand-pink}"
     textColor: "{colors.primary}"
     rounded: "{rounded.xxxl}"
     padding: "{spacing.xxl}"
@@ -323,14 +323,14 @@ components:
     rounded: "{rounded.full}"
     padding: "4px"
   badge-promo:
-    backgroundColor: "{colors.brand-yellow}"
+    backgroundColor: "{colors.brand-pink}"
     textColor: "{colors.primary}"
     typography: "{typography.caption-bold}"
     rounded: "{rounded.full}"
     padding: "4px 10px"
   badge-tag-yellow:
-    backgroundColor: "{colors.surface-yellow}"
-    textColor: "{colors.yellow-dark}"
+    backgroundColor: "{colors.surface-cream}"
+    textColor: "{colors.accent-ink}"
     typography: "{typography.caption-bold}"
     rounded: "{rounded.full}"
     padding: "4px 10px"
@@ -353,7 +353,7 @@ components:
     rounded: "{rounded.full}"
     padding: "4px 10px"
   badge-discount:
-    backgroundColor: "{colors.brand-yellow}"
+    backgroundColor: "{colors.brand-pink}"
     textColor: "{colors.primary}"
     typography: "{typography.caption-bold}"
     rounded: "{rounded.sm}"
@@ -438,12 +438,12 @@ components:
 
 ## Overview
 
-Miro positions itself as the AI-powered visual workspace through a confident, slightly playful brand voice. The homepage opens with a stark white canvas anchored by a small canary-yellow Miro wordmark in the top-left, a black-pill primary CTA "Get started free" and a secondary "Book a demo" outline pill — then dramatic real-Miro-board mockup imagery (sticky notes, kanban, mind maps) carries the visual weight. Across deeper surfaces, the system breaks open: pastel feature cards (rose, teal, coral, yellow) echo the actual sticky-note color palette of the live whiteboard product, and customer story cards reuse those tints to differentiate brand vignettes.
+Miro positions itself as the AI-powered visual workspace through a confident, slightly playful brand voice. The homepage opens with a stark white canvas anchored by a soft pink visual signature in the top-left, a black-pill primary CTA "Get started free" and a secondary "Book a demo" outline pill — then dramatic real-Miro-board mockup imagery (sticky notes, kanban, mind maps) carries the visual weight. Across deeper surfaces, the system breaks open: pastel feature cards (pink, teal, coral, cream) echo the actual sticky-note color palette of the live whiteboard product, and customer story cards reuse those tints to differentiate brand vignettes.
 
-Roobert PRO — Miro's custom display face — anchors every typographic surface, from the 80px hero display down to 11px micro labels. The face's slightly rounded, geometric character pairs naturally with the playful product photography and the friendly product positioning. Black-pill primary buttons (`{rounded.full}`) dominate marketing CTAs; the brand color, signature canary yellow ({colors.brand-yellow}), is reserved for the wordmark, top promo banners, and "yellow tag" feature pills — never as a primary CTA. The 4-tier pricing comparison (Free / Starter / Business / Enterprise) leads into the densest surface in the system: a feature comparison table that runs ~80 rows deep across multiple section dividers.
+Roobert PRO — Miro's custom display face — anchors every typographic surface, from the 80px hero display down to 11px micro labels. The face's slightly rounded, geometric character pairs naturally with the playful product photography and the friendly product positioning. Black-pill primary buttons (`{rounded.full}`) dominate marketing CTAs; the pastel pink/coral/teal palette is used for brand accents, feature surfaces and tags, while cream remains a rare supporting tint — never a replacement for the primary CTA. The 4-tier pricing comparison (Free / Starter / Business / Enterprise) leads into the densest surface in the system: a feature comparison table that runs ~80 rows deep across multiple section dividers.
 
 **Key Characteristics:**
-- Stark white canvas + Miro wordmark in canary yellow ({colors.brand-yellow}) as the recognizable opening signature
+- Stark white canvas + soft pink brand signature ({colors.brand-pink}) as the recognizable opening signature
 - Black-pill primary CTAs ({colors.primary} + `{rounded.full}`) as the dominant interactive element
 - Pastel feature cards (yellow, rose, coral, teal, mint) that echo the actual sticky-note palette
 - Roobert PRO across every UI surface; geometric, slightly rounded character
@@ -456,10 +456,10 @@ Roobert PRO — Miro's custom display face — anchors every typographic surface
 > Source pages: miro.com/ (homepage), /pricing/ (4-tier comparison), /products/ai-workflows/ (AI product), /agile/ (vertical landing), /customers/ (story directory). Token coverage was identical across all five pages.
 
 ### Brand & Accent
-- **Miro Yellow** ({colors.brand-yellow}): The brand's recognizable canary yellow — wordmark color, top promo banner, "yellow tag" pills
-- **Yellow Deep** ({colors.brand-yellow-deep}): Darker variant for hover states and emphasis
-- **Yellow Light** ({colors.yellow-light}): Pale yellow background tint for tag chips
-- **Yellow Dark** ({colors.yellow-dark}): Yellow-tag text color (dark olive) for chip foreground
+- **Brand Pink** ({colors.brand-pink}): Primary pastel accent for brand surfaces, pills and feature cards
+- **Brand Coral** ({colors.brand-coral}): Warm supporting accent for hover states and emphasis
+- **Cream Accent** ({colors.cream-accent}): Rare pale cream tint for small supporting tags and highlights
+- **Accent Ink** ({colors.accent-ink}): Deep foreground color for accent tags
 - **Brand Blue** ({colors.brand-blue}): Action blue for inline links and featured-pricing-tier border
 - **Blue Pressed** ({colors.blue-pressed}): Pressed-state blue
 - **Brand Coral** ({colors.brand-coral}): Coral accent for warm callouts
@@ -469,14 +469,14 @@ Roobert PRO — Miro's custom display face — anchors every typographic surface
 - **Brand Teal** ({colors.brand-teal}): Brand teal
 - **Teal Light** ({colors.teal-light}): Pale teal for feature card backgrounds
 - **Moss Dark** ({colors.moss-dark}): Deep teal-green text color
-- **Brand Pink** ({colors.brand-pink}): Pale pink for soft callouts
+- **Pink Light** ({colors.pink-light}): Lighter pink for soft callouts
 - **Brand Orange Light** ({colors.brand-orange-light}): Soft orange for feature card backgrounds
 
 ### Surface
 - **Canvas White** ({colors.canvas}): Page background and primary card surface
 - **Surface** ({colors.surface}): Subtle section backgrounds, search-pill rest
 - **Surface Soft** ({colors.surface-soft}): Quieter section divisions
-- **Surface Yellow** ({colors.surface-yellow}): Pale yellow-tinted surface for tag chip
+- **Surface Cream** ({colors.surface-cream}): Pale cream-tinted surface for rare tag chips
 - **Surface Pricing Featured** ({colors.surface-pricing-featured}): Pale lavender for featured pricing tier
 - **Hairline** ({colors.hairline}): 1px borders and primary dividers
 - **Hairline Soft** ({colors.hairline-soft}): Quieter table-row dividers
@@ -599,8 +599,8 @@ The system runs predominantly flat with strategic depth on hero mockups.
 - Pressed state `button-primary-pressed` lifts to `{colors.charcoal}`.
 - Disabled state `button-primary-disabled` uses `{colors.hairline}` background and `{colors.muted}` text.
 
-**`button-yellow`** — Brand-yellow pill for moments of brand emphasis.
-- Background `{colors.brand-yellow}`, text `{colors.primary}`, typography `{typography.button-md}`, padding `12px 24px`, rounded `{rounded.full}`.
+**`button-pink`** — Brand-pink pill for moments of brand emphasis.
+- Background `{colors.brand-pink}`, text `{colors.primary}`, typography `{typography.button-md}`, padding `12px 24px`, rounded `{rounded.full}`.
 
 **`button-blue`** — Brand-blue pill for inline action callouts.
 - Background `{colors.brand-blue}`, text `{colors.on-primary}`, typography `{typography.button-md}`, padding `12px 24px`, rounded `{rounded.full}`.
@@ -629,7 +629,7 @@ The system runs predominantly flat with strategic depth on hero mockups.
 - Background `{colors.canvas}`, rounded `{rounded.xxxl}`, padding `{spacing.xxl}`, border `1px solid {colors.hairline-soft}`.
 
 **`card-feature-yellow`** — Pastel-yellow feature card.
-- Background `{colors.brand-yellow}`, text `{colors.primary}`, rounded `{rounded.xxxl}`, padding `{spacing.xxl}`.
+- Background `{colors.brand-pink}`, text `{colors.primary}`, rounded `{rounded.xxxl}`, padding `{spacing.xxl}`.
 
 **`card-feature-coral`** — Pastel-coral feature card variant.
 - Background `{colors.coral-light}`, text `{colors.primary}`, rounded `{rounded.xxxl}`, padding `{spacing.xxl}`.
@@ -681,10 +681,10 @@ The system runs predominantly flat with strategic depth on hero mockups.
 ### Badges & Status
 
 **`badge-promo`** — Yellow promo banner badge.
-- Background `{colors.brand-yellow}`, text `{colors.primary}`, typography `{typography.caption-bold}`, rounded `{rounded.full}`, padding `4px 10px`.
+- Background `{colors.brand-pink}`, text `{colors.primary}`, typography `{typography.caption-bold}`, rounded `{rounded.full}`, padding `4px 10px`.
 
 **`badge-tag-yellow`** — Soft-yellow feature tag chip ("Yellow" tag on AI Workflows page).
-- Background `{colors.surface-yellow}`, text `{colors.yellow-dark}`, typography `{typography.caption-bold}`, rounded `{rounded.full}`, padding `4px 10px`.
+- Background `{colors.surface-cream}`, text `{colors.accent-ink}`, typography `{typography.caption-bold}`, rounded `{rounded.full}`, padding `4px 10px`.
 
 **`badge-tag-purple`** — Lavender feature tag chip ("AI agent" tag).
 - Background `{colors.surface-pricing-featured}`, text `{colors.brand-blue}`, typography `{typography.caption-bold}`, rounded `{rounded.full}`, padding `4px 10px`.
@@ -696,7 +696,7 @@ The system runs predominantly flat with strategic depth on hero mockups.
 - Background `{colors.success-accent}`, text `{colors.on-primary}`, typography `{typography.caption-bold}`, rounded `{rounded.full}`, padding `4px 10px`.
 
 **`badge-discount`** — Yellow rectangular discount pill ("Save 15%").
-- Background `{colors.brand-yellow}`, text `{colors.primary}`, typography `{typography.caption-bold}`, rounded `{rounded.sm}`, padding `2px 6px`.
+- Background `{colors.brand-pink}`, text `{colors.primary}`, typography `{typography.caption-bold}`, rounded `{rounded.sm}`, padding `2px 6px`.
 
 **`promo-banner`** — Sticky black promo strip ABOVE the top nav.
 - Background `{colors.primary}`, text `{colors.on-primary}`, typography `{typography.body-sm-medium}`, padding `{spacing.sm} {spacing.md}`. Carries inline yellow "GET YOUR SPOT" pill.
@@ -759,7 +759,7 @@ The system runs predominantly flat with strategic depth on hero mockups.
 ## Do's and Don'ts
 
 ### Do
-- Reserve `{colors.brand-yellow}` for the wordmark, top promo banner, and "yellow tag" chips
+- Use `{colors.brand-pink}`, `{colors.brand-coral}` and `{colors.brand-teal}` as the main accent palette; reserve `{colors.cream-accent}` for rare supporting tags
 - Use `{colors.primary}` (black) as the dominant CTA on all surfaces
 - Pair pastel feature cards (yellow, rose, coral, teal) with white feature cards in the same viewport
 - Apply `{rounded.full}` to every button, every pill tab, every status badge
@@ -768,7 +768,7 @@ The system runs predominantly flat with strategic depth on hero mockups.
 - Maintain Roobert PRO across every UI surface
 
 ### Don't
-- Don't use `{colors.brand-yellow}` on standard CTAs or large background surfaces
+- Keep the black primary CTA treatment; use pastel accents for supporting surfaces and secondary actions
 - Don't introduce additional accent colors beyond yellow + brand pastels
 - Don't soften corners on buttons; the pill is a brand signature
 - Don't reduce hero leading below 1.05
@@ -813,7 +813,7 @@ The system runs predominantly flat with strategic depth on hero mockups.
 3. Run `npx @google/design.md lint DESIGN.md` after edits
 4. Add new variants as separate `components:` entries
 5. Default to `{typography.body-md}` for body and `{typography.subtitle}` for emphasis
-6. Keep `{colors.brand-yellow}` confined to wordmark, promo banner, and yellow-tag chips
+6. Keep the pink/coral/teal palette consistent and use cream only as a rare supporting tint
 7. Pill-shaped buttons (`{rounded.full}`) always
 8. When showing the product, use a real Miro-board mockup with sticky-note color tints
 

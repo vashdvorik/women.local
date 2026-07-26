@@ -120,7 +120,7 @@
 
     .account-theme-preview.is-miro { background: #fafbfc; }
     .account-theme-preview.is-miro .account-theme-preview__sidebar { background: #1c1c1e; }
-    .account-theme-preview.is-miro .account-theme-preview__header { background: #ffd02f; }
+    .account-theme-preview.is-miro .account-theme-preview__header { background: #ffd8f4; }
     .account-theme-preview.is-miro .account-theme-preview__card { background: #fff; border: 1px solid #eef0f3; }
     .account-theme-preview.is-miro .account-theme-preview__line { background: #c3faf5; }
 

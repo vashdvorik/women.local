@@ -3,49 +3,52 @@
 @section('title', __('account.matches.title'))
 
 @section('content')
-    <div class="mb-8">
-        <p class="text-sm font-semibold uppercase tracking-[0.24em] text-teal-700">{{ __('account.nav.matches') }}</p>
-        <h1 class="mt-2 text-3xl font-black text-slate-950">{{ __('account.matches.title') }}</h1>
-        <p class="mt-2 max-w-2xl text-slate-600">{{ __('account.matches.subtitle') }}</p>
+    <div class="miro-page">
+        <header class="miro-page-header">
+            <div class="miro-page-header__copy">
+                <p class="miro-eyebrow">{{ __('account.nav.matches') }}</p>
+                <h1 class="miro-page-title">{{ __('account.matches.title') }}</h1>
+                <p class="miro-page-description">{{ __('account.matches.subtitle') }}</p>
+            </div>
+            <span class="miro-icon-tile miro-icon-tile--teal hidden sm:inline-grid">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/></svg>
+            </span>
+        </header>
     </div>
 
     @if($matches->isEmpty())
-        <div class="rounded-[2rem] border border-dashed border-slate-300 bg-white p-10 text-center shadow-sm">
-            <h2 class="text-xl font-bold text-slate-950">{{ __('account.matches.empty_title') }}</h2>
-            <p class="mt-2 text-slate-600">{{ __('account.matches.empty_text') }}</p>
+        <div class="miro-page">
+            <div class="miro-empty">
+                <span class="miro-empty__mark"><svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3v18m9-9H3"/></svg></span>
+                <h2>{{ __('account.matches.empty_title') }}</h2>
+                <p>{{ __('account.matches.empty_text') }}</p>
+                <a href="{{ route('account.profile.edit') }}" class="miro-button miro-button--dark mt-6">{{ __('account.profile.edit') }}</a>
+            </div>
         </div>
     @else
-        <div class="space-y-4">
+        <div class="miro-page space-y-4">
             @foreach($matches as $match)
                 @php($person = $match['user'])
-                <article class="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
-                    <div class="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-                        <div class="flex gap-4">
-                            <div class="h-16 w-16 shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br from-teal-100 to-orange-100">
+                <article class="miro-card p-5 sm:p-6">
+                    <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                        <div class="flex min-w-0 gap-4">
+                            <div class="miro-directory-card__avatar shrink-0">
                                 @if($person->avatar_path)
-                                    <img src="{{ Storage::url($person->avatar_path) }}" alt="{{ $person->full_name }}" class="h-full w-full object-cover">
+                                    <img src="{{ Storage::url($person->avatar_path) }}" alt="{{ $person->full_name }}">
                                 @else
-                                    <div class="flex h-full w-full items-center justify-center text-xl font-black text-teal-800">
-                                        {{ mb_substr($person->full_name ?: $person->telegram_username, 0, 1) }}
-                                    </div>
+                                    <div class="miro-directory-card__avatar-placeholder">{{ mb_strtoupper(mb_substr($person->full_name ?: $person->telegram_username ?: '?', 0, 1)) }}</div>
                                 @endif
                             </div>
-                            <div>
-                                <h2 class="text-lg font-black text-slate-950">{{ $person->full_name ?: __('account.not_specified') }}</h2>
-                                @if($person->telegram_username)
-                                    <p class="mt-1 text-sm text-slate-500">@{{ $person->telegram_username }}</p>
-                                @endif
-                                <p class="mt-3 line-clamp-2 text-sm leading-6 text-slate-600">{{ $person->description ?: $person->expectation ?: __('account.not_filled') }}</p>
+                            <div class="min-w-0">
+                                <p class="miro-eyebrow mb-2">{{ __('account.matches.score') }} · {{ max(0, min(100, round((float) $match['score'] * 100))) }}%</p>
+                                <h2 class="truncate text-xl font-medium tracking-tight text-[#050038]">{{ $person->full_name ?: __('account.not_specified') }}</h2>
+                                @if($person->telegram_username)<p class="mt-1 text-sm text-[#6b6f7e]">@{{ $person->telegram_username }}</p>@endif
+                                <p class="mt-3 line-clamp-2 text-sm leading-6 text-[#555a6a]">{{ $person->description ?: $person->expectation ?: __('account.not_filled') }}</p>
                             </div>
                         </div>
-
-                        <div class="flex shrink-0 flex-row items-center gap-3 sm:flex-col sm:items-end">
-                            <span class="rounded-full bg-teal-50 px-4 py-2 text-sm font-black text-teal-800">
-                                {{ max(0, min(100, round((float) $match['score'] * 100))) }}% {{ __('account.matches.score') }}
-                            </span>
-                            <a href="{{ route('account.people.show', $person) }}" class="rounded-full bg-slate-950 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-teal-800">
-                                {{ __('account.people.open') }}
-                            </a>
+                        <div class="miro-actions shrink-0">
+                            <span class="rounded-full bg-[#c3faf5] px-4 py-2 text-xs font-medium text-[#187574]">{{ __('account.matches.score') }} {{ max(0, min(100, round((float) $match['score'] * 100))) }}%</span>
+                            <a href="{{ route('account.people.show', $person) }}" class="miro-button miro-button--dark">{{ __('account.people.open') }}</a>
                         </div>
                     </div>
                 </article>

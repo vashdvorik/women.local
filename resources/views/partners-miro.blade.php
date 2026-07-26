@@ -4,7 +4,7 @@
     $communityUrl = config('nutgram.community_url', $botUrl);
     $partnerGroups = [
         [
-            'tone' => 'yellow',
+            'tone' => 'pink',
             'title' => ['ru' => 'Координаторы платформы', 'en' => 'Platform coordinators', 'ro' => 'Coordonatorii platformei'],
             'description' => ['ru' => 'Организации, которые помогают развивать платформу и объединять женское предпринимательское сообщество.', 'en' => 'Organisations helping to develop the platform and bring the women’s business community together.', 'ro' => 'Organizații care contribuie la dezvoltarea platformei și la reunirea comunității femeilor antreprenoare.'],
             'partners' => [
@@ -25,7 +25,7 @@
             ],
         ],
         [
-            'tone' => 'rose',
+            'tone' => 'coral',
             'title' => ['ru' => 'Международные партнёры', 'en' => 'International partners', 'ro' => 'Parteneri internaționali'],
             'description' => ['ru' => 'Международные организации, поддерживающие развитие, устойчивость и расширение возможностей сообщества.', 'en' => 'International organisations supporting the community’s development, resilience and opportunities.', 'ro' => 'Organizații internaționale care susțin dezvoltarea, reziliența și oportunitățile comunității.'],
             'partners' => [
@@ -49,7 +49,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --miro-primary:#1c1c1e; --miro-yellow:#ffd02f; --miro-yellow-light:#fff4c4; --miro-blue:#4262ff; --miro-coral:#ffc6c6; --miro-rose:#ffd8f4; --miro-teal:#c3faf5; --miro-orange:#ffe6cd; --miro-surface:#f7f8fa; --miro-surface-soft:#fafbfc; --miro-hairline:#e0e2e8; --miro-hairline-soft:#eef0f3; --miro-hairline-strong:#c7cad5; --miro-ink-deep:#050038; --miro-ink:#1c1c1e; --miro-charcoal:#2c2c34; --miro-slate:#555a6a; --miro-steel:#6b6f7e; --miro-muted:#a5a8b5; --miro-shadow:rgba(5,0,56,.08) 0 12px 32px -4px; --miro-font:"Roobert PRO","Noto Sans",-apple-system,BlinkMacSystemFont,sans-serif; }
+        :root { --miro-primary:#1c1c1e; --miro-pink:#ffd8f4; --miro-cream:#fff4c4; --miro-blue:#4262ff; --miro-coral:#ffc6c6; --miro-rose:#ffd8f4; --miro-teal:#c3faf5; --miro-orange:#ffe6cd; --miro-surface:#f7f8fa; --miro-surface-soft:#fafbfc; --miro-hairline:#e0e2e8; --miro-hairline-soft:#eef0f3; --miro-hairline-strong:#c7cad5; --miro-ink-deep:#050038; --miro-ink:#1c1c1e; --miro-charcoal:#2c2c34; --miro-slate:#555a6a; --miro-steel:#6b6f7e; --miro-muted:#a5a8b5; --miro-shadow:rgba(5,0,56,.08) 0 12px 32px -4px; --miro-font:"Roobert PRO","Noto Sans",-apple-system,BlinkMacSystemFont,sans-serif; }
         * { box-sizing:border-box; }
         html { overflow-x:hidden; }
         body { margin:0; background:#fff; color:var(--miro-ink); font-family:var(--miro-font); font-size:16px; line-height:1.5; }
@@ -62,7 +62,7 @@
         .miro-nav { position:sticky; top:0; z-index:30; min-height:68px; border-bottom:1px solid var(--miro-hairline-soft); background:rgba(255,255,255,.94); backdrop-filter:blur(16px); }
         .miro-nav__inner { min-height:68px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
         .miro-brand { display:inline-flex; align-items:center; gap:10px; white-space:nowrap; font-size:16px; font-weight:600; letter-spacing:-.02em; }
-        .miro-brand__mark { width:28px; height:28px; display:grid; place-items:center; border-radius:6px; background:var(--miro-yellow); color:var(--miro-primary); font-size:13px; font-weight:600; }
+        .miro-brand__mark { width:28px; height:28px; display:grid; place-items:center; border-radius:6px; background:var(--miro-pink); color:var(--miro-primary); font-size:13px; font-weight:600; }
         .miro-brand__logo { width:176px; height:52px; object-fit:contain; }
         .miro-nav__links { display:flex; align-items:center; gap:28px; color:var(--miro-slate); font-size:14px; }
         .miro-nav__links a { transition:color .18s ease; }
@@ -82,7 +82,7 @@
         .miro-button--secondary:hover { border-color:var(--miro-primary); }
         .miro-button--small { min-height:40px; padding:10px 18px; }
         .miro-partners-page { background:linear-gradient(180deg,#fff 0%,#fafbfc 50%,#fff 100%); }
-        .miro-partners-hero { position:relative; overflow:hidden; padding:96px 0 84px; background:var(--miro-yellow-light); }
+        .miro-partners-hero { position:relative; overflow:hidden; padding:96px 0 84px; background:var(--miro-pink); }
         .miro-partners-hero::before, .miro-partners-hero::after { content:""; position:absolute; border:1px solid rgba(66,98,255,.24); border-radius:50%; }
         .miro-partners-hero::before { width:360px; height:360px; top:-190px; right:10%; }
         .miro-partners-hero::after { width:190px; height:190px; bottom:-120px; left:5%; border-color:rgba(28,28,30,.16); }
@@ -101,9 +101,10 @@
         .miro-partners-group__heading p { max-width:680px; margin:14px 0 0; color:var(--miro-slate); font-size:16px; }
         .miro-partners-group__count { flex:0 0 auto; padding:10px 14px; border-radius:9999px; background:var(--miro-surface); color:var(--miro-steel); font-size:13px; }
         .miro-partners-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
-        .miro-partner-card { min-height:250px; display:flex; flex-direction:column; justify-content:space-between; padding:22px; border-radius:24px; background:var(--miro-yellow); transition:transform .18s ease,box-shadow .18s ease; }
+        .miro-partner-card { min-height:250px; display:flex; flex-direction:column; justify-content:space-between; padding:22px; border-radius:24px; background:var(--miro-pink); transition:transform .18s ease,box-shadow .18s ease; }
         .miro-partner-card:hover { transform:translateY(-3px); box-shadow:var(--miro-shadow); }
         .miro-partner-card--teal { background:var(--miro-teal); }
+        .miro-partner-card--coral { background:var(--miro-coral); }
         .miro-partner-card--rose { background:var(--miro-rose); }
         .miro-partner-card__logo { min-height:145px; display:grid; place-items:center; padding:20px; border-radius:16px; background:rgba(255,255,255,.68); }
         .miro-partner-card__logo img { width:min(100%,220px); height:100px; object-fit:contain; }
@@ -132,7 +133,6 @@
     @include('partials.miro-header', ['miroCurrentPage' => 'partners'])
 
     <main class="miro-partners-page">
-
         <section class="miro-partners-section">
             <div class="miro-container">
                 @foreach ($partnerGroups as $group)
@@ -161,7 +161,7 @@
                 <section class="miro-partners-cta">
                     <h2><span data-lang="ru">Создавать возможности вместе</span><span data-lang="en">Create opportunities together</span><span data-lang="ro">Creăm oportunități împreună</span></h2>
                     <p><span data-lang="ru">Если вы хотите поддержать женское предпринимательство или предложить участницам новую возможность, давайте познакомимся.</span><span data-lang="en">If you want to support women’s entrepreneurship or offer members a new opportunity, let’s connect.</span><span data-lang="ro">Dacă vrei să susții antreprenoriatul feminin sau să oferi membrelor o oportunitate nouă, hai să ne cunoaștem.</span></p>
-                    <div class="miro-partners-cta__actions"><a href="{{ $managerUrl }}" target="_blank" rel="noopener" class="miro-button miro-button--primary" style="background:var(--miro-yellow);color:var(--miro-primary)"><span data-lang="ru">Стать партнёром</span><span data-lang="en">Become a partner</span><span data-lang="ro">Devino partener</span></a><a href="{{ route('about') }}" class="miro-button miro-button--secondary" style="border-color:rgba(255,255,255,.35);color:#fff"><span data-lang="ru">О платформе</span><span data-lang="en">About the platform</span><span data-lang="ro">Despre platformă</span></a></div>
+                    <div class="miro-partners-cta__actions"><a href="{{ $managerUrl }}" target="_blank" rel="noopener" class="miro-button miro-button--primary" style="background:var(--miro-pink);color:var(--miro-primary)"><span data-lang="ru">Стать партнёром</span><span data-lang="en">Become a partner</span><span data-lang="ro">Devino partener</span></a><a href="{{ route('about') }}" class="miro-button miro-button--secondary" style="border-color:rgba(255,255,255,.35);color:#fff"><span data-lang="ru">О платформе</span><span data-lang="en">About the platform</span><span data-lang="ro">Despre platformă</span></a></div>
                 </section>
             </div>
         </section>

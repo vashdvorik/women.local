@@ -180,7 +180,7 @@
 
     .theme-preview.is-miro .theme-preview__line,
     .theme-preview.is-miro .theme-preview__photo {
-        background: #ffd02f;
+        background: #ffd8f4;
     }
 
     .theme-card__body {

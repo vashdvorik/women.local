@@ -18,7 +18,7 @@
             'description' => ['ru' => 'Развивает женское предпринимательство и деловые связи в Молдове.', 'en' => 'Develops women’s entrepreneurship and business connections in Moldova.', 'ro' => 'Dezvoltă antreprenoriatul feminin și conexiunile de business în Moldova.'],
             'looking_for' => ['ru' => 'Новые профессиональные связи', 'en' => 'New professional connections', 'ro' => 'Conexiuni profesionale noi'],
             'can_offer' => ['ru' => 'Экспертизу и связи в деловом сообществе', 'en' => 'Expertise and connections in the business community', 'ro' => 'Expertiză și conexiuni în comunitatea de business'],
-            'tone' => 'yellow',
+            'tone' => 'pink',
         ],
         [
             'photo' => 'experts/expert-aurelia.png',
@@ -108,7 +108,7 @@
             'description' => ['ru' => 'Развивает социальные инициативы и проекты с общественным влиянием.', 'en' => 'Develops social initiatives and projects with community impact.', 'ro' => 'Dezvoltă inițiative sociale și proiecte cu impact în comunitate.'],
             'looking_for' => ['ru' => 'Партнёрства вокруг проектов с влиянием', 'en' => 'Partnerships around impact projects', 'ro' => 'Parteneriate pentru proiecte cu impact'],
             'can_offer' => ['ru' => 'Опыт развития социальных инициатив', 'en' => 'Experience developing social initiatives', 'ro' => 'Experiență în dezvoltarea inițiativelor sociale'],
-            'tone' => 'yellow',
+            'tone' => 'pink',
         ],
         [
             'photo' => 'experts/expert-irena.png',
@@ -202,7 +202,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --miro-primary:#1c1c1e; --miro-yellow:#ffd02f; --miro-yellow-light:#fff4c4; --miro-blue:#4262ff; --miro-coral:#ffc6c6; --miro-rose:#ffd8f4; --miro-teal:#c3faf5; --miro-orange:#ffe6cd; --miro-surface:#f7f8fa; --miro-surface-soft:#fafbfc; --miro-hairline:#e0e2e8; --miro-hairline-soft:#eef0f3; --miro-hairline-strong:#c7cad5; --miro-ink-deep:#050038; --miro-ink:#1c1c1e; --miro-charcoal:#2c2c34; --miro-slate:#555a6a; --miro-steel:#6b6f7e; --miro-muted:#a5a8b5; --miro-shadow:rgba(5,0,56,.08) 0 12px 32px -4px; --miro-font:"Roobert PRO","Noto Sans",-apple-system,BlinkMacSystemFont,sans-serif; }
+        :root { --miro-primary:#1c1c1e; --miro-pink:#ffd8f4; --miro-cream:#fff4c4; --miro-blue:#4262ff; --miro-coral:#ffc6c6; --miro-rose:#ffd8f4; --miro-teal:#c3faf5; --miro-orange:#ffe6cd; --miro-surface:#f7f8fa; --miro-surface-soft:#fafbfc; --miro-hairline:#e0e2e8; --miro-hairline-soft:#eef0f3; --miro-hairline-strong:#c7cad5; --miro-ink-deep:#050038; --miro-ink:#1c1c1e; --miro-charcoal:#2c2c34; --miro-slate:#555a6a; --miro-steel:#6b6f7e; --miro-muted:#a5a8b5; --miro-shadow:rgba(5,0,56,.08) 0 12px 32px -4px; --miro-font:"Roobert PRO","Noto Sans",-apple-system,BlinkMacSystemFont,sans-serif; }
         * { box-sizing:border-box; }
         html { overflow-x:hidden; }
         body { margin:0; background:#fff; color:var(--miro-ink); font-family:var(--miro-font); font-size:16px; line-height:1.5; }
@@ -215,7 +215,7 @@
         .miro-nav { position:sticky; top:0; z-index:30; min-height:68px; border-bottom:1px solid var(--miro-hairline-soft); background:rgba(255,255,255,.94); backdrop-filter:blur(16px); }
         .miro-nav__inner { min-height:68px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
         .miro-brand { display:inline-flex; align-items:center; gap:10px; white-space:nowrap; font-size:16px; font-weight:600; letter-spacing:-.02em; }
-        .miro-brand__mark { width:28px; height:28px; display:grid; place-items:center; border-radius:6px; background:var(--miro-yellow); color:var(--miro-primary); font-size:13px; font-weight:600; }
+        .miro-brand__mark { width:28px; height:28px; display:grid; place-items:center; border-radius:6px; background:var(--miro-pink); color:var(--miro-primary); font-size:13px; font-weight:600; }
         .miro-brand__logo { width:176px; height:52px; object-fit:contain; }
         .miro-nav__links { display:flex; align-items:center; gap:28px; color:var(--miro-slate); font-size:14px; }
         .miro-nav__links a { transition:color .18s ease; }
@@ -233,10 +233,10 @@
         .miro-button--primary:hover { background:var(--miro-charcoal); }
         .miro-button--secondary { border:1px solid var(--miro-hairline-strong); background:transparent; color:var(--miro-ink); }
         .miro-button--secondary:hover { border-color:var(--miro-primary); }
-        .miro-button--yellow { background:var(--miro-yellow); color:var(--miro-primary); }
+        .miro-button--yellow { background:var(--miro-pink); color:var(--miro-primary); }
         .miro-button--small { min-height:40px; padding:10px 18px; }
         .miro-members-page { background:linear-gradient(180deg,#fff 0%,#fafbfc 42%,#fff 100%); }
-        .miro-members-hero { position:relative; overflow:hidden; padding:88px 0 76px; background:var(--miro-yellow-light); }
+        .miro-members-hero { position:relative; overflow:hidden; padding:88px 0 76px; background:var(--miro-pink); }
         .miro-members-hero::before { content:""; position:absolute; top:-130px; right:8%; width:290px; height:290px; border:1px solid rgba(66,98,255,.3); border-radius:50%; }
         .miro-members-hero::after { content:""; position:absolute; right:12%; bottom:0; width:180px; height:130px; border-radius:100% 0 0; background:var(--miro-teal); opacity:.75; }
         .miro-members-hero__inner { position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,1fr) 360px; align-items:end; gap:64px; }
@@ -261,7 +261,7 @@
         .miro-public-member__specialization { margin:8px 0 0; color:var(--miro-blue); font-size:14px; font-weight:600; }
         .miro-public-member__tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:0; margin-bottom:18px; }
         .miro-public-member__tag { display:inline-flex; align-items:center; padding:5px 9px; border-radius:9999px; color:var(--miro-primary); font-size:11px; font-weight:500; line-height:1.2; }
-        .miro-public-member__tag--yellow { background:var(--miro-yellow-light); }
+        .miro-public-member__tag--pink, .miro-public-member__tag--yellow { background:var(--miro-cream); }
         .miro-public-member__tag--teal { background:var(--miro-teal); color:#187574; }
         .miro-public-member__tag--rose { background:var(--miro-rose); }
         .miro-public-member__tag--coral { background:var(--miro-coral); }
@@ -355,7 +355,7 @@
                     <h2><span data-lang="ru">Зарегистрируйтесь, чтобы связаться</span><span data-lang="en">Register to make the connection</span><span data-lang="ro">Înregistrează-te pentru a lua legătura</span></h2>
                     <p><span data-lang="ru">Создайте профиль на платформе, чтобы находить нужных людей и обращаться к ним напрямую.</span><span data-lang="en">Create your platform profile to find the right people and reach out directly.</span><span data-lang="ro">Creează-ți profilul pentru a găsi oamenii potriviți și a lua legătura direct.</span></p>
                     <div class="miro-members-cta__actions">
-                        <a href="{{ route('account.login') }}" class="miro-button miro-button--yellow"><span data-lang="ru">Войти в кабинет</span><span data-lang="en">Open the cabinet</span><span data-lang="ro">Intră în cabinet</span></a>
+                        <a href="{{ route('account.login') }}" class="miro-button miro-button--pink"><span data-lang="ru">Войти в кабинет</span><span data-lang="en">Open the cabinet</span><span data-lang="ro">Intră în cabinet</span></a>
                         <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button" style="border:1px solid rgba(255,255,255,.35);color:#fff"><span data-lang="ru">Присоединиться через Telegram</span><span data-lang="en">Join via Telegram</span><span data-lang="ro">Alătură-te prin Telegram</span></a>
                     </div>
                 </section>

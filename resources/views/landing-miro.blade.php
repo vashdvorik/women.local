@@ -20,9 +20,9 @@
         :root {
             --miro-primary: #1c1c1e;
             --miro-on-primary: #ffffff;
-            --miro-yellow: #ffd02f;
-            --miro-yellow-deep: #fcb900;
-            --miro-yellow-light: #fff4c4;
+            --miro-pink: #ffd8f4;
+            --miro-coral: #ffc6c6;
+            --miro-cream: #fff4c4;
             --miro-blue: #4262ff;
             --miro-coral: #ffc6c6;
             --miro-rose: #ffd8f4;
@@ -59,7 +59,7 @@
         .miro-nav { position: sticky; top: 0; z-index: 30; min-height: 68px; border-bottom: 1px solid var(--miro-hairline-soft); background: rgba(255,255,255,.94); backdrop-filter: blur(16px); }
         .miro-nav__inner { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
         .miro-brand { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; font-size: 16px; font-weight: 600; letter-spacing: -.02em; }
-        .miro-brand__mark { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 6px; background: var(--miro-yellow); color: var(--miro-primary); font-size: 13px; font-weight: 600; }
+        .miro-brand__mark { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 6px; background: var(--miro-pink); color: var(--miro-primary); font-size: 13px; font-weight: 600; }
         .miro-brand__logo { width: 176px; height: 52px; object-fit: contain; }
         .miro-nav__links { display: flex; align-items: center; gap: 28px; color: var(--miro-slate); font-size: 14px; }
         .miro-nav__links a { transition: color .18s ease; }
@@ -78,8 +78,8 @@
         .miro-button--primary:hover { background: var(--miro-charcoal); }
         .miro-button--secondary { border: 1px solid var(--miro-hairline-strong); background: transparent; color: var(--miro-ink); }
         .miro-button--secondary:hover { border-color: var(--miro-primary); }
-        .miro-button--yellow { background: var(--miro-yellow); color: var(--miro-primary); }
-        .miro-button--yellow:hover { background: var(--miro-yellow-deep); }
+        .miro-button--pink, .miro-button--yellow { background: var(--miro-pink); color: var(--miro-primary); }
+        .miro-button--pink:hover, .miro-button--yellow:hover { background: var(--miro-coral); }
         .miro-button--on-dark { background: #fff; color: var(--miro-primary); }
         .miro-button--small { min-height: 40px; padding: 10px 18px; }
 
@@ -98,29 +98,29 @@
         .miro-hero--image .miro-hero__subtitle { max-width: 520px; }
         .miro-hero--image .miro-hero__actions { justify-content: flex-start; }
         .miro-hero__visual { position: relative; min-height: 530px; margin-right: -32px; }
-        .miro-hero__visual::before { content: ""; position: absolute; inset: 18px -24px 8px 24px; border-radius: 52px 0 52px 52px; background: linear-gradient(145deg, var(--miro-yellow) 0 18%, transparent 18% 100%), linear-gradient(180deg, transparent 68%, var(--miro-teal) 68% 100%); transform: rotate(-2deg); }
+        .miro-hero__visual::before { content: ""; position: absolute; inset: 18px -24px 8px 24px; border-radius: 52px 0 52px 52px; background: linear-gradient(145deg, var(--miro-pink) 0 18%, transparent 18% 100%), linear-gradient(180deg, transparent 68%, var(--miro-teal) 68% 100%); transform: rotate(-2deg); }
         .miro-hero__image { position: relative; height: 530px; overflow: hidden; border-radius: 48px 0 48px 48px; box-shadow: var(--miro-shadow); }
         .miro-hero__image img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
-        .miro-hero__image::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255,255,255,.96) 0%, rgba(255,255,255,.7) 10%, rgba(255,255,255,0) 34%), linear-gradient(180deg, rgba(255,255,255,0) 70%, rgba(255,208,47,.18) 87%, rgba(195,250,245,.55) 100%); pointer-events: none; }
-        .miro-hero__arc { position: absolute; z-index: 2; right: -5%; bottom: -22px; left: -6%; height: 72px; border-bottom: 5px solid var(--miro-yellow); border-radius: 0 0 50% 50%; transform: rotate(-3deg); pointer-events: none; }
+        .miro-hero__image::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255,255,255,.96) 0%, rgba(255,255,255,.7) 10%, rgba(255,255,255,0) 34%), linear-gradient(180deg, rgba(255,255,255,0) 70%, rgba(255,198,198,.28) 87%, rgba(195,250,245,.55) 100%); pointer-events: none; }
+        .miro-hero__arc { position: absolute; z-index: 2; right: -5%; bottom: -22px; left: -6%; height: 72px; border-bottom: 5px solid var(--miro-coral); border-radius: 0 0 50% 50%; transform: rotate(-3deg); pointer-events: none; }
         .miro-hero__arc--teal { right: -8%; bottom: -34px; left: 12%; border-bottom-color: var(--miro-teal); border-bottom-width: 8px; }
 
         .miro-logo-wall { position: relative; overflow: hidden; padding: 40px 0 72px; border-top: 1px solid var(--miro-hairline-soft); border-bottom: 1px solid var(--miro-hairline-soft); }
-        .miro-logo-wall::before { content: ""; position: absolute; top: -90px; left: 8%; width: 210px; height: 210px; border: 1px solid var(--miro-yellow); border-radius: 50%; opacity: .6; }
+        .miro-logo-wall::before { content: ""; position: absolute; top: -90px; left: 8%; width: 210px; height: 210px; border: 1px solid var(--miro-pink); border-radius: 50%; opacity: .6; }
         .miro-logo-wall::after { content: ""; position: absolute; right: 8%; bottom: 24px; width: 90px; height: 90px; background-image: radial-gradient(var(--miro-blue) 1.5px, transparent 1.5px); background-size: 14px 14px; opacity: .25; }
         .miro-logo-wall__layout { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, .8fr); align-items: center; gap: 56px; }
         .miro-logo-wall__copy { position: relative; z-index: 2; }
         .miro-logo-wall p { max-width: 540px; margin: 0 0 24px; color: var(--miro-slate); font-size: 17px; line-height: 1.45; }
         .miro-logo-wall__items { display: flex; flex-wrap: wrap; gap: 12px; color: var(--miro-steel); font-size: 14px; font-weight: 500; }
         .miro-logo-wall__items > span { display: inline-flex; align-items: center; max-width: 260px; padding: 9px 14px; border: 1px solid var(--miro-hairline); border-radius: 9999px; background: #fff; box-shadow: 0 5px 14px rgba(5,0,56,.04); line-height: 1.25; }
-        .miro-logo-wall__items > span:nth-child(1) { background: var(--miro-yellow-light); border-color: #f1d46c; }
+        .miro-logo-wall__items > span:nth-child(1) { background: var(--miro-cream); border-color: rgba(255,198,198,.65); }
         .miro-logo-wall__items > span:nth-child(2) { background: var(--miro-teal); border-color: #a9e9e2; }
         .miro-logo-wall__items > span:nth-child(3) { background: var(--miro-rose); border-color: #f2bce1; }
         .miro-logo-wall__items > span:nth-child(4) { background: var(--miro-coral); border-color: #f0aaaa; }
         .miro-logo-wall__items > span:nth-child(5) { background: var(--miro-orange); border-color: #f4c994; }
         .miro-logo-wall__items > span:nth-child(6) { background: #eef1ff; border-color: #cbd3ff; }
         .miro-logo-wall__visual { position: relative; min-height: 210px; }
-        .miro-logo-wall__visual::before { content: ""; position: absolute; top: 6px; right: 4%; width: 170px; height: 170px; border-radius: 50%; background: var(--miro-yellow); opacity: .7; }
+        .miro-logo-wall__visual::before { content: ""; position: absolute; top: 6px; right: 4%; width: 170px; height: 170px; border-radius: 50%; background: var(--miro-coral); opacity: .7; }
         .miro-logo-wall__visual::after { content: ""; position: absolute; right: -2%; bottom: 0; width: 150px; height: 110px; border-radius: 50% 50% 28px 28px; background: var(--miro-teal); opacity: .8; }
         .miro-logo-wall__photo { position: absolute; z-index: 1; top: 10px; left: 12%; width: min(280px, 72%); height: 190px; overflow: hidden; border: 8px solid #fff; border-radius: 30px 30px 30px 8px; box-shadow: var(--miro-shadow); transform: rotate(-3deg); }
         .miro-logo-wall__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 36% center; }
@@ -139,7 +139,7 @@
         .miro-feature-card { min-height: 300px; padding: 32px; border-radius: 28px; }
         .miro-feature-card__icon { width: 44px; height: 44px; display: grid; place-items: center; margin-bottom: 56px; border-radius: 50%; background: rgba(255,255,255,.72); color: var(--miro-primary); font-size: 18px; font-weight: 600; }
         .miro-feature-card p { margin: 14px 0 0; color: var(--miro-charcoal); line-height: 1.55; }
-        .miro-feature-card--yellow { background: var(--miro-yellow); }
+        .miro-feature-card--pink, .miro-feature-card--yellow { background: var(--miro-pink); }
         .miro-feature-card--coral { background: var(--miro-coral); }
         .miro-feature-card--teal { background: var(--miro-teal); }
         .miro-feature-card--rose { background: var(--miro-rose); }
@@ -150,7 +150,7 @@
 
         .miro-benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
         .miro-benefit-card { min-height: 236px; padding: 24px; border: 1px solid var(--miro-hairline-soft); border-radius: 24px; background: #fff; box-shadow: 0 8px 24px rgba(5,0,56,.04); }
-        .miro-benefit-card--yellow { background: var(--miro-yellow); }
+        .miro-benefit-card--pink, .miro-benefit-card--yellow { background: var(--miro-pink); }
         .miro-benefit-card--coral { background: var(--miro-coral); }
         .miro-benefit-card--teal { background: var(--miro-teal); }
         .miro-benefit-card--rose { background: var(--miro-rose); }
@@ -163,7 +163,7 @@
         .miro-steps { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
         .miro-steps::before { content: ""; position: absolute; top: 36px; right: 12%; left: 12%; border-top: 2px dashed var(--miro-hairline-strong); }
         .miro-step { position: relative; z-index: 1; text-align: center; }
-        .miro-step__number { width: 72px; height: 72px; display: grid; place-items: center; margin: 0 auto 20px; border: 7px solid #fff; border-radius: 50%; background: var(--miro-yellow); color: var(--miro-primary); box-shadow: 0 0 0 1px var(--miro-hairline-strong); font-size: 20px; font-weight: 600; }
+        .miro-step__number { width: 72px; height: 72px; display: grid; place-items: center; margin: 0 auto 20px; border: 7px solid #fff; border-radius: 50%; background: var(--miro-coral); color: var(--miro-primary); box-shadow: 0 0 0 1px var(--miro-hairline-strong); font-size: 20px; font-weight: 600; }
         .miro-step:nth-child(2) .miro-step__number { background: var(--miro-rose); }
         .miro-step:nth-child(3) .miro-step__number { background: var(--miro-teal); }
         .miro-step:nth-child(4) .miro-step__number { background: var(--miro-orange); }
@@ -181,7 +181,7 @@
         .miro-split__copy p { max-width: 540px; margin: 20px 0 0; color: var(--miro-slate); font-size: 17px; }
         .miro-list { display: grid; gap: 14px; margin: 28px 0 0; padding: 0; list-style: none; }
         .miro-list li { display: flex; gap: 12px; align-items: flex-start; color: var(--miro-charcoal); }
-        .miro-list__check { flex: 0 0 22px; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: var(--miro-yellow); color: var(--miro-primary); font-size: 12px; font-weight: 600; }
+        .miro-list__check { flex: 0 0 22px; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: var(--miro-teal); color: var(--miro-primary); font-size: 12px; font-weight: 600; }
         .miro-mockup { overflow: hidden; border: 1px solid var(--miro-hairline-soft); border-radius: 16px; background: #fff; box-shadow: var(--miro-shadow); }
         .miro-mockup__bar { height: 42px; display: flex; align-items: center; gap: 6px; padding: 0 16px; border-bottom: 1px solid var(--miro-hairline-soft); }
         .miro-mockup__bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--miro-hairline-strong); }
@@ -191,7 +191,7 @@
         .miro-roadmap__row { display: grid; grid-template-columns: 92px repeat(3, 1fr); gap: 8px; align-items: center; }
         .miro-roadmap__label { color: var(--miro-steel); font-size: 11px; font-weight: 600; text-transform: uppercase; }
         .miro-roadmap__cell { min-height: 62px; padding: 12px; border: 1px solid var(--miro-hairline); border-radius: 8px; background: #fff; color: var(--miro-charcoal); font-size: 12px; }
-        .miro-roadmap__cell.is-yellow { background: var(--miro-yellow-light); border-color: #f1d46c; }
+        .miro-roadmap__cell.is-pink, .miro-roadmap__cell.is-yellow { background: var(--miro-pink); border-color: rgba(255,198,198,.65); }
         .miro-roadmap__cell.is-blue { background: #eef1ff; border-color: #cbd3ff; }
         .miro-ai-card { max-width: 370px; margin: 20px auto 0; padding: 22px; border: 1px solid rgba(24,117,116,.18); border-radius: 16px; background: rgba(255,255,255,.84); box-shadow: 0 8px 24px rgba(5,0,56,.06); }
         .miro-ai-card__tag { display: inline-flex; padding: 4px 10px; border-radius: 9999px; background: #e9e7ff; color: var(--miro-blue); font-size: 12px; font-weight: 600; }
@@ -204,14 +204,14 @@
         .miro-image-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
         .miro-image-card__caption { padding: 24px; }
         .miro-image-card__caption p { margin: 10px 0 0; color: var(--miro-slate); }
-        .miro-tag { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 9999px; background: var(--miro-yellow-light); color: #746019; font-size: 13px; font-weight: 600; }
+        .miro-tag { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 9999px; background: var(--miro-cream); color: #050038; font-size: 13px; font-weight: 600; }
 
         .miro-member-card { display: grid; grid-template-columns: 112px 1fr; gap: 20px; align-items: center; padding: 16px; border: 1px solid var(--miro-hairline-soft); border-radius: 16px; background: #fff; }
         .miro-member-card img { width: 112px; height: 112px; border-radius: 12px; object-fit: cover; }
         .miro-member-card h4 { margin: 0; color: var(--miro-ink-deep); font-size: 18px; font-weight: 500; }
         .miro-member-card__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
         .miro-profile-tag { display: inline-flex; align-items: center; padding: 5px 9px; border-radius: 9999px; color: var(--miro-primary); font-size: 11px; font-weight: 500; line-height: 1.2; }
-        .miro-profile-tag--yellow { background: var(--miro-yellow-light); }
+        .miro-profile-tag--pink, .miro-profile-tag--yellow { background: var(--miro-cream); }
         .miro-profile-tag--teal { background: var(--miro-teal); color: #187574; }
         .miro-profile-tag--rose { background: var(--miro-rose); }
         .miro-profile-tag--coral { background: var(--miro-coral); }
@@ -434,7 +434,7 @@
                     <p><span data-lang="ru">Всё необходимое для обучения, полезных знакомств и роста бизнеса — в одном понятном пространстве.</span><span data-lang="en">Everything you need to learn, connect and grow your business in one clear space.</span><span data-lang="ro">Tot ce ai nevoie pentru a învăța, a te conecta și a-ți dezvolta afacerea într-un singur spațiu clar.</span></p>
                 </div>
                 <div class="miro-benefits">
-                    <article class="miro-benefit-card miro-benefit-card--yellow">
+                    <article class="miro-benefit-card miro-benefit-card--pink">
                         <div class="miro-benefit-card__icon">↗</div>
                         <h3><span data-lang="ru">Центр обучения</span><span data-lang="en">Learning Hub</span><span data-lang="ro">Hub de învățare</span></h3>
                         <p><span data-lang="ru">Онлайн-курсы, видео и практические модули для бизнеса.</span><span data-lang="en">Online courses, videos and practical business modules.</span><span data-lang="ro">Cursuri online, videoclipuri și module practice pentru afaceri.</span></p>
@@ -542,8 +542,8 @@
                         <div class="miro-mockup__bar"><i></i><i></i><i></i></div>
                         <div class="miro-mockup__body">
                             <div class="miro-roadmap">
-                                <div class="miro-roadmap__row"><span class="miro-roadmap__label">Need</span><div class="miro-roadmap__cell is-yellow">Find a mentor</div><div class="miro-roadmap__cell">New market</div><div class="miro-roadmap__cell">Local partner</div></div>
-                                <div class="miro-roadmap__row"><span class="miro-roadmap__label">Action</span><div class="miro-roadmap__cell is-blue">Workshop · 14 Jun</div><div class="miro-roadmap__cell">Ask the community</div><div class="miro-roadmap__cell is-yellow">Post an opportunity</div></div>
+                                <div class="miro-roadmap__row"><span class="miro-roadmap__label">Need</span><div class="miro-roadmap__cell is-pink">Find a mentor</div><div class="miro-roadmap__cell">New market</div><div class="miro-roadmap__cell">Local partner</div></div>
+                                <div class="miro-roadmap__row"><span class="miro-roadmap__label">Action</span><div class="miro-roadmap__cell is-blue">Workshop · 14 Jun</div><div class="miro-roadmap__cell">Ask the community</div><div class="miro-roadmap__cell is-pink">Post an opportunity</div></div>
                                 <div class="miro-roadmap__row"><span class="miro-roadmap__label">Result</span><div class="miro-roadmap__cell">New contact</div><div class="miro-roadmap__cell is-blue">Shared learning</div><div class="miro-roadmap__cell">Next step</div></div>
                             </div>
                         </div>
@@ -566,7 +566,7 @@
                         <p class="miro-eyebrow"><span data-lang="ru">Обучение</span><span data-lang="en">Learning</span><span data-lang="ro">Învățare</span></p>
                         <h2><span data-lang="ru">Учитесь в своём темпе, растите рядом с другими</span><span data-lang="en">Learn at your pace, grow with others</span><span data-lang="ro">Învață în ritmul tău, crește alături de comunitate</span></h2>
                         <p><span data-lang="ru">Материалы, практические встречи, менторство и опыт других предпринимательниц помогают переходить от вопроса к решению.</span><span data-lang="en">Materials, practical sessions, mentoring and peer experience help you move from a question to a solution.</span><span data-lang="ro">Materiale, sesiuni practice, mentorat și experiența comunității te ajută să ajungi de la întrebare la soluție.</span></p>
-                        <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button miro-button--yellow" style="margin-top: 28px;"><span data-lang="ru">Присоединиться к сообществу</span><span data-lang="en">Join the community</span><span data-lang="ro">Alătură-te comunității</span></a>
+                        <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button miro-button--pink" style="margin-top: 28px;"><span data-lang="ru">Присоединиться к сообществу</span><span data-lang="en">Join the community</span><span data-lang="ro">Alătură-te comunității</span></a>
                     </div>
                 </div>
             </div>
@@ -614,7 +614,7 @@
                 <div class="miro-story">
                     <img src="{{ asset('images/story-export.webp') }}" alt="Women entrepreneurs collaborating" loading="lazy">
                     <div class="miro-story__body">
-                        <span class="miro-tag" style="width: fit-content; background: var(--miro-yellow); color: var(--miro-primary);">Member story</span>
+                        <span class="miro-tag" style="width: fit-content; background: var(--miro-pink); color: var(--miro-primary);">Member story</span>
                         <blockquote><span data-lang="ru">«Нужный контакт оказался не где-то далеко — он уже был внутри сообщества.»</span><span data-lang="en">“The right connection was not far away — it was already inside the community.”</span><span data-lang="ro">„Conexiunea potrivită nu era departe — era deja în comunitate.”</span></blockquote>
                         <p>Women Entrepreneurs Platform member</p>
                     </div>

@@ -2,36 +2,97 @@
 @section('title', __('account.dashboard.title'))
 
 @section('content')
-<div class="max-w-3xl">
-    <div class="mb-8">
-        <h1 class="text-2xl font-bold tracking-tight text-[#0f172a]">{{ __('account.dashboard.hello', ['name' => explode(' ', (string) $accountUser->full_name)[0]]) }}</h1>
-        <p class="mt-1.5 text-sm text-gray-500">{{ __('account.dashboard.intro') }}</p>
-    </div>
+<div class="miro-page">
+    <header class="miro-page-header">
+        <div class="miro-page-header__copy">
+            <p class="miro-eyebrow">{{ __('account.dashboard.eyebrow') }}</p>
+            <h1 class="miro-page-title">{{ __('account.dashboard.hello', ['name' => explode(' ', (string) $accountUser->full_name)[0]]) }}</h1>
+            <p class="miro-page-description">{{ __('account.dashboard.intro') }}</p>
+        </div>
+        <div class="miro-actions">
+            <a href="{{ route('account.profile.edit') }}" class="miro-button miro-button--dark">{{ __('account.dashboard.action_edit') }}</a>
+            <a href="{{ route('account.search') }}" class="miro-button miro-button--outline">{{ __('account.dashboard.action_search') }}</a>
+        </div>
+    </header>
 
     @if(empty($accountUser->description))
-        <div class="mb-8 flex items-start gap-4 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4">
-            <div class="flex-1">
-                <p class="text-sm font-semibold text-amber-900">{{ __('account.dashboard.complete_title') }}</p>
-                <p class="mt-0.5 text-xs leading-relaxed text-amber-700">{{ __('account.dashboard.complete_text') }}</p>
+        <div class="miro-alert miro-alert--cream mb-7">
+            <span class="miro-icon-tile miro-icon-tile--cream shrink-0">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v4m0 4h.01M10.3 3.8 2.7 18a2 2 0 0 0 1.75 3h15.1a2 2 0 0 0 1.75-3L13.7 3.8a2 2 0 0 0-3.4 0Z"/></svg>
+            </span>
+            <div class="min-w-0 flex-1">
+                <p class="text-sm font-semibold">{{ __('account.dashboard.complete_title') }}</p>
+                <p class="mt-1 text-xs leading-relaxed opacity-80">{{ __('account.dashboard.complete_text') }}</p>
             </div>
-            <a href="{{ route('account.profile.edit') }}" class="shrink-0 rounded-lg bg-amber-500 px-3.5 py-2 text-xs font-semibold text-white">{{ __('account.dashboard.complete_button') }}</a>
+            <a href="{{ route('account.profile.edit') }}" class="miro-button miro-button--dark shrink-0">{{ __('account.dashboard.complete_button') }}</a>
         </div>
     @endif
 
-    <div class="grid gap-4 sm:grid-cols-3">
-        @foreach([
-            ['route' => 'account.profile', 'title' => __('account.nav.profile'), 'note' => __('account.dashboard.profile_note')],
-            ['route' => 'account.matches', 'title' => __('account.nav.matches'), 'note' => __('account.dashboard.matches_note')],
-            ['route' => 'account.people', 'title' => __('account.nav.people'), 'note' => __('account.dashboard.people_note')],
-        ] as $card)
-            <a href="{{ route($card['route']) }}" class="group rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-md">
-                <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+    <div class="miro-profile-hero">
+        <section class="miro-card miro-card--pink miro-profile-hero__main">
+            <div class="flex items-start gap-4">
+                <div class="miro-avatar-xl shrink-0">
+                    @if($accountUser->avatar_path)
+                        <img src="{{ Storage::url($accountUser->avatar_path) }}" alt="{{ $accountUser->full_name }}">
+                    @else
+                        <div class="miro-avatar-xl__placeholder">{{ mb_strtoupper(mb_substr($accountUser->full_name ?? '?', 0, 1)) }}</div>
+                    @endif
                 </div>
-                <p class="text-sm font-semibold text-[#0f172a] group-hover:text-brand-700">{{ $card['title'] }}</p>
-                <p class="mt-1 text-xs leading-relaxed text-gray-400">{{ $card['note'] }}</p>
+                <div class="min-w-0">
+                    <p class="miro-card__label">{{ __('account.dashboard.profile_label') }}</p>
+                    <h2 class="miro-card__title">{{ $accountUser->full_name ?: __('account.not_specified') }}</h2>
+                    @if($accountUser->telegram_username)
+                        <p class="mt-2 text-sm text-[#050038]/70">@{{ $accountUser->telegram_username }}</p>
+                    @endif
+                </div>
+            </div>
+            @if($accountUser->description)
+                <p class="mt-7 max-w-xl text-sm leading-6 text-[#050038]/80">{{ mb_strlen($accountUser->description) > 180 ? mb_substr($accountUser->description, 0, 180) . '…' : $accountUser->description }}</p>
+                <p class="mt-5 inline-flex rounded-full bg-white/70 px-3 py-1.5 text-xs font-medium text-[#050038]">{{ __('account.dashboard.profile_ready_title') }}</p>
+            @else
+                <p class="mt-7 max-w-xl text-sm leading-6 text-[#050038]/80">{{ __('account.dashboard.profile_ready_text') }}</p>
+            @endif
+        </section>
+
+        <aside class="miro-card miro-card--teal miro-profile-hero__side">
+            <span class="miro-icon-tile miro-icon-tile--teal">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3v18m9-9H3m15.36-6.36L5.64 18.36m12.72 0L5.64 5.64"/></svg>
+            </span>
+            <p class="miro-card__label mt-5">{{ __('account.dashboard.spotlight_label') }}</p>
+            <h2 class="miro-card__title">{{ __('account.dashboard.spotlight_title') }}</h2>
+            <p class="miro-card__text">{{ __('account.dashboard.spotlight_text') }}</p>
+            <a href="{{ route('account.people') }}" class="miro-button miro-button--dark mt-6">{{ __('account.dashboard.explore_link') }}</a>
+        </aside>
+    </div>
+
+    <div class="miro-section-heading">
+        <div>
+            <h2>{{ __('account.dashboard.explore_title') }}</h2>
+            <p>{{ __('account.dashboard.explore_text') }}</p>
+        </div>
+    </div>
+
+    <div class="miro-stat-grid">
+        @foreach([
+            ['route' => 'account.profile', 'title' => __('account.nav.profile'), 'note' => __('account.dashboard.profile_note'), 'value' => '01', 'tone' => 'pink'],
+            ['route' => 'account.matches', 'title' => __('account.nav.matches'), 'note' => __('account.dashboard.matches_note'), 'value' => '02', 'tone' => 'teal'],
+            ['route' => 'account.people', 'title' => __('account.nav.people'), 'note' => __('account.dashboard.people_note'), 'value' => '03', 'tone' => 'coral'],
+            ['route' => 'account.opportunities.index', 'title' => __('account.nav.opportunities'), 'note' => __('account.dashboard.opportunities_note'), 'value' => '04', 'tone' => 'cream'],
+        ] as $card)
+            <a href="{{ route($card['route']) }}" class="miro-card miro-stat miro-card--{{ $card['tone'] }} group">
+                <span class="miro-stat__value">{{ $card['value'] }}</span>
+                <p class="miro-stat__label font-medium text-[#050038]">{{ $card['title'] }}</p>
+                <p class="miro-stat__label">{{ $card['note'] }}</p>
             </a>
         @endforeach
+    </div>
+
+    <div class="miro-card miro-card--soft mt-7 flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <p class="miro-card__label">{{ __('account.dashboard.tip_label') }}</p>
+            <p class="m-0 text-sm leading-6 text-[#555a6a]">{{ __('account.dashboard.tip_text') }}</p>
+        </div>
+        <a href="{{ route('account.opportunities.create') }}" class="miro-button miro-button--outline shrink-0">{{ __('account.dashboard.tip_action') }}</a>
     </div>
 </div>
 @endsection

@@ -3,42 +3,45 @@
 @section('title', $person->full_name ?: __('account.person.title'))
 
 @section('content')
-    <a href="{{ route('account.people') }}" class="mb-6 inline-flex text-sm font-bold text-teal-700 hover:text-teal-900">
-        {{ __('account.back') }}
-    </a>
+    <div class="miro-page">
+        <a href="{{ route('account.people') }}" class="miro-button miro-button--text mb-5">← {{ __('account.back') }}</a>
 
-    <div class="grid gap-6 lg:grid-cols-[0.9fr_1.4fr]">
-        <aside class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-            <div class="mx-auto h-32 w-32 overflow-hidden rounded-[2rem] bg-gradient-to-br from-teal-100 to-orange-100">
-                @if($person->avatar_path)
-                    <img src="{{ Storage::url($person->avatar_path) }}" alt="{{ $person->full_name }}" class="h-full w-full object-cover">
-                @else
-                    <div class="flex h-full w-full items-center justify-center text-4xl font-black text-teal-800">
-                        {{ mb_substr($person->full_name ?: $person->telegram_username, 0, 1) }}
-                    </div>
+        <div class="grid gap-6 lg:grid-cols-[.8fr_1.2fr]">
+            <aside class="miro-card miro-card--pink p-6 sm:p-8">
+                <div class="miro-avatar-xl mx-auto">
+                    @if($person->avatar_path)
+                        <img src="{{ Storage::url($person->avatar_path) }}" alt="{{ $person->full_name }}">
+                    @else
+                        <div class="miro-avatar-xl__placeholder">{{ mb_strtoupper(mb_substr($person->full_name ?: $person->telegram_username ?: '?', 0, 1)) }}</div>
+                    @endif
+                </div>
+
+                <p class="miro-eyebrow mt-6 text-center">{{ __('account.person.title') }}</p>
+                <h1 class="text-center text-2xl font-medium tracking-tight text-[#050038]">{{ $person->full_name ?: __('account.not_specified') }}</h1>
+
+                @if($person->telegram_username)
+                    <p class="mt-2 text-center text-sm text-[#6b6f7e]">@{{ $person->telegram_username }}</p>
+                    <a href="https://t.me/{{ $person->telegram_username }}" target="_blank" rel="noopener" class="miro-button miro-button--dark mt-7 w-full">{{ __('account.contact') }}</a>
                 @endif
-            </div>
+            </aside>
 
-            <h1 class="mt-5 text-center text-2xl font-black text-slate-950">{{ $person->full_name ?: __('account.not_specified') }}</h1>
+            <section class="space-y-6">
+                <div class="miro-card p-6 sm:p-7">
+                    <div class="miro-section-heading">
+                        <h2>{{ __('account.person.about') }}</h2>
+                        <span class="miro-icon-tile miro-icon-tile--teal"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7 8a7 7 0 0 0-14 0"/></svg></span>
+                    </div>
+                    <p class="whitespace-pre-line text-sm leading-7 text-[#555a6a]">{{ $person->description ?: __('account.profile.description_empty') }}</p>
+                </div>
 
-            @if($person->telegram_username)
-                <p class="mt-2 text-center text-slate-500">@{{ $person->telegram_username }}</p>
-                <a href="https://t.me/{{ $person->telegram_username }}" target="_blank" rel="noopener" class="mt-6 flex justify-center rounded-full bg-orange-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-orange-600/20 transition hover:bg-orange-700">
-                    {{ __('account.contact') }}
-                </a>
-            @endif
-        </aside>
-
-        <section class="space-y-5">
-            <div class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-                <p class="text-sm font-bold uppercase tracking-[0.2em] text-teal-700">{{ __('account.person.about') }}</p>
-                <p class="mt-4 whitespace-pre-line text-slate-700">{{ $person->description ?: __('account.profile.description_empty') }}</p>
-            </div>
-
-            <div class="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-                <p class="text-sm font-bold uppercase tracking-[0.2em] text-orange-700">{{ __('account.person.request') }}</p>
-                <p class="mt-4 whitespace-pre-line text-slate-700">{{ $person->expectation ?: __('account.profile.expectation_empty') }}</p>
-            </div>
-        </section>
+                <div class="miro-card miro-card--cream p-6 sm:p-7">
+                    <div class="miro-section-heading">
+                        <h2>{{ __('account.person.request') }}</h2>
+                        <span class="miro-icon-tile miro-icon-tile--cream"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3v18m9-9H3"/></svg></span>
+                    </div>
+                    <p class="whitespace-pre-line text-sm leading-7 text-[#555a6a]">{{ $person->expectation ?: __('account.profile.expectation_empty') }}</p>
+                </div>
+            </section>
+        </div>
     </div>
 @endsection

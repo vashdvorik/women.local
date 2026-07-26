@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --miro-primary:#1c1c1e; --miro-yellow:#ffd02f; --miro-yellow-light:#fff4c4; --miro-blue:#4262ff; --miro-coral:#ffc6c6; --miro-rose:#ffd8f4; --miro-teal:#c3faf5; --miro-orange:#ffe6cd; --miro-surface:#f7f8fa; --miro-surface-soft:#fafbfc; --miro-hairline:#e0e2e8; --miro-hairline-soft:#eef0f3; --miro-hairline-strong:#c7cad5; --miro-ink-deep:#050038; --miro-ink:#1c1c1e; --miro-charcoal:#2c2c34; --miro-slate:#555a6a; --miro-steel:#6b6f7e; --miro-muted:#a5a8b5; --miro-shadow:rgba(5,0,56,.08) 0 12px 32px -4px; --miro-font:"Roobert PRO","Noto Sans",-apple-system,BlinkMacSystemFont,sans-serif; }
+        :root { --miro-primary:#1c1c1e; --miro-pink:#ffd8f4; --miro-cream:#fff4c4; --miro-blue:#4262ff; --miro-coral:#ffc6c6; --miro-rose:#ffd8f4; --miro-teal:#c3faf5; --miro-orange:#ffe6cd; --miro-surface:#f7f8fa; --miro-surface-soft:#fafbfc; --miro-hairline:#e0e2e8; --miro-hairline-soft:#eef0f3; --miro-hairline-strong:#c7cad5; --miro-ink-deep:#050038; --miro-ink:#1c1c1e; --miro-charcoal:#2c2c34; --miro-slate:#555a6a; --miro-steel:#6b6f7e; --miro-muted:#a5a8b5; --miro-shadow:rgba(5,0,56,.08) 0 12px 32px -4px; --miro-font:"Roobert PRO","Noto Sans",-apple-system,BlinkMacSystemFont,sans-serif; }
         * { box-sizing:border-box; }
         html { overflow-x:hidden; }
         body { margin:0; background:#fff; color:var(--miro-ink); font-family:var(--miro-font); font-size:16px; line-height:1.5; }
@@ -29,7 +29,7 @@
         .miro-nav { position:sticky; top:0; z-index:30; min-height:68px; border-bottom:1px solid var(--miro-hairline-soft); background:rgba(255,255,255,.94); backdrop-filter:blur(16px); }
         .miro-nav__inner { min-height:68px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
         .miro-brand { display:inline-flex; align-items:center; gap:10px; white-space:nowrap; font-size:16px; font-weight:600; letter-spacing:-.02em; }
-        .miro-brand__mark { width:28px; height:28px; display:grid; place-items:center; border-radius:6px; background:var(--miro-yellow); color:var(--miro-primary); font-size:13px; font-weight:600; }
+        .miro-brand__mark { width:28px; height:28px; display:grid; place-items:center; border-radius:6px; background:var(--miro-pink); color:var(--miro-primary); font-size:13px; font-weight:600; }
         .miro-brand__logo { width:176px; height:52px; object-fit:contain; }
         .miro-nav__links { display:flex; align-items:center; gap:28px; color:var(--miro-slate); font-size:14px; }
         .miro-nav__links a { transition:color .18s ease; }
@@ -47,10 +47,10 @@
         .miro-button--primary:hover { background:var(--miro-charcoal); }
         .miro-button--secondary { border:1px solid var(--miro-hairline-strong); background:transparent; color:var(--miro-ink); }
         .miro-button--secondary:hover { border-color:var(--miro-primary); }
-        .miro-button--yellow { background:var(--miro-yellow); color:var(--miro-primary); }
+        .miro-button--yellow { background:var(--miro-pink); color:var(--miro-primary); }
         .miro-button--small { min-height:40px; padding:10px 18px; }
         .miro-about-page { background:linear-gradient(180deg,#fff 0%,#fafbfc 45%,#fff 100%); }
-        .miro-about-hero { position:relative; overflow:hidden; padding:84px 0 76px; background:var(--miro-yellow-light); }
+        .miro-about-hero { position:relative; overflow:hidden; padding:84px 0 76px; background:#fff; }
         .miro-about-hero::before { content:""; position:absolute; top:-120px; right:8%; width:290px; height:290px; border:1px solid rgba(66,98,255,.3); border-radius:50%; }
         .miro-about-hero__inner { position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,1fr) minmax(360px,.8fr); align-items:center; gap:64px; }
         .miro-eyebrow { margin:0 0 18px; color:var(--miro-blue); font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
@@ -72,9 +72,9 @@
         .miro-about-split__copy p { margin:18px 0 0; color:var(--miro-slate); font-size:17px; }
         .miro-about-list { display:grid; gap:14px; margin:26px 0 0; padding:0; list-style:none; }
         .miro-about-list li { display:flex; gap:12px; align-items:flex-start; color:var(--miro-charcoal); }
-        .miro-about-list__mark { flex:0 0 22px; width:22px; height:22px; display:grid; place-items:center; border-radius:50%; background:var(--miro-yellow); color:var(--miro-primary); font-size:12px; font-weight:600; }
+        .miro-about-list__mark { flex:0 0 22px; width:22px; height:22px; display:grid; place-items:center; border-radius:50%; background:var(--miro-coral); color:var(--miro-primary); font-size:12px; font-weight:600; }
         .miro-about-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
-        .miro-about-card { min-height:210px; padding:26px; border-radius:24px; background:var(--miro-yellow); }
+        .miro-about-card { min-height:210px; padding:26px; border-radius:24px; background:var(--miro-pink); }
         .miro-about-card:nth-child(2) { background:var(--miro-teal); }
         .miro-about-card:nth-child(3) { background:var(--miro-rose); }
         .miro-about-card:nth-child(4) { background:var(--miro-orange); }
@@ -90,7 +90,7 @@
         .miro-about-steps { position:relative; display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
         .miro-about-steps::before { content:""; position:absolute; top:34px; right:12%; left:12%; border-top:2px dashed var(--miro-hairline-strong); }
         .miro-about-step { position:relative; z-index:1; text-align:center; }
-        .miro-about-step__number { width:68px; height:68px; display:grid; place-items:center; margin:0 auto 20px; border:6px solid #fff; border-radius:50%; background:var(--miro-yellow); box-shadow:0 0 0 1px var(--miro-hairline-strong); color:var(--miro-primary); font-size:19px; font-weight:600; }
+        .miro-about-step__number { width:68px; height:68px; display:grid; place-items:center; margin:0 auto 20px; border:6px solid #fff; border-radius:50%; background:var(--miro-coral); box-shadow:0 0 0 1px var(--miro-hairline-strong); color:var(--miro-primary); font-size:19px; font-weight:600; }
         .miro-about-step:nth-child(2) .miro-about-step__number { background:var(--miro-rose); }
         .miro-about-step:nth-child(3) .miro-about-step__number { background:var(--miro-teal); }
         .miro-about-step:nth-child(4) .miro-about-step__number { background:var(--miro-orange); }
@@ -101,7 +101,7 @@
         .miro-about-bridge h2 { color:#fff; }
         .miro-about-bridge p { margin:18px 0 0; color:var(--miro-muted); font-size:17px; }
         .miro-about-proof { display:flex; align-items:center; gap:16px; padding:22px; border:1px solid rgba(255,255,255,.15); border-radius:22px; background:rgba(255,255,255,.06); }
-        .miro-about-proof strong { color:var(--miro-yellow); font-size:46px; font-weight:500; line-height:1; letter-spacing:-.05em; }
+        .miro-about-proof strong { color:var(--miro-pink); font-size:46px; font-weight:500; line-height:1; letter-spacing:-.05em; }
         .miro-about-proof span { color:#fff; font-size:14px; }
         .miro-about-cta { margin-top:72px; padding:64px 32px; border-radius:32px; background:var(--miro-teal); text-align:center; }
         .miro-about-cta h2 { max-width:700px; margin:0 auto; color:var(--miro-ink-deep); font-size:clamp(34px,5vw,58px); font-weight:500; line-height:1.08; letter-spacing:-.05em; }

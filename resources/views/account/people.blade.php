@@ -10,19 +10,19 @@
             'specialization' => ['ru' => 'Мода и дизайн', 'en' => 'Fashion & design', 'ro' => 'Modă și design'],
             'offer' => ['ru' => 'Дизайн продукта и работа с визуальным стилем.', 'en' => 'Product design and visual direction.', 'ro' => 'Design de produs și direcție vizuală.'],
             'tags' => [
-                ['tone' => 'yellow', 'ru' => 'Участница', 'en' => 'Member', 'ro' => 'Participantă'],
+                ['tone' => 'pink', 'ru' => 'Участница', 'en' => 'Member', 'ro' => 'Participantă'],
                 ['tone' => 'rose', 'ru' => 'Дизайн', 'en' => 'Design', 'ro' => 'Design'],
                 ['tone' => 'teal', 'ru' => 'Ищет партнёра', 'en' => 'Looking for a partner', 'ro' => 'Caută partener'],
             ],
         ],
         [
-            'role' => ['ru' => 'Экспертка', 'en' => 'Expert', 'ro' => 'Expertă'],
+            'role' => ['ru' => 'Эксперт', 'en' => 'Expert', 'ro' => 'Expertă'],
             'specialization' => ['ru' => 'Маркетинг и цифровые услуги', 'en' => 'Marketing & digital services', 'ro' => 'Marketing și servicii digitale'],
             'offer' => ['ru' => 'Маркетинг, продвижение и цифровая стратегия.', 'en' => 'Marketing, promotion and digital strategy.', 'ro' => 'Marketing, promovare și strategie digitală.'],
             'tags' => [
-                ['tone' => 'coral', 'ru' => 'Экспертка', 'en' => 'Expert', 'ro' => 'Expertă'],
+                ['tone' => 'coral', 'ru' => 'Эксперт', 'en' => 'Expert', 'ro' => 'Expertă'],
                 ['tone' => 'blue', 'ru' => 'Маркетолог', 'en' => 'Marketing', 'ro' => 'Marketing'],
-                ['tone' => 'yellow', 'ru' => 'Предлагает услуги', 'en' => 'Offers services', 'ro' => 'Oferă servicii'],
+                ['tone' => 'pink', 'ru' => 'Предлагает услуги', 'en' => 'Offers services', 'ro' => 'Oferă servicii'],
             ],
         ],
         [
@@ -36,11 +36,11 @@
             ],
         ],
         [
-            'role' => ['ru' => 'Экспертка', 'en' => 'Expert', 'ro' => 'Expertă'],
+            'role' => ['ru' => 'Эксперт', 'en' => 'Expert', 'ro' => 'Expertă'],
             'specialization' => ['ru' => 'Развитие сообщества', 'en' => 'Community building', 'ro' => 'Dezvoltarea comunității'],
             'offer' => ['ru' => 'Менторство, связи и поддержка предпринимательниц.', 'en' => 'Mentorship, connections and support for entrepreneurs.', 'ro' => 'Mentorat, conexiuni și sprijin pentru antreprenoare.'],
             'tags' => [
-                ['tone' => 'rose', 'ru' => 'Экспертка', 'en' => 'Expert', 'ro' => 'Expertă'],
+                ['tone' => 'rose', 'ru' => 'Эксперт', 'en' => 'Expert', 'ro' => 'Expertă'],
                 ['tone' => 'teal', 'ru' => 'Менторство', 'en' => 'Mentorship', 'ro' => 'Mentorat'],
                 ['tone' => 'coral', 'ru' => 'Открыта к сотрудничеству', 'en' => 'Open to collaboration', 'ro' => 'Deschisă colaborării'],
             ],
@@ -61,6 +61,11 @@
             <h1>{{ __('account.people.title') }}</h1>
             <p>{{ __('account.people.subtitle') }}</p>
         </header>
+
+        <div class="miro-actions mb-7">
+            <a href="{{ route('account.search') }}" class="miro-button miro-button--dark">{{ __('account.dashboard.action_search') }}</a>
+            <a href="{{ route('account.profile') }}" class="miro-button miro-button--outline">{{ __('account.nav.profile') }}</a>
+        </div>
 
         @if($people->isEmpty())
             <div class="miro-directory-empty">

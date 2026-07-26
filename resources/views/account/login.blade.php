@@ -48,7 +48,7 @@
 
         body.account-theme-miro .bg-white { background-color: #fff !important; }
         body.account-theme-miro .bg-gray-50 { background-color: #fafbfc !important; }
-        body.account-theme-miro .bg-violet-100 { background-color: #fff4c4 !important; }
+        body.account-theme-miro .bg-violet-100 { background-color: #ffd8f4 !important; }
         body.account-theme-miro .text-violet-700 { color: #1c1c1e !important; }
         body.account-theme-miro .text-gray-900 { color: #050038 !important; }
         body.account-theme-miro .text-gray-700,
@@ -58,7 +58,7 @@
         body.account-theme-miro .border-gray-100,
         body.account-theme-miro .border-gray-200 { border-color: #eef0f3 !important; }
         body.account-theme-miro [style*="#7c3aed"] {
-            background-color: #ffd02f !important;
+            background-color: #ffd8f4 !important;
             background-image: none !important;
             box-shadow: none !important;
         }

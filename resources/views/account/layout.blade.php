@@ -108,8 +108,8 @@
         /* Miro cabinet theme: white canvas, black actions and pastel working surfaces. */
         body.account-theme-miro {
             --miro-primary: #1c1c1e;
-            --miro-yellow: #ffd02f;
-            --miro-yellow-light: #fff4c4;
+            --miro-pink: #ffd8f4;
+            --miro-cream: #fff4c4;
             --miro-blue: #4262ff;
             --miro-teal: #c3faf5;
             --miro-teal-deep: #187574;
@@ -131,7 +131,7 @@
         }
 
         body.account-theme-miro .account-brand-mark {
-            background: var(--miro-yellow) !important;
+            background: var(--miro-pink) !important;
             background-image: none !important;
             box-shadow: none !important;
             color: var(--miro-primary) !important;
@@ -140,8 +140,8 @@
         body.account-theme-miro .account-brand-mark svg { color: var(--miro-primary) !important; }
 
         body.account-theme-miro .account-user-card {
-            border: 1px solid #f1d46c;
-            background: var(--miro-yellow-light) !important;
+            border: 1px solid rgba(255,198,198,.65);
+            background: var(--miro-pink) !important;
         }
 
         body.account-theme-miro .account-user-card [style*="#7c3aed"] {
@@ -171,8 +171,8 @@
         body.account-theme-miro [class~="bg-slate-50"] { background-color: #fafbfc !important; }
         body.account-theme-miro [class~="bg-slate-100"] { background-color: #eef0f3 !important; }
         body.account-theme-miro [class~="bg-brand-50"],
-        body.account-theme-miro [class~="bg-violet-100"],
-        body.account-theme-miro [class~="bg-amber-50"] { background-color: var(--miro-yellow-light) !important; }
+        body.account-theme-miro [class~="bg-violet-100"] { background-color: var(--miro-pink) !important; }
+        body.account-theme-miro [class~="bg-amber-50"] { background-color: var(--miro-cream) !important; }
         body.account-theme-miro [class~="bg-teal-50"] { background-color: var(--miro-teal) !important; }
         body.account-theme-miro [class~="bg-orange-100"] { background-color: var(--miro-orange) !important; }
 
@@ -186,7 +186,7 @@
 
         body.account-theme-miro [class~="bg-orange-600"],
         body.account-theme-miro [class~="bg-amber-500"] {
-            background-color: var(--miro-yellow) !important;
+            background-color: var(--miro-coral) !important;
             background-image: none !important;
             color: var(--miro-primary) !important;
             box-shadow: none !important;
@@ -227,7 +227,7 @@
         body.account-theme-miro [class~="text-orange-700"],
         body.account-theme-miro [class~="text-orange-800"],
         body.account-theme-miro [class~="text-amber-700"],
-        body.account-theme-miro [class~="text-amber-900"] { color: #746019 !important; }
+        body.account-theme-miro [class~="text-amber-900"] { color: #050038 !important; }
 
         body.account-theme-miro [class~="border-gray-100"],
         body.account-theme-miro [class~="border-gray-200"],
@@ -237,6 +237,84 @@
         body.account-theme-miro [class*="rounded-[2rem]"] { border-radius: 28px !important; }
         body.account-theme-miro [class*="shadow-sm"],
         body.account-theme-miro [class*="shadow-xl"] { box-shadow: 0 12px 32px rgba(5, 0, 56, .06) !important; }
+
+        /* Shared Miro cabinet primitives. Keep page templates focused on content. */
+        body.account-theme-miro .account-sidebar { width: 272px; }
+        body.account-theme-miro .account-main { padding: 40px clamp(20px, 4vw, 56px) 64px; }
+        body.account-theme-miro .miro-page { width: 100%; max-width: 1180px; margin: 0 auto; }
+        body.account-theme-miro .miro-page-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+        body.account-theme-miro .miro-page-header__copy { max-width: 760px; }
+        body.account-theme-miro .miro-eyebrow { margin: 0 0 12px; color: var(--miro-teal-deep); font-size: 11px; font-weight: 600; letter-spacing: .12em; line-height: 1.4; text-transform: uppercase; }
+        body.account-theme-miro .miro-page-title { margin: 0; color: #050038; font-size: clamp(32px, 4.5vw, 54px); font-weight: 500; letter-spacing: -.045em; line-height: 1.06; }
+        body.account-theme-miro .miro-page-description { margin: 14px 0 0; color: #555a6a; font-size: 16px; line-height: 1.55; }
+        body.account-theme-miro .miro-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+        body.account-theme-miro .miro-button { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: 8px; border: 1px solid transparent; border-radius: 9999px; padding: 11px 20px; font-size: 14px; font-weight: 500; line-height: 1.3; transition: transform .18s ease, background .18s ease, border-color .18s ease, color .18s ease; }
+        body.account-theme-miro .miro-button:hover { transform: translateY(-1px); }
+        body.account-theme-miro .miro-button--dark { background: var(--miro-primary); color: #fff; }
+        body.account-theme-miro .miro-button--dark:hover { background: #2c2c34; }
+        body.account-theme-miro .miro-button--pink { background: var(--miro-pink); color: var(--miro-primary); }
+        body.account-theme-miro .miro-button--pink:hover { background: var(--miro-coral); }
+        body.account-theme-miro .miro-button--outline { border-color: #c7cad5; background: #fff; color: var(--miro-primary); }
+        body.account-theme-miro .miro-button--outline:hover { border-color: var(--miro-primary); }
+        body.account-theme-miro .miro-button--text { min-height: auto; padding: 8px 0; color: var(--miro-blue); }
+        body.account-theme-miro .miro-card { border: 1px solid var(--miro-hairline); border-radius: 24px; background: #fff; box-shadow: 0 12px 32px rgba(5, 0, 56, .055); }
+        body.account-theme-miro .miro-card--soft { background: #fafbfc; box-shadow: none; }
+        body.account-theme-miro .miro-card--pink { background: var(--miro-pink); border-color: rgba(255,198,198,.75); box-shadow: none; }
+        body.account-theme-miro .miro-card--teal { background: var(--miro-teal); border-color: rgba(15,188,176,.18); box-shadow: none; }
+        body.account-theme-miro .miro-card--coral { background: var(--miro-coral); border-color: rgba(255,153,153,.55); box-shadow: none; }
+        body.account-theme-miro .miro-card--cream { background: var(--miro-cream); border-color: rgba(255,198,198,.6); box-shadow: none; }
+        body.account-theme-miro .miro-card__label { margin: 0 0 10px; color: #6b6f7e; font-size: 11px; font-weight: 600; letter-spacing: .1em; line-height: 1.4; text-transform: uppercase; }
+        body.account-theme-miro .miro-card__title { margin: 0; color: #050038; font-size: 22px; font-weight: 500; letter-spacing: -.025em; line-height: 1.2; }
+        body.account-theme-miro .miro-card__text { margin: 10px 0 0; color: #555a6a; font-size: 14px; line-height: 1.55; }
+        body.account-theme-miro .miro-icon-tile { display: inline-grid; width: 44px; height: 44px; place-items: center; border-radius: 14px; background: var(--miro-pink); color: var(--miro-primary); }
+        body.account-theme-miro .miro-icon-tile--teal { background: var(--miro-teal); color: var(--miro-teal-deep); }
+        body.account-theme-miro .miro-icon-tile--coral { background: var(--miro-coral); color: var(--miro-primary); }
+        body.account-theme-miro .miro-icon-tile--cream { background: var(--miro-cream); color: var(--miro-primary); }
+        body.account-theme-miro .miro-empty { border: 1px dashed #c7cad5; border-radius: 28px; background: #fff; padding: clamp(28px, 5vw, 56px); text-align: center; }
+        body.account-theme-miro .miro-empty__mark { display: grid; width: 56px; height: 56px; margin: 0 auto 18px; place-items: center; border-radius: 18px; background: var(--miro-teal); color: var(--miro-teal-deep); }
+        body.account-theme-miro .miro-empty h2 { margin: 0; color: #050038; font-size: 22px; font-weight: 500; letter-spacing: -.025em; }
+        body.account-theme-miro .miro-empty p { max-width: 480px; margin: 10px auto 0; color: #555a6a; font-size: 14px; line-height: 1.55; }
+        body.account-theme-miro .miro-alert { display: flex; align-items: flex-start; gap: 14px; border-radius: 20px; padding: 18px 20px; }
+        body.account-theme-miro .miro-alert--cream { border: 1px solid rgba(255,198,198,.8); background: var(--miro-cream); color: #050038; }
+        body.account-theme-miro .miro-alert--success { border: 1px solid rgba(15,188,176,.22); background: var(--miro-teal); color: var(--miro-teal-deep); }
+        body.account-theme-miro .miro-alert--error { border: 1px solid #fbd4d4; background: #fff5f5; color: #7f1d1d; }
+        body.account-theme-miro .miro-form-card { max-width: 820px; padding: clamp(22px, 4vw, 36px); }
+        body.account-theme-miro .miro-form-field label { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 8px; color: #050038; font-size: 13px; font-weight: 500; }
+        body.account-theme-miro .miro-form-field label span { color: #6b6f7e; font-size: 11px; font-weight: 400; }
+        body.account-theme-miro .miro-form-field small { display: block; margin-top: 7px; color: #6b6f7e; font-size: 12px; line-height: 1.45; }
+        body.account-theme-miro .miro-form-field input,
+        body.account-theme-miro .miro-form-field textarea,
+        body.account-theme-miro .miro-form-field select { width: 100%; border: 1px solid #c7cad5 !important; border-radius: 12px; padding: 12px 14px; font-size: 14px; line-height: 1.5; }
+        body.account-theme-miro .miro-form-field textarea { min-height: 140px; resize: vertical; }
+        body.account-theme-miro .miro-form-field input:focus,
+        body.account-theme-miro .miro-form-field textarea:focus,
+        body.account-theme-miro .miro-form-field select:focus { border-color: var(--miro-blue) !important; box-shadow: 0 0 0 4px rgba(66,98,255,.12) !important; outline: none; }
+        body.account-theme-miro .miro-section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+        body.account-theme-miro .miro-section-heading h2 { margin: 0; color: #050038; font-size: 20px; font-weight: 500; letter-spacing: -.02em; }
+        body.account-theme-miro .miro-section-heading p { margin: 0; color: #6b6f7e; font-size: 13px; }
+        body.account-theme-miro .miro-list-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; border-top: 1px solid #eef0f3; padding: 16px 0; }
+        body.account-theme-miro .miro-list-row:first-child { border-top: 0; padding-top: 0; }
+        body.account-theme-miro .miro-list-row:last-child { padding-bottom: 0; }
+        body.account-theme-miro .miro-list-row__label { color: #6b6f7e; font-size: 12px; }
+        body.account-theme-miro .miro-list-row__value { color: #050038; font-size: 14px; font-weight: 500; text-align: right; }
+        body.account-theme-miro .miro-stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+        body.account-theme-miro .miro-stat { min-height: 132px; padding: 20px; }
+        body.account-theme-miro .miro-stat__value { margin-top: 16px; color: #050038; font-size: 28px; font-weight: 500; letter-spacing: -.04em; }
+        body.account-theme-miro .miro-stat__label { margin-top: 4px; color: #555a6a; font-size: 12px; line-height: 1.4; }
+        body.account-theme-miro .miro-profile-hero { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(260px, .8fr); gap: 24px; align-items: stretch; margin-bottom: 28px; }
+        body.account-theme-miro .miro-profile-hero__main { position: relative; overflow: hidden; padding: clamp(24px, 4vw, 40px); }
+        body.account-theme-miro .miro-profile-hero__main::after { position: absolute; right: -34px; bottom: -48px; width: 180px; height: 180px; border: 1px solid rgba(5,0,56,.12); border-radius: 50%; content: ""; }
+        body.account-theme-miro .miro-profile-hero__main > * { position: relative; z-index: 1; }
+        body.account-theme-miro .miro-profile-hero__side { padding: 24px; }
+        body.account-theme-miro .miro-avatar-xl { width: 82px; height: 82px; overflow: hidden; border: 3px solid rgba(255,255,255,.85); border-radius: 24px; background: var(--miro-teal); box-shadow: 0 8px 18px rgba(5,0,56,.1); }
+        body.account-theme-miro .miro-avatar-xl img { width: 100%; height: 100%; object-fit: cover; }
+        body.account-theme-miro .miro-avatar-xl__placeholder { display: grid; width: 100%; height: 100%; place-items: center; color: var(--miro-teal-deep); font-size: 30px; font-weight: 500; }
+        body.account-theme-miro .miro-mobile-close { display: none; }
+        body.account-theme-miro .account-flash { border-radius: 18px; padding: 14px 18px; font-size: 14px; line-height: 1.5; }
+        body.account-theme-miro .account-flash--success { border: 1px solid rgba(15,188,176,.22); background: var(--miro-teal); color: var(--miro-teal-deep); }
+        body.account-theme-miro .account-flash--error { border: 1px solid #fbd4d4; background: #fff5f5; color: #7f1d1d; }
+        body.account-theme-miro .account-site-link { display: flex; align-items: center; gap: 10px; margin: 0 12px 12px; border-radius: 12px; padding: 10px 12px; color: #6b6f7e; font-size: 13px; font-weight: 500; transition: background .18s ease, color .18s ease; }
+        body.account-theme-miro .account-site-link:hover { background: var(--miro-teal); color: var(--miro-teal-deep); }
 
         body.account-theme-miro input,
         body.account-theme-miro textarea,
@@ -269,7 +347,9 @@
         body.account-theme-miro .miro-directory-card__specialization { margin: 7px 0 0; color: #6b6f7e; font-size: 14px; }
         body.account-theme-miro .miro-directory-card__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
         body.account-theme-miro .miro-directory-card__tag { display: inline-flex; padding: 5px 9px; border-radius: 9999px; color: #1c1c1e; font-size: 11px; font-weight: 500; line-height: 1.2; }
-        body.account-theme-miro .miro-directory-card__tag--yellow { background: #fff4c4; }
+        body.account-theme-miro .miro-directory-card__tag--yellow { background: var(--miro-cream); }
+        body.account-theme-miro .miro-directory-card__tag--cream,
+        body.account-theme-miro .miro-directory-card__tag--orange { background: var(--miro-cream); }
         body.account-theme-miro .miro-directory-card__tag--teal { background: #c3faf5; color: #187574; }
         body.account-theme-miro .miro-directory-card__tag--rose { background: #ffd8f4; }
         body.account-theme-miro .miro-directory-card__tag--coral { background: #ffc6c6; }
@@ -285,10 +365,20 @@
         body.account-theme-miro .miro-directory-empty { padding: 40px; border: 1px dashed #c7cad5; border-radius: 28px; background: #fff; text-align: center; }
 
         @media (max-width: 767px) {
+            body.account-theme-miro .miro-page-header { display: block; }
+            body.account-theme-miro .miro-page-header .miro-actions { margin-top: 20px; }
+            body.account-theme-miro .miro-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            body.account-theme-miro .miro-profile-hero { grid-template-columns: 1fr; }
             body.account-theme-miro .miro-directory-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 520px) {
+            body.account-theme-miro .account-main { padding: 28px 16px 48px; }
+            body.account-theme-miro .miro-page-title { font-size: 34px; }
+            body.account-theme-miro .miro-actions > * { flex: 1 1 auto; }
+            body.account-theme-miro .miro-stat { min-height: 116px; padding: 16px; }
+            body.account-theme-miro .miro-stat__value { margin-top: 12px; font-size: 24px; }
+            body.account-theme-miro .miro-card { border-radius: 20px; }
             body.account-theme-miro .miro-directory-card__profile { grid-template-columns: 80px minmax(0, 1fr); gap: 14px; }
             body.account-theme-miro .miro-directory-card__avatar { width: 80px; height: 80px; border-radius: 14px; }
             body.account-theme-miro .miro-directory-card h2 { font-size: 19px; }
@@ -368,6 +458,10 @@
             </nav>
 
             <div class="shrink-0 border-t border-gray-100 px-3 py-4">
+                <a href="{{ url('/') }}" class="account-site-link">
+                    <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12h18M3 12l6-6m-6 6 6 6"/></svg>
+                    <span>{{ __('account.back_to_site') }}</span>
+                </a>
                 <form action="{{ route('account.logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-400 transition hover:bg-red-50 hover:text-red-600">
@@ -388,7 +482,7 @@
             <main class="account-main flex-1 overflow-y-auto px-6 py-8 lg:px-10">
                 @foreach(['success' => 'emerald', 'error' => 'red'] as $key => $color)
                     @if(session($key))
-                        <div class="mb-6 rounded-xl border border-{{ $color }}-200 bg-{{ $color }}-50 px-4 py-3 text-sm text-{{ $color }}-800">{{ session($key) }}</div>
+                        <div class="account-flash account-flash--{{ $key === 'success' ? 'success' : 'error' }} mb-6 rounded-xl border border-{{ $color }}-200 bg-{{ $color }}-50 px-4 py-3 text-sm text-{{ $color }}-800">{{ session($key) }}</div>
                     @endif
                 @endforeach
                 @yield('content')
