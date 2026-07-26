@@ -26,7 +26,16 @@
                     <article class="miro-card p-6 sm:p-7">
                         <div class="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
                             <div class="min-w-0">
-                                <span class="inline-flex rounded-full bg-[#c3faf5] px-3 py-1.5 text-xs font-medium text-[#187574]">{{ $opportunity->typeEmoji() }} {{ $opportunity->typeLabel() }}</span>
+                                <span class="miro-opportunity-type">
+                                    @if($opportunity->type === 'project')
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5v-9ZM3 7.5l9 4.5 9-4.5M12 12v9"/></svg>
+                                    @elseif($opportunity->type === 'meeting')
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 12h8m-4-4v8M5 5h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-4l-3 4-3-4H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/></svg>
+                                    @else
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 3v4m10-4v4M4 9h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/></svg>
+                                    @endif
+                                    {{ $opportunity->typeLabel() }}
+                                </span>
                                 <h2 class="mt-4 text-2xl font-medium tracking-tight text-[#050038]">{{ $opportunity->title }}</h2>
                             </div>
 

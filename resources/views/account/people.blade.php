@@ -68,9 +68,10 @@
         </div>
 
         @if($people->isEmpty())
-            <div class="miro-directory-empty">
-                <h2 class="text-xl font-bold text-slate-950">{{ __('account.people.empty_title') }}</h2>
-                <p class="mt-2 text-slate-600">{{ __('account.people.empty_text') }}</p>
+            <div class="miro-empty">
+                <span class="miro-empty__mark"><svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7-4v6m3-3h-6"/></svg></span>
+                <h2>{{ __('account.people.empty_title') }}</h2>
+                <p>{{ __('account.people.empty_text') }}</p>
             </div>
         @else
             <div class="miro-directory-grid">

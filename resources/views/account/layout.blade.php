@@ -122,6 +122,7 @@
             color: var(--miro-primary) !important;
             font-family: "Roobert PRO", "Noto Sans", Inter, system-ui, sans-serif !important;
         }
+        body.account-theme-miro :focus-visible { outline-color: var(--miro-blue); }
 
         body.account-theme-miro .account-sidebar,
         body.account-theme-miro .account-mobile-header {
@@ -234,12 +235,13 @@
         body.account-theme-miro [class~="border-slate-200"],
         body.account-theme-miro [class~="border-slate-300"] { border-color: var(--miro-hairline) !important; }
 
-        body.account-theme-miro [class*="rounded-[2rem]"] { border-radius: 28px !important; }
         body.account-theme-miro [class*="shadow-sm"],
         body.account-theme-miro [class*="shadow-xl"] { box-shadow: 0 12px 32px rgba(5, 0, 56, .06) !important; }
 
         /* Shared Miro cabinet primitives. Keep page templates focused on content. */
         body.account-theme-miro .account-sidebar { width: 272px; }
+        .account-nav-icon--active { background: linear-gradient(135deg, #7c3aed, #4f46e5); }
+        body.account-theme-miro .account-nav-icon--active { background: var(--miro-pink); color: var(--miro-primary); }
         body.account-theme-miro .account-main { padding: 40px clamp(20px, 4vw, 56px) 64px; }
         body.account-theme-miro .miro-page { width: 100%; max-width: 1180px; margin: 0 auto; }
         body.account-theme-miro .miro-page-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
@@ -257,6 +259,7 @@
         body.account-theme-miro .miro-button--outline { border-color: #c7cad5; background: #fff; color: var(--miro-primary); }
         body.account-theme-miro .miro-button--outline:hover { border-color: var(--miro-primary); }
         body.account-theme-miro .miro-button--text { min-height: auto; padding: 8px 0; color: var(--miro-blue); }
+        body.account-theme-miro .miro-opportunity-type { display: inline-flex; align-items: center; gap: 7px; border-radius: 9999px; background: var(--miro-teal); padding: 7px 12px; color: var(--miro-teal-deep); font-size: 12px; font-weight: 500; line-height: 1.3; }
         body.account-theme-miro .miro-card { border: 1px solid var(--miro-hairline); border-radius: 24px; background: #fff; box-shadow: 0 12px 32px rgba(5, 0, 56, .055); }
         body.account-theme-miro .miro-card--soft { background: #fafbfc; box-shadow: none; }
         body.account-theme-miro .miro-card--pink { background: var(--miro-pink); border-color: rgba(255,198,198,.75); box-shadow: none; }
@@ -449,8 +452,8 @@
                     @php $active = request()->routeIs($item['route']) || request()->routeIs($item['route'] . '.*'); @endphp
                     <a href="{{ route($item['route']) }}" @click="sidebarOpen = false"
                        class="group mb-0.5 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all duration-150 {{ $active ? 'bg-brand-50 font-semibold text-brand-700' : 'font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}">
-                        <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg {{ $active ? 'text-white' : 'bg-gray-100 text-gray-400 group-hover:bg-gray-200' }}" @if($active) style="background:linear-gradient(135deg,#7c3aed,#4f46e5)" @endif>
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $item['path'] }}"/></svg>
+                        <span class="account-nav-icon flex h-8 w-8 shrink-0 items-center justify-center rounded-lg {{ $active ? 'account-nav-icon--active text-white' : 'bg-gray-100 text-gray-400 group-hover:bg-gray-200' }}">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['path'] }}"/></svg>
                         </span>
                         <span class="flex-1">{{ $item['label'] }}</span>
                     </a>
@@ -474,7 +477,7 @@
         <div class="flex min-w-0 flex-1 flex-col">
             <header class="account-mobile-header sticky top-0 z-10 flex h-14 shrink-0 items-center gap-3 border-b border-gray-100 bg-white px-4 lg:hidden">
                 <button @click="sidebarOpen = true" class="flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 transition" aria-label="{{ __('account.open_menu') }}">
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
                 <span class="text-sm font-semibold text-[#0f172a]">@yield('title', __('account.cabinet'))</span>
             </header>

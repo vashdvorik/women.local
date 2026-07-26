@@ -45,6 +45,13 @@
             color: #1c1c1e !important;
             font-family: "Roobert PRO", "Noto Sans", Inter, system-ui, sans-serif !important;
         }
+        body.account-theme-miro :focus-visible { outline: 2px solid #4262ff; outline-offset: 3px; border-radius: 8px; }
+        body.account-theme-miro .account-login-languages { border-color: #eef0f3; background: #fff; box-shadow: 0 8px 20px rgba(5,0,56,.04); }
+        body.account-theme-miro .account-login-card { border-color: #eef0f3; border-radius: 24px; box-shadow: 0 12px 32px rgba(5,0,56,.06); }
+        body.account-theme-miro .account-login-step { color: #555a6a; }
+        body.account-theme-miro .account-login-step__number { background: #ffd8f4 !important; color: #050038 !important; }
+        body.account-theme-miro .account-login-button { border-radius: 9999px; box-shadow: none !important; }
+        body.account-theme-miro .account-login-muted { color: #6b6f7e !important; }
 
         body.account-theme-miro .bg-white { background-color: #fff !important; }
         body.account-theme-miro .bg-gray-50 { background-color: #fafbfc !important; }
@@ -75,7 +82,7 @@
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center bg-gray-50 px-4 account-theme-{{ $accountTheme }}">
-    <div class="fixed right-4 top-4 flex rounded-full border border-gray-200 bg-white p-1 shadow-sm">
+    <div class="account-login-languages fixed right-4 top-4 flex rounded-full border border-gray-200 bg-white p-1 shadow-sm">
         @foreach(['ru' => 'RU', 'en' => 'EN', 'ro' => 'RO'] as $locale => $label)
             <a href="{{ route('language.switch', $locale) }}"
                class="rounded-full px-3 py-1 text-xs font-semibold transition {{ app()->getLocale() === $locale ? 'bg-violet-700 text-white' : 'text-gray-500 hover:text-violet-700' }}">
@@ -106,29 +113,31 @@
         </div>
 
         @if(session('error'))
-            <div class="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{{ session('error') }}</div>
+        <div class="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{{ session('error') }}</div>
         @endif
         @if(session('success'))
             <div class="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{{ session('success') }}</div>
         @endif
 
-        <div class="rounded-2xl border border-gray-100 bg-white p-7 text-center shadow-sm">
+        <div class="account-login-card rounded-2xl border border-gray-100 bg-white p-7 text-center shadow-sm">
             <h2 class="mb-2 font-semibold text-gray-900">{{ __('account.login.telegram_title') }}</h2>
             <div class="mb-6 space-y-3 text-left">
                 @foreach([__('account.login.step_1'), __('account.login.step_2')] as $index => $step)
                     <div class="flex items-start gap-3">
-                        <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-violet-100 text-xs font-bold text-violet-700">{{ $index + 1 }}</span>
-                        <p class="text-sm text-gray-600">{{ $step }}</p>
+                        <span class="account-login-step__number mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-violet-100 text-xs font-bold text-violet-700">{{ $index + 1 }}</span>
+                        <p class="account-login-step text-sm text-gray-600">{{ $step }}</p>
                     </div>
                 @endforeach
             </div>
 
             <a href="https://t.me/WomenComBot?start=login" id="tg-login-btn" target="_blank"
-               class="inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-px hover:shadow-md"
+               aria-label="{{ __('account.login.open_bot') }}"
+               class="account-login-button inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-px hover:shadow-md"
                style="background:linear-gradient(135deg,#7c3aed,#4f46e5)">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m21 3-6.7 18-3.8-7.5L3 9.7 21 3Zm0 0L10.5 13.5"/></svg>
                 {{ __('account.login.open_bot') }}
             </a>
-            <p class="mt-3 text-xs text-gray-400">{{ __('account.login.approved_only') }}</p>
+            <p class="account-login-muted mt-3 text-xs text-gray-400">{{ __('account.login.approved_only') }}</p>
         </div>
 
         <p class="mt-6 text-center text-xs text-gray-400"><a href="/" class="hover:underline">{{ __('account.back_to_site') }}</a></p>

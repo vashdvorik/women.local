@@ -80,6 +80,33 @@ class AccountCabinetTest extends TestCase
             ->assertOk();
     }
 
+    public function test_all_cabinet_get_pages_render_when_authenticated(): void
+    {
+        $user = BotUser::factory()->approved()->create();
+        $person = BotUser::factory()->approved()->create();
+
+        $pages = [
+            ['account.index'],
+            ['account.profile'],
+            ['account.profile.edit'],
+            ['account.matches'],
+            ['account.people'],
+            ['account.people.show', $person],
+            ['account.search'],
+            ['account.knowledge'],
+            ['account.opportunities.index'],
+            ['account.opportunities.create'],
+        ];
+
+        foreach ($pages as $page) {
+            $route = array_shift($page);
+
+            $this->withSession($this->sessionFor($user))
+                ->get(route($route, $page))
+                ->assertOk();
+        }
+    }
+
     public function test_profile_page_returns_200_when_authenticated(): void
     {
         $user = BotUser::factory()->approved()->create();

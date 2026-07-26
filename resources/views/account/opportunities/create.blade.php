@@ -20,8 +20,8 @@
                 <div class="miro-form-field">
                     <label for="type">{{ __('account.opportunities.type') }}</label>
                     <select id="type" name="type">
-                        @foreach(['project' => '💼', 'meeting' => '🤝', 'event' => '📅'] as $type => $emoji)
-                            <option value="{{ $type }}" @selected(old('type', 'project') === $type)>{{ $emoji }} {{ __('account.types.' . $type) }}</option>
+                        @foreach(['project', 'meeting', 'event'] as $type)
+                            <option value="{{ $type }}" @selected(old('type', 'project') === $type)>{{ __('account.types.' . $type) }}</option>
                         @endforeach
                     </select>
                     @error('type')<p class="mt-2 text-xs font-medium text-red-600">{{ $message }}</p>@enderror
