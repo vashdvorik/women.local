@@ -245,7 +245,8 @@
         body.account-theme-miro .account-main { padding: 40px clamp(20px, 4vw, 56px) 64px; }
         body.account-theme-miro .miro-page { width: 100%; max-width: 1180px; margin: 0 auto; }
         body.account-theme-miro .miro-page-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
-        body.account-theme-miro .miro-page-header__copy { max-width: 760px; }
+        body.account-theme-miro .miro-page-header__copy { min-width: 0; max-width: 760px; }
+        body.account-theme-miro .miro-profile-header__action { flex: 0 0 auto; }
         body.account-theme-miro .miro-eyebrow { margin: 0 0 12px; color: var(--miro-teal-deep); font-size: 11px; font-weight: 600; letter-spacing: .12em; line-height: 1.4; text-transform: uppercase; }
         body.account-theme-miro .miro-page-title { margin: 0; color: #050038; font-size: clamp(32px, 4.5vw, 54px); font-weight: 500; letter-spacing: -.045em; line-height: 1.06; }
         body.account-theme-miro .miro-page-description { margin: 14px 0 0; color: #555a6a; font-size: 16px; line-height: 1.55; }
@@ -267,8 +268,17 @@
         body.account-theme-miro .miro-card--coral { background: var(--miro-coral); border-color: rgba(255,153,153,.55); box-shadow: none; }
         body.account-theme-miro .miro-card--cream { background: var(--miro-cream); border-color: rgba(255,198,198,.6); box-shadow: none; }
         body.account-theme-miro .miro-card__label { margin: 0 0 10px; color: #6b6f7e; font-size: 11px; font-weight: 600; letter-spacing: .1em; line-height: 1.4; text-transform: uppercase; }
+        body.account-theme-miro .miro-profile-contact-label { margin-top: 24px; }
         body.account-theme-miro .miro-card__title { margin: 0; color: #050038; font-size: 22px; font-weight: 500; letter-spacing: -.025em; line-height: 1.2; }
         body.account-theme-miro .miro-card__text { margin: 10px 0 0; color: #555a6a; font-size: 14px; line-height: 1.55; }
+        body.account-theme-miro .miro-danger-zone { margin-top: 32px; border: 1px solid rgba(255, 153, 153, .6); border-radius: 24px; background: #fff8fa; padding: clamp(20px, 3vw, 28px); box-shadow: none; }
+        body.account-theme-miro .miro-danger-zone__header { display: flex; align-items: flex-start; gap: 14px; }
+        body.account-theme-miro .miro-danger-zone__icon { display: inline-grid; width: 44px; height: 44px; flex: 0 0 auto; place-items: center; border-radius: 14px; background: var(--miro-coral); color: #7f1d1d; }
+        body.account-theme-miro .miro-danger-zone h2 { margin: 0; color: #7f1d1d; font-size: 15px; font-weight: 600; line-height: 1.4; }
+        body.account-theme-miro .miro-danger-zone p { max-width: 680px; margin: 6px 0 0; color: #8f4b56; font-size: 14px; line-height: 1.55; }
+        body.account-theme-miro .miro-danger-zone__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 18px; }
+        body.account-theme-miro .miro-button--danger { border-color: rgba(255, 153, 153, .9); background: var(--miro-coral); color: #7f1d1d; }
+        body.account-theme-miro .miro-button--danger:hover { border-color: #7f1d1d; background: #ffb0b8; color: #7f1d1d; }
         body.account-theme-miro .miro-icon-tile { display: inline-grid; width: 44px; height: 44px; place-items: center; border-radius: 14px; background: var(--miro-pink); color: var(--miro-primary); }
         body.account-theme-miro .miro-icon-tile--teal { background: var(--miro-teal); color: var(--miro-teal-deep); }
         body.account-theme-miro .miro-icon-tile--coral { background: var(--miro-coral); color: var(--miro-primary); }
@@ -313,6 +323,8 @@
         body.account-theme-miro .miro-avatar-xl img { width: 100%; height: 100%; object-fit: cover; }
         body.account-theme-miro .miro-avatar-xl__placeholder { display: grid; width: 100%; height: 100%; place-items: center; color: var(--miro-teal-deep); font-size: 30px; font-weight: 500; }
         body.account-theme-miro .miro-person-profile__eyebrow { margin: 24px 0 12px; text-align: center; }
+        body.account-theme-miro .miro-profile-telegram { display: inline-flex; align-items: center; gap: 8px; color: #050038; font-size: 14px; font-weight: 500; text-decoration: underline; text-decoration-color: rgba(24,117,116,.4); text-underline-offset: 4px; }
+        body.account-theme-miro .miro-profile-telegram:hover { text-decoration-color: #050038; }
         body.account-theme-miro .miro-mobile-close { display: none; }
         body.account-theme-miro .account-flash { border-radius: 18px; padding: 14px 18px; font-size: 14px; line-height: 1.5; }
         body.account-theme-miro .account-flash--success { border: 1px solid rgba(15,188,176,.22); background: var(--miro-teal); color: var(--miro-teal-deep); }
@@ -343,9 +355,9 @@
         body.account-theme-miro .miro-directory-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
         body.account-theme-miro .miro-directory-card { padding: 20px; border: 1px solid #eef0f3; border-radius: 24px; background: #fff; box-shadow: 0 12px 32px rgba(5, 0, 56, .06); }
         body.account-theme-miro .miro-directory-card__profile { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 18px; align-items: start; }
-        body.account-theme-miro .miro-directory-card__avatar { width: 112px; height: 112px; overflow: hidden; border-radius: 16px; background: linear-gradient(135deg, #c3faf5, #ffe6cd); }
+        body.account-theme-miro .miro-directory-card__avatar { width: 112px; height: 112px; overflow: hidden; border: 1px solid rgba(15, 188, 176, .2); border-radius: 20px; background: var(--miro-teal); }
         body.account-theme-miro .miro-directory-card__avatar img { width: 100%; height: 100%; object-fit: cover; }
-        body.account-theme-miro .miro-directory-card__avatar-placeholder { display: grid; width: 100%; height: 100%; place-items: center; color: #187574; font-size: 32px; font-weight: 600; }
+        body.account-theme-miro .miro-directory-card__avatar-placeholder { display: grid; width: 100%; height: 100%; place-items: center; color: #050038; font-size: 32px; font-weight: 500; }
         body.account-theme-miro .miro-directory-card__role { margin: 0 0 7px; color: #187574; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
         body.account-theme-miro .miro-directory-card h2 { margin: 0; color: #050038; font-size: 22px; font-weight: 500; line-height: 1.2; }
         body.account-theme-miro .miro-directory-card__specialization { margin: 7px 0 0; color: #6b6f7e; font-size: 14px; }
@@ -361,7 +373,7 @@
         body.account-theme-miro .miro-directory-card__description { margin: 18px 0 0; color: #555a6a; font-size: 14px; line-height: 1.55; }
         body.account-theme-miro .miro-directory-card__details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
         body.account-theme-miro .miro-directory-card__detail { padding: 14px; border-radius: 14px; background: #fafbfc; }
-        body.account-theme-miro .miro-directory-card__detail--offer { background: #fff4c4; }
+        body.account-theme-miro .miro-directory-card__detail--offer { border: 1px solid rgba(255, 198, 198, .72); background: var(--miro-pink); }
         body.account-theme-miro .miro-directory-card__detail-label { display: block; margin-bottom: 6px; color: #6b6f7e; font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
         body.account-theme-miro .miro-directory-card__detail p { margin: 0; color: #1c1c1e; font-size: 13px; line-height: 1.45; }
         body.account-theme-miro .miro-directory-card__contact { display: inline-flex; align-items: center; margin-top: 18px; padding: 10px 16px; border-radius: 9999px; background: #1c1c1e; color: #fff; font-size: 13px; font-weight: 500; transition: transform .18s ease, background .18s ease; }
@@ -370,6 +382,7 @@
 
         @media (max-width: 767px) {
             body.account-theme-miro .miro-page-header { display: block; }
+            body.account-theme-miro .miro-profile-header__action { display: flex; width: fit-content; margin-top: 20px; }
             body.account-theme-miro .miro-page-header .miro-actions { margin-top: 20px; }
             body.account-theme-miro .miro-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             body.account-theme-miro .miro-profile-hero { grid-template-columns: 1fr; }
@@ -384,7 +397,7 @@
             body.account-theme-miro .miro-stat__value { margin-top: 12px; font-size: 24px; }
             body.account-theme-miro .miro-card { border-radius: 20px; }
             body.account-theme-miro .miro-directory-card__profile { grid-template-columns: 80px minmax(0, 1fr); gap: 14px; }
-            body.account-theme-miro .miro-directory-card__avatar { width: 80px; height: 80px; border-radius: 14px; }
+            body.account-theme-miro .miro-directory-card__avatar { width: 80px; height: 80px; border-radius: 16px; }
             body.account-theme-miro .miro-directory-card h2 { font-size: 19px; }
             body.account-theme-miro .miro-directory-card__details { grid-template-columns: 1fr; }
         }

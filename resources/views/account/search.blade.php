@@ -60,7 +60,7 @@
                                 <div class="min-w-0">
                                     <p class="miro-eyebrow mb-2">{{ __('account.search.title') }}</p>
                                     <h2 class="truncate text-xl font-medium tracking-tight text-[#050038]">{{ $person->full_name ?: __('account.not_specified') }}</h2>
-                                    @if($person->telegram_username)<p class="mt-1 text-sm text-[#6b6f7e]">@{{ $person->telegram_username }}</p>@endif
+                                    @if($person->telegram_username)<p class="mt-1 text-sm text-[#6b6f7e]">{{ '@' . $person->telegram_username }}</p>@endif
                                     <p class="mt-3 line-clamp-2 text-sm leading-6 text-[#555a6a]">{{ $person->description ?: $person->expectation ?: __('account.not_filled') }}</p>
                                 </div>
                             </div>

@@ -42,7 +42,7 @@
                     <p class="miro-card__label">{{ __('account.dashboard.profile_label') }}</p>
                     <h2 class="miro-card__title">{{ $accountUser->full_name ?: __('account.not_specified') }}</h2>
                     @if($accountUser->telegram_username)
-                        <p class="mt-2 text-sm text-[#050038]/70">@{{ $accountUser->telegram_username }}</p>
+                        <p class="mt-2 text-sm text-[#050038]/70">{{ '@' . $accountUser->telegram_username }}</p>
                     @endif
                 </div>
             </div>

@@ -9,22 +9,27 @@
             <h1 class="miro-page-title">{{ __('account.profile.title') }}</h1>
             <p class="miro-page-description">{{ __('account.profile.subtitle') }}</p>
         </div>
-        <a href="{{ route('account.profile.edit') }}" class="miro-button miro-button--dark">{{ __('account.profile.edit') }}</a>
+        <a href="{{ route('account.profile.edit') }}" class="miro-button miro-button--dark miro-profile-header__action">{{ __('account.profile.edit') }}</a>
     </header>
 
     <div class="grid gap-6 lg:grid-cols-[.78fr_1.22fr]">
         <aside class="miro-card miro-card--pink p-6">
             <div class="miro-avatar-xl">
                 @if($accountUser->avatar_path)
-                    <img src="{{ Storage::url($accountUser->avatar_path) }}" alt="{{ $accountUser->full_name }}">
+                    <img src="{{ Storage::url($accountUser->avatar_path) }}" alt="{{ $accountUser->full_name ?: __('account.profile.contact_info') }}">
                 @else
-                    <div class="miro-avatar-xl__placeholder">{{ mb_strtoupper(mb_substr($accountUser->full_name ?? '?', 0, 1)) }}</div>
+                    <div class="miro-avatar-xl__placeholder">{{ mb_strtoupper(mb_substr($accountUser->full_name ?: $accountUser->telegram_username ?: '?', 0, 1)) }}</div>
                 @endif
             </div>
-            <p class="miro-card__label mt-6">{{ __('account.profile.contact_info') }}</p>
-            <h2 class="miro-card__title">{{ $accountUser->full_name ?: __('account.not_specified') }}</h2>
+            <p class="miro-card__label miro-profile-contact-label mt-6">{{ __('account.profile.contact_info') }}</p>
+            <h2 class="miro-card__title break-words">{{ $accountUser->full_name ?: __('account.not_specified') }}</h2>
             @if($accountUser->telegram_username)
-                <a href="https://t.me/{{ $accountUser->telegram_username }}" target="_blank" rel="noopener" class="mt-3 inline-flex text-sm font-medium text-[#050038] underline decoration-[#187574]/40 underline-offset-4 hover:decoration-[#050038]">{{ '@' . $accountUser->telegram_username }}</a>
+                <a href="https://t.me/{{ $accountUser->telegram_username }}" target="_blank" rel="noopener" class="miro-profile-telegram mt-3">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m21 3-7.2 18-3.4-7.4L3 10.2 21 3Zm0 0-10.6 10.6" />
+                    </svg>
+                    {{ '@' . $accountUser->telegram_username }}
+                </a>
             @else
                 <p class="mt-3 text-sm text-[#050038]/60">{{ __('account.profile.telegram_empty') }}</p>
             @endif
@@ -42,7 +47,7 @@
                         <p class="miro-card__label">{{ __('account.profile.description') }}</p>
                         <p class="m-0 whitespace-pre-line text-sm leading-6 text-[#050038]">{{ $accountUser->description ?: __('account.profile.description_empty') }}</p>
                     </div>
-                    <div class="rounded-2xl bg-[#fff4c4] p-4">
+                    <div class="miro-card--pink rounded-2xl p-4">
                         <p class="miro-card__label">{{ __('account.profile.expectation') }}</p>
                         <p class="m-0 whitespace-pre-line text-sm leading-6 text-[#050038]">{{ $accountUser->expectation ?: __('account.profile.expectation_empty') }}</p>
                     </div>
@@ -61,15 +66,35 @@
         </section>
     </div>
 
-    <div class="miro-card mt-8 border-red-100 bg-red-50/70 p-6">
-        <h2 class="text-sm font-semibold text-red-800">{{ __('account.profile.delete_title') }}</h2>
-        <p class="mt-1 max-w-2xl text-sm leading-6 text-red-700/80">{{ __('account.profile.delete_text') }}</p>
-        <form id="delete-profile-form" class="mt-4" action="{{ route('account.profile.delete') }}" method="POST">@csrf @method('DELETE')
-            <button type="button" onclick="confirmDelete()" class="miro-button border-red-300 bg-white text-red-700 hover:bg-red-600 hover:text-white">{{ __('account.profile.delete_button') }}</button>
-        </form>
+    <div class="miro-danger-zone">
+        <div class="miro-danger-zone__header">
+            <span class="miro-danger-zone__icon" aria-hidden="true">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 7h12m-9 0V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2m2 0v12a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V7m3 4v5m2-5v5" />
+                </svg>
+            </span>
+            <div class="min-w-0">
+                <h2>{{ __('account.profile.delete_title') }}</h2>
+                <p>{{ __('account.profile.delete_text') }}</p>
+            </div>
+        </div>
+        <div class="miro-danger-zone__actions">
+            <form id="delete-profile-form" action="{{ route('account.profile.delete') }}" method="POST" onsubmit="return confirmDeleteProfile(event)">@csrf @method('DELETE')
+                <button type="submit" class="miro-button miro-button--danger">{{ __('account.profile.delete_button') }}</button>
+            </form>
+        </div>
     </div>
 </div>
 @push('scripts')
-<script>function confirmDelete(){ if(confirm(@json(__('account.profile.delete_confirm')))){ document.getElementById('delete-profile-form').submit(); } }</script>
+<script>
+    function confirmDeleteProfile(event) {
+        if (!window.confirm(@json(__('account.profile.delete_confirm')))) {
+            event.preventDefault();
+            return false;
+        }
+
+        return true;
+    }
+</script>
 @endpush
 @endsection

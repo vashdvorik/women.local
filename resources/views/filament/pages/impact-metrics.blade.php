@@ -1106,7 +1106,7 @@
                                 <div class="impact-tag-row">
                                     <h3>{{ $member->full_name ?: 'Без имени' }}</h3>
                                     @if($member->telegram_username)
-                                        <span class="impact-tag">@{{ $member->telegram_username }}</span>
+                                        <span class="impact-tag">{{ '@' . $member->telegram_username }}</span>
                                     @endif
                                 </div>
                                 <p>{{ $member->description ?: 'Описание профиля пока не заполнено.' }}</p>

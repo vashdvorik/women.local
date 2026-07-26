@@ -116,6 +116,21 @@ class AccountCabinetTest extends TestCase
             ->assertOk();
     }
 
+    public function test_person_profile_renders_telegram_username_value(): void
+    {
+        $user = BotUser::factory()->approved()->create();
+        $person = BotUser::factory()->approved()->create([
+            'full_name' => 'Test Member',
+            'telegram_username' => 'test_member',
+        ]);
+
+        $this->withSession($this->sessionFor($user))
+            ->get(route('account.people.show', $person))
+            ->assertOk()
+            ->assertSee('@test_member')
+            ->assertDontSee('{{ $person->telegram_username }}', false);
+    }
+
     public function test_profile_update_saves_data(): void
     {
         Bus::fake([ComputeUserEmbedding::class]);

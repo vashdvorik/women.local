@@ -20,7 +20,7 @@
                 <h1 class="break-words text-center text-2xl font-medium tracking-tight text-[#050038]">{{ $person->full_name ?: __('account.not_specified') }}</h1>
 
                 @if($person->telegram_username)
-                    <p class="mt-2 text-center text-sm text-[#6b6f7e]">@{{ $person->telegram_username }}</p>
+                    <p class="mt-2 text-center text-sm text-[#6b6f7e]">{{ '@' . $person->telegram_username }}</p>
                     <a href="https://t.me/{{ $person->telegram_username }}" target="_blank" rel="noopener" class="miro-button miro-button--dark mt-7 w-full">
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m21 3-7.2 18-3.4-7.4L3 10.2 21 3Zm0 0-10.6 10.6" />
