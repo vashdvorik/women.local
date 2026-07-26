@@ -21,7 +21,7 @@ return [
         'home' => 'Principală',
         'matches' => 'Recomandări',
         'search' => 'Căutare contacte',
-        'people' => 'Antreprenoare',
+        'people' => 'Profilurile platformei',
         'opportunities' => 'Oportunități',
         'knowledge' => 'Învățare',
         'profile' => 'Profilul meu',
@@ -49,7 +49,7 @@ return [
         'complete_button' => 'Completează',
         'profile_note' => 'Prezentați-vă pe dvs. și afacerea',
         'matches_note' => 'Participante cu interese apropiate',
-        'people_note' => 'Catalogul participantelor comunității',
+        'people_note' => 'Catalogul participantelor și experților platformei',
     ],
 
     'profile' => [
@@ -81,8 +81,8 @@ return [
     ],
 
     'people' => [
-        'title' => 'Antreprenoare',
-        'subtitle' => 'Catalogul participantelor aprobate ale platformei.',
+        'title' => 'Profilurile platformei',
+        'subtitle' => 'Catalogul participantelor și experților aprobați ai platformei.',
         'empty_title' => 'Nu există încă alte participante',
         'empty_text' => 'Profilurile noi aprobate vor apărea aici.',
         'open' => 'Deschide profilul',

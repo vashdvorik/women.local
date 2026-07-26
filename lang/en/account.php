@@ -21,7 +21,7 @@ return [
         'home' => 'Home',
         'matches' => 'Recommendations',
         'search' => 'Contact search',
-        'people' => 'Entrepreneurs',
+        'people' => 'Platform profiles',
         'opportunities' => 'Opportunities',
         'knowledge' => 'Learning',
         'profile' => 'My profile',
@@ -49,7 +49,7 @@ return [
         'complete_button' => 'Complete',
         'profile_note' => 'Present yourself and your business',
         'matches_note' => 'Participants with relevant interests',
-        'people_note' => 'Community participant directory',
+        'people_note' => 'Directory of platform members and experts',
     ],
 
     'profile' => [
@@ -81,8 +81,8 @@ return [
     ],
 
     'people' => [
-        'title' => 'Entrepreneurs',
-        'subtitle' => 'Directory of approved platform participants.',
+        'title' => 'Platform profiles',
+        'subtitle' => 'Directory of approved platform members and experts.',
         'empty_title' => 'No other participants yet',
         'empty_text' => 'New approved profiles will appear here.',
         'open' => 'Open profile',

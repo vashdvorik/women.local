@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Women Entrepreneurs Platform</title>
     <meta name="description" content="Пространство для женщин-предпринимательниц: обучение, контакты, AI-рекомендации и возможности роста.">
+    <link rel="icon" type="image/png" href="{{ asset('images/brand/favicon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -59,9 +60,11 @@
         .miro-nav__inner { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
         .miro-brand { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; font-size: 16px; font-weight: 600; letter-spacing: -.02em; }
         .miro-brand__mark { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 6px; background: var(--miro-yellow); color: var(--miro-primary); font-size: 13px; font-weight: 600; }
+        .miro-brand__logo { width: 176px; height: 52px; object-fit: contain; }
         .miro-nav__links { display: flex; align-items: center; gap: 28px; color: var(--miro-slate); font-size: 14px; }
         .miro-nav__links a { transition: color .18s ease; }
-        .miro-nav__links a:hover { color: var(--miro-primary); }
+        .miro-nav__links a:hover, .miro-nav__links a.is-active { color: var(--miro-primary); }
+        .miro-nav__links a.is-active { font-weight: 600; }
         .miro-nav__actions { display: flex; align-items: center; gap: 10px; }
         .miro-languages { display: inline-flex; align-items: center; gap: 2px; margin-right: 8px; padding: 3px; border: 1px solid var(--miro-hairline); border-radius: 9999px; background: var(--miro-surface); }
         .miro-languages button { border: 0; border-radius: 9999px; padding: 5px 7px; background: transparent; color: var(--miro-steel); cursor: pointer; font: 500 11px/1 var(--miro-font); }
@@ -206,14 +209,27 @@
         .miro-member-card { display: grid; grid-template-columns: 112px 1fr; gap: 20px; align-items: center; padding: 16px; border: 1px solid var(--miro-hairline-soft); border-radius: 16px; background: #fff; }
         .miro-member-card img { width: 112px; height: 112px; border-radius: 12px; object-fit: cover; }
         .miro-member-card h4 { margin: 0; color: var(--miro-ink-deep); font-size: 18px; font-weight: 500; }
+        .miro-member-card__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+        .miro-profile-tag { display: inline-flex; align-items: center; padding: 5px 9px; border-radius: 9999px; color: var(--miro-primary); font-size: 11px; font-weight: 500; line-height: 1.2; }
+        .miro-profile-tag--yellow { background: var(--miro-yellow-light); }
+        .miro-profile-tag--teal { background: var(--miro-teal); color: #187574; }
+        .miro-profile-tag--rose { background: var(--miro-rose); }
+        .miro-profile-tag--coral { background: var(--miro-coral); }
+        .miro-profile-tag--blue { background: #eef1ff; color: var(--miro-blue); }
+        .miro-profile-tag--orange { background: var(--miro-orange); }
         .miro-member-card p { margin: 6px 0 0; color: var(--miro-steel); font-size: 14px; }
-        .miro-member-card__link { display: inline-flex; margin-top: 14px; color: var(--miro-blue); font-size: 14px; font-weight: 500; }
+        .miro-members__cta { display: flex; justify-content: center; margin-top: 32px; }
 
         .miro-event-card { overflow: hidden; border: 1px solid var(--miro-hairline-soft); border-radius: 16px; background: #fff; }
         .miro-event-card img { width: 100%; height: 196px; object-fit: cover; }
         .miro-event-card__body { padding: 24px; }
         .miro-event-card__body h3 { margin-top: 16px; font-size: 22px; }
         .miro-event-card__body p { margin: 10px 0 0; color: var(--miro-slate); }
+        .miro-event-card__link { display: inline-flex; align-items: center; margin-top: 20px; padding: 10px 16px; border-radius: 9999px; background: var(--miro-primary); color: #fff; font-size: 13px; font-weight: 500; transition: transform .18s ease, background .18s ease; }
+        .miro-event-card__link:hover { background: var(--miro-charcoal); transform: translateY(-1px); }
+        .miro-events__footer { display: flex; justify-content: center; margin-top: 32px; }
+        .miro-events__all-link { display: inline-flex; align-items: center; min-height: 44px; padding: 11px 22px; border: 1px solid var(--miro-hairline-strong); border-radius: 9999px; color: var(--miro-primary); font-size: 14px; font-weight: 500; transition: border-color .18s ease, background .18s ease; }
+        .miro-events__all-link:hover { border-color: var(--miro-primary); background: var(--miro-surface); }
 
         .miro-story { display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; border-radius: 28px; background: var(--miro-primary); color: #fff; }
         .miro-story img { width: 100%; height: 100%; min-height: 360px; object-fit: cover; }
@@ -229,6 +245,7 @@
         .miro-footer { padding: 64px 0 28px; background: var(--miro-primary); color: #fff; }
         .miro-footer__top { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 32px; padding-bottom: 56px; }
         .miro-footer__brand p { max-width: 250px; margin: 18px 0 0; color: var(--miro-muted); font-size: 14px; }
+        .miro-footer .miro-brand__logo { width: 214px; height: 62px; padding: 7px 10px; border-radius: 12px; background: #fff; }
         .miro-footer h4 { margin: 0 0 14px; font-size: 16px; font-weight: 500; }
         .miro-footer ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; color: var(--miro-muted); font-size: 14px; }
         .miro-footer li a:hover { color: #fff; }
@@ -299,18 +316,20 @@
     </style>
 </head>
 <body>
+    @include('partials.miro-header', ['miroCurrentPage' => 'home'])
+    @if(false)
     <nav class="miro-nav" id="miro-nav">
         <div class="miro-container miro-nav__inner">
             <a href="#top" class="miro-brand">
-                <span class="miro-brand__mark">W</span>
+                <img src="{{ asset('images/brand/logo.webp') }}" alt="Women Entrepreneurs Platform" class="miro-brand__logo">
                 <span>Women</span>
             </a>
             <div class="miro-nav__links" id="miro-nav-links">
                 <a href="#top"><span data-lang="ru">Главная</span><span data-lang="en">Home</span><span data-lang="ro">Acasă</span></a>
                 <a href="#about"><span data-lang="ru">О платформе</span><span data-lang="en">About</span><span data-lang="ro">Despre</span></a>
                 <a href="#learning"><span data-lang="ru">Обучение</span><span data-lang="en">Learning</span><span data-lang="ro">Învățare</span></a>
-                <a href="#members"><span data-lang="ru">Участницы</span><span data-lang="en">Members</span><span data-lang="ro">Membre</span></a>
-                <a href="#events"><span data-lang="ru">События</span><span data-lang="en">Events</span><span data-lang="ro">Evenimente</span></a>
+                <a href="{{ route('members') }}"><span data-lang="ru">Участницы</span><span data-lang="en">Members</span><span data-lang="ro">Membre</span></a>
+                <a href="{{ route('events') }}"><span data-lang="ru">События</span><span data-lang="en">Events</span><span data-lang="ro">Evenimente</span></a>
                 <a href="#opportunities"><span data-lang="ru">Возможности</span><span data-lang="en">Opportunities</span><span data-lang="ro">Oportunități</span></a>
                 <a href="#contact"><span data-lang="ru">Контакты</span><span data-lang="en">Contact</span><span data-lang="ro">Contact</span></a>
                 <div class="miro-nav__mobile-menu">
@@ -343,6 +362,7 @@
             </div>
         </div>
     </nav>
+    @endif
 
     <main id="top">
         <section class="miro-hero miro-hero--image">
@@ -479,52 +499,6 @@
             </div>
         </section>
 
-        <section class="miro-section miro-section--surface" id="opportunities">
-            <div class="miro-container">
-                <div class="miro-section__head miro-section__head--center">
-                    <p class="miro-eyebrow"><span data-lang="ru">Возможности платформы</span><span data-lang="en">What the platform offers</span><span data-lang="ro">Ce oferă platforma</span></p>
-                    <h2><span data-lang="ru">Инструменты для движения вперёд</span><span data-lang="en">Tools to keep moving forward</span><span data-lang="ro">Instrumente pentru a merge mai departe</span></h2>
-                </div>
-                <div class="miro-offers">
-                    <article class="miro-offer"><div class="miro-offer__icon">◎</div><h3><span data-lang="ru">Личный профиль</span><span data-lang="en">Personal profile</span><span data-lang="ro">Profil personal</span></h3><p><span data-lang="ru">Покажите свой опыт и запрос.</span><span data-lang="en">Show your experience and needs.</span><span data-lang="ro">Arată-ți experiența și nevoile.</span></p></article>
-                    <article class="miro-offer"><div class="miro-offer__icon">□</div><h3><span data-lang="ru">Витрина бизнеса</span><span data-lang="en">Business showcase</span><span data-lang="ro">Prezentarea afacerii</span></h3><p><span data-lang="ru">Расскажите о продукте и услугах.</span><span data-lang="en">Present your products and services.</span><span data-lang="ro">Prezintă produsele și serviciile.</span></p></article>
-                    <article class="miro-offer"><div class="miro-offer__icon">△</div><h3><span data-lang="ru">Учебные модули</span><span data-lang="en">Training modules</span><span data-lang="ro">Module de instruire</span></h3><p><span data-lang="ru">Практические знания для бизнеса.</span><span data-lang="en">Practical knowledge for business.</span><span data-lang="ro">Cunoștințe practice pentru afaceri.</span></p></article>
-                    <article class="miro-offer"><div class="miro-offer__icon">↔</div><h3><span data-lang="ru">Нетворкинг</span><span data-lang="en">Networking</span><span data-lang="ro">Networking</span></h3><p><span data-lang="ru">Полезные связи и обмен опытом.</span><span data-lang="en">Useful connections and peer learning.</span><span data-lang="ro">Conexiuni utile și schimb de experiență.</span></p></article>
-                    <article class="miro-offer"><div class="miro-offer__icon">✦</div><h3><span data-lang="ru">Менторство</span><span data-lang="en">Mentorship</span><span data-lang="ro">Mentorat</span></h3><p><span data-lang="ru">Поддержка опытных эксперток.</span><span data-lang="en">Support from experienced experts.</span><span data-lang="ro">Sprijin de la experți cu experiență.</span></p></article>
-                    <article class="miro-offer"><div class="miro-offer__icon">+</div><h3><span data-lang="ru">Запросы бизнеса</span><span data-lang="en">Business requests</span><span data-lang="ro">Solicitări de business</span></h3><p><span data-lang="ru">Публикуйте задачи и ищите решения.</span><span data-lang="en">Share challenges and find solutions.</span><span data-lang="ro">Distribuie provocări și găsește soluții.</span></p></article>
-                    <article class="miro-offer"><div class="miro-offer__icon">▦</div><h3><span data-lang="ru">Календарь событий</span><span data-lang="en">Events calendar</span><span data-lang="ro">Calendarul evenimentelor</span></h3><p><span data-lang="ru">Планируйте обучение и встречи.</span><span data-lang="en">Plan learning and meetings.</span><span data-lang="ro">Planifică învățarea și întâlnirile.</span></p></article>
-                    <article class="miro-offer"><div class="miro-offer__icon">≡</div><h3><span data-lang="ru">Библиотека ресурсов</span><span data-lang="en">Resource library</span><span data-lang="ro">Biblioteca de resurse</span></h3><p><span data-lang="ru">Собранные материалы для роста.</span><span data-lang="en">Curated materials for growth.</span><span data-lang="ro">Materiale selectate pentru creștere.</span></p></article>
-                </div>
-            </div>
-        </section>
-
-        <section class="miro-section" id="about">
-            <div class="miro-container">
-                <div class="miro-section__head">
-                    <p class="miro-eyebrow"><span data-lang="ru">О платформе</span><span data-lang="en">About the platform</span><span data-lang="ro">Despre platformă</span></p>
-                    <h2><span data-lang="ru">Ваше сообщество — это рабочее пространство для роста</span><span data-lang="en">Your community is a workspace for growth</span><span data-lang="ro">Comunitatea ta este un spațiu pentru creștere</span></h2>
-                    <p><span data-lang="ru">Участницы приходят с разными задачами, но находят здесь одну понятную точку опоры: людей, знания и практические возможности.</span><span data-lang="en">Members arrive with different challenges and find one clear place to move forward: people, knowledge and practical opportunities.</span><span data-lang="ro">Membrele vin cu provocări diferite și găsesc un punct clar de sprijin: oameni, cunoștințe și oportunități practice.</span></p>
-                </div>
-                <div class="miro-grid-3">
-                    <article class="miro-feature-card miro-feature-card--yellow">
-                        <div class="miro-feature-card__icon">01</div>
-                        <h3><span data-lang="ru">Видеть картину целиком</span><span data-lang="en">See the whole picture</span><span data-lang="ro">Vezi imaginea completă</span></h3>
-                        <p><span data-lang="ru">Профиль, запросы, возможности и события собраны в одном понятном цифровом пространстве.</span><span data-lang="en">Your profile, needs, opportunities and events live in one clear digital space.</span><span data-lang="ro">Profilul, nevoile, oportunitățile și evenimentele într-un singur spațiu digital.</span></p>
-                    </article>
-                    <article class="miro-feature-card miro-feature-card--coral">
-                        <div class="miro-feature-card__icon">02</div>
-                        <h3><span data-lang="ru">Соединяться точнее</span><span data-lang="en">Connect with purpose</span><span data-lang="ro">Conectează-te cu scop</span></h3>
-                        <p><span data-lang="ru">AI помогает найти участниц с близкой экспертизой, запросом или форматом сотрудничества.</span><span data-lang="en">AI helps you find members with relevant expertise, needs or collaboration formats.</span><span data-lang="ro">AI te ajută să găsești membre cu expertiză și nevoi relevante.</span></p>
-                    </article>
-                    <article class="miro-feature-card miro-feature-card--teal">
-                        <div class="miro-feature-card__icon">03</div>
-                        <h3><span data-lang="ru">Двигаться вместе</span><span data-lang="en">Move forward together</span><span data-lang="ro">Creșteți împreună</span></h3>
-                        <p><span data-lang="ru">От первого знакомства до партнёрства, обучения и новых клиентов — каждый шаг становится действием.</span><span data-lang="en">From a first introduction to partnership, learning and new clients — every step becomes action.</span><span data-lang="ro">De la prima conexiune la parteneriat, învățare și clienți noi.</span></p>
-                    </article>
-                </div>
-            </div>
-        </section>
-
         <section class="miro-section miro-section--surface" id="features">
             <div class="miro-container">
                 <div class="miro-section__head miro-section__head--center">
@@ -601,14 +575,18 @@
         <section class="miro-section miro-section--soft" id="members">
             <div class="miro-container">
                 <div class="miro-section__head">
-                    <p class="miro-eyebrow"><span data-lang="ru">Участницы</span><span data-lang="en">Members</span><span data-lang="ro">Membre</span></p>
-                    <h2><span data-lang="ru">Разные бизнесы. Общий импульс.</span><span data-lang="en">Different businesses. Shared momentum.</span><span data-lang="ro">Afaceri diferite. Același impuls.</span></h2>
+                    <p class="miro-eyebrow"><span data-lang="ru">Профили платформы</span><span data-lang="en">Platform profiles</span><span data-lang="ro">Profilurile platformei</span></p>
+                    <h2><span data-lang="ru">Знакомьтесь с нашими экспертами</span><span data-lang="en">Meet registered members and experts</span><span data-lang="ro">Cunoaște participantele și expertele platformei</span></h2>
+                    <p><span data-lang="ru">Здесь представлены предприниматели и эксперты, которые уже зарегистрированы на платформе, рассказывают о своей работе и открыты к сотрудничеству.</span><span data-lang="en">Meet women entrepreneurs and experts already registered on the platform, presenting their work and open to collaboration.</span><span data-lang="ro">Descoperă antreprenoarele și expertele deja înregistrate pe platformă, care își prezintă activitatea și sunt deschise colaborării.</span></p>
                 </div>
                 <div class="miro-grid-2">
-                    <article class="miro-member-card"><img src="{{ asset('images/member-fashion.webp') }}" alt="Fashion business owner" loading="lazy"><div><h4>Fashion & design</h4><p><span data-lang="ru">Создаёт продукт, ищет новые каналы продаж и партнёров.</span><span data-lang="en">Building a product, looking for new sales channels and partners.</span><span data-lang="ro">Construiește un produs și caută canale și parteneri noi.</span></p><a class="miro-member-card__link" href="{{ route('account.login') }}"><span data-lang="ru">Найти похожие профили →</span><span data-lang="en">Find similar profiles →</span><span data-lang="ro">Găsește profiluri similare →</span></a></div></article>
-                    <article class="miro-member-card"><img src="{{ asset('images/member-digital.webp') }}" alt="Digital business owner" loading="lazy"><div><h4>Digital services</h4><p><span data-lang="ru">Помогает бизнесам становиться заметнее и эффективнее.</span><span data-lang="en">Helping businesses become more visible and effective.</span><span data-lang="ro">Ajută afacerile să devină mai vizibile și eficiente.</span></p><a class="miro-member-card__link" href="{{ route('account.login') }}"><span data-lang="ru">Открыть каталог участниц →</span><span data-lang="en">Open the member directory →</span><span data-lang="ro">Deschide catalogul membrelor →</span></a></div></article>
-                    <article class="miro-member-card"><img src="{{ asset('images/member-agrifood.webp') }}" alt="Agrifood business owner" loading="lazy"><div><h4>Agri & food</h4><p><span data-lang="ru">Развивает локальный бизнес и ищет устойчивые связи.</span><span data-lang="en">Growing a local business and building sustainable connections.</span><span data-lang="ro">Dezvoltă o afacere locală și construiește conexiuni durabile.</span></p><a class="miro-member-card__link" href="{{ route('account.login') }}"><span data-lang="ru">Посмотреть возможности →</span><span data-lang="en">See opportunities →</span><span data-lang="ro">Vezi oportunitățile →</span></a></div></article>
-                    <article class="miro-member-card"><img src="{{ asset('images/hero-community.webp') }}" alt="Women entrepreneurs community" loading="lazy"><div><h4>Community builders</h4><p><span data-lang="ru">Соединяют людей, идеи и энергию для общего результата.</span><span data-lang="en">Connecting people, ideas and energy for a shared result.</span><span data-lang="ro">Conectează oameni, idei și energie pentru rezultate comune.</span></p><a class="miro-member-card__link" href="{{ $botUrl }}" target="_blank" rel="noopener"><span data-lang="ru">Стать частью →</span><span data-lang="en">Become part of it →</span><span data-lang="ro">Devino parte →</span></a></div></article>
+                    <article class="miro-member-card"><img src="{{ asset('images/member-fashion.webp') }}" alt="Fashion and design participant profile" loading="lazy"><div><h4><span data-lang="ru">Участница · Мода и дизайн</span><span data-lang="en">Member · Fashion &amp; design</span><span data-lang="ro">Participantă · Modă și design</span></h4><div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--yellow"><span data-lang="ru">Участница</span><span data-lang="en">Member</span><span data-lang="ro">Participantă</span></span><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Дизайн</span><span data-lang="en">Design</span><span data-lang="ro">Design</span></span><span class="miro-profile-tag miro-profile-tag--teal"><span data-lang="ru">Ищет партнёров</span><span data-lang="en">Looking for a partner</span><span data-lang="ro">Caută partener</span></span></div><p><span data-lang="ru">President of the Association of Women Entrepreneurs in Moldova (AFAM).</span><span data-lang="en">Building a product and open to new sales channels and partnerships.</span><span data-lang="ro">Dezvoltă un produs și este deschisă canalelor noi de vânzare și parteneriatelor.</span></p></div></article>
+                    <article class="miro-member-card"><img src="{{ asset('images/member-digital.webp') }}" alt="Digital services expert profile" loading="lazy"><div><h4><span data-lang="ru">Каролина Бугаян · Президент Ассоциации </span><span data-lang="en">Expert · Digital services</span><span data-lang="ro">Expertă · Servicii digitale</span></h4><div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Эксперт</span><span data-lang="en">Expert</span><span data-lang="ro">Expertă</span></span><span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Бизнесмен</span><span data-lang="en">Marketing</span><span data-lang="ro">Marketing</span></span><span class="miro-profile-tag miro-profile-tag--yellow"><span data-lang="ru">Ищет партнеров</span><span data-lang="en">Offers services</span><span data-lang="ro">Oferă servicii</span></span></div><p><span data-lang="ru">President of the Association of Women Entrepreneurs in Moldova (AFAM).</span><span data-lang="en">Helping businesses become more visible, clear and effective.</span><span data-lang="ro">Ajută afacerile să devină mai vizibile, mai clare și mai eficiente.</span></p></div></article>
+                    <article class="miro-member-card"><img src="{{ asset('images/member-agrifood.webp') }}" alt="Agrifood participant profile" loading="lazy"><div><h4><span data-lang="ru">Участница · Агро и продукты</span><span data-lang="en">Member · Agri &amp; food</span><span data-lang="ro">Participantă · Agri și produse</span></h4><div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--teal"><span data-lang="ru">Участница</span><span data-lang="en">Member</span><span data-lang="ro">Participantă</span></span><span class="miro-profile-tag miro-profile-tag--orange"><span data-lang="ru">Агро и продукты</span><span data-lang="en">Agri &amp; food</span><span data-lang="ro">Agri și produse</span></span><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Ищет новые рынки</span><span data-lang="en">Looking for new markets</span><span data-lang="ro">Caută piețe noi</span></span></div><p><span data-lang="ru">Развивает локальный бизнес и ищет устойчивые деловые связи.</span><span data-lang="en">Growing a local business and building sustainable business connections.</span><span data-lang="ro">Dezvoltă o afacere locală și construiește conexiuni de business durabile.</span></p></div></article>
+                    <article class="miro-member-card"><img src="{{ asset('images/hero-community.webp') }}" alt="Women entrepreneurs community profile" loading="lazy"><div><h4><span data-lang="ru">Эксперт · Развитие сообщества</span><span data-lang="en">Expert · Community building</span><span data-lang="ro">Expertă · Dezvoltarea comunității</span></h4><div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Эксперт</span><span data-lang="en">Expert</span><span data-lang="ro">Expertă</span></span><span class="miro-profile-tag miro-profile-tag--teal"><span data-lang="ru">Менторство</span><span data-lang="en">Mentorship</span><span data-lang="ro">Mentorat</span></span><span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Открыта к сотрудничеству</span><span data-lang="en">Open to collaboration</span><span data-lang="ro">Deschisă colaborării</span></span></div><p><span data-lang="ru">Соединяет людей, идеи и возможности для общего результата.</span><span data-lang="en">Connecting people, ideas and opportunities for a shared result.</span><span data-lang="ro">Conectează oameni, idei și oportunități pentru rezultate comune.</span></p></div></article>
+                </div>
+                <div class="miro-members__cta">
+                    <a class="miro-button miro-button--primary" href="{{ route('account.login') }}"><span data-lang="ru">Найти похожие профили&nbsp;→</span><span data-lang="en">Find similar profiles&nbsp;→</span><span data-lang="ro">Găsește profiluri similare&nbsp;→</span></a>
                 </div>
             </div>
         </section>
@@ -616,14 +594,17 @@
         <section class="miro-section" id="events">
             <div class="miro-container">
                 <div class="miro-section__head miro-section__head--center">
-                    <p class="miro-eyebrow"><span data-lang="ru">События</span><span data-lang="en">Events</span><span data-lang="ro">Evenimente</span></p>
-                    <h2><span data-lang="ru">Встречайтесь не только онлайн</span><span data-lang="en">Make the connection real</span><span data-lang="ro">Transformă conexiunea în realitate</span></h2>
-                    <p><span data-lang="ru">Практические воркшопы, нетворкинг и события, где можно познакомиться с людьми за пределами экрана.</span><span data-lang="en">Practical workshops, networking and events that bring people together beyond the screen.</span><span data-lang="ro">Workshopuri, networking și evenimente care aduc oamenii împreună dincolo de ecran.</span></p>
+                    <p class="miro-eyebrow"><span data-lang="ru">Новости и возможности</span><span data-lang="en">News &amp; opportunities</span><span data-lang="ro">Noutăți și oportunități</span></p>
+                    <h2><span data-lang="ru">Мероприятия, встречи и новые возможности</span><span data-lang="en">Meet, learn and discover new opportunities</span><span data-lang="ro">Întâlnește-te, învață și descoperă oportunități</span></h2>
+                    <p><span data-lang="ru">Практические воркшопы, нетворкинг, объявления, гранты и партнёрские возможности — всё, что помогает двигаться дальше.</span><span data-lang="en">Practical workshops, networking, announcements, grants and partner opportunities to help you move forward.</span><span data-lang="ro">Workshopuri practice, networking, anunțuri, granturi și oportunități de parteneriat pentru următorul tău pas.</span></p>
                 </div>
                 <div class="miro-grid-3">
-                    <article class="miro-event-card"><img src="{{ asset('images/event-workshop.webp') }}" alt="Business workshop" loading="lazy"><div class="miro-event-card__body"><span class="miro-tag"><span data-lang="ru">Workshop</span><span data-lang="en">Workshop</span><span data-lang="ro">Workshop</span></span><h3>Business lab</h3><p><span data-lang="ru">Разложить задачу на понятные шаги вместе с экспертами.</span><span data-lang="en">Break a business challenge into clear steps with experts.</span><span data-lang="ro">Transformă o provocare de business în pași clari.</span></p></div></article>
-                    <article class="miro-event-card"><img src="{{ asset('images/event-networking.webp') }}" alt="Networking event" loading="lazy"><div class="miro-event-card__body"><span class="miro-tag" style="background: #eef1ff; color: var(--miro-blue);"><span data-lang="ru">Networking</span><span data-lang="en">Networking</span><span data-lang="ro">Networking</span></span><h3>Meet & connect</h3><p><span data-lang="ru">Найти людей, с которыми хочется продолжить разговор после встречи.</span><span data-lang="en">Meet people you want to keep talking to after the event.</span><span data-lang="ro">Cunoaște oameni cu care vrei să continui conversația.</span></p></div></article>
-                    <article class="miro-event-card"><img src="{{ asset('images/event-esg.webp') }}" alt="ESG event" loading="lazy"><div class="miro-event-card__body"><span class="miro-tag" style="background: var(--miro-teal); color: #187574;"><span data-lang="ru">Impact</span><span data-lang="en">Impact</span><span data-lang="ro">Impact</span></span><h3>Ideas with impact</h3><p><span data-lang="ru">Обсудить устойчивый рост, партнёрства и пользу для сообщества.</span><span data-lang="en">Explore sustainable growth, partnerships and community impact.</span><span data-lang="ro">Explorează creșterea durabilă și impactul pentru comunitate.</span></p></div></article>
+                    <article class="miro-event-card"><img src="{{ asset('images/event-workshop.webp') }}" alt="Business workshop" loading="lazy"><div class="miro-event-card__body"><span class="miro-tag"><span data-lang="ru">Обучение</span><span data-lang="en">Learning</span><span data-lang="ro">Învățare</span></span><h3><span data-lang="ru">Бизнес-лаборатория</span><span data-lang="en">Business lab</span><span data-lang="ro">Laborator de business</span></h3><p><span data-lang="ru">Разберите бизнес-задачу на понятные шаги вместе с экспертами.</span><span data-lang="en">Break a business challenge into clear steps with experts.</span><span data-lang="ro">Transformă o provocare de business în pași clari cu experți.</span></p><a href="{{ $communityUrl }}" target="_blank" rel="noopener" class="miro-event-card__link"><span data-lang="ru">Подробнее&nbsp;→</span><span data-lang="en">Read more&nbsp;→</span><span data-lang="ro">Află mai multe&nbsp;→</span></a></div></article>
+                    <article class="miro-event-card"><img src="{{ asset('images/event-networking.webp') }}" alt="Networking event" loading="lazy"><div class="miro-event-card__body"><span class="miro-tag" style="background: #eef1ff; color: var(--miro-blue);"><span data-lang="ru">Нетворкинг</span><span data-lang="en">Networking</span><span data-lang="ro">Networking</span></span><h3><span data-lang="ru">Встречайтесь и знакомьтесь</span><span data-lang="en">Meet &amp; connect</span><span data-lang="ro">Cunoaște și conectează-te</span></h3><p><span data-lang="ru">Находите людей, с которыми хочется продолжить разговор после встречи.</span><span data-lang="en">Meet people you want to keep talking to after the event.</span><span data-lang="ro">Cunoaște oameni cu care vrei să continui conversația.</span></p><a href="{{ $communityUrl }}" target="_blank" rel="noopener" class="miro-event-card__link"><span data-lang="ru">Подробнее&nbsp;→</span><span data-lang="en">Read more&nbsp;→</span><span data-lang="ro">Află mai multe&nbsp;→</span></a></div></article>
+                    <article class="miro-event-card"><img src="{{ asset('images/event-esg.webp') }}" alt="ESG event" loading="lazy"><div class="miro-event-card__body"><span class="miro-tag" style="background: var(--miro-teal); color: #187574;"><span data-lang="ru">Возможности</span><span data-lang="en">Opportunities</span><span data-lang="ro">Oportunități</span></span><h3><span data-lang="ru">Идеи с влиянием</span><span data-lang="en">Ideas with impact</span><span data-lang="ro">Idei cu impact</span></h3><p><span data-lang="ru">Узнавайте об устойчивом росте, партнёрствах и возможностях для сообщества.</span><span data-lang="en">Explore sustainable growth, partnerships and opportunities for the community.</span><span data-lang="ro">Descoperă creșterea durabilă, parteneriatele și oportunitățile pentru comunitate.</span></p><a href="{{ $communityUrl }}" target="_blank" rel="noopener" class="miro-event-card__link"><span data-lang="ru">Подробнее&nbsp;→</span><span data-lang="en">Read more&nbsp;→</span><span data-lang="ro">Află mai multe&nbsp;→</span></a></div></article>
+                </div>
+                <div class="miro-events__footer">
+                    <a href="{{ route('events') }}" class="miro-events__all-link"><span data-lang="ru">Все новости&nbsp;→</span><span data-lang="en">All news&nbsp;→</span><span data-lang="ro">Toate noutățile&nbsp;→</span></a>
                 </div>
             </div>
         </section>
@@ -655,6 +636,8 @@
         </section>
     </main>
 
+    @include('partials.miro-footer')
+    @if(false)
     <footer class="miro-footer" id="contact">
         <div class="miro-container">
             <div class="miro-footer__top">
@@ -662,14 +645,15 @@
                     <a href="#top" class="miro-brand"><span class="miro-brand__mark">W</span><span>Women Entrepreneurs Platform</span></a>
                     <p><span data-lang="ru">Цифровое пространство для женщин-предпринимательниц из двух берегов.</span><span data-lang="en">A digital space for women entrepreneurs from both banks.</span><span data-lang="ro">Un spațiu digital pentru femeile antreprenoare de pe ambele maluri.</span></p>
                 </div>
-                <div><h4><span data-lang="ru">Платформа</span><span data-lang="en">Platform</span><span data-lang="ro">Platformă</span></h4><ul><li><a href="#about">About</a></li><li><a href="#features">AI matching</a></li><li><a href="#members">Members</a></li></ul></div>
-                <div><h4><span data-lang="ru">Ресурсы</span><span data-lang="en">Resources</span><span data-lang="ro">Resurse</span></h4><ul><li><a href="#learning">Learning</a></li><li><a href="#events">Events</a></li><li><a href="#stories">Stories</a></li></ul></div>
+                <div><h4><span data-lang="ru">Платформа</span><span data-lang="en">Platform</span><span data-lang="ro">Platformă</span></h4><ul><li><a href="#about">About</a></li><li><a href="#features">AI matching</a></li><li><a href="{{ route('members') }}">Members</a></li></ul></div>
+                <div><h4><span data-lang="ru">Ресурсы</span><span data-lang="en">Resources</span><span data-lang="ro">Resurse</span></h4><ul><li><a href="#learning">Learning</a></li><li><a href="{{ route('events') }}">Events</a></li><li><a href="#stories">Stories</a></li></ul></div>
                 <div><h4><span data-lang="ru">Контакты</span><span data-lang="en">Contact</span><span data-lang="ro">Contact</span></h4><ul><li><a href="{{ $botUrl }}" target="_blank" rel="noopener">@WomenComBot</a></li><li><a href="{{ $managerUrl }}" target="_blank" rel="noopener">Project team</a></li><li><a href="{{ $communityUrl }}" target="_blank" rel="noopener">Community</a></li></ul></div>
                 <div><h4><span data-lang="ru">Вход</span><span data-lang="en">Access</span><span data-lang="ro">Acces</span></h4><ul><li><a href="{{ route('account.login') }}"><span data-lang="ru">Кабинет участницы</span><span data-lang="en">Participant cabinet</span><span data-lang="ro">Cabinetul membrei</span></a></li><li><a href="{{ $botUrl }}" target="_blank" rel="noopener">Telegram</a></li></ul></div>
             </div>
             <div class="miro-footer__bottom"><span>© {{ date('Y') }} Women Entrepreneurs Platform</span><span><span data-lang="ru">Сделано для роста через связи</span><span data-lang="en">Made for growth through connection</span><span data-lang="ro">Creat pentru creștere prin conexiuni</span></span></div>
         </div>
     </footer>
+    @endif
 
     <script>
         (function () {

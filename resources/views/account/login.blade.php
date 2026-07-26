@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ __('account.login.title') }} — {{ __('account.brand') }}</title>
     <meta name="robots" content="noindex,nofollow">
+    <link rel="icon" type="image/png" href="{{ asset('images/brand/favicon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -89,9 +90,7 @@
     </div>
 
     <div id="tma-not-member" style="display:none" class="w-full max-w-sm text-center">
-        <span class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl shadow-lg" style="background:linear-gradient(135deg,#7c3aed,#4f46e5)">
-            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-        </span>
+        <img src="{{ asset('images/brand/logo.webp') }}" alt="Women Entrepreneurs Platform" class="mx-auto mb-4 h-16 w-auto max-w-[280px] object-contain">
         <h1 class="mb-2 text-2xl font-bold text-gray-900">{{ __('account.brand') }}</h1>
         <div class="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
             <p class="mb-1 text-sm font-medium text-gray-700">{{ __('account.login.closed_title') }}</p>
@@ -101,9 +100,7 @@
 
     <div id="login-form-wrapper" class="w-full max-w-sm">
         <div class="mb-8 flex flex-col items-center text-center">
-            <span class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl shadow-lg" style="background:linear-gradient(135deg,#7c3aed,#4f46e5)">
-                <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-            </span>
+            <img src="{{ asset('images/brand/logo.webp') }}" alt="Women Entrepreneurs Platform" class="mb-4 h-16 w-auto max-w-[280px] object-contain">
             <h1 class="text-2xl font-bold text-gray-900">{{ __('account.brand') }}</h1>
             <p class="mt-1 text-sm text-gray-400">{{ __('account.login.subtitle') }}</p>
         </div>

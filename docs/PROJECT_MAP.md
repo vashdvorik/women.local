@@ -32,6 +32,18 @@ Telegram одновременно используется как канал р�
 │   ├── platform — отдельный вариант landing-platform.blade.php
 │   └── miro — отдельный Miro-inspired вариант landing-miro.blade.php
 │
+├── /members
+│   └── публичный каталог из 12 демонстрационных профилей в стиле Miro
+│
+├── /events
+│   └── публичная лента событий, новостей и возможностей в стиле Miro
+│
+├── /about
+│   └── отдельная страница «О платформе» в стиле Miro: миссия, аудитория, возможности и путь участницы
+│
+├── /partners
+│   └── публичный каталог 10 координаторов и партнёров платформы в стиле Miro
+│
 ├── личный кабинет участницы
 │   └── classic / warm / dark / miro — общий layout с независимыми темами
 │
@@ -71,6 +83,10 @@ Telegram одновременно используется как канал р�
 | URL | Имя | Обработчик | Назначение |
 |---|---|---|---|
 | `GET /` | — | closure | Загружает активную тему через `SiteSetting::landingTheme()` и рендерит `landing` |
+| `GET /about` | `about` | closure | Отдельная публичная страница «О платформе» в теме Miro; контент пока статичный |
+| `GET /members` | `members` | closure | Публичный визуальный каталог из 12 статичных демонстрационных профилей; реальный backend пока не подключён |
+| `GET /events` | `events` | closure | Публичная статичная лента из 9 новостей исходного проекта в стиле Miro |
+| `GET /partners` | `partners` | closure | Публичный каталог из 10 партнёров, перенесённых со страницы `women.creativity.md/partners/`; логотипы хранятся локально |
 | `GET /language/{locale}` | `language.switch` | closure | Разрешены только `ru`, `en`, `ro`; возвращает на предыдущую страницу |
 | `POST /telegram/webhook` | `telegram.webhook` | Nutgram closure | Передаёт обновление Telegram в `$bot->run()` |
 | `GET /go/{code}` | `account.go` | closure | Ищет префикс token, проверяет срок, перенаправляет на полный auth-link |
@@ -144,6 +160,16 @@ Web middleware подключает `SetLocale` глобально для web-г
 `resources/views/landing-platform.blade.php` — альтернативный дизайн из старого docs-прототипа. Содержит якоря `#about`, `#learning`, `#members`, `#events`, `#contact`, ссылки в кабинет и ссылки на Telegram-бота/сообщество.
 
 `resources/views/landing-miro.blade.php` — маркетинговая тема по `dizayn/miro/DESIGN.md`: sticky navigation, hero с фото и градиентной композицией, pastel feature cards, benefits/how-it-works/platform-offers, AI/workspace blocks, members, events, stories, dark CTA и multi-column footer. Тема использует существующие изображения из `public/images`; их можно заменить позже без изменения маршрутов.
+
+`resources/views/members-miro.blade.php` — публичный Miro-каталог `/members`. Сейчас содержит 12 экспертных профилей, перенесённых из публичной секции `women.creativity.md`; фотографии сохранены локально в `public/images/experts`. Дополнительные поля профиля пока статичны и не подключены к backend.
+
+`resources/views/about-miro.blade.php` — публичная страница `/about` в теме Miro. Содержит миссию платформы, аудиторию, экосистему возможностей, пользовательский путь, фокус на сотрудничестве между обоими берегами и CTA. Тексты подготовлены по ТЗ и материалам исходных сайтов; контент пока статичный.
+
+`resources/views/partners-miro.blade.php` — публичный каталог `/partners` в теме Miro. Включает 3 координатора платформы, 4 местных и 3 международных партнёра; логотипы загружены в `public/images/partners` с исходной страницы.
+
+Общий header и мобильное меню Miro вынесены в `resources/views/partials/miro-header.blade.php`, общий footer — в `resources/views/partials/miro-footer.blade.php`. Оба partial подключаются на лендинге, `/about`, `/members`, `/events` и `/partners`; активный раздел передаётся параметром `miroCurrentPage`.
+
+Брендовые изображения подготовлены из `dizayn/logo.png`: оптимизированный горизонтальный логотип — `public/images/brand/logo.webp` (около 38 KB), PNG-версия — `public/images/brand/logo.png`, компактная иконка для favicon — `public/images/brand/favicon.png` (около 10 KB). Логотип используется в Miro header/footer и в компактных шапках альтернативного лендинга и кабинета; favicon подключён к публичным страницам, login и кабинету.
 
 Активная тема хранится в `site_settings` под ключом `landing_theme` и изменяется админской страницей `LandingThemeSettings`. Настройка лендинга не влияет на кабинет участницы.
 

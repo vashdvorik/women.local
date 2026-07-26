@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Women Entrepreneurs Platform</title>
     <meta name="description" content="A digital ecosystem for women entrepreneurs from both banks, combining learning, networking, business visibility, mentoring, opportunities, AI-supported recommendations and Telegram-based communication.">
+    <link rel="icon" type="image/png" href="{{ asset('images/brand/favicon.png') }}">
     <meta property="og:title" content="A digital space where women's businesses connect, learn and grow">
     <meta property="og:description" content="Join a long-term platform for women entrepreneurs, women-led MSMEs, mentors, experts and partner organisations.">
     <meta property="og:type" content="website">
@@ -313,9 +314,7 @@
 <nav id="navbar" class="fixed top-0 inset-x-0 z-50 px-4">
     <div class="max-w-7xl mx-auto flex items-center justify-between h-16">
         <a href="#" class="flex items-center gap-2.5 group">
-            <span class="w-8 h-8 rounded-xl grad-bg flex items-center justify-center shadow-md">
-                <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            </span>
+            <img src="{{ asset('images/brand/favicon.png') }}" alt="Women Entrepreneurs Platform" class="h-8 w-8 rounded-xl object-contain shadow-md">
             <span class="font-semibold text-ink tracking-tight text-sm hidden sm:inline">Women Entrepreneurs Platform</span>
         </a>
         <div class="flex items-center gap-5">
@@ -1264,9 +1263,7 @@
     </div>
     <div class="max-w-7xl mx-auto border-t border-mint-100 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div class="flex items-center gap-3">
-            <span class="w-7 h-7 rounded-lg grad-bg flex items-center justify-center">
-                <svg class="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            </span>
+            <img src="{{ asset('images/brand/favicon.png') }}" alt="Women Entrepreneurs Platform" class="h-7 w-7 rounded-lg object-contain">
             <span class="text-xs text-gray-400">&copy; {{ date('Y') }} Women Entrepreneurs Platform</span>
         </div>
         <p class="text-xs text-gray-400" data-lang="ru">Цифровая экосистема для обучения, нетворкинга, менторства и роста бизнеса.</p>

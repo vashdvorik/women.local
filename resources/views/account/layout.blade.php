@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', __('account.cabinet')) — {{ __('account.brand') }}</title>
     <meta name="robots" content="noindex,nofollow">
+    <link rel="icon" type="image/png" href="{{ asset('images/brand/favicon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -251,6 +252,48 @@
             border-color: var(--miro-blue) !important;
             box-shadow: 0 0 0 4px rgba(66, 98, 255, .12) !important;
         }
+
+        body.account-theme-miro .miro-directory-page { max-width: 1180px; }
+        body.account-theme-miro .miro-directory-header { max-width: 760px; margin-bottom: 32px; }
+        body.account-theme-miro .miro-directory-header__eyebrow { margin: 0 0 14px; color: var(--miro-blue); font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+        body.account-theme-miro .miro-directory-header h1 { margin: 0; color: #050038; font-size: clamp(34px, 5vw, 56px); font-weight: 500; line-height: 1.08; letter-spacing: -.045em; }
+        body.account-theme-miro .miro-directory-header p:last-child { margin: 16px 0 0; color: #555a6a; font-size: 17px; line-height: 1.55; }
+        body.account-theme-miro .miro-directory-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+        body.account-theme-miro .miro-directory-card { padding: 20px; border: 1px solid #eef0f3; border-radius: 24px; background: #fff; box-shadow: 0 12px 32px rgba(5, 0, 56, .06); }
+        body.account-theme-miro .miro-directory-card__profile { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 18px; align-items: start; }
+        body.account-theme-miro .miro-directory-card__avatar { width: 112px; height: 112px; overflow: hidden; border-radius: 16px; background: linear-gradient(135deg, #c3faf5, #ffe6cd); }
+        body.account-theme-miro .miro-directory-card__avatar img { width: 100%; height: 100%; object-fit: cover; }
+        body.account-theme-miro .miro-directory-card__avatar-placeholder { display: grid; width: 100%; height: 100%; place-items: center; color: #187574; font-size: 32px; font-weight: 600; }
+        body.account-theme-miro .miro-directory-card__role { margin: 0 0 7px; color: #187574; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+        body.account-theme-miro .miro-directory-card h2 { margin: 0; color: #050038; font-size: 22px; font-weight: 500; line-height: 1.2; }
+        body.account-theme-miro .miro-directory-card__specialization { margin: 7px 0 0; color: #6b6f7e; font-size: 14px; }
+        body.account-theme-miro .miro-directory-card__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+        body.account-theme-miro .miro-directory-card__tag { display: inline-flex; padding: 5px 9px; border-radius: 9999px; color: #1c1c1e; font-size: 11px; font-weight: 500; line-height: 1.2; }
+        body.account-theme-miro .miro-directory-card__tag--yellow { background: #fff4c4; }
+        body.account-theme-miro .miro-directory-card__tag--teal { background: #c3faf5; color: #187574; }
+        body.account-theme-miro .miro-directory-card__tag--rose { background: #ffd8f4; }
+        body.account-theme-miro .miro-directory-card__tag--coral { background: #ffc6c6; }
+        body.account-theme-miro .miro-directory-card__tag--blue { background: #eef1ff; color: #4262ff; }
+        body.account-theme-miro .miro-directory-card__description { margin: 18px 0 0; color: #555a6a; font-size: 14px; line-height: 1.55; }
+        body.account-theme-miro .miro-directory-card__details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+        body.account-theme-miro .miro-directory-card__detail { padding: 14px; border-radius: 14px; background: #fafbfc; }
+        body.account-theme-miro .miro-directory-card__detail--offer { background: #fff4c4; }
+        body.account-theme-miro .miro-directory-card__detail-label { display: block; margin-bottom: 6px; color: #6b6f7e; font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+        body.account-theme-miro .miro-directory-card__detail p { margin: 0; color: #1c1c1e; font-size: 13px; line-height: 1.45; }
+        body.account-theme-miro .miro-directory-card__contact { display: inline-flex; align-items: center; margin-top: 18px; padding: 10px 16px; border-radius: 9999px; background: #1c1c1e; color: #fff; font-size: 13px; font-weight: 500; transition: transform .18s ease, background .18s ease; }
+        body.account-theme-miro .miro-directory-card__contact:hover { background: #2c2c34; transform: translateY(-1px); }
+        body.account-theme-miro .miro-directory-empty { padding: 40px; border: 1px dashed #c7cad5; border-radius: 28px; background: #fff; text-align: center; }
+
+        @media (max-width: 767px) {
+            body.account-theme-miro .miro-directory-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 520px) {
+            body.account-theme-miro .miro-directory-card__profile { grid-template-columns: 80px minmax(0, 1fr); gap: 14px; }
+            body.account-theme-miro .miro-directory-card__avatar { width: 80px; height: 80px; border-radius: 14px; }
+            body.account-theme-miro .miro-directory-card h2 { font-size: 19px; }
+            body.account-theme-miro .miro-directory-card__details { grid-template-columns: 1fr; }
+        }
     </style>
     @stack('head')
 </head>
@@ -263,8 +306,8 @@
                style="box-shadow: 1px 0 0 rgba(0,0,0,.06), 4px 0 24px rgba(0,0,0,.03)">
 
             <div class="flex shrink-0 items-center gap-3 px-5 pb-5 pt-6">
-                <span class="account-brand-mark flex h-9 w-9 shrink-0 items-center justify-center rounded-xl" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);box-shadow:0 4px 12px rgba(124,58,237,.3)">
-                    <svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <span class="account-brand-mark flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white p-0.5 shadow-sm">
+                    <img src="{{ asset('images/brand/favicon.png') }}" alt="Women Entrepreneurs Platform" class="h-full w-full object-contain">
                 </span>
                 <div class="min-w-0 leading-none">
                     <p class="truncate text-sm font-bold tracking-tight text-[#0f172a]">Women Entrepreneurs Platform</p>

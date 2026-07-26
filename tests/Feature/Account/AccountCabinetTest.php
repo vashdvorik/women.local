@@ -151,6 +151,9 @@ class AccountCabinetTest extends TestCase
             ->get(route('account.people'));
 
         $response->assertOk()
+            ->assertSee('miro-directory-page', false)
+            ->assertSee('miro-directory-card__tags', false)
+            ->assertDontSee('/app/account/people/' . $other1->id, false)
             ->assertViewHas('people', function ($people) use ($other1, $other2, $currentUser, $pending) {
                 $ids = $people->pluck('id');
 

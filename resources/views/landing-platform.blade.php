@@ -40,6 +40,7 @@
     <title>Women Entrepreneurs Platform</title>
     <meta name="description" content="Digital platform for women entrepreneurs: learning, networking, mentoring, events and business opportunities.">
     <meta name="theme-color" content="#4A1D96">
+    <link rel="icon" type="image/png" href="{{ asset('images/brand/favicon.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -140,7 +141,7 @@
     <header class="sticky top-0 z-50 bg-white/95 shadow-sm backdrop-blur">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
             <a href="#" class="flex items-center gap-3">
-                <img src="{{ asset($assetBase . 'logo.png') }}" alt="Women Entrepreneurs Platform" class="h-12 w-12 object-contain">
+                <img src="{{ asset('images/brand/favicon.png') }}" alt="Women Entrepreneurs Platform" class="h-12 w-12 object-contain">
                 <div>
                     <p class="text-sm font-black uppercase leading-tight tracking-tighter text-purple-custom">Women<br>Entrepreneurs<br>Platform</p>
                     <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-gray-400">of the Two Banks</p>

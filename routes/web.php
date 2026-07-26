@@ -15,6 +15,22 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/members', function () {
+    return view('members-miro');
+})->name('members');
+
+Route::get('/events', function () {
+    return view('events-miro');
+})->name('events');
+
+Route::get('/about', function () {
+    return view('about-miro');
+})->name('about');
+
+Route::get('/partners', function () {
+    return view('partners-miro');
+})->name('partners');
+
 Route::get('/language/{locale}', function (string $locale) {
     abort_unless(in_array($locale, ['ru', 'en', 'ro'], true), 404);
 
