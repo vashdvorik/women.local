@@ -81,7 +81,7 @@
                         <div class="miro-directory-card__profile">
                             <div class="miro-directory-card__avatar">
                                 @if($person->avatar_path)
-                                    <img src="{{ Storage::url($person->avatar_path) }}" alt="{{ $person->full_name }}" loading="lazy">
+                                    <img src="{{ Storage::url($person->avatar_path) }}" alt="{{ $person->full_name ?: __('account.people.title') }}" loading="lazy">
                                 @else
                                     <div class="miro-directory-card__avatar-placeholder">
                                         {{ mb_strtoupper(mb_substr($person->full_name ?: $person->telegram_username ?: '?', 0, 1)) }}

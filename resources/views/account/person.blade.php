@@ -10,18 +10,25 @@
             <aside class="miro-card miro-card--pink p-6 sm:p-8">
                 <div class="miro-avatar-xl mx-auto">
                     @if($person->avatar_path)
-                        <img src="{{ Storage::url($person->avatar_path) }}" alt="{{ $person->full_name }}">
+                        <img src="{{ Storage::url($person->avatar_path) }}" alt="{{ $person->full_name ?: __('account.person.title') }}">
                     @else
                         <div class="miro-avatar-xl__placeholder">{{ mb_strtoupper(mb_substr($person->full_name ?: $person->telegram_username ?: '?', 0, 1)) }}</div>
                     @endif
                 </div>
 
-                <p class="miro-eyebrow mt-6 text-center">{{ __('account.person.title') }}</p>
-                <h1 class="text-center text-2xl font-medium tracking-tight text-[#050038]">{{ $person->full_name ?: __('account.not_specified') }}</h1>
+                <p class="miro-eyebrow miro-person-profile__eyebrow">{{ __('account.person.title') }}</p>
+                <h1 class="break-words text-center text-2xl font-medium tracking-tight text-[#050038]">{{ $person->full_name ?: __('account.not_specified') }}</h1>
 
                 @if($person->telegram_username)
                     <p class="mt-2 text-center text-sm text-[#6b6f7e]">@{{ $person->telegram_username }}</p>
-                    <a href="https://t.me/{{ $person->telegram_username }}" target="_blank" rel="noopener" class="miro-button miro-button--dark mt-7 w-full">{{ __('account.contact') }}</a>
+                    <a href="https://t.me/{{ $person->telegram_username }}" target="_blank" rel="noopener" class="miro-button miro-button--dark mt-7 w-full">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m21 3-7.2 18-3.4-7.4L3 10.2 21 3Zm0 0-10.6 10.6" />
+                        </svg>
+                        {{ __('account.contact') }}
+                    </a>
+                @else
+                    <p class="mt-7 text-center text-sm leading-6 text-[#050038]/60">{{ __('account.profile.telegram_empty') }}</p>
                 @endif
             </aside>
 

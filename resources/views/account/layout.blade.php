@@ -312,6 +312,7 @@
         body.account-theme-miro .miro-avatar-xl { width: 82px; height: 82px; overflow: hidden; border: 3px solid rgba(255,255,255,.85); border-radius: 24px; background: var(--miro-teal); box-shadow: 0 8px 18px rgba(5,0,56,.1); }
         body.account-theme-miro .miro-avatar-xl img { width: 100%; height: 100%; object-fit: cover; }
         body.account-theme-miro .miro-avatar-xl__placeholder { display: grid; width: 100%; height: 100%; place-items: center; color: var(--miro-teal-deep); font-size: 30px; font-weight: 500; }
+        body.account-theme-miro .miro-person-profile__eyebrow { margin: 24px 0 12px; text-align: center; }
         body.account-theme-miro .miro-mobile-close { display: none; }
         body.account-theme-miro .account-flash { border-radius: 18px; padding: 14px 18px; font-size: 14px; line-height: 1.5; }
         body.account-theme-miro .account-flash--success { border: 1px solid rgba(15,188,176,.22); background: var(--miro-teal); color: var(--miro-teal-deep); }
@@ -334,7 +335,7 @@
             box-shadow: 0 0 0 4px rgba(66, 98, 255, .12) !important;
         }
 
-        body.account-theme-miro .miro-directory-page { max-width: 1180px; }
+        body.account-theme-miro .miro-directory-page { width: 100%; max-width: 1180px; margin: 0 auto; }
         body.account-theme-miro .miro-directory-header { max-width: 760px; margin-bottom: 32px; }
         body.account-theme-miro .miro-directory-header__eyebrow { margin: 0 0 14px; color: var(--miro-blue); font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
         body.account-theme-miro .miro-directory-header h1 { margin: 0; color: #050038; font-size: clamp(34px, 5vw, 56px); font-weight: 500; line-height: 1.08; letter-spacing: -.045em; }

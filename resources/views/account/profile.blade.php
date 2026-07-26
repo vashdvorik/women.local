@@ -8,7 +8,7 @@
             <p class="miro-eyebrow">{{ __('account.nav.profile') }}</p>
             <h1 class="miro-page-title">{{ __('account.profile.title') }}</h1>
             <p class="miro-page-description">{{ __('account.profile.subtitle') }}</p>
-        </aside>
+        </div>
         <a href="{{ route('account.profile.edit') }}" class="miro-button miro-button--dark">{{ __('account.profile.edit') }}</a>
     </header>
 

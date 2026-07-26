@@ -394,7 +394,7 @@
                     </div>
                     <div class="miro-hero__visual" aria-label="Women entrepreneurs collaborating">
                         <div class="miro-hero__image">
-                            <img src="{{ asset('images/hero-community.webp') }}" alt="Women entrepreneurs collaborating around a laptop">
+                            <img src="{{ asset('images/1gDOEvgW6Bbo9rvB-OHSm277Ak0im3tJa.jpg') }}" alt="Women entrepreneurs collaborating around a laptop">
                         </div>
                         <span class="miro-hero__arc"></span>
                         <span class="miro-hero__arc miro-hero__arc--teal"></span>
