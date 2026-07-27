@@ -35,17 +35,20 @@
             --miro-ink: #1c1c1e;
             --miro-slate: #555a6a;
             --miro-steel: #6b6f7e;
-            --miro-font: 'Noto Sans', sans-serif;
+            --miro-font: "Roobert PRO", "Noto Sans", -apple-system, BlinkMacSystemFont, sans-serif;
             --miro-shadow: 0 18px 48px rgba(28, 28, 30, .08);
         }
 
         * { box-sizing: border-box; }
-        body { margin: 0; color: var(--miro-black); background: #fff; font-family: 'Noto Sans', sans-serif; }
-        a { color: inherit; }
+        html { overflow-x: hidden; }
+        body { margin: 0; color: var(--miro-black); background: #fff; font-family: var(--miro-font); font-size: 16px; line-height: 1.5; }
+        a { color: inherit; text-decoration: none; }
+        button, a { -webkit-tap-highlight-color: transparent; }
+        img { display: block; max-width: 100%; }
         html:not([lang="ru"]) [data-lang="ru"],
         html:not([lang="en"]) [data-lang="en"],
         html:not([lang="ro"]) [data-lang="ro"] { display: none !important; }
-        .miro-container { width: min(100% - 48px, 1180px); margin: 0 auto; }
+        .miro-container { width: min(1280px, calc(100% - 64px)); margin: 0 auto; }
 
         /* Shared Miro navigation and footer */
         .miro-nav { position: sticky; top: 0; z-index: 30; min-height: 68px; border-bottom: 1px solid var(--miro-hairline-soft); background: rgba(255,255,255,.94); backdrop-filter: blur(16px); }
@@ -89,7 +92,7 @@
         .miro-contact-hero__note strong { display: block; margin-bottom: 10px; font-size: 21px; line-height: 1.2; }
         .miro-contact-hero__note p { margin: 0; color: var(--miro-muted); line-height: 1.55; }
         .miro-contact-section { padding: 92px 0 110px; }
-        .miro-contact-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr); gap: 72px; align-items: start; }
+        .miro-contact-layout { display: block; }
         .miro-contact-section h2 { max-width: 560px; margin: 0 0 16px; font-size: clamp(34px, 4vw, 52px); line-height: 1.04; letter-spacing: -.045em; }
         .miro-contact-lead { max-width: 570px; margin: 0 0 38px; color: var(--miro-muted); font-size: 17px; line-height: 1.65; }
         .miro-contact-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
@@ -97,13 +100,19 @@
         .miro-contact-card:nth-child(1) { background: var(--miro-rose-light); }
         .miro-contact-card:nth-child(2) { background: var(--miro-coral); }
         .miro-contact-card:nth-child(3) { background: rgba(66, 98, 255, .08); }
+        .miro-contact-card:nth-child(4) { background: var(--miro-pink); }
+        .miro-contact-card:nth-child(5) { background: var(--miro-rose-light); }
+        .miro-contact-card:nth-child(6) { background: rgba(66, 98, 255, .08); }
         .miro-contact-card__icon { display: grid; width: 42px; height: 42px; margin-bottom: 28px; place-items: center; border-radius: 13px; background: var(--miro-black); color: #fff; font-size: 18px; font-weight: 800; }
         .miro-contact-card h3 { margin: 0 0 8px; font-size: 19px; letter-spacing: -.02em; }
         .miro-contact-card p { margin: 0 0 18px; color: var(--miro-slate); font-size: 14px; line-height: 1.55; }
         .miro-contact-card__links { display: grid; gap: 8px; }
+        .miro-contact-card__map { position: relative; height: 68px; margin: 0 0 16px; overflow: hidden; border-radius: 16px; background-color: rgba(66, 98, 255, .12); background-image: linear-gradient(28deg, transparent 43%, rgba(66, 98, 255, .22) 44%, rgba(66, 98, 255, .22) 47%, transparent 48%), linear-gradient(118deg, transparent 45%, rgba(255, 255, 255, .8) 46%, rgba(255, 255, 255, .8) 50%, transparent 51%); }
+        .miro-contact-card__map::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 48%, rgba(255, 255, 255, .55) 49%, rgba(255, 255, 255, .55) 51%, transparent 52%), linear-gradient(0deg, transparent 48%, rgba(255, 255, 255, .55) 49%, rgba(255, 255, 255, .55) 51%, transparent 52%); opacity: .7; }
+        .miro-contact-card__map span { position: absolute; top: 50%; left: 50%; z-index: 1; width: 16px; height: 16px; border: 4px solid #fff; border-radius: 50% 50% 50% 0; background: var(--miro-blue); box-shadow: 0 3px 10px rgba(28, 28, 30, .2); transform: translate(-50%, -65%) rotate(-45deg); }
         .miro-contact-card a { display: inline-flex; color: var(--miro-black); font-size: 14px; font-weight: 800; text-decoration: none; }
         .miro-contact-card a:hover { color: var(--miro-blue); }
-        .miro-contact-topics { padding: 30px; border-radius: 28px; background: var(--miro-black); color: #fff; box-shadow: var(--miro-shadow); }
+        .miro-contact-topics { margin-top: 72px; padding: 30px; border-radius: 28px; background: var(--miro-black); color: #fff; box-shadow: var(--miro-shadow); }
         .miro-contact-topics h3 { margin: 0 0 24px; font-size: 24px; letter-spacing: -.03em; }
         .miro-contact-topics ul { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
         .miro-contact-topics li { display: flex; gap: 12px; align-items: baseline; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,.16); color: #e7e7ea; line-height: 1.45; }
@@ -124,7 +133,7 @@
             .miro-nav.is-open .miro-nav__mobile-menu .miro-button { width: 100%; }
             .miro-footer__top { grid-template-columns: repeat(3, 1fr); }
             .miro-footer__brand { grid-column: 1 / -1; }
-            .miro-contact-hero__inner, .miro-contact-layout { grid-template-columns: 1fr; gap: 38px; }
+            .miro-contact-hero__inner { grid-template-columns: 1fr; gap: 38px; }
             .miro-contact-hero__note { max-width: 520px; }
         }
         @media (max-width: 767px) {
@@ -135,7 +144,7 @@
             .miro-contact-section { padding: 64px 0 78px; }
             .miro-contact-cards { grid-template-columns: 1fr; }
             .miro-contact-card { min-height: auto; }
-            .miro-contact-topics { padding: 24px; }
+            .miro-contact-topics { margin-top: 48px; padding: 24px; }
             .miro-footer__top { grid-template-columns: repeat(2, 1fr); gap: 28px 16px; }
             .miro-footer__bottom { flex-direction: column; }
         }
@@ -177,8 +186,8 @@
                         </article>
                         <article class="miro-contact-card">
                             <div class="miro-contact-card__icon" aria-hidden="true">⌂</div>
-                            <h3><span data-lang="ru">Офис и телефон</span><span data-lang="en">Office and phone</span><span data-lang="ro">Oficiu și telefon</span></h3>
-                            <p><span data-lang="ru">г. Тирасполь, ул. Свердлова, 57<br>Приднестровье, MD-3300</span><span data-lang="en">57 Sverdlova Street, Tiraspol<br>Transnistria, MD-3300</span><span data-lang="ro">str. Sverdlov 57, Tiraspol<br>Transnistria, MD-3300</span></p>
+                            <h3><span data-lang="ru">Телефон</span><span data-lang="en">Phone</span><span data-lang="ro">Telefon</span></h3>
+                            <p><span data-lang="ru">Свяжитесь с командой по рабочим вопросам.</span><span data-lang="en">Contact the team about project and office matters.</span><span data-lang="ro">Contactează echipa pentru întrebări despre proiect și oficiu.</span></p>
                             <a href="tel:+37377798317">+373 777 983 17&nbsp;→</a>
                         </article>
                         <article class="miro-contact-card">
@@ -189,6 +198,13 @@
                                 <a href="mailto:women.tiras.hub@gmail.com">women.tiras.hub@gmail.com</a>
                                 <a href="mailto:elena.sinika@innovation.md">elena.sinika@innovation.md</a>
                             </div>
+                        </article>
+                        <article class="miro-contact-card">
+                            <div class="miro-contact-card__icon" aria-hidden="true">⌖</div>
+                            <h3><span data-lang="ru">Адрес и карта</span><span data-lang="en">Address and map</span><span data-lang="ro">Adresă și hartă</span></h3>
+                            <div class="miro-contact-card__map" aria-hidden="true"><span></span></div>
+                            <p><span data-lang="ru">г. Тирасполь, ул. Свердлова, 57<br>Приднестровье, MD-3300</span><span data-lang="en">57 Sverdlova Street, Tiraspol<br>Transnistria, MD-3300</span><span data-lang="ro">str. Sverdlov 57, Tiraspol<br>Transnistria, MD-3300</span></p>
+                            <a href="https://www.google.com/maps/search/?api=1&amp;query=Tiraspol%2C%20Sverdlova%2057" target="_blank" rel="noopener"><span data-lang="ru">Открыть карту&nbsp;→</span><span data-lang="en">Open map&nbsp;→</span><span data-lang="ro">Deschide harta&nbsp;→</span></a>
                         </article>
                     </div>
                 </div>

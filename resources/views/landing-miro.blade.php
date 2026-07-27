@@ -425,7 +425,7 @@
                 </div>
                 <div class="miro-logo-wall__visual" aria-hidden="true">
                     <div class="miro-logo-wall__photo">
-                        <img src="{{ asset('images/story-mentor.webp') }}" alt="">
+                        <img src="{{ asset('/images/333.png') }}" alt="">
                     </div>
                     <span class="miro-logo-wall__sticker"><span data-lang="ru">Связи, которые работают</span><span data-lang="en">Connections that move business</span><span data-lang="ro">Conexiuni care dezvoltă afaceri</span></span>
                 </div>
