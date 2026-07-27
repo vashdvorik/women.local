@@ -128,6 +128,7 @@
         @media (max-width:767px) { .miro-container{width:min(100% - 32px,540px)} .miro-brand{font-size:14px} .miro-partners-hero{padding:66px 0 58px} .miro-partners-hero h1{font-size:48px} .miro-partners-hero__copy{font-size:16px} .miro-partners-section{padding-top:64px} .miro-partners-group{padding-bottom:56px} .miro-partners-group__head{display:block} .miro-partners-group__count{display:inline-block; margin-top:18px} .miro-partners-grid{grid-template-columns:1fr} .miro-partners-cta{padding:46px 22px; margin-bottom:64px; border-radius:24px} .miro-footer__top{grid-template-columns:repeat(2,1fr)} .miro-footer__bottom{flex-direction:column} }
         @media (max-width:479px) { .miro-footer__top{gap:28px 16px} }
     </style>
+    @include('partials.miro-media-styles')
 </head>
 <body>
     @include('partials.miro-header', ['miroCurrentPage' => 'partners'])

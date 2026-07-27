@@ -288,6 +288,7 @@
         @media (max-width:767px) { .miro-container{width:min(100% - 32px,540px)} .miro-brand{font-size:14px} .miro-members-hero{padding:64px 0 56px} .miro-members-hero h1{font-size:48px} .miro-members-hero__copy,.miro-section__head p,.miro-members-cta p{font-size:16px} .miro-members-section{padding:64px 0 76px} .miro-section__head h2,.miro-members-cta h2{font-size:38px} .miro-members-grid{grid-template-columns:1fr} .miro-members-cta{padding:48px 22px;border-radius:24px} .miro-footer__top{grid-template-columns:repeat(2,1fr)} .miro-footer__bottom{flex-direction:column} }
         @media (max-width:479px) { .miro-footer__top{gap:28px 16px} }
     </style>
+    @include('partials.miro-media-styles')
 </head>
 <body>
     @include('partials.miro-header', ['miroCurrentPage' => 'members'])

@@ -119,6 +119,7 @@
         @media (max-width:767px) { .miro-container{width:min(100% - 32px,540px)} .miro-brand{font-size:14px} .miro-about-hero{padding:64px 0 56px} .miro-about-hero h1{font-size:48px} .miro-about-hero__copy,.miro-about-section__head p,.miro-about-cta p{font-size:16px} .miro-about-section{padding:64px 0} .miro-about-section h2,.miro-about-cta h2{font-size:38px} .miro-about-hero__visual,.miro-about-hero__visual img{height:300px;min-height:300px} .miro-about-split{grid-template-columns:1fr;gap:36px} .miro-about-cards,.miro-about-audience,.miro-about-steps{grid-template-columns:1fr} .miro-about-steps{gap:30px} .miro-about-steps::before{display:block;top:34px;right:auto;bottom:34px;left:50%;border-top:0;border-left:2px dashed var(--miro-hairline-strong)} .miro-about-bridge{padding:42px 24px;border-radius:24px} .miro-about-cta{padding:48px 22px;border-radius:24px} .miro-footer__top{grid-template-columns:repeat(2,1fr)} .miro-footer__bottom{flex-direction:column} }
         @media (max-width:479px) { .miro-footer__top{gap:28px 16px} }
     </style>
+    @include('partials.miro-media-styles')
 </head>
 <body>
     @include('partials.miro-header', ['miroCurrentPage' => 'about'])

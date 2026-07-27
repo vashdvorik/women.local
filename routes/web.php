@@ -31,6 +31,10 @@ Route::get('/partners', function () {
     return view('partners-miro');
 })->name('partners');
 
+Route::get('/contact', function () {
+    return view('contact-miro');
+})->name('contact');
+
 Route::get('/language/{locale}', function (string $locale) {
     abort_unless(in_array($locale, ['ru', 'en', 'ro'], true), 404);
 

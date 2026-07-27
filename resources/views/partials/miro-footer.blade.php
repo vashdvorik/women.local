@@ -26,8 +26,8 @@
                 <h4><span data-lang="ru">Контакты</span><span data-lang="en">Contact</span><span data-lang="ro">Contact</span></h4>
                 <ul>
                     <li><a href="{{ $botUrl }}" target="_blank" rel="noopener">@WomenComBot</a></li>
-                    <li><a href="{{ $managerUrl }}" target="_blank" rel="noopener">Project team</a></li>
-                    <li><a href="{{ $communityUrl }}" target="_blank" rel="noopener">Community</a></li>
+                    <li><a href="{{ $managerUrl }}" target="_blank" rel="noopener"><span data-lang="ru">Команда проекта</span><span data-lang="en">Project team</span><span data-lang="ro">Echipa proiectului</span></a></li>
+                    <li><a href="{{ $communityUrl }}" target="_blank" rel="noopener"><span data-lang="ru">Сообщество</span><span data-lang="en">Community</span><span data-lang="ro">Comunitate</span></a></li>
                 </ul>
             </div>
             <div>

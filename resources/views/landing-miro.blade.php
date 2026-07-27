@@ -209,6 +209,8 @@
         .miro-member-card { display: grid; grid-template-columns: 112px 1fr; gap: 20px; align-items: center; padding: 16px; border: 1px solid var(--miro-hairline-soft); border-radius: 16px; background: #fff; }
         .miro-member-card img { width: 112px; height: 112px; border-radius: 12px; object-fit: cover; }
         .miro-member-card h4 { margin: 0; color: var(--miro-ink-deep); font-size: 18px; font-weight: 500; }
+        .miro-member-card__role { margin: 5px 0 0; color: var(--miro-charcoal); font-size: 13px; line-height: 1.35; }
+        .miro-member-card__specialization { margin: 8px 0 0; color: var(--miro-blue); font-size: 13px; font-weight: 600; line-height: 1.35; }
         .miro-member-card__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
         .miro-profile-tag { display: inline-flex; align-items: center; padding: 5px 9px; border-radius: 9999px; color: var(--miro-primary); font-size: 11px; font-weight: 500; line-height: 1.2; }
         .miro-profile-tag--pink, .miro-profile-tag--yellow { background: var(--miro-cream); }
@@ -219,6 +221,8 @@
         .miro-profile-tag--orange { background: var(--miro-orange); }
         .miro-member-card p { margin: 6px 0 0; color: var(--miro-steel); font-size: 14px; }
         .miro-members__cta { display: flex; justify-content: center; margin-top: 32px; }
+        .miro-members__legacy { display: none; }
+        .miro-members__cta a[href*="account/login"] { display: none; }
 
         .miro-event-card { overflow: hidden; border: 1px solid var(--miro-hairline-soft); border-radius: 16px; background: #fff; }
         .miro-event-card img { width: 100%; height: 196px; object-fit: cover; }
@@ -315,6 +319,7 @@
             .miro-footer__top { grid-template-columns: 1fr 1fr; gap: 28px 16px; }
         }
     </style>
+    @include('partials.miro-media-styles')
 </head>
 <body>
     @include('partials.miro-header', ['miroCurrentPage' => 'home'])
@@ -332,7 +337,7 @@
                 <a href="{{ route('members') }}"><span data-lang="ru">Участницы</span><span data-lang="en">Members</span><span data-lang="ro">Membre</span></a>
                 <a href="{{ route('events') }}"><span data-lang="ru">События</span><span data-lang="en">Events</span><span data-lang="ro">Evenimente</span></a>
                 <a href="#opportunities"><span data-lang="ru">Возможности</span><span data-lang="en">Opportunities</span><span data-lang="ro">Oportunități</span></a>
-                <a href="#contact"><span data-lang="ru">Контакты</span><span data-lang="en">Contact</span><span data-lang="ro">Contact</span></a>
+                <a href="{{ route('contact') }}"><span data-lang="ru">Контакты</span><span data-lang="en">Contact</span><span data-lang="ro">Contact</span></a>
                 <div class="miro-nav__mobile-menu">
                     <div class="miro-languages" aria-label="Language switcher">
                         <button type="button" data-locale="ru">RU</button>
@@ -581,12 +586,99 @@
                     <p><span data-lang="ru">Здесь представлены предприниматели и эксперты, которые уже зарегистрированы на платформе, рассказывают о своей работе и открыты к сотрудничеству.</span><span data-lang="en">Meet women entrepreneurs and experts already registered on the platform, presenting their work and open to collaboration.</span><span data-lang="ro">Descoperă antreprenoarele și expertele deja înregistrate pe platformă, care își prezintă activitatea și sunt deschise colaborării.</span></p>
                 </div>
                 <div class="miro-grid-2">
+                    <article class="miro-member-card">
+                        <img src="{{ asset('images/experts/expert-carolina.png') }}" alt="Carolina Bugaiyan" loading="lazy">
+                        <div>
+                            <h4><span data-lang="ru">Каролина Бугаян</span><span data-lang="en">Carolina Bugaiyan</span><span data-lang="ro">Carolina Bugaiyan</span></h4>
+                            <p class="miro-member-card__role"><span data-lang="ru">Президент Ассоциации деловых женщин Молдовы (AFAM)</span><span data-lang="en">President of the Association of Women Entrepreneurs in Moldova (AFAM)</span><span data-lang="ro">Președinta Asociației Femeilor de Afaceri din Moldova (AFAM)</span></p>
+                            <p class="miro-member-card__specialization"><span data-lang="ru">Женское предпринимательство и развитие делового сообщества</span><span data-lang="en">Women’s entrepreneurship &amp; business community development</span><span data-lang="ro">Antreprenoriat feminin și dezvoltarea comunității de business</span></p>
+                            <div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Эксперт</span><span data-lang="en">Expert</span><span data-lang="ro">Expertă</span></span><span class="miro-profile-tag miro-profile-tag--rose">AFAM</span><span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Партнёрства</span><span data-lang="en">Partnerships</span><span data-lang="ro">Parteneriate</span></span></div>
+                            <p><span data-lang="ru">Развивает женское предпринимательство и деловые связи в Молдове.</span><span data-lang="en">Develops women’s entrepreneurship and business connections in Moldova.</span><span data-lang="ro">Dezvoltă antreprenoriatul feminin și conexiunile de business în Moldova.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-member-card">
+                        <img src="{{ asset('images/experts/expert-aurelia.png') }}" alt="Aurelia Salicov" loading="lazy">
+                        <div>
+                            <h4><span data-lang="ru">Аурелия Саликов</span><span data-lang="en">Aurelia Salicov</span><span data-lang="ro">Aurelia Salicov</span></h4>
+                            <p class="miro-member-card__role"><span data-lang="ru">Вице-президент Международного бизнес-сообщества в Молдове</span><span data-lang="en">Vice-President of the International Business Society in Moldova</span><span data-lang="ro">Vicepreședinta International Business Society din Moldova</span></p>
+                            <p class="miro-member-card__specialization"><span data-lang="ru">Международное деловое сотрудничество</span><span data-lang="en">International business cooperation</span><span data-lang="ro">Cooperare internațională de business</span></p>
+                            <div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Эксперт</span><span data-lang="en">Expert</span><span data-lang="ro">Expertă</span></span><span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Международные связи</span><span data-lang="en">International relations</span><span data-lang="ro">Relații internaționale</span></span><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Партнёрства</span><span data-lang="en">Partnerships</span><span data-lang="ro">Parteneriate</span></span></div>
+                            <p><span data-lang="ru">Развивает международное деловое сотрудничество и новые партнёрства.</span><span data-lang="en">Builds international business cooperation and new partnerships.</span><span data-lang="ro">Dezvoltă cooperarea internațională de business și parteneriate noi.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-member-card">
+                        <img src="{{ asset('images/experts/expert-vlada.png') }}" alt="Vlada Lysenko" loading="lazy">
+                        <div>
+                            <h4><span data-lang="ru">Влада Лысенко</span><span data-lang="en">Vlada Lysenko</span><span data-lang="ro">Vlada Lysenko</span></h4>
+                            <p class="miro-member-card__role"><span data-lang="ru">Доктор наук, профессор, международный консультант</span><span data-lang="en">Doctor of Sciences, Professor &amp; International Consultant</span><span data-lang="ro">Doctor în științe, profesor și consultant internațional</span></p>
+                            <p class="miro-member-card__specialization"><span data-lang="ru">Наука, образование и международный консалтинг</span><span data-lang="en">Research, education &amp; international consulting</span><span data-lang="ro">Cercetare, educație și consultanță internațională</span></p>
+                            <div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Эксперт</span><span data-lang="en">Expert</span><span data-lang="ro">Expertă</span></span><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Образование</span><span data-lang="en">Education</span><span data-lang="ro">Educație</span></span><span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Консалтинг</span><span data-lang="en">Consulting</span><span data-lang="ro">Consultanță</span></span></div>
+                            <p><span data-lang="ru">Объединяет академический опыт, образование и международный консалтинг.</span><span data-lang="en">Combines academic experience, education and international consulting.</span><span data-lang="ro">Combină experiența academică, educația și consultanța internațională.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-member-card">
+                        <img src="{{ asset('images/experts/expert-zinaida.png') }}" alt="Zinaida Emelyanova" loading="lazy">
+                        <div>
+                            <h4><span data-lang="ru">Зинаида Емельянова</span><span data-lang="en">Zinaida Emelyanova</span><span data-lang="ro">Zinaida Emelyanova</span></h4>
+                            <p class="miro-member-card__role"><span data-lang="ru">Директор Агентства инноваций и развития</span><span data-lang="en">Director of the Agency for Innovation and Development</span><span data-lang="ro">Directoarea Agenției pentru Inovații și Dezvoltare</span></p>
+                            <p class="miro-member-card__specialization"><span data-lang="ru">Инновации и развитие проектов</span><span data-lang="en">Innovation &amp; project development</span><span data-lang="ro">Inovații și dezvoltarea proiectelor</span></p>
+                            <div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Инновации</span><span data-lang="en">Innovation</span><span data-lang="ro">Inovație</span></span><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Развитие</span><span data-lang="en">Development</span><span data-lang="ro">Dezvoltare</span></span><span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Возможности</span><span data-lang="en">Opportunities</span><span data-lang="ro">Oportunități</span></span></div>
+                            <p><span data-lang="ru">Развивает инновационные проекты и поддерживает предпринимательские инициативы.</span><span data-lang="en">Develops innovation projects and supports entrepreneurial initiatives.</span><span data-lang="ro">Dezvoltă proiecte inovatoare și susține inițiative antreprenoriale.</span></p>
+                        </div>
+                    </article>
+                </div>
+                <div class="miro-grid-2 miro-members__legacy">
+                    <article class="miro-member-card">
+                        <img src="{{ asset('images/experts/expert-diana.png') }}" alt="Diana Sakirchuk" loading="lazy">
+                        <div>
+                            <h4><span data-lang="ru">Диана Сакирчук</span><span data-lang="en">Diana Sakirchuk</span><span data-lang="ro">Diana Sakirchuk</span></h4>
+                            <p class="miro-member-card__role"><span data-lang="ru">Основательница PureCup</span><span data-lang="en">Founder of PureCup</span><span data-lang="ro">Fondatoarea PureCup</span></p>
+                            <p class="miro-member-card__specialization"><span data-lang="ru">Предпринимательство и развитие продукта</span><span data-lang="en">Entrepreneurship &amp; product development</span><span data-lang="ro">Antreprenoriat și dezvoltarea produsului</span></p>
+                            <div class="miro-member-card__tags">
+                                <span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Основательница</span><span data-lang="en">Founder</span><span data-lang="ro">Fondatoare</span></span>
+                                <span class="miro-profile-tag miro-profile-tag--rose">PureCup</span>
+                                <span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Продукт</span><span data-lang="en">Product</span><span data-lang="ro">Produs</span></span>
+                            </div>
+                            <p><span data-lang="ru">Развивает PureCup и собственный предпринимательский проект.</span><span data-lang="en">Builds PureCup and her own entrepreneurial project.</span><span data-lang="ro">Dezvoltă PureCup și propriul proiect antreprenorial.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-member-card">
+                        <img src="{{ asset('images/experts/expert-olga-melnichuk.png') }}" alt="Olga Melnichuk" loading="lazy">
+                        <div>
+                            <h4><span data-lang="ru">Ольга Мельничук</span><span data-lang="en">Olga Melnichuk</span><span data-lang="ro">Olga Melnichuk</span></h4>
+                            <p class="miro-member-card__role"><span data-lang="ru">Соосновательница Business Angels Moldova, исполнительный директор Startup Moldova</span><span data-lang="en">Co-founder of Business Angels Moldova, Executive Director of Startup Moldova</span><span data-lang="ro">Co-fondatoarea Business Angels Moldova, directoarea executivă Startup Moldova</span></p>
+                            <p class="miro-member-card__specialization"><span data-lang="ru">Стартапы, инвестиции и предпринимательство</span><span data-lang="en">Startups, investment &amp; entrepreneurship</span><span data-lang="ro">Startupuri, investiții și antreprenoriat</span></p>
+                            <div class="miro-member-card__tags">
+                                <span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Стартапы</span><span data-lang="en">Startups</span><span data-lang="ro">Startupuri</span></span>
+                                <span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Инвестиции</span><span data-lang="en">Investment</span><span data-lang="ro">Investiții</span></span>
+                                <span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Сообщества</span><span data-lang="en">Community</span><span data-lang="ro">Comunitate</span></span>
+                            </div>
+                            <p><span data-lang="ru">Развивает стартап- и инвестиционную экосистему Молдовы.</span><span data-lang="en">Develops Moldova’s startup and investment ecosystem.</span><span data-lang="ro">Dezvoltă ecosistemul de startupuri și investiții din Moldova.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-member-card">
+                        <img src="{{ asset('images/experts/expert-irina.png') }}" alt="Irina Pleshkova" loading="lazy">
+                        <div>
+                            <h4><span data-lang="ru">Ирина Плешкова</span><span data-lang="en">Irina Pleshkova</span><span data-lang="ro">Irina Pleshkova</span></h4>
+                            <p class="miro-member-card__role"><span data-lang="ru">Эксперт по внедрению AI и цифровой эффективности</span><span data-lang="en">Expert in AI adoption and digital efficiency</span><span data-lang="ro">Expertă în implementarea AI și eficiență digitală</span></p>
+                            <p class="miro-member-card__specialization"><span data-lang="ru">AI, цифровая трансформация и эффективность</span><span data-lang="en">AI, digital transformation &amp; efficiency</span><span data-lang="ro">AI, transformare digitală și eficiență</span></p>
+                            <div class="miro-member-card__tags">
+                                <span class="miro-profile-tag miro-profile-tag--coral">AI</span>
+                                <span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Цифровизация</span><span data-lang="en">Digital</span><span data-lang="ro">Digital</span></span>
+                                <span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Эффективность</span><span data-lang="en">Efficiency</span><span data-lang="ro">Eficiență</span></span>
+                            </div>
+                            <p><span data-lang="ru">Помогает предпринимателям внедрять AI и цифровые инструменты для роста эффективности.</span><span data-lang="en">Helps entrepreneurs adopt AI and digital tools to improve efficiency.</span><span data-lang="ro">Ajută antreprenorii să adopte AI și instrumente digitale pentru eficiență.</span></p>
+                        </div>
+                    </article>
+                </div>
+                <div class="miro-grid-2 miro-members__legacy">
                     <article class="miro-member-card"><img src="{{ asset('images/member-fashion.webp') }}" alt="Fashion and design participant profile" loading="lazy"><div><h4><span data-lang="ru">Участница · Мода и дизайн</span><span data-lang="en">Member · Fashion &amp; design</span><span data-lang="ro">Participantă · Modă și design</span></h4><div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--yellow"><span data-lang="ru">Участница</span><span data-lang="en">Member</span><span data-lang="ro">Participantă</span></span><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Дизайн</span><span data-lang="en">Design</span><span data-lang="ro">Design</span></span><span class="miro-profile-tag miro-profile-tag--teal"><span data-lang="ru">Ищет партнёров</span><span data-lang="en">Looking for a partner</span><span data-lang="ro">Caută partener</span></span></div><p><span data-lang="ru">President of the Association of Women Entrepreneurs in Moldova (AFAM).</span><span data-lang="en">Building a product and open to new sales channels and partnerships.</span><span data-lang="ro">Dezvoltă un produs și este deschisă canalelor noi de vânzare și parteneriatelor.</span></p></div></article>
                     <article class="miro-member-card"><img src="{{ asset('images/member-digital.webp') }}" alt="Digital services expert profile" loading="lazy"><div><h4><span data-lang="ru">Каролина Бугаян · Президент Ассоциации </span><span data-lang="en">Expert · Digital services</span><span data-lang="ro">Expertă · Servicii digitale</span></h4><div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Эксперт</span><span data-lang="en">Expert</span><span data-lang="ro">Expertă</span></span><span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Бизнесмен</span><span data-lang="en">Marketing</span><span data-lang="ro">Marketing</span></span><span class="miro-profile-tag miro-profile-tag--yellow"><span data-lang="ru">Ищет партнеров</span><span data-lang="en">Offers services</span><span data-lang="ro">Oferă servicii</span></span></div><p><span data-lang="ru">President of the Association of Women Entrepreneurs in Moldova (AFAM).</span><span data-lang="en">Helping businesses become more visible, clear and effective.</span><span data-lang="ro">Ajută afacerile să devină mai vizibile, mai clare și mai eficiente.</span></p></div></article>
                     <article class="miro-member-card"><img src="{{ asset('images/member-agrifood.webp') }}" alt="Agrifood participant profile" loading="lazy"><div><h4><span data-lang="ru">Участница · Агро и продукты</span><span data-lang="en">Member · Agri &amp; food</span><span data-lang="ro">Participantă · Agri și produse</span></h4><div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--teal"><span data-lang="ru">Участница</span><span data-lang="en">Member</span><span data-lang="ro">Participantă</span></span><span class="miro-profile-tag miro-profile-tag--orange"><span data-lang="ru">Агро и продукты</span><span data-lang="en">Agri &amp; food</span><span data-lang="ro">Agri și produse</span></span><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Ищет новые рынки</span><span data-lang="en">Looking for new markets</span><span data-lang="ro">Caută piețe noi</span></span></div><p><span data-lang="ru">Развивает локальный бизнес и ищет устойчивые деловые связи.</span><span data-lang="en">Growing a local business and building sustainable business connections.</span><span data-lang="ro">Dezvoltă o afacere locală și construiește conexiuni de business durabile.</span></p></div></article>
                     <article class="miro-member-card"><img src="{{ asset('images/hero-community.webp') }}" alt="Women entrepreneurs community profile" loading="lazy"><div><h4><span data-lang="ru">Эксперт · Развитие сообщества</span><span data-lang="en">Expert · Community building</span><span data-lang="ro">Expertă · Dezvoltarea comunității</span></h4><div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Эксперт</span><span data-lang="en">Expert</span><span data-lang="ro">Expertă</span></span><span class="miro-profile-tag miro-profile-tag--teal"><span data-lang="ru">Менторство</span><span data-lang="en">Mentorship</span><span data-lang="ro">Mentorat</span></span><span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Открыта к сотрудничеству</span><span data-lang="en">Open to collaboration</span><span data-lang="ro">Deschisă colaborării</span></span></div><p><span data-lang="ru">Соединяет людей, идеи и возможности для общего результата.</span><span data-lang="en">Connecting people, ideas and opportunities for a shared result.</span><span data-lang="ro">Conectează oameni, idei și oportunități pentru rezultate comune.</span></p></div></article>
                 </div>
                 <div class="miro-members__cta">
+                    <a class="miro-button miro-button--primary" href="{{ route('members') }}"><span data-lang="ru">Найти похожие профили&nbsp;→</span><span data-lang="en">Find similar profiles&nbsp;→</span><span data-lang="ro">Găsește profiluri similare&nbsp;→</span></a>
                     <a class="miro-button miro-button--primary" href="{{ route('account.login') }}"><span data-lang="ru">Найти похожие профили&nbsp;→</span><span data-lang="en">Find similar profiles&nbsp;→</span><span data-lang="ro">Găsește profiluri similare&nbsp;→</span></a>
                 </div>
             </div>

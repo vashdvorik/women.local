@@ -230,6 +230,7 @@
         @media (max-width:767px) { .miro-container{width:min(100% - 32px,540px)} .miro-brand{font-size:14px} .miro-events-hero{padding:64px 0 56px} .miro-events-hero h1{font-size:48px} .miro-events-hero__copy,.miro-section__head p,.miro-events-cta p{font-size:16px} .miro-events-section{padding:64px 0 76px} .miro-section__head h2,.miro-events-cta h2{font-size:38px} .miro-events-grid{grid-template-columns:1fr} .miro-events-cta{padding:48px 22px;border-radius:24px} .miro-footer__top{grid-template-columns:repeat(2,1fr)} .miro-footer__bottom{flex-direction:column} }
         @media (max-width:479px) { .miro-footer__top{gap:28px 16px} }
     </style>
+    @include('partials.miro-media-styles')
 </head>
 <body>
     @include('partials.miro-header', ['miroCurrentPage' => 'events'])
