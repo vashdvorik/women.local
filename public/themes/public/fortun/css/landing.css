@@ -9,6 +9,8 @@
             --fortun-on-primary: #ffffff;
             --fortun-pink: #E9E1F2;
             --fortun-coral: #F1CE91;
+            --fortun-coral-strong: #DBA647;
+            --fortun-coral-dark: #600000;
             --fortun-cream: #FFF3D9;
             --fortun-blue: #53288A;
             --fortun-rose: #E9E1F2;
@@ -76,7 +78,7 @@
         .miro-hero__actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
         .miro-hero__note { margin: 14px 0 0; color: var(--fortun-muted); font-size: 13px; }
 
-        .miro-hero--image { overflow: hidden; }
+        .miro-hero--image { overflow: hidden; background: linear-gradient(90deg, var(--fortun-pink) 0%, color-mix(in srgb, var(--fortun-pink) 58%, transparent) 34%, color-mix(in srgb, var(--fortun-pink) 16%, transparent) 62%, transparent 82%), #fff; }
         .miro-hero__grid { display: grid; grid-template-columns: minmax(0, .86fr) minmax(0, 1.14fr); align-items: center; gap: 48px; }
         .miro-hero__content { position: relative; z-index: 2; }
         .miro-hero--image h1 { max-width: 600px; font-size: clamp(44px, 5.8vw, 76px); }
@@ -111,6 +113,7 @@
         .miro-logo-wall__photo { position: absolute; z-index: 1; top: 10px; left: 12%; width: min(280px, 72%); height: 190px; overflow: hidden; border: 8px solid #fff; border-radius: 30px 30px 30px 8px; box-shadow: var(--fortun-shadow); transform: rotate(-3deg); }
         .miro-logo-wall__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 36% center; }
         .miro-logo-wall__sticker { position: absolute; z-index: 2; right: 2%; bottom: 18px; display: inline-flex; align-items: center; min-height: 40px; padding: 8px 14px; border-radius: 8px; background: var(--fortun-primary); color: #fff; font-size: 12px; font-weight: 500; box-shadow: 0 8px 18px rgba(38,17,83,.14); transform: rotate(4deg); }
+        .miro-logo-wall__sticker--brand { background: var(--fortun-blue); }
 
         .miro-section { padding: 96px 0; }
         .miro-section--surface { background: var(--fortun-surface); }
@@ -156,11 +159,18 @@
         .miro-step h3 { margin: 0; color: var(--fortun-ink-deep); font-size: 20px; font-weight: 500; line-height: 1.2; }
         .miro-step p { margin: 10px auto 0; max-width: 220px; color: var(--fortun-slate); font-size: 14px; line-height: 1.5; }
 
-        .miro-offers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-        .miro-offer { min-height: 154px; padding: 22px 18px; border: 1px solid var(--fortun-hairline-soft); border-radius: 18px; background: #fff; box-shadow: 0 8px 20px rgba(38,17,83,.04); }
-        .miro-offer__icon { width: 36px; height: 36px; display: grid; place-items: center; margin-bottom: 20px; border: 1px solid var(--fortun-hairline-strong); border-radius: 50%; color: var(--fortun-blue); font-size: 15px; font-weight: 600; }
-        .miro-offer h3 { margin: 0; color: var(--fortun-ink-deep); font-size: 16px; font-weight: 500; line-height: 1.25; }
-        .miro-offer p { margin: 7px 0 0; color: var(--fortun-steel); font-size: 13px; line-height: 1.4; }
+        .miro-offers { padding: 0 0 12px; border-bottom: 1px solid var(--fortun-hairline); background: #fff; }
+        .miro-offers__inner { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .miro-offer { min-height: 150px; display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 16px; align-items: start; padding: 28px 24px 24px; border-left: 1px solid var(--fortun-hairline); background: #fff; }
+        .miro-offer:first-child { border-left: 0; }
+        .miro-offer__icon { display: grid; width: 40px; height: 40px; place-items: center; color: var(--fortun-blue); }
+        .miro-offer__icon-svg { width: 36px; height: 36px; display: block; }
+        .miro-offer--learning .miro-offer__icon { color: var(--fortun-coral-strong); }
+        .miro-offer--community .miro-offer__icon { color: var(--fortun-teal-dark); }
+        .miro-offer--ai .miro-offer__icon { color: var(--fortun-blue); }
+        .miro-offer--events .miro-offer__icon { color: var(--fortun-coral-dark); }
+        .miro-offer h3 { margin: 0; color: var(--fortun-ink-deep); font-size: 17px; font-weight: 500; line-height: 1.25; }
+        .miro-offer p { margin: 8px 0 0; color: var(--fortun-steel); font-size: 13px; line-height: 1.45; }
 
         .miro-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 72px; }
         .miro-split--reverse > :first-child { order: 2; }
@@ -257,7 +267,8 @@
             .miro-grid-3 { grid-template-columns: 1fr; }
             .miro-logo-wall__layout { grid-template-columns: 1fr 1fr; gap: 28px; }
             .miro-benefits { grid-template-columns: repeat(2, 1fr); }
-            .miro-offers { grid-template-columns: repeat(2, 1fr); }
+            .miro-offers__inner { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .miro-offer:nth-child(3) { border-left: 0; }
             .miro-split { grid-template-columns: 1fr; gap: 40px; }
             .miro-split--reverse > :first-child { order: initial; }
             .miro-footer__top { grid-template-columns: repeat(3, 1fr); }
@@ -270,6 +281,7 @@
             .miro-brand { font-size: 14px; }
             .miro-languages { margin-right: 0; }
             .miro-hero { padding: 72px 0 48px; }
+            .miro-hero--image { background: linear-gradient(180deg, var(--fortun-pink) 0%, color-mix(in srgb, var(--fortun-pink) 46%, transparent) 38%, transparent 72%), #fff; }
             .miro-hero--image h1 { font-size: 48px; }
             .miro-hero__subtitle, .miro-section__head p, .miro-cta p { font-size: 16px; }
             .miro-logo-wall__layout { grid-template-columns: 1fr; gap: 28px; }
@@ -284,7 +296,10 @@
             .miro-section { padding: 64px 0; }
             .miro-section h2 { font-size: 38px; }
             .miro-grid-2 { grid-template-columns: 1fr; }
-            .miro-benefits, .miro-steps, .miro-offers { grid-template-columns: 1fr; }
+            .miro-benefits, .miro-steps { grid-template-columns: 1fr; }
+            .miro-offers__inner { grid-template-columns: 1fr; }
+            .miro-offer, .miro-offer:nth-child(3) { border-left: 0; border-top: 1px solid var(--fortun-hairline); }
+            .miro-offer:first-child { border-top: 0; }
             .miro-steps { gap: 32px; }
             .miro-steps::before { top: 36px; right: auto; bottom: 36px; left: 50%; border-top: 0; border-left: 2px dashed var(--fortun-hairline-strong); }
             .miro-feature-card { min-height: 260px; padding: 24px; }

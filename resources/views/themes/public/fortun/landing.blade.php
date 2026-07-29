@@ -45,7 +45,7 @@
                     <a href="{{ route('account.login') }}" class="miro-button miro-button--secondary">
                         <span data-lang="ru">Войти</span><span data-lang="en">Log in</span><span data-lang="ro">Intră</span>
                     </a>
-                    <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button miro-button--primary">
+                    <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button miro-button--primary miro-button--brand">
                         <span data-lang="ru">Присоединиться</span><span data-lang="en">Get started</span><span data-lang="ro">Începe</span>
                     </a>
                 </div>
@@ -74,9 +74,9 @@
                 <div class="miro-hero__grid">
                     <div class="miro-hero__content">
                         <h1>
-                            <span data-lang="ru">ОНЛАЙН-ПЛАТФОРМА<br>ЖЕНСКОГО<br>БИЗНЕСА</span>
-                            <span data-lang="en">ONLINE PLATFORM<br>FOR WOMEN<br>ENTREPRENEURS</span>
-                            <span data-lang="ro">PLATFORMĂ ONLINE<br>PENTRU FEMEI<br>ANTREPRENOARE</span>
+                            <span data-lang="ru">ОНЛАЙН<br> ПЛАТФОРМА<br>ЖЕНСКОГО<br>БИЗНЕСА</span>
+                            <span data-lang="en">ONLINE<br> PLATFORM<br>FOR WOMEN<br>ENTREPRENEURS</span>
+                            <span data-lang="ro">PLATFORMĂ<br> ONLINE<br>PENTRU FEMEI<br>ANTREPRENOARE</span>
                         </h1>
                         <p class="miro-hero__subtitle">
                             <span data-lang="ru">Цифровое пространство для обучения, нетворкинга, менторства и роста бизнеса в регионе.</span>
@@ -84,11 +84,11 @@
                             <span data-lang="ro">Un spațiu digital pentru învățare, networking, mentorat și creșterea afacerilor în regiune.</span>
                         </p>
                         <div class="miro-hero__actions">
-                            <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button miro-button--primary">
+                            <a href="{{ route('account.login') }}" class="miro-button miro-button--primary miro-button--brand">
                                 <span data-lang="ru">Присоединиться к платформе</span><span data-lang="en">Join the Platform</span><span data-lang="ro">Alătură-te platformei</span>
                             </a>
-                            <a href="#learning" class="miro-button miro-button--secondary">
-                                <span data-lang="ru">Изучить обучение</span><span data-lang="en">Explore Learning</span><span data-lang="ro">Explorează învățarea</span>
+                            <a href="{{ route('members') }}" class="miro-button miro-button--secondary">
+                                <span data-lang="ru">Наши эксперты</span><span data-lang="en">Our Experts</span><span data-lang="ro">Experții noștri</span>
                             </a>
                         </div>
                         <div class="miro-proof">
@@ -107,7 +107,66 @@
 
             </div>
         </section>
-
+        <section class="miro-offers" aria-label="Platform features">
+            <div class="miro-container miro-offers__inner">
+                <article class="miro-offer miro-offer--learning">
+                    <div class="miro-offer__icon" aria-hidden="true">
+                        <svg class="miro-offer__icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 8.5 16 4l12 4.5-12 4.5L4 8.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                            <path d="M8 11.5v7.2c0 2.2 3.6 4.3 8 4.3s8-2.1 8-4.3v-7.2M28 9v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            <path d="M12 25.5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3><span data-lang="ru">Онлайн-обучение</span><span data-lang="en">Online learning</span><span data-lang="ro">Învățare online</span></h3>
+                        <p><span data-lang="ru">Вебинары, курсы и мастер-классы от экспертов и практиков.</span><span data-lang="en">Webinars, courses and masterclasses from experts and practitioners.</span><span data-lang="ro">Webinaruri, cursuri și masterclass-uri</span></p>
+                    </div>
+                </article>
+                <article class="miro-offer miro-offer--community">
+                    <div class="miro-offer__icon" aria-hidden="true">
+                        <svg class="miro-offer__icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="16" cy="7" r="3" stroke="currentColor" stroke-width="1.8"/>
+                            <circle cx="7" cy="23" r="3" stroke="currentColor" stroke-width="1.8"/>
+                            <circle cx="25" cy="23" r="3" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="m14.5 9.5-5.8 10M17.5 9.5l5.8 10M10 23h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3><span data-lang="ru">Сообщество</span><span data-lang="en">Community</span><span data-lang="ro">Comunitate</span></h3>
+                        <p><span data-lang="ru">Находите партнеров, единомышленников и клиентов на обоих берегах Днестра.</span><span data-lang="en">Find partners, like-minded individuals and clients on both banks of the Dniester.</span><span data-lang="ro">Găsește parteneri, indivizi cu gânduri similare și clienți pe ambele maluri ale Dunării.</span></p>
+                    </div>
+                </article>
+                <article class="miro-offer miro-offer--ai">
+                    <div class="miro-offer__icon" aria-hidden="true">
+                        <svg class="miro-offer__icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="16" cy="16" r="3" stroke="currentColor" stroke-width="1.8"/>
+                            <circle cx="7" cy="9" r="2.5" stroke="currentColor" stroke-width="1.8"/>
+                            <circle cx="25" cy="9" r="2.5" stroke="currentColor" stroke-width="1.8"/>
+                            <circle cx="7" cy="24" r="2.5" stroke="currentColor" stroke-width="1.8"/>
+                            <circle cx="25" cy="24" r="2.5" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="m13.5 14-4.4-3.2M18.5 14l4.4-3.2M13.5 18l-4.4 3.2M18.5 18l4.4 3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                            <path d="m16 5 .7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7L16 5Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3><span data-lang="ru">&#1048;&#1048;-&#1084;&#1072;&#1090;&#1095;&#1080;&#1085;&#1075;</span><span data-lang="en">AI matching</span><span data-lang="ro">Potrivire AI</span></h3>
+                        <p><span data-lang="ru">&#1059;&#1084;&#1085;&#1099;&#1081; &#1087;&#1086;&#1076;&#1073;&#1086;&#1088; &#1087;&#1072;&#1088;&#1090;&#1085;&#1105;&#1088;&#1086;&#1074;, &#1101;&#1082;&#1089;&#1087;&#1077;&#1088;&#1090;&#1086;&#1074; &#1080; &#1074;&#1086;&#1079;&#1084;&#1086;&#1078;&#1085;&#1086;&#1089;&#1090;&#1077;&#1081;</span><span data-lang="en">Smart recommendations for partners, mentors and opportunities</span><span data-lang="ro">Recomand&#259;ri inteligente pentru partenere, mentori &#537;i oportunit&#259;&#539;i</span></p>
+                    </div>
+                </article>
+                <article class="miro-offer miro-offer--events">
+                    <div class="miro-offer__icon" aria-hidden="true">
+                        <svg class="miro-offer__icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="5" y="7" width="22" height="20" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+                            <path d="M10 4v6M22 4v6M5 13h22M10 18h4M18 18h4M10 22h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3><span data-lang="ru">Возможности</span><span data-lang="en">Opportunities</span><span data-lang="ro">Oportunități</span></h3>
+                        <p><span data-lang="ru">Актуальные грантовые программы и возможности для развития вашего бизнеса</span><span data-lang="en">Current grant programs and opportunities for business development</span><span data-lang="ro">Cele mai recente știri și oportunități de finanțare</span></p>
+                    </div>
+                </article>
+            </div>
+        </section>
         <section class="miro-logo-wall">
             <div class="miro-container miro-logo-wall__layout">
                 <div class="miro-logo-wall__copy">
@@ -125,10 +184,12 @@
                     <div class="miro-logo-wall__photo">
                         <img src="{{ asset('themes/public/' . ($publicTheme ?? 'fortun') . '/images/333.png') }}" alt="">
                     </div>
-                    <span class="miro-logo-wall__sticker"><span data-lang="ru">Связи, которые работают</span><span data-lang="en">Connections that move business</span><span data-lang="ro">Conexiuni care dezvoltă afaceri</span></span>
+                    <span class="miro-logo-wall__sticker miro-logo-wall__sticker--brand"><span data-lang="ru">Связи, которые работают</span><span data-lang="en">Connections that move business</span><span data-lang="ro">Conexiuni care dezvoltă afaceri</span></span>
                 </div>
             </div>
         </section>
+
+
 
         <section class="miro-section" id="benefits">
             <div class="miro-container">
@@ -449,5 +510,4 @@
     <script src="{{ asset('themes/public/' . ($publicTheme ?? 'fortun') . '/js/landing.js') }}"></script>
 </body>
 </html>
-
 
