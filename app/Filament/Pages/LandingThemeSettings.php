@@ -20,7 +20,7 @@ class LandingThemeSettings extends Page
 
     protected static ?int $navigationSort = 3;
 
-    public string $theme = 'classic';
+    public string $theme = 'miro';
 
     public function mount(): void
     {

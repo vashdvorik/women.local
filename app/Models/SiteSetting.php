@@ -16,10 +16,8 @@ class SiteSetting extends Model
 
     public const LANDING_THEMES = [
         'miro'     => 'Miro',
-        'classic'  => 'Классическая зелёная',
-        'warm'     => 'Тёплая гранатовая',
-        'dark'     => 'Премиальная тёмная',
-        'platform' => 'Новый дизайн из docs',
+        'fortun'   => 'Fortun',
+        'platform' => 'Platform',
     ];
 
     /**
@@ -48,21 +46,21 @@ class SiteSetting extends Model
     {
         return Cache::rememberForever(self::LANDING_THEME_KEY, function (): string {
             if (! Schema::hasTable('site_settings')) {
-                return 'classic';
+                return 'miro';
             }
 
             $setting = self::where('key', self::LANDING_THEME_KEY)->first();
             $value   = $setting?->value ?? [];
-            $theme   = is_array($value) ? ($value['theme'] ?? 'classic') : 'classic';
+            $theme   = is_array($value) ? ($value['theme'] ?? 'miro') : 'miro';
 
-            return array_key_exists($theme, self::LANDING_THEMES) ? $theme : 'classic';
+            return array_key_exists($theme, self::LANDING_THEMES) ? $theme : 'miro';
         });
     }
 
     public static function setLandingTheme(string $theme): void
     {
         if (! array_key_exists($theme, self::LANDING_THEMES)) {
-            $theme = 'classic';
+            $theme = 'miro';
         }
 
         self::updateOrCreate(

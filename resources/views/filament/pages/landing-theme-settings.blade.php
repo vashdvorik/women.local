@@ -108,51 +108,6 @@
         opacity: .92;
     }
 
-    .theme-preview.is-classic {
-        background: radial-gradient(circle at 78% 18%, rgba(221, 239, 232, .9), transparent 32%), #faf8f3;
-    }
-
-    .theme-preview.is-classic .theme-preview__logo,
-    .theme-preview.is-classic .theme-preview__button,
-    .theme-preview.is-classic .theme-preview__line.is-lg {
-        background: #123c3a;
-    }
-
-    .theme-preview.is-classic .theme-preview__line,
-    .theme-preview.is-classic .theme-preview__photo {
-        background: #ddeee8;
-    }
-
-    .theme-preview.is-warm {
-        background: radial-gradient(circle at 80% 20%, rgba(254, 215, 170, .8), transparent 34%), #fff7ed;
-    }
-
-    .theme-preview.is-warm .theme-preview__logo,
-    .theme-preview.is-warm .theme-preview__button,
-    .theme-preview.is-warm .theme-preview__line.is-lg {
-        background: #9a3412;
-    }
-
-    .theme-preview.is-warm .theme-preview__line,
-    .theme-preview.is-warm .theme-preview__photo {
-        background: #fed7aa;
-    }
-
-    .theme-preview.is-dark {
-        background: radial-gradient(circle at 80% 20%, rgba(236, 72, 153, .28), transparent 34%), #0f172a;
-    }
-
-    .theme-preview.is-dark .theme-preview__logo,
-    .theme-preview.is-dark .theme-preview__button,
-    .theme-preview.is-dark .theme-preview__line.is-lg {
-        background: #f8fafc;
-    }
-
-    .theme-preview.is-dark .theme-preview__line,
-    .theme-preview.is-dark .theme-preview__photo {
-        background: #334155;
-    }
-
     .theme-preview.is-platform {
         background: radial-gradient(circle at 78% 20%, rgba(13, 148, 136, .24), transparent 32%), #f9fafb;
     }
@@ -169,7 +124,7 @@
     }
 
     .theme-preview.is-miro {
-        background: radial-gradient(circle at 80% 18%, rgba(255, 208, 47, .48), transparent 34%), #fff;
+        background: radial-gradient(circle at 80% 18%, rgba(255, 216, 244, .82), transparent 34%), #fff;
     }
 
     .theme-preview.is-miro .theme-preview__logo,
@@ -180,6 +135,21 @@
 
     .theme-preview.is-miro .theme-preview__line,
     .theme-preview.is-miro .theme-preview__photo {
+        background: #ffd8f4;
+    }
+
+    .theme-preview.is-fortun {
+        background: radial-gradient(circle at 80% 18%, rgba(255, 216, 244, .82), transparent 34%), #fff;
+    }
+
+    .theme-preview.is-fortun .theme-preview__logo,
+    .theme-preview.is-fortun .theme-preview__button,
+    .theme-preview.is-fortun .theme-preview__line.is-lg {
+        background: #1c1c1e;
+    }
+
+    .theme-preview.is-fortun .theme-preview__line,
+    .theme-preview.is-fortun .theme-preview__photo {
         background: #ffd8f4;
     }
 
@@ -251,10 +221,8 @@
 @php
     $descriptions = [
         'miro' => 'Miro: чёрные pill-кнопки, канареечный жёлтый и пастельные карточки.',
-        'classic' => 'Спокойная зелёная тема: базовый вариант для деловой и институциональной подачи.',
-        'warm' => 'Тёплая гранатово-песочная тема: мягче, ярче и эмоциональнее.',
-        'dark' => 'Контрастная тёмная тема: премиальная подача для презентаций и донорских показов.',
-        'platform' => 'Новый дизайн из docs: фиолетово-бирюзовая структура с карточками, событиями и историями.',
+        'fortun' => 'Fortun: копия темы Miro для дальнейшей самостоятельной настройки.',
+        'platform' => 'Platform: фиолетово-бирюзовая структура с карточками, событиями и историями.',
     ];
 @endphp
 
@@ -292,7 +260,7 @@
     </section>
 
     <section class="theme-actions">
-        <p>Текущая выбранная тема: <strong>{{ $this->themes()[$theme] ?? $this->themes()['classic'] }}</strong></p>
+        <p>Текущая выбранная тема: <strong>{{ $this->themes()[$theme] ?? $this->themes()['miro'] }}</strong></p>
         <button type="submit" class="theme-save">Сохранить тему</button>
     </section>
 </form>

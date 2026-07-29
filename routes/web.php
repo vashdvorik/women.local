@@ -5,34 +5,32 @@ use App\Http\Controllers\Account\OpportunityController;
 use App\Http\Controllers\Account\TmaAuthController;
 use App\Http\Middleware\RequireAccountAuth;
 use App\Models\LoginToken;
-use App\Models\SiteSetting;
+use App\Services\PublicThemeView;
 use Illuminate\Support\Facades\Route;
 use SergiX44\Nutgram\Nutgram;
 
 Route::get('/', function () {
-    return view('landing', [
-        'landingTheme' => SiteSetting::landingTheme(),
-    ]);
+    return PublicThemeView::render('landing');
 });
 
 Route::get('/members', function () {
-    return view('members-miro');
+    return PublicThemeView::render('members');
 })->name('members');
 
 Route::get('/events', function () {
-    return view('events-miro');
+    return PublicThemeView::render('events');
 })->name('events');
 
 Route::get('/about', function () {
-    return view('about-miro');
+    return PublicThemeView::render('about');
 })->name('about');
 
 Route::get('/partners', function () {
-    return view('partners-miro');
+    return PublicThemeView::render('partners');
 })->name('partners');
 
 Route::get('/contact', function () {
-    return view('contact-miro');
+    return PublicThemeView::render('contact');
 })->name('contact');
 
 Route::get('/language/{locale}', function (string $locale) {

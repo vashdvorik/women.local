@@ -1,0 +1,306 @@
+:root {
+            --fortun-primary: #1C1C1E;
+            --fortun-primary-hover: #452074;
+            --fortun-primary-pressed: #35165C;
+            --fortun-purple-light: #A78FC7;
+            --fortun-teal-dark: #006A77;
+            --fortun-teal-light: #A4D0D4;
+            --fortun-surface-featured: #F5F0FA;
+            --fortun-on-primary: #ffffff;
+            --fortun-pink: #E9E1F2;
+            --fortun-coral: #F1CE91;
+            --fortun-cream: #FFF3D9;
+            --fortun-blue: #53288A;
+            --fortun-rose: #E9E1F2;
+            --fortun-teal: #E2F2F3;
+            --fortun-orange: #FFF3D9;
+            --fortun-canvas: #ffffff;
+            --fortun-surface: #F8FAFB;
+            --fortun-surface-soft: #FBFBFC;
+            --fortun-hairline: #E7E7E9;
+            --fortun-hairline-soft: #F0EDF3;
+            --fortun-hairline-strong: #CFC6D9;
+            --fortun-ink-deep: #261153;
+            --fortun-ink: #1C1C1E;
+            --fortun-charcoal: #342A42;
+            --fortun-slate: #585364;
+            --fortun-steel: #706A79;
+            --fortun-muted: #AAA4B1;
+            --fortun-shadow: rgba(38, 17, 83, .08) 0 12px 32px -4px;
+            --fortun-font: "Roobert PRO", "Noto Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * { box-sizing: border-box; }
+        html { overflow-x: hidden; }
+        body { margin: 0; background: var(--fortun-canvas); color: var(--fortun-ink); font-family: var(--fortun-font); font-size: 16px; line-height: 1.5; }
+        a { color: inherit; text-decoration: none; }
+        button, a { -webkit-tap-highlight-color: transparent; }
+        img { display: block; max-width: 100%; }
+        html:not([lang="ru"]) [data-lang="ru"],
+        html:not([lang="en"]) [data-lang="en"],
+        html:not([lang="ro"]) [data-lang="ro"] { display: none !important; }
+        :focus-visible { outline: 2px solid var(--fortun-blue); outline-offset: 3px; border-radius: 6px; }
+
+        .miro-container { width: min(1280px, calc(100% - 64px)); margin: 0 auto; }
+        .miro-nav { position: sticky; top: 0; z-index: 30; min-height: 68px; border-bottom: 1px solid var(--fortun-hairline-soft); background: rgba(255,255,255,.94); backdrop-filter: blur(16px); }
+        .miro-nav__inner { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+        .miro-brand { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; font-size: 16px; font-weight: 600; letter-spacing: -.02em; }
+        .miro-brand__mark { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 6px; background: var(--fortun-pink); color: var(--fortun-primary); font-size: 13px; font-weight: 600; }
+        .miro-brand__logo { width: 176px; height: 52px; object-fit: contain; }
+        .miro-nav__links { display: flex; align-items: center; gap: 28px; color: var(--fortun-slate); font-size: 14px; }
+        .miro-nav__links a { transition: color .18s ease; }
+        .miro-nav__links a:hover, .miro-nav__links a.is-active { color: var(--fortun-primary); }
+        .miro-nav__links a.is-active { font-weight: 600; }
+        .miro-nav__actions { display: flex; align-items: center; gap: 10px; }
+        .miro-languages { display: inline-flex; align-items: center; gap: 2px; margin-right: 8px; padding: 3px; border: 1px solid var(--fortun-hairline); border-radius: 9999px; background: var(--fortun-surface); }
+        .miro-languages button { border: 0; border-radius: 9999px; padding: 5px 7px; background: transparent; color: var(--fortun-steel); cursor: pointer; font: 500 11px/1 var(--fortun-font); }
+        .miro-languages button.is-active { background: var(--fortun-primary); color: #fff; }
+        .miro-mobile-toggle { display: none; width: 40px; height: 40px; flex: 0 0 40px; border: 1px solid var(--fortun-hairline); border-radius: 9999px; background: #fff; color: var(--fortun-primary); cursor: pointer; }
+        .miro-nav__mobile-menu { display: none; }
+
+        .miro-button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 12px 24px; border-radius: 9999px; font-size: 14px; font-weight: 500; line-height: 1.3; transition: transform .18s ease, background .18s ease, border-color .18s ease; }
+        .miro-button:hover { transform: translateY(-1px); }
+        .miro-button--primary { background: var(--fortun-primary); color: #fff; }
+        .miro-button--primary:hover { background: var(--fortun-primary-hover); }
+        .miro-button--secondary { border: 1px solid var(--fortun-hairline-strong); background: transparent; color: var(--fortun-ink); }
+        .miro-button--secondary:hover { border-color: var(--fortun-primary); }
+        .miro-button--pink, .miro-button--yellow { background: var(--fortun-pink); color: var(--fortun-primary); }
+        .miro-button--pink:hover, .miro-button--yellow:hover { background: var(--fortun-coral); }
+        .miro-button--on-dark { background: #fff; color: var(--fortun-primary); }
+        .miro-button--small { min-height: 40px; padding: 10px 18px; }
+
+        .miro-hero { padding: 76px 0 72px; text-align: left; }
+        .miro-eyebrow { margin: 0 0 20px; color: var(--fortun-blue); font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+        .miro-hero h1 { max-width: 920px; margin: 0; color: var(--fortun-ink-deep); font-size: clamp(46px, 7vw, 80px); font-weight: 500; line-height: 1.05; letter-spacing: -.055em; }
+        .miro-hero__subtitle { max-width: 620px; margin: 28px 0 0; color: var(--fortun-slate); font-size: 18px; line-height: 1.5; }
+        .miro-hero__actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+        .miro-hero__note { margin: 14px 0 0; color: var(--fortun-muted); font-size: 13px; }
+
+        .miro-hero--image { overflow: hidden; }
+        .miro-hero__grid { display: grid; grid-template-columns: minmax(0, .86fr) minmax(0, 1.14fr); align-items: center; gap: 48px; }
+        .miro-hero__content { position: relative; z-index: 2; }
+        .miro-hero--image h1 { max-width: 600px; font-size: clamp(44px, 5.8vw, 76px); }
+        .miro-hero--image .miro-eyebrow { color: var(--fortun-primary); }
+        .miro-hero--image .miro-hero__subtitle { max-width: 520px; }
+        .miro-hero--image .miro-hero__actions { justify-content: flex-start; }
+        .miro-hero__visual { position: relative; min-height: 530px; margin-right: -32px; }
+        .miro-hero__visual::before { content: ""; position: absolute; inset: 18px -24px 8px 24px; border-radius: 52px 0 52px 52px; background: linear-gradient(145deg, var(--fortun-pink) 0 18%, transparent 18% 100%), linear-gradient(180deg, transparent 68%, var(--fortun-teal) 68% 100%); transform: rotate(-2deg); }
+        .miro-hero__image { position: relative; height: 530px; overflow: hidden; border-radius: 48px 0 48px 48px; box-shadow: var(--fortun-shadow); }
+        .miro-hero__image img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+        .miro-hero__image::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255,255,255,.96) 0%, rgba(255,255,255,.7) 10%, rgba(255,255,255,0) 34%), linear-gradient(180deg, rgba(255,255,255,0) 70%, rgba(241,206,145,.28) 87%, rgba(164,208,212,.55) 100%); pointer-events: none; }
+        .miro-hero__arc { position: absolute; z-index: 2; right: -5%; bottom: -22px; left: -6%; height: 72px; border-bottom: 5px solid var(--fortun-coral); border-radius: 0 0 50% 50%; transform: rotate(-3deg); pointer-events: none; }
+        .miro-hero__arc--teal { right: -8%; bottom: -34px; left: 12%; border-bottom-color: var(--fortun-pink); border-bottom-width: 8px; }
+
+        .miro-logo-wall { position: relative; overflow: hidden; padding: 40px 0 72px; border-top: 1px solid var(--fortun-hairline-soft); border-bottom: 1px solid var(--fortun-hairline-soft); }
+        .miro-logo-wall::before { content: ""; position: absolute; top: -90px; left: 8%; width: 210px; height: 210px; border: 1px solid var(--fortun-pink); border-radius: 50%; opacity: .6; }
+        .miro-logo-wall::after { content: ""; position: absolute; right: 8%; bottom: 24px; width: 90px; height: 90px; background-image: radial-gradient(var(--fortun-blue) 1.5px, transparent 1.5px); background-size: 14px 14px; opacity: .25; }
+        .miro-logo-wall__layout { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, .8fr); align-items: center; gap: 56px; }
+        .miro-logo-wall__copy { position: relative; z-index: 2; }
+        .miro-logo-wall p { max-width: 540px; margin: 0 0 24px; color: var(--fortun-slate); font-size: 17px; line-height: 1.45; }
+        .miro-logo-wall__items { display: flex; flex-wrap: wrap; gap: 12px; color: var(--fortun-steel); font-size: 14px; font-weight: 500; }
+        .miro-logo-wall__items > span { display: inline-flex; align-items: center; max-width: 260px; padding: 9px 14px; border: 1px solid var(--fortun-hairline); border-radius: 9999px; background: #fff; box-shadow: 0 5px 14px rgba(38,17,83,.04); line-height: 1.25; }
+        .miro-logo-wall__items > span:nth-child(1) { background: var(--fortun-cream); border-color: rgba(241,206,145,.65); }
+        .miro-logo-wall__items > span:nth-child(2) { background: var(--fortun-teal); border-color: var(--fortun-teal-light); }
+        .miro-logo-wall__items > span:nth-child(3) { background: var(--fortun-rose); border-color: var(--fortun-purple-light); }
+        .miro-logo-wall__items > span:nth-child(4) { background: var(--fortun-coral); border-color: #F1CE91; }
+        .miro-logo-wall__items > span:nth-child(5) { background: var(--fortun-orange); border-color: #DBA647; }
+        .miro-logo-wall__items > span:nth-child(6) { background: var(--fortun-surface-featured); border-color: var(--fortun-purple-light); }
+        .miro-logo-wall__visual { position: relative; min-height: 210px; }
+        .miro-logo-wall__visual::before { content: ""; position: absolute; top: 6px; right: 4%; width: 170px; height: 170px; border-radius: 50%; background: var(--fortun-coral); opacity: .7; }
+        .miro-logo-wall__visual::after { content: ""; position: absolute; right: -2%; bottom: 0; width: 150px; height: 110px; border-radius: 50% 50% 28px 28px; background: var(--fortun-teal); opacity: .8; }
+        .miro-logo-wall__photo { position: absolute; z-index: 1; top: 10px; left: 12%; width: min(280px, 72%); height: 190px; overflow: hidden; border: 8px solid #fff; border-radius: 30px 30px 30px 8px; box-shadow: var(--fortun-shadow); transform: rotate(-3deg); }
+        .miro-logo-wall__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 36% center; }
+        .miro-logo-wall__sticker { position: absolute; z-index: 2; right: 2%; bottom: 18px; display: inline-flex; align-items: center; min-height: 40px; padding: 8px 14px; border-radius: 8px; background: var(--fortun-primary); color: #fff; font-size: 12px; font-weight: 500; box-shadow: 0 8px 18px rgba(38,17,83,.14); transform: rotate(4deg); }
+
+        .miro-section { padding: 96px 0; }
+        .miro-section--surface { background: var(--fortun-surface); }
+        .miro-section--soft { background: var(--fortun-surface-soft); }
+        .miro-section__head { max-width: 720px; margin-bottom: 40px; }
+        .miro-section__head--center { margin-right: auto; margin-left: auto; text-align: center; }
+        .miro-section h2 { margin: 0; color: var(--fortun-ink-deep); font-size: clamp(34px, 5vw, 60px); font-weight: 500; line-height: 1.1; letter-spacing: -.045em; }
+        .miro-section h3 { margin: 0; color: var(--fortun-ink-deep); font-size: 28px; font-weight: 500; line-height: 1.25; letter-spacing: -.025em; }
+        .miro-section__head p { margin: 18px 0 0; color: var(--fortun-slate); font-size: 18px; }
+        .miro-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .miro-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .miro-feature-card { min-height: 300px; padding: 32px; border-radius: 28px; }
+        .miro-feature-card__icon { width: 44px; height: 44px; display: grid; place-items: center; margin-bottom: 56px; border-radius: 50%; background: rgba(255,255,255,.72); color: var(--fortun-primary); font-size: 18px; font-weight: 600; }
+        .miro-feature-card p { margin: 14px 0 0; color: var(--fortun-charcoal); line-height: 1.55; }
+        .miro-feature-card--pink, .miro-feature-card--yellow { background: var(--fortun-pink); }
+        .miro-feature-card--coral { background: var(--fortun-coral); }
+        .miro-feature-card--teal { background: var(--fortun-teal); }
+        .miro-feature-card--rose { background: var(--fortun-rose); }
+        .miro-feature-card--orange { background: var(--fortun-orange); }
+
+        .miro-proof { display: inline-flex; align-items: center; gap: 12px; margin-top: 24px; padding: 10px 16px 10px 10px; border: 1px solid var(--fortun-hairline); border-radius: 9999px; background: #fff; box-shadow: 0 8px 20px rgba(38,17,83,.06); color: var(--fortun-slate); font-size: 14px; }
+        .miro-proof__value { width: 60px; height: 60px; flex: 0 0 60px; display: grid; place-items: center; border-radius: 50%; background: var(--fortun-rose); color: var(--fortun-primary); font-size: 17px; font-weight: 600; white-space: nowrap; }
+
+        .miro-benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .miro-benefit-card { min-height: 236px; padding: 24px; border: 1px solid var(--fortun-hairline-soft); border-radius: 24px; background: #fff; box-shadow: 0 8px 24px rgba(38,17,83,.04); }
+        .miro-benefit-card--pink, .miro-benefit-card--yellow { background: var(--fortun-pink); }
+        .miro-benefit-card--coral { background: var(--fortun-coral); }
+        .miro-benefit-card--teal { background: var(--fortun-teal); }
+        .miro-benefit-card--rose { background: var(--fortun-rose); }
+        .miro-benefit-card--orange { background: var(--fortun-orange); }
+        .miro-benefit-card--surface { background: var(--fortun-surface); }
+        .miro-benefit-card__icon { width: 46px; height: 46px; display: grid; place-items: center; margin-bottom: 32px; border-radius: 50%; background: rgba(255,255,255,.76); color: var(--fortun-primary); font-size: 19px; font-weight: 600; }
+        .miro-benefit-card h3 { margin: 0; color: var(--fortun-ink-deep); font-size: 21px; font-weight: 500; line-height: 1.2; }
+        .miro-benefit-card p { margin: 10px 0 0; color: var(--fortun-charcoal); font-size: 14px; line-height: 1.5; }
+
+        .miro-steps { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+        .miro-steps::before { content: ""; position: absolute; top: 36px; right: 12%; left: 12%; border-top: 2px dashed var(--fortun-hairline-strong); }
+        .miro-step { position: relative; z-index: 1; text-align: center; }
+        .miro-step__number { width: 72px; height: 72px; display: grid; place-items: center; margin: 0 auto 20px; border: 7px solid #fff; border-radius: 50%; background: var(--fortun-coral); color: var(--fortun-primary); box-shadow: 0 0 0 1px var(--fortun-hairline-strong); font-size: 20px; font-weight: 600; }
+        .miro-step:nth-child(2) .miro-step__number { background: var(--fortun-rose); }
+        .miro-step:nth-child(3) .miro-step__number { background: var(--fortun-teal); }
+        .miro-step:nth-child(4) .miro-step__number { background: var(--fortun-orange); }
+        .miro-step h3 { margin: 0; color: var(--fortun-ink-deep); font-size: 20px; font-weight: 500; line-height: 1.2; }
+        .miro-step p { margin: 10px auto 0; max-width: 220px; color: var(--fortun-slate); font-size: 14px; line-height: 1.5; }
+
+        .miro-offers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .miro-offer { min-height: 154px; padding: 22px 18px; border: 1px solid var(--fortun-hairline-soft); border-radius: 18px; background: #fff; box-shadow: 0 8px 20px rgba(38,17,83,.04); }
+        .miro-offer__icon { width: 36px; height: 36px; display: grid; place-items: center; margin-bottom: 20px; border: 1px solid var(--fortun-hairline-strong); border-radius: 50%; color: var(--fortun-blue); font-size: 15px; font-weight: 600; }
+        .miro-offer h3 { margin: 0; color: var(--fortun-ink-deep); font-size: 16px; font-weight: 500; line-height: 1.25; }
+        .miro-offer p { margin: 7px 0 0; color: var(--fortun-steel); font-size: 13px; line-height: 1.4; }
+
+        .miro-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 72px; }
+        .miro-split--reverse > :first-child { order: 2; }
+        .miro-split__copy p { max-width: 540px; margin: 20px 0 0; color: var(--fortun-slate); font-size: 17px; }
+        .miro-list { display: grid; gap: 14px; margin: 28px 0 0; padding: 0; list-style: none; }
+        .miro-list li { display: flex; gap: 12px; align-items: flex-start; color: var(--fortun-charcoal); }
+        .miro-list__check { flex: 0 0 22px; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: var(--fortun-teal); color: var(--fortun-primary); font-size: 12px; font-weight: 600; }
+        .miro-mockup { overflow: hidden; border: 1px solid var(--fortun-hairline-soft); border-radius: 16px; background: #fff; box-shadow: var(--fortun-shadow); }
+        .miro-mockup__bar { height: 42px; display: flex; align-items: center; gap: 6px; padding: 0 16px; border-bottom: 1px solid var(--fortun-hairline-soft); }
+        .miro-mockup__bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--fortun-hairline-strong); }
+        .miro-mockup__body { min-height: 330px; padding: 28px; background: var(--fortun-surface-soft); }
+        .miro-mockup__body--ai { background: linear-gradient(135deg, var(--fortun-surface-soft), var(--fortun-teal)); }
+        .miro-roadmap { display: grid; gap: 12px; }
+        .miro-roadmap__row { display: grid; grid-template-columns: 92px repeat(3, 1fr); gap: 8px; align-items: center; }
+        .miro-roadmap__label { color: var(--fortun-steel); font-size: 11px; font-weight: 600; text-transform: uppercase; }
+        .miro-roadmap__cell { min-height: 62px; padding: 12px; border: 1px solid var(--fortun-hairline); border-radius: 8px; background: #fff; color: var(--fortun-charcoal); font-size: 12px; }
+        .miro-roadmap__cell.is-pink, .miro-roadmap__cell.is-yellow { background: var(--fortun-pink); border-color: rgba(241,206,145,.65); }
+        .miro-roadmap__cell.is-blue { background: var(--fortun-surface-featured); border-color: var(--fortun-purple-light); }
+        .miro-ai-card { max-width: 370px; margin: 20px auto 0; padding: 22px; border: 1px solid rgba(0,106,119,.18); border-radius: 16px; background: rgba(255,255,255,.84); box-shadow: 0 8px 24px rgba(38,17,83,.06); }
+        .miro-ai-card__tag { display: inline-flex; padding: 4px 10px; border-radius: 9999px; background: var(--fortun-surface-featured); color: var(--fortun-blue); font-size: 12px; font-weight: 600; }
+        .miro-ai-card h4 { margin: 16px 0 8px; color: var(--fortun-ink-deep); font-size: 22px; font-weight: 500; }
+        .miro-ai-card p { margin: 0; color: var(--fortun-slate); font-size: 14px; }
+        .miro-ai-card__meter { height: 8px; margin-top: 18px; overflow: hidden; border-radius: 9999px; background: #E7E7E9; }
+        .miro-ai-card__meter span { display: block; width: 86%; height: 100%; border-radius: inherit; background: var(--fortun-blue); }
+
+        .miro-image-card { overflow: hidden; border-radius: 28px; background: #fff; box-shadow: var(--fortun-shadow); }
+        .miro-image-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+        .miro-image-card__caption { padding: 24px; }
+        .miro-image-card__caption p { margin: 10px 0 0; color: var(--fortun-slate); }
+        .miro-tag { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 9999px; background: var(--fortun-cream); color: #261153; font-size: 13px; font-weight: 600; }
+
+        .miro-member-card { display: grid; grid-template-columns: 112px 1fr; gap: 20px; align-items: center; padding: 16px; border: 1px solid var(--fortun-hairline-soft); border-radius: 16px; background: #fff; }
+        .miro-member-card img { width: 112px; height: 112px; border-radius: 12px; object-fit: cover; }
+        .miro-member-card h4 { margin: 0; color: var(--fortun-ink-deep); font-size: 18px; font-weight: 500; }
+        .miro-member-card__role { margin: 5px 0 0; color: var(--fortun-charcoal); font-size: 13px; line-height: 1.35; }
+        .miro-member-card__specialization { margin: 8px 0 0; color: var(--fortun-blue); font-size: 13px; font-weight: 600; line-height: 1.35; }
+        .miro-member-card__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+        .miro-profile-tag { display: inline-flex; align-items: center; padding: 5px 9px; border-radius: 9999px; color: var(--fortun-primary); font-size: 11px; font-weight: 500; line-height: 1.2; }
+        .miro-profile-tag--pink, .miro-profile-tag--yellow { background: var(--fortun-cream); }
+        .miro-profile-tag--teal { background: var(--fortun-teal); color: var(--fortun-teal-dark); }
+        .miro-profile-tag--rose { background: var(--fortun-rose); }
+        .miro-profile-tag--coral { background: var(--fortun-coral); }
+        .miro-profile-tag--blue { background: var(--fortun-surface-featured); color: var(--fortun-blue); }
+        .miro-profile-tag--orange { background: var(--fortun-orange); }
+        .miro-member-card p { margin: 6px 0 0; color: var(--fortun-steel); font-size: 14px; }
+        .miro-members__cta { display: flex; justify-content: center; margin-top: 32px; }
+        .miro-members__legacy { display: none; }
+        .miro-members__cta a[href*="account/login"] { display: none; }
+
+        .miro-event-card { overflow: hidden; border: 1px solid var(--fortun-hairline-soft); border-radius: 16px; background: #fff; }
+        .miro-event-card img { width: 100%; height: 196px; object-fit: cover; }
+        .miro-event-card__body { padding: 24px; }
+        .miro-event-card__date { margin-top: 14px; color: var(--fortun-blue); font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+        .miro-event-card__body h3 { margin-top: 16px; font-size: 22px; }
+        .miro-event-card__body p { margin: 10px 0 0; color: var(--fortun-slate); }
+        .miro-event-card__link { display: inline-flex; align-items: center; margin-top: 20px; padding: 10px 16px; border-radius: 9999px; background: var(--fortun-primary); color: #fff; font-size: 13px; font-weight: 500; transition: transform .18s ease, background .18s ease; }
+        .miro-event-card__link:hover { background: var(--fortun-primary-hover); transform: translateY(-1px); }
+        .miro-events__footer { display: flex; justify-content: center; margin-top: 32px; }
+        .miro-events__all-link { display: inline-flex; align-items: center; min-height: 44px; padding: 11px 22px; border: 1px solid var(--fortun-hairline-strong); border-radius: 9999px; color: var(--fortun-primary); font-size: 14px; font-weight: 500; transition: border-color .18s ease, background .18s ease; }
+        .miro-events__all-link:hover { border-color: var(--fortun-primary); background: var(--fortun-surface); }
+
+        .miro-story { display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; border-radius: 28px; background: var(--fortun-primary); color: #fff; }
+        .miro-story img { width: 100%; height: 100%; min-height: 360px; object-fit: cover; }
+        .miro-story__body { display: flex; flex-direction: column; justify-content: center; padding: 48px; }
+        .miro-story__body blockquote { margin: 20px 0 24px; color: #fff; font-size: clamp(24px, 3vw, 36px); font-weight: 500; line-height: 1.2; letter-spacing: -.025em; }
+        .miro-story__body p { margin: 0; color: var(--fortun-muted); }
+
+        .miro-cta { padding: 64px 32px; border-radius: 32px; background: var(--fortun-primary); color: #fff; text-align: center; }
+        .miro-cta h2 { max-width: 720px; margin: 0 auto; color: #fff; }
+        .miro-cta p { max-width: 560px; margin: 18px auto 0; color: var(--fortun-muted); font-size: 18px; }
+        .miro-cta .miro-hero__actions { margin-top: 28px; }
+
+        .miro-footer { padding: 64px 0 28px; background: var(--fortun-primary); color: #fff; }
+        .miro-footer__top { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 32px; padding-bottom: 56px; }
+        .miro-footer__brand p { max-width: 250px; margin: 18px 0 0; color: var(--fortun-muted); font-size: 14px; }
+        .miro-footer .miro-brand__logo { width: 214px; height: 62px; padding: 7px 10px; border-radius: 12px; background: #fff; }
+        .miro-footer h4 { margin: 0 0 14px; font-size: 16px; font-weight: 500; }
+        .miro-footer ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; color: var(--fortun-muted); font-size: 14px; }
+        .miro-footer li a:hover { color: #fff; }
+        .miro-footer__bottom { display: flex; justify-content: space-between; gap: 20px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.12); color: var(--fortun-muted); font-size: 12px; }
+
+        @media (max-width: 1023px) {
+            .miro-container { width: min(100% - 40px, 760px); }
+            .miro-hero__grid { grid-template-columns: 1fr; gap: 40px; }
+            .miro-hero__visual { min-height: 440px; margin-right: -20px; }
+            .miro-hero__image { height: 440px; }
+            .miro-nav__links, .miro-nav__actions > .miro-languages, .miro-nav__actions > .miro-button { display: none; }
+            .miro-mobile-toggle { display: grid; place-items: center; }
+            .miro-nav.is-open .miro-nav__links { position: absolute; top: 68px; left: 0; right: 0; display: grid; gap: 0; padding: 12px 20px 20px; border-bottom: 1px solid var(--fortun-hairline); background: #fff; }
+            .miro-nav.is-open .miro-nav__links a { padding: 14px 0; border-bottom: 1px solid var(--fortun-hairline-soft); }
+            .miro-nav.is-open .miro-nav__mobile-menu { display: grid; gap: 10px; padding-top: 14px; }
+            .miro-nav.is-open .miro-nav__mobile-menu .miro-languages { width: max-content; margin: 0 0 4px; }
+            .miro-nav.is-open .miro-nav__mobile-menu .miro-button { width: 100%; }
+            .miro-grid-3 { grid-template-columns: 1fr; }
+            .miro-logo-wall__layout { grid-template-columns: 1fr 1fr; gap: 28px; }
+            .miro-benefits { grid-template-columns: repeat(2, 1fr); }
+            .miro-offers { grid-template-columns: repeat(2, 1fr); }
+            .miro-split { grid-template-columns: 1fr; gap: 40px; }
+            .miro-split--reverse > :first-child { order: initial; }
+            .miro-footer__top { grid-template-columns: repeat(3, 1fr); }
+            .miro-footer__brand { grid-column: 1 / -1; }
+        }
+
+        @media (max-width: 767px) {
+            .miro-container { width: min(100% - 32px, 540px); }
+            .miro-nav__inner { gap: 12px; }
+            .miro-brand { font-size: 14px; }
+            .miro-languages { margin-right: 0; }
+            .miro-hero { padding: 72px 0 48px; }
+            .miro-hero--image h1 { font-size: 48px; }
+            .miro-hero__subtitle, .miro-section__head p, .miro-cta p { font-size: 16px; }
+            .miro-logo-wall__layout { grid-template-columns: 1fr; gap: 28px; }
+            .miro-logo-wall__visual { min-height: 200px; }
+            .miro-logo-wall__visual::before { right: 10%; }
+            .miro-logo-wall__photo { left: 8%; }
+            .miro-hero__visual { min-height: 360px; margin-right: -16px; }
+            .miro-hero__image { height: 360px; border-radius: 34px 0 34px 34px; }
+            .miro-hero__visual::before { inset: 12px -14px 4px 12px; border-radius: 38px 0 38px 38px; }
+            .miro-hero__arc { height: 48px; border-bottom-width: 4px; }
+            .miro-hero__arc--teal { border-bottom-width: 6px; }
+            .miro-section { padding: 64px 0; }
+            .miro-section h2 { font-size: 38px; }
+            .miro-grid-2 { grid-template-columns: 1fr; }
+            .miro-benefits, .miro-steps, .miro-offers { grid-template-columns: 1fr; }
+            .miro-steps { gap: 32px; }
+            .miro-steps::before { top: 36px; right: auto; bottom: 36px; left: 50%; border-top: 0; border-left: 2px dashed var(--fortun-hairline-strong); }
+            .miro-feature-card { min-height: 260px; padding: 24px; }
+            .miro-feature-card__icon { margin-bottom: 40px; }
+            .miro-roadmap__row { grid-template-columns: 66px repeat(3, 1fr); }
+            .miro-roadmap__cell { min-height: 76px; padding: 8px; font-size: 10px; }
+            .miro-member-card { grid-template-columns: 80px 1fr; gap: 14px; }
+            .miro-member-card img { width: 80px; height: 80px; }
+            .miro-story { grid-template-columns: 1fr; }
+            .miro-story img { min-height: 240px; max-height: 280px; }
+            .miro-story__body { padding: 28px; }
+            .miro-footer__top { grid-template-columns: repeat(2, 1fr); }
+            .miro-footer__bottom { flex-direction: column; }
+        }
+
+        @media (max-width: 479px) {
+            .miro-hero--image h1 { font-size: 36px; }
+            .miro-footer__top { grid-template-columns: 1fr 1fr; gap: 28px 16px; }
+        }

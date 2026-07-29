@@ -29,9 +29,9 @@ class SiteSettingTest extends TestCase
         $this->assertSame('platform', SiteSetting::landingTheme());
         $this->assertSame('dark', SiteSetting::accountTheme());
 
-        SiteSetting::setLandingTheme('warm');
+        SiteSetting::setLandingTheme('miro');
 
-        $this->assertSame('warm', SiteSetting::landingTheme());
+        $this->assertSame('miro', SiteSetting::landingTheme());
         $this->assertSame('dark', SiteSetting::accountTheme());
     }
 
