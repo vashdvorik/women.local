@@ -44,7 +44,6 @@
                 <div class="miro-card miro-card--coral p-6 sm:p-7">
                     <div class="miro-section-heading">
                         <h2>{{ __('account.person.request') }}</h2>
-                        <span class="miro-icon-tile miro-icon-tile--coral"><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3v18m9-9H3"/></svg></span>
                     </div>
                     <p class="whitespace-pre-line text-sm leading-7 text-[#585364]">{{ $person->expectation ?: __('account.profile.expectation_empty') }}</p>
                 </div>

@@ -10,7 +10,6 @@
                 <h1 class="miro-page-title">{{ __('account.knowledge.title') }}</h1>
                 <p class="miro-page-description">{{ __('account.knowledge.subtitle') }}</p>
             </div>
-            <span class="miro-icon-tile miro-icon-tile--coral hidden sm:inline-grid"><svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15ZM4 20.5A2.5 2.5 0 0 1 6.5 18H20"/></svg></span>
         </header>
 
         <div class="miro-card miro-card--pink p-6 sm:p-10">
@@ -25,7 +24,7 @@
                 <div class="grid grid-cols-2 gap-3">
                     @foreach(__('account.knowledge.modules') as $index => $module)
                         <div class="rounded-[28px] border border-white/70 bg-white/65 p-5">
-                            <div class="mb-8 flex h-10 w-10 items-center justify-center rounded-2xl {{ $index % 2 === 0 ? 'bg-[#e2f2f3] text-[#006a77]' : 'bg-[#f1ce91] text-[#261153]' }} text-sm font-medium">0{{ $index + 1 }}</div>
+                            <div class="mb-8 flex h-10 w-10 items-center justify-center rounded-2xl {{ $index % 2 === 0 ? 'bg-[#e2f2f3] text-[#261153]' : 'bg-[#e2f2f3] text-[#261153]' }} text-sm font-medium">0{{ $index + 1 }}</div>
                             <p class="font-medium text-[#261153]">{{ $module }}</p>
                         </div>
                     @endforeach
