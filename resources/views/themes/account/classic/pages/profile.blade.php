@@ -1,4 +1,4 @@
-@extends('account.layout')
+@extends('themes.account.classic.layout')
 @section('title', __('account.profile.title'))
 
 @section('content')
@@ -98,3 +98,4 @@
 </script>
 @endpush
 @endsection
+

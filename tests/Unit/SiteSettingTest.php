@@ -23,16 +23,18 @@ class SiteSettingTest extends TestCase
 
     public function test_landing_and_account_themes_are_independent(): void
     {
+        $this->assertArrayHasKey('fortun', SiteSetting::ACCOUNT_THEMES);
+
         SiteSetting::setLandingTheme('platform');
-        SiteSetting::setAccountTheme('dark');
+        SiteSetting::setAccountTheme('classic');
 
         $this->assertSame('platform', SiteSetting::landingTheme());
-        $this->assertSame('dark', SiteSetting::accountTheme());
+        $this->assertSame('classic', SiteSetting::accountTheme());
 
         SiteSetting::setLandingTheme('miro');
 
         $this->assertSame('miro', SiteSetting::landingTheme());
-        $this->assertSame('dark', SiteSetting::accountTheme());
+        $this->assertSame('classic', SiteSetting::accountTheme());
     }
 
     public function test_invalid_account_theme_falls_back_to_classic(): void
@@ -46,15 +48,18 @@ class SiteSettingTest extends TestCase
         $this->assertSame('classic', SiteSetting::accountTheme());
     }
 
-    public function test_miro_account_theme_is_available_and_applies_to_login(): void
+    public function test_landing_theme_applies_to_login_instead_of_account_theme(): void
     {
-        $this->assertArrayHasKey('miro', SiteSetting::ACCOUNT_THEMES);
+        $this->assertArrayHasKey('fortun', SiteSetting::LANDING_THEMES);
 
-        SiteSetting::setAccountTheme('miro');
+        SiteSetting::setLandingTheme('fortun');
+        SiteSetting::setAccountTheme('classic');
 
         $this->get(route('account.login'))
             ->assertOk()
-            ->assertSee('account-theme-miro', false);
+            ->assertSee('public-theme-fortun', false)
+            ->assertSee('/themes/public/fortun/images/brand/logo.png', false)
+            ->assertDontSee('account-theme-classic', false);
     }
 
     public function test_miro_theme_is_available_and_renders_as_landing_variant(): void

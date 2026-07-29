@@ -1,4 +1,4 @@
-@extends('account.layout')
+@extends('themes.account.miro.layout')
 @section('title', __('account.profile_edit.title'))
 
 @section('content')
@@ -40,3 +40,4 @@
     </form>
 </div>
 @endsection
+

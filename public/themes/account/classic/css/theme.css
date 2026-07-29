@@ -1,0 +1,4 @@
+body { font-family: 'Inter', sans-serif; }
+:focus-visible { outline: 2px solid #7c3aed; outline-offset: 2px; border-radius: 6px; }
+@media (max-width: 1023px) { [x-cloak] { display: none !important; } }
+.account-nav-icon--active { background: linear-gradient(135deg, #7c3aed, #4f46e5); }

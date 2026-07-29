@@ -1,4 +1,4 @@
-@extends('account.layout')
+@extends('themes.account.miro.layout')
 
 @section('title', __('account.opportunities.title'))
 
@@ -67,3 +67,4 @@
         @endif
     </div>
 @endsection
+

@@ -1,4 +1,4 @@
-@extends('account.layout')
+@extends('themes.account.classic.layout')
 @section('title', __('account.dashboard.title'))
 
 @section('content')
@@ -96,3 +96,4 @@
     </div>
 </div>
 @endsection
+

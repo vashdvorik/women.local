@@ -1,4 +1,4 @@
-@extends('account.layout')
+@extends('themes.account.classic.layout')
 
 @section('title', $person->full_name ?: __('account.person.title'))
 
@@ -52,3 +52,4 @@
         </div>
     </div>
 @endsection
+

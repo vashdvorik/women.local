@@ -93,17 +93,17 @@ class AccountController extends Controller
 
     public function index(): View
     {
-        return view('account.index');
+        return $this->themedView('index');
     }
 
     public function profile(): View
     {
-        return view('account.profile');
+        return $this->themedView('profile');
     }
 
     public function profileEdit(): View
     {
-        return view('account.profile-edit');
+        return $this->themedView('profile-edit');
     }
 
     public function updateProfile(ProfileUpdateRequest $request): RedirectResponse
@@ -125,7 +125,7 @@ class AccountController extends Controller
 
         $matches = $matcher->topMatches($accountUser);
 
-        return view('account.matches', compact('matches'));
+        return $this->themedView('matches', compact('matches'));
     }
 
     public function people(): View
@@ -138,14 +138,14 @@ class AccountController extends Controller
             ->orderBy('full_name')
             ->get(['id', 'full_name', 'telegram_username', 'description', 'expectation', 'avatar_path']);
 
-        return view('account.people', compact('people'));
+        return $this->themedView('people', compact('people'));
     }
 
     public function showPerson(BotUser $botUser): View
     {
         abort_if($botUser->status !== BotUser::STATUS_APPROVED, 404);
 
-        return view('account.person', ['person' => $botUser]);
+        return $this->themedView('person', ['person' => $botUser]);
     }
 
     public function search(Request $request, EmbeddingService $embedder, MatchingService $matcher): View
@@ -168,12 +168,12 @@ class AccountController extends Controller
             }
         }
 
-        return view('account.search', compact('query', 'results'));
+        return $this->themedView('search', compact('query', 'results'));
     }
 
     public function knowledge(): View
     {
-        return view('account.knowledge');
+        return $this->themedView('knowledge');
     }
 
     public function deleteProfile(Request $request): RedirectResponse
@@ -211,5 +211,20 @@ class AccountController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('account.login', ['logout' => '1']);
+    }
+
+    /**
+     * Render an account page from the active cabinet theme directory.
+     *
+     * @param array<string, mixed> $data
+     */
+    private function themedView(string $page, array $data = []): View
+    {
+        $theme = view()->shared('accountTheme');
+        $theme = is_string($theme) && array_key_exists($theme, \App\Models\SiteSetting::ACCOUNT_THEMES)
+            ? $theme
+            : 'classic';
+
+        return view("themes.account.{$theme}.pages.{$page}", $data);
     }
 }

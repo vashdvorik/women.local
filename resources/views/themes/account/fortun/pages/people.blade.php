@@ -1,4 +1,4 @@
-@extends('account.layout')
+@extends('themes.account.fortun.layout')
 
 @section('title', __('account.people.title'))
 
@@ -133,3 +133,4 @@
         @endif
     </div>
 @endsection
+

@@ -28,9 +28,8 @@ class SiteSetting extends Model
      */
     public const ACCOUNT_THEMES = [
         'miro'    => 'Miro',
+        'fortun'  => 'Fortun',
         'classic' => 'Классическая фиолетовая',
-        'warm'    => 'Тёплая янтарная',
-        'dark'    => 'Тёмная графитовая',
     ];
 
     protected $fillable = [

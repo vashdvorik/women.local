@@ -106,23 +106,17 @@
     .account-theme-preview.is-classic .account-theme-preview__card { background: #fff; border: 1px solid #ede9fe; }
     .account-theme-preview.is-classic .account-theme-preview__line { background: #c4b5fd; }
 
-    .account-theme-preview.is-warm { background: #fff7ed; }
-    .account-theme-preview.is-warm .account-theme-preview__sidebar,
-    .account-theme-preview.is-warm .account-theme-preview__header { background: #c2410c; }
-    .account-theme-preview.is-warm .account-theme-preview__card { background: #fff; border: 1px solid #fed7aa; }
-    .account-theme-preview.is-warm .account-theme-preview__line { background: #fb923c; }
-
-    .account-theme-preview.is-dark { background: #0f172a; }
-    .account-theme-preview.is-dark .account-theme-preview__sidebar,
-    .account-theme-preview.is-dark .account-theme-preview__header { background: #8b5cf6; }
-    .account-theme-preview.is-dark .account-theme-preview__card { background: #1e293b; border: 1px solid #334155; }
-    .account-theme-preview.is-dark .account-theme-preview__line { background: #94a3b8; }
-
     .account-theme-preview.is-miro { background: #fafbfc; }
     .account-theme-preview.is-miro .account-theme-preview__sidebar { background: #1c1c1e; }
     .account-theme-preview.is-miro .account-theme-preview__header { background: #ffd8f4; }
     .account-theme-preview.is-miro .account-theme-preview__card { background: #fff; border: 1px solid #eef0f3; }
     .account-theme-preview.is-miro .account-theme-preview__line { background: #c3faf5; }
+
+    .account-theme-preview.is-fortun { background: #fafbfc; }
+    .account-theme-preview.is-fortun .account-theme-preview__sidebar { background: #1c1c1e; }
+    .account-theme-preview.is-fortun .account-theme-preview__header { background: #ffd8f4; }
+    .account-theme-preview.is-fortun .account-theme-preview__card { background: #fff; border: 1px solid #eef0f3; }
+    .account-theme-preview.is-fortun .account-theme-preview__line { background: #c3faf5; }
 
     .account-theme-card__body {
         padding: 18px;
@@ -183,8 +177,6 @@
 @php
     $descriptions = [
         'classic' => 'Текущий кабинет: светлый интерфейс с фиолетовой навигацией и акцентами.',
-        'warm' => 'Тёплая янтарно-оранжевая подача для более энергичного интерфейса.',
-        'dark' => 'Тёмная графитовая тема для работы в условиях слабого освещения.',
         'miro' => 'Белое рабочее пространство с чёрными CTA, жёлтыми акцентами и пастельными карточками.',
     ];
 @endphp

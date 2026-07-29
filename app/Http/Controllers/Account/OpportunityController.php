@@ -20,12 +20,12 @@ class OpportunityController extends Controller
             ->latest()
             ->paginate(15);
 
-        return view('account.opportunities.index', compact('opportunities'));
+        return $this->themedView('opportunities.index', compact('opportunities'));
     }
 
     public function create(): View
     {
-        return view('account.opportunities.create');
+        return $this->themedView('opportunities.create');
     }
 
     public function store(OpportunityRequest $request): RedirectResponse
@@ -55,5 +55,20 @@ class OpportunityController extends Controller
 
         return redirect()->route('account.opportunities.index')
             ->with('success', __('account.messages.opportunity_deleted'));
+    }
+
+    /**
+     * Render an opportunity page from the active cabinet theme directory.
+     *
+     * @param array<string, mixed> $data
+     */
+    private function themedView(string $page, array $data = []): View
+    {
+        $theme = view()->shared('accountTheme');
+        $theme = is_string($theme) && array_key_exists($theme, \App\Models\SiteSetting::ACCOUNT_THEMES)
+            ? $theme
+            : 'classic';
+
+        return view("themes.account.{$theme}.pages.{$page}", $data);
     }
 }
