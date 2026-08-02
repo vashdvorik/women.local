@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Account\AccountController;
+use App\Http\Controllers\Account\DevAccountLoginController;
 use App\Http\Controllers\Account\OpportunityController;
 use App\Http\Controllers\Account\TmaAuthController;
 use App\Http\Middleware\RequireAccountAuth;
@@ -51,6 +52,10 @@ Route::post('/telegram/webhook', function (Nutgram $bot) {
 Route::get('/app/account/auth', [AccountController::class, 'auth'])->middleware('throttle:20,1')->name('account.auth');
 Route::get('/app/account/login', [AccountController::class, 'login'])->name('account.login');
 Route::post('/app/account/tma-auth', [TmaAuthController::class, 'auth'])->middleware('throttle:20,1')->name('account.tma-auth');
+
+// Local-only account shortcut for visual development. It is unavailable outside APP_ENV=local.
+Route::get('/dev/account-login', [DevAccountLoginController::class, 'index'])->name('dev.account.login');
+Route::post('/dev/account-login', [DevAccountLoginController::class, 'login'])->name('dev.account.login.submit');
 
 // Short-link redirect: /go/{code} — hides the full token from Telegram dialog
 Route::get('/go/{code}', function (string $code) {

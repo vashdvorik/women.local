@@ -83,11 +83,6 @@
 
     <section class="miro-danger-zone fortun-profile-danger">
         <div class="miro-danger-zone__header">
-            <span class="miro-danger-zone__icon" aria-hidden="true">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 7h12m-9 0V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2m2 0v12a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V7m3 4v5m2-5v5" />
-                </svg>
-            </span>
             <div class="min-w-0">
                 <h2>{{ __('account.profile.delete_title') }}</h2>
                 <p>{{ __('account.profile.delete_text') }}</p>
