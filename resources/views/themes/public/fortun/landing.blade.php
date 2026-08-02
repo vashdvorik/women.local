@@ -15,6 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="{{ asset('themes/public/' . ($publicTheme ?? 'fortun') . '/css/landing.css') }}">
     <link rel="stylesheet" href="{{ asset('themes/public/' . ($publicTheme ?? 'fortun') . '/css/navigation.css') }}">
@@ -74,12 +75,13 @@
                 <div class="miro-hero__grid">
                     <div class="miro-hero__content">
                         <h1>
-                            <span data-lang="ru">ОНЛАЙН<br> ПЛАТФОРМА<br>ЖЕНСКОГО<br>БИЗНЕСА</span>
-                            <span data-lang="en">ONLINE<br> PLATFORM<br>FOR WOMEN<br>ENTREPRENEURS</span>
-                            <span data-lang="ro">PLATFORMĂ<br> ONLINE<br>PENTRU FEMEI<br>ANTREPRENOARE</span>
+                            <span data-lang="ru"><br> ПЛАТФОРМА<br>ЖЕНЩИН<br>ПРЕДПРИНИМАТЕЛЕЙ</span>
+                            <span data-lang="en"><br> PLATFORM<br>FOR WOMEN<br>ENTREPRENEURS</span>
+                            <span data-lang="ro"><br> PLATFORMĂ<br>PENTRU FEMEI<br>ANTREPRENOARE</span>
                         </h1>
                         <p class="miro-hero__subtitle">
-                            <span data-lang="ru">Цифровое пространство для обучения, нетворкинга, менторства и роста бизнеса в регионе.</span>
+                            <span data-lang="ru">Пространство для обучения, деловых связей, 
+наставничества и развития бизнеса</span>
                             <span data-lang="en">A digital space for learning, networking, mentorship, and business growth across the region.</span>
                             <span data-lang="ro">Un spațiu digital pentru învățare, networking, mentorat și creșterea afacerilor în regiune.</span>
                         </p>
@@ -92,78 +94,74 @@
                             </a>
                         </div>
                         <div class="miro-proof">
-                            <span class="miro-proof__value">500+</span>
-                            <span data-lang="ru">женщин уже объединены в сообщество</span><span data-lang="en">women already connected through the community</span><span data-lang="ro">de femei deja conectate în comunitate</span>
+                            <span class="miro-proof__icon" aria-hidden="true"><i class="ph ph-users-three"></i></span>
+                            <span class="miro-proof__copy">
+                                <strong class="miro-proof__value">500+</strong>
+                                <span class="miro-proof__label"><span data-lang="ru">женщин уже объединены в сообщество</span><span data-lang="en">women already connected through the community</span><span data-lang="ro">de femei deja conectate în comunitate</span></span>
+                            </span>
                         </div>
                     </div>
                     <div class="miro-hero__visual" aria-label="Women entrepreneurs collaborating">
                         <div class="miro-hero__image">
-                            <img src="{{ asset('themes/public/' . ($publicTheme ?? 'fortun') . '/images/1gDOEvgW6Bbo9rvB-OHSm277Ak0im3tJa.jpg') }}" alt="Women entrepreneurs collaborating around a laptop">
+                            <img src="{{ asset('themes/public/fortun/images/herobaner.webp') }}" alt="Women entrepreneurs collaborating around a laptop">
                         </div>
-                        <span class="miro-hero__arc"></span>
-                        <span class="miro-hero__arc miro-hero__arc--teal"></span>
                     </div>
                 </div>
 
             </div>
         </section>
-        <section class="miro-offers" aria-label="Platform features">
-            <div class="miro-container miro-offers__inner">
-                <article class="miro-offer miro-offer--learning">
-                    <div class="miro-offer__icon" aria-hidden="true">
-                        <svg class="miro-offer__icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 8.5 16 4l12 4.5-12 4.5L4 8.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                            <path d="M8 11.5v7.2c0 2.2 3.6 4.3 8 4.3s8-2.1 8-4.3v-7.2M28 9v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                            <path d="M12 25.5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                        </svg>
+        <section class="fortun-directions" aria-label="Platform directions">
+            <div class="miro-container fortun-directions__grid">
+                <article class="fortun-direction-card fortun-direction-card--support">
+                    <div class="fortun-direction-card__icon fortun-direction-card__icon--support" aria-hidden="true">
+                        <i class="ph ph-hand-palm fortun-support-hand fortun-support-hand--left"></i>
+                        <i class="ph ph-hand-palm fortun-support-hand fortun-support-hand--right"></i>
+                        <i class="ph ph-gender-female fortun-support-symbol"></i>
                     </div>
-                    <div>
-                        <h3><span data-lang="ru">Онлайн-обучение</span><span data-lang="en">Online learning</span><span data-lang="ro">Învățare online</span></h3>
-                        <p><span data-lang="ru">Вебинары, курсы и мастер-классы от экспертов и практиков.</span><span data-lang="en">Webinars, courses and masterclasses from experts and practitioners.</span><span data-lang="ro">Webinaruri, cursuri și masterclass-uri</span></p>
-                    </div>
+                    <h3><span data-lang="ru">Поддержка и <br>наставничество</span><span data-lang="en">Support<br>and mentorship</span><span data-lang="ro">Sprijin<br>și mentorat</span></h3>
                 </article>
-                <article class="miro-offer miro-offer--community">
-                    <div class="miro-offer__icon" aria-hidden="true">
-                        <svg class="miro-offer__icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="16" cy="7" r="3" stroke="currentColor" stroke-width="1.8"/>
-                            <circle cx="7" cy="23" r="3" stroke="currentColor" stroke-width="1.8"/>
-                            <circle cx="25" cy="23" r="3" stroke="currentColor" stroke-width="1.8"/>
-                            <path d="m14.5 9.5-5.8 10M17.5 9.5l5.8 10M10 23h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                        </svg>
+                <article class="fortun-direction-card fortun-direction-card--award">
+                    <div class="fortun-direction-card__icon" aria-hidden="true">
+                        <i class="ph ph-crown"></i>
                     </div>
-                    <div>
-                        <h3><span data-lang="ru">Сообщество</span><span data-lang="en">Community</span><span data-lang="ro">Comunitate</span></h3>
-                        <p><span data-lang="ru">Находите партнеров, единомышленников и клиентов на обоих берегах Днестра.</span><span data-lang="en">Find partners, like-minded individuals and clients on both banks of the Dniester.</span><span data-lang="ro">Găsește parteneri, indivizi cu gânduri similare și clienți pe ambele maluri ale Dunării.</span></p>
-                    </div>
+                    <h3><span data-lang="ru">Премия<br>«Женщина года»</span><span data-lang="en">Award<br>“Woman of the Year”</span><span data-lang="ro">Premiul<br>„Femeia anului”</span></h3>
                 </article>
-                <article class="miro-offer miro-offer--ai">
-                    <div class="miro-offer__icon" aria-hidden="true">
-                        <svg class="miro-offer__icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="16" cy="16" r="3" stroke="currentColor" stroke-width="1.8"/>
-                            <circle cx="7" cy="9" r="2.5" stroke="currentColor" stroke-width="1.8"/>
-                            <circle cx="25" cy="9" r="2.5" stroke="currentColor" stroke-width="1.8"/>
-                            <circle cx="7" cy="24" r="2.5" stroke="currentColor" stroke-width="1.8"/>
-                            <circle cx="25" cy="24" r="2.5" stroke="currentColor" stroke-width="1.8"/>
-                            <path d="m13.5 14-4.4-3.2M18.5 14l4.4-3.2M13.5 18l-4.4 3.2M18.5 18l4.4 3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                            <path d="m16 5 .7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7L16 5Z" fill="currentColor"/>
-                        </svg>
+                <article class="fortun-direction-card fortun-direction-card--learning">
+                    <div class="fortun-direction-card__icon" aria-hidden="true">
+                        <i class="ph ph-graduation-cap"></i>
                     </div>
-                    <div>
-                        <h3><span data-lang="ru">&#1048;&#1048;-&#1084;&#1072;&#1090;&#1095;&#1080;&#1085;&#1075;</span><span data-lang="en">AI matching</span><span data-lang="ro">Potrivire AI</span></h3>
-                        <p><span data-lang="ru">&#1059;&#1084;&#1085;&#1099;&#1081; &#1087;&#1086;&#1076;&#1073;&#1086;&#1088; &#1087;&#1072;&#1088;&#1090;&#1085;&#1105;&#1088;&#1086;&#1074;, &#1101;&#1082;&#1089;&#1087;&#1077;&#1088;&#1090;&#1086;&#1074; &#1080; &#1074;&#1086;&#1079;&#1084;&#1086;&#1078;&#1085;&#1086;&#1089;&#1090;&#1077;&#1081;</span><span data-lang="en">Smart recommendations for partners, mentors and opportunities</span><span data-lang="ro">Recomand&#259;ri inteligente pentru partenere, mentori &#537;i oportunit&#259;&#539;i</span></p>
-                    </div>
+                    <h3><span data-lang="ru">Обучение<br>и развитие</span><span data-lang="en">Learning<br>and growth</span><span data-lang="ro">Învățare<br>și dezvoltare</span></h3>
                 </article>
-                <article class="miro-offer miro-offer--events">
-                    <div class="miro-offer__icon" aria-hidden="true">
-                        <svg class="miro-offer__icon-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="5" y="7" width="22" height="20" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
-                            <path d="M10 4v6M22 4v6M5 13h22M10 18h4M18 18h4M10 22h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                        </svg>
+                <article class="fortun-direction-card fortun-direction-card--community">
+                    <div class="fortun-direction-card__icon" aria-hidden="true">
+                        <i class="ph ph-users-three"></i>
                     </div>
-                    <div>
-                        <h3><span data-lang="ru">Возможности</span><span data-lang="en">Opportunities</span><span data-lang="ro">Oportunități</span></h3>
-                        <p><span data-lang="ru">Актуальные грантовые программы и возможности для развития вашего бизнеса</span><span data-lang="en">Current grant programs and opportunities for business development</span><span data-lang="ro">Cele mai recente știri și oportunități de finanțare</span></p>
+                    <h3><span data-lang="ru">Нетворкинг<br>и сообщество</span><span data-lang="en">Networking<br>and community</span><span data-lang="ro">Networking<br>și comunitate</span></h3>
+                </article>
+                <article class="fortun-direction-card fortun-direction-card--business">
+                    <div class="fortun-direction-card__icon" aria-hidden="true">
+                        <i class="ph ph-briefcase"></i>
                     </div>
+                    <h3><span data-lang="ru">Бизнес<br>и рост</span><span data-lang="en">Business<br>and growth</span><span data-lang="ro">Afaceri<br>și creștere</span></h3>
+                </article>
+                <article class="fortun-direction-card fortun-direction-card--visibility">
+                    <div class="fortun-direction-card__icon" aria-hidden="true">
+                        <i class="ph ph-megaphone"></i>
+                    </div>
+                    <h3><span data-lang="ru">Продвижение<br>и видимость</span><span data-lang="en">Promotion<br>and visibility</span><span data-lang="ro">Promovare<br>și vizibilitate</span></h3>
+                </article>
+                <article class="fortun-direction-card fortun-direction-card--resources">
+                    <div class="fortun-direction-card__icon fortun-direction-card__icon--resources" aria-hidden="true">
+                        <i class="ph ph-file-text"></i>
+                        <i class="ph ph-check fortun-resource-check"></i>
+                    </div>
+                    <h3><span data-lang="ru">Ресурсы<br>и эксперты</span><span data-lang="en">Resources<br>and experts</span><span data-lang="ro">Resurse<br>și experți</span></h3>
+                </article>
+                <article class="fortun-direction-card fortun-direction-card--partnership">
+                    <div class="fortun-direction-card__icon" aria-hidden="true">
+                        <i class="ph ph-handshake"></i>
+                    </div>
+                    <h3><span data-lang="ru">Партнёрство<br>и проекты</span><span data-lang="en">Partnership<br>and projects</span><span data-lang="ro">Parteneriat<br>și proiecte</span></h3>
                 </article>
             </div>
         </section>
@@ -510,4 +508,3 @@
     <script src="{{ asset('themes/public/' . ($publicTheme ?? 'fortun') . '/js/landing.js') }}"></script>
 </body>
 </html>
-

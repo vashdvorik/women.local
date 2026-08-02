@@ -7,7 +7,7 @@
         img { display:block; max-width:100%; }
         html:not([lang="ru"]) [data-lang="ru"], html:not([lang="en"]) [data-lang="en"], html:not([lang="ro"]) [data-lang="ro"] { display:none!important; }
         :focus-visible { outline:2px solid var(--fortun-blue); outline-offset:3px; border-radius:6px; }
-        .miro-container { width:min(1280px,calc(100% - 64px)); margin:0 auto; }
+        .miro-container { width:min(1360px,calc(100% - 64px)); margin:0 auto; }
         .miro-nav { position:sticky; top:0; z-index:30; min-height:68px; border-bottom:1px solid var(--fortun-hairline-soft); background:rgba(255,255,255,.94); backdrop-filter:blur(16px); }
         .miro-nav__inner { min-height:68px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
         .miro-brand { display:inline-flex; align-items:center; gap:10px; white-space:nowrap; font-size:16px; font-weight:600; letter-spacing:-.02em; }

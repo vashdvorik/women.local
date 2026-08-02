@@ -1,0 +1,26 @@
+@import url("landing.css");
+
+.fortun-public-page { min-height: 70vh; background: #fff; color: var(--miro-ink, #1c1c1e); }
+.fortun-public-hero { padding: 88px 0 76px; border-bottom: 1px solid var(--miro-hairline-soft, #f0edf3); background: linear-gradient(135deg, var(--miro-surface-featured, #f5f0fa), #fff 65%); }
+.fortun-public-hero__inner { display: grid; grid-template-columns: minmax(0, 1fr) 220px; align-items: center; gap: 48px; }
+.fortun-public-hero h1 { margin: 0; color: var(--miro-ink-deep, #261153); font-size: clamp(42px, 6vw, 72px); font-weight: 500; line-height: 1.08; letter-spacing: -.05em; }
+.fortun-public-hero__intro { max-width: 680px; margin: 24px 0 0; color: var(--miro-slate, #585364); font-size: 18px; line-height: 1.55; }
+.fortun-public-hero__accent { min-height: 170px; background: radial-gradient(circle at 55% 42%, #e9e1f2 0 34%, transparent 35%), radial-gradient(circle at 75% 76%, #e2f2f3 0 22%, transparent 23%), radial-gradient(circle at 46% 8%, #f1ce91 0 7%, transparent 8%); }
+.fortun-public-content { padding: 72px 0 96px; }
+.fortun-public-placeholder { max-width: 720px; margin: 0 auto; padding: 48px 40px; border: 1px solid #f0edf3; border-radius: 28px; background: #fff; box-shadow: 0 12px 32px rgba(38,17,83,.06); text-align: center; }
+.fortun-public-placeholder__mark, .fortun-public-item__number, .fortun-public-step__number { display: inline-grid; place-items: center; border-radius: 50%; background: #e2f2f3; color: #006a77; }
+.fortun-public-placeholder__mark { width: 56px; height: 56px; margin-bottom: 20px; font-size: 22px; }
+.fortun-public-placeholder h2, .fortun-public-item h2, .fortun-public-step h2, .fortun-public-cta h2 { margin: 0; color: #261153; font-size: 28px; font-weight: 500; line-height: 1.25; }
+.fortun-public-placeholder p, .fortun-public-step p, .fortun-public-cta p { max-width: 620px; margin: 14px auto 0; color: #585364; font-size: 16px; line-height: 1.5; }
+.fortun-public-items, .fortun-public-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.fortun-public-item, .fortun-public-step { min-height: 180px; padding: 28px 24px; border: 1px solid #f0edf3; border-radius: 20px; background: #fff; box-shadow: 0 8px 24px rgba(38,17,83,.04); }
+.fortun-public-item:nth-child(3n+1) { background: #e9e1f2; }
+.fortun-public-item:nth-child(3n+2) { background: #e2f2f3; }
+.fortun-public-item:nth-child(3n) { background: #f1ce91; }
+.fortun-public-item__number, .fortun-public-step__number { width: 36px; height: 36px; margin-bottom: 28px; background: #fff; color: #53288a; font-size: 13px; font-weight: 600; }
+.fortun-public-step p { margin-left: 0; margin-right: 0; }
+.fortun-public-cta { max-width: 760px; margin: 64px auto 0; padding: 40px; border-radius: 28px; background: #1c1c1e; color: #fff; text-align: center; }
+.fortun-public-cta h2 { color: #fff; }
+.fortun-public-cta p { color: rgba(255,255,255,.76); }
+.fortun-public-cta .miro-button { margin-top: 24px; background: #e9e1f2; color: #1c1c1e; }
+@media (max-width: 767px) { .fortun-public-hero { padding: 60px 0 52px; } .fortun-public-hero__inner { grid-template-columns: 1fr; gap: 20px; } .fortun-public-hero__accent { min-height: 80px; } .fortun-public-content { padding: 48px 0 64px; } .fortun-public-placeholder { padding: 32px 20px; } .fortun-public-items, .fortun-public-steps { grid-template-columns: 1fr; } .fortun-public-cta { margin-top: 40px; padding: 32px 20px; } }
