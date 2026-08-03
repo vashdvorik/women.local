@@ -18,13 +18,21 @@ return [
     'published_by' => 'Publicat de',
 
     'nav' => [
-        'home' => 'Principală',
+        'home' => 'Asistent AI',
         'matches' => 'Recomandări',
         'search' => 'Căutare contacte',
         'people' => 'Profilurile platformei',
         'opportunities' => 'Oportunități',
         'knowledge' => 'Învățare',
         'profile' => 'Profilul meu',
+    ],
+
+    'assistant' => [
+        'unavailable' => 'Asistentul este temporar indisponibil. Verificați setările furnizorului AI sau încercați din nou.',
+        'nothing_to_save' => 'Nu există date de salvat.',
+        'profile_saved' => 'Modificările profilului au fost salvate.',
+        'save_changes' => 'Salvează modificările',
+        'open' => 'Deschide',
     ],
 
     'login' => [
@@ -41,7 +49,7 @@ return [
     ],
 
     'dashboard' => [
-        'title' => 'Principală',
+        'title' => 'Asistent AI',
         'eyebrow' => 'Spațiul dvs.',
         'hello' => 'Bună ziua, :name',
         'intro' => 'Cabinetul vă ajută să prezentați afacerea, să găsiți contacte utile și să urmăriți oportunități.',

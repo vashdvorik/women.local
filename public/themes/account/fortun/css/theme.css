@@ -361,23 +361,23 @@ body.account-theme-fortun .fortun-profile-tip__text { max-width: 760px; margin: 
 body.account-theme-fortun .fortun-profile-danger { margin-top: 32px; }
 
 /* Fortun dashboard: the assistant is presented as a compact conversation workspace. */
-body.account-theme-fortun .fortun-dashboard-page { width: 100%; max-width: 1280px; margin: 0 auto; }
+body.account-theme-fortun .fortun-dashboard-page { width: 100%; height: calc(100vh - 64px); min-height: 420px; }
 body.account-theme-fortun .fortun-dashboard-header { margin-bottom: 18px; }
 body.account-theme-fortun .fortun-dashboard-header__copy { max-width: 760px; }
 body.account-theme-fortun .fortun-dashboard-header__title { margin: 0; color: var(--fortun-ink-deep); font-size: clamp(26px, 3vw, 34px); font-weight: 500; letter-spacing: -.04em; line-height: 1.15; }
 body.account-theme-fortun .fortun-dashboard-header__description { margin: 8px 0 0; color: var(--fortun-slate); font-size: 14px; line-height: 1.5; }
-body.account-theme-fortun .fortun-ai-assistant { position: relative; overflow: hidden; border: 1px solid var(--fortun-brand-purple-light); border-radius: 28px; background: var(--fortun-brand-purple-soft); padding: 12px; box-shadow: 0 4px 12px rgba(5, 0, 56, .06); }
-body.account-theme-fortun .fortun-ai-chat-window { position: relative; z-index: 1; width: 100%; max-width: 980px; margin: 0 auto; overflow: hidden; border: 1px solid var(--fortun-hairline); border-radius: 22px; background: var(--fortun-canvas); box-shadow: 0 14px 34px rgba(5, 0, 56, .08); }
+body.account-theme-fortun .fortun-ai-assistant { display: flex; width: 100%; height: 100%; min-height: 0; }
+body.account-theme-fortun .fortun-ai-chat-window { display: flex; width: 100%; min-height: 0; flex-direction: column; overflow: hidden; border: 1px solid var(--fortun-hairline); border-radius: 22px; background: var(--fortun-canvas); box-shadow: 0 8px 24px rgba(5, 0, 56, .07); }
 body.account-theme-fortun .fortun-ai-chat-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--fortun-hairline-soft); padding: 14px 18px; background: var(--fortun-canvas); }
 body.account-theme-fortun .fortun-ai-chat-header__identity { display: flex; align-items: center; gap: 12px; min-width: 0; }
 body.account-theme-fortun .fortun-ai-assistant__mark { display: inline-grid; width: 42px; height: 42px; flex: 0 0 auto; place-items: center; border-radius: 13px; background: var(--fortun-primary); color: var(--fortun-on-primary); font-size: 12px; font-weight: 600; letter-spacing: .5px; }
 body.account-theme-fortun .fortun-ai-chat-header__name-row { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
-body.account-theme-fortun .fortun-ai-chat-header__name-row strong { color: var(--fortun-ink-deep); font-size: 15px; font-weight: 600; }
+body.account-theme-fortun .fortun-ai-chat-header__name-row h1 { margin: 0; color: var(--fortun-ink-deep); font-size: 15px; font-weight: 600; line-height: 1.2; }
 body.account-theme-fortun .fortun-ai-chat-header__status { display: inline-flex; align-items: center; gap: 5px; color: var(--fortun-brand-teal-dark); font-size: 11px; font-weight: 600; }
 body.account-theme-fortun .fortun-ai-chat-header__status i { width: 6px; height: 6px; border-radius: 50%; background: var(--fortun-brand-teal); }
 body.account-theme-fortun .fortun-ai-chat-header__identity p { margin: 3px 0 0; color: var(--fortun-steel); font-size: 12px; line-height: 1.35; }
 body.account-theme-fortun .fortun-ai-chat-header__spark { color: var(--fortun-coral-dark); font-size: 18px; }
-body.account-theme-fortun .fortun-ai-chat-body { background: var(--fortun-surface-soft); padding: clamp(18px, 3vw, 28px); }
+body.account-theme-fortun .fortun-ai-chat-body { min-height: 0; flex: 1 1 auto; overflow-y: auto; overscroll-behavior: contain; background: var(--fortun-surface-soft); padding: clamp(18px, 3vw, 24px); scrollbar-gutter: stable; }
 body.account-theme-fortun .fortun-ai-chat-intro { max-width: 700px; margin-bottom: 18px; }
 body.account-theme-fortun .fortun-ai-chat-intro__eyebrow { margin: 0 0 5px; color: var(--fortun-brand-purple); font-size: 10px; font-weight: 600; letter-spacing: .1em; line-height: 1.4; text-transform: uppercase; }
 body.account-theme-fortun .fortun-ai-chat-intro h2 { margin: 0; color: var(--fortun-ink-deep); font-size: clamp(22px, 3vw, 30px); font-weight: 500; letter-spacing: -.035em; line-height: 1.18; }
@@ -405,15 +405,12 @@ body.account-theme-fortun .fortun-ai-response .fortun-ai-message__bubble { borde
 body.account-theme-fortun .fortun-ai-response__actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 11px; }
 body.account-theme-fortun .fortun-ai-response__link { display: inline-flex; min-height: 34px; align-items: center; border-radius: 9999px; background: var(--fortun-primary); padding: 7px 12px; color: var(--fortun-on-primary); font-size: 11px; font-weight: 500; line-height: 1.3; transition: background .18s ease, transform .18s ease; }
 body.account-theme-fortun .fortun-ai-response__link:hover { background: var(--fortun-primary-hover); transform: translateY(-1px); }
-body.account-theme-fortun .fortun-ai-composer { display: flex; align-items: center; gap: 8px; border-top: 1px solid var(--fortun-hairline-soft); background: var(--fortun-canvas); padding: 11px 14px; }
+body.account-theme-fortun .fortun-ai-composer { display: flex; flex: 0 0 auto; align-items: center; gap: 8px; border-top: 1px solid var(--fortun-hairline-soft); background: var(--fortun-canvas); padding: 11px 14px; }
 body.account-theme-fortun .fortun-ai-composer__avatar { display: inline-grid; width: 30px; height: 30px; flex: 0 0 auto; place-items: center; border-radius: 9px; background: var(--fortun-brand-teal-soft); color: var(--fortun-brand-teal-dark); font-size: 11px; font-weight: 600; }
 body.account-theme-fortun .fortun-ai-composer input { min-width: 0; flex: 1; border: 0 !important; background: transparent !important; padding: 8px 4px; color: var(--fortun-ink) !important; font-size: 13px; outline: none; }
 body.account-theme-fortun .fortun-ai-composer input::placeholder { color: var(--fortun-muted); }
 body.account-theme-fortun .fortun-ai-composer__send { display: inline-flex; min-height: 36px; align-items: center; gap: 6px; border: 0; border-radius: 9999px; background: var(--fortun-primary); padding: 8px 13px; color: var(--fortun-on-primary); cursor: pointer; font: inherit; font-size: 12px; font-weight: 500; line-height: 1.3; transition: background .18s ease, transform .18s ease; }
 body.account-theme-fortun .fortun-ai-composer__send:hover { background: var(--fortun-primary-hover); transform: translateY(-1px); }
-body.account-theme-fortun .fortun-ai-assistant__orb { position: absolute; z-index: 0; border-radius: 9999px; pointer-events: none; }
-body.account-theme-fortun .fortun-ai-assistant__orb--one { top: -85px; right: 8%; width: 138px; height: 138px; border: 18px solid var(--fortun-coral-light); opacity: .35; }
-body.account-theme-fortun .fortun-ai-assistant__orb--two { right: -82px; bottom: -94px; width: 158px; height: 158px; background: var(--fortun-brand-teal-soft); opacity: .55; }
 body.account-theme-fortun .fortun-dashboard-profile { margin-top: 40px; }
 body.account-theme-fortun .fortun-dashboard-section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
 body.account-theme-fortun .fortun-dashboard-section-heading__eyebrow { margin: 0 0 8px; color: var(--fortun-brand-teal-dark); font-size: 11px; font-weight: 600; letter-spacing: .5px; line-height: 1.4; text-transform: uppercase; }
@@ -450,7 +447,8 @@ body.account-theme-fortun .fortun-dashboard-profile__warning span { display: blo
 }
 
 @media (max-width: 520px) {
-    body.account-theme-fortun .account-main { padding: 28px 16px 48px; }
+    body.account-theme-fortun .fortun-dashboard-page { height: calc(100dvh - 132px); min-height: 360px; }
+    body.account-theme-fortun .account-main { padding: 16px 12px 28px; }
     body.account-theme-fortun .miro-page-title { font-size: 36px; }
     body.account-theme-fortun .miro-actions > * { flex: 1 1 auto; }
     body.account-theme-fortun .miro-stat { min-height: 116px; padding: 16px; }
@@ -471,7 +469,7 @@ body.account-theme-fortun .fortun-dashboard-profile__warning span { display: blo
     body.account-theme-fortun .fortun-profile-panel__link { margin-top: 16px; }
     body.account-theme-fortun .fortun-profile-field { padding: 20px; }
     body.account-theme-fortun .fortun-profile-tip { border-radius: 20px; padding: 20px; }
-    body.account-theme-fortun .fortun-ai-assistant { border-radius: 24px; padding: 8px; }
+    body.account-theme-fortun .fortun-ai-assistant { padding: 0; }
     body.account-theme-fortun .fortun-ai-chat-header { padding: 12px 14px; }
     body.account-theme-fortun .fortun-ai-chat-header__spark { display: none; }
     body.account-theme-fortun .fortun-ai-chat-body { padding: 16px 12px; }

@@ -68,7 +68,7 @@ class SearchConversation extends Conversation
             /** @var MatchingService $matcher */
             $matcher = app(MatchingService::class);
 
-            $vector  = $embedder->embed($query);
+            $vector  = $embedder->embedQuery($query);
             $matches = $matcher->searchByQuery($vector, $currentUser, 3);
 
             if ($matches->isEmpty()) {

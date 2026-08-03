@@ -193,6 +193,8 @@ Route::middleware(RequireAccountAuth::class)
         Route::get('/people/{botUser}', [AccountController::class, 'showPerson'])->name('people.show');
         Route::get('/search', [AccountController::class, 'search'])->name('search');
         Route::get('/knowledge', [AccountController::class, 'knowledge'])->name('knowledge');
+        Route::post('/assistant/messages', [AccountController::class, 'assistantMessage'])->middleware('throttle:20,1')->name('assistant.message');
+        Route::post('/assistant/profile-update', [AccountController::class, 'assistantProfileUpdate'])->middleware('throttle:10,1')->name('assistant.profile-update');
         Route::resource('opportunities', OpportunityController::class)->only(['index', 'create', 'store', 'destroy']);
         Route::post('/logout', [AccountController::class, 'logout'])->name('logout');
     });

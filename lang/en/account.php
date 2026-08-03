@@ -18,13 +18,21 @@ return [
     'published_by' => 'Published by',
 
     'nav' => [
-        'home' => 'Home',
+        'home' => 'AI Assistant',
         'matches' => 'Recommendations',
         'search' => 'Contact search',
         'people' => 'Platform profiles',
         'opportunities' => 'Opportunities',
         'knowledge' => 'Learning',
         'profile' => 'My profile',
+    ],
+
+    'assistant' => [
+        'unavailable' => 'The assistant is temporarily unavailable. Check the AI provider settings or try again.',
+        'nothing_to_save' => 'There is no data to save.',
+        'profile_saved' => 'Profile changes have been saved.',
+        'save_changes' => 'Save changes',
+        'open' => 'Open',
     ],
 
     'login' => [
@@ -41,7 +49,7 @@ return [
     ],
 
     'dashboard' => [
-        'title' => 'Home',
+        'title' => 'AI Assistant',
         'eyebrow' => 'Your space',
         'hello' => 'Hello, :name',
         'intro' => 'Your account helps present your business, find useful contacts and track opportunities.',

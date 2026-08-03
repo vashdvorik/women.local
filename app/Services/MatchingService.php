@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\BotUser;
+use App\Models\SiteSetting;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -97,7 +98,7 @@ class MatchingService
      */
     public function searchByQuery(array $queryVector, BotUser $exclude, int $n = 10): Collection
     {
-        $minScore = (float) config('ai.search_min_score', 0.65);
+        $minScore = SiteSetting::searchMinScore();
 
         $candidates = BotUser::approved()
             ->where('telegram_id', '!=', $exclude->telegram_id)

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\SiteSetting;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
@@ -11,11 +12,34 @@ class EmbeddingService
 {
     public function embed(string $text): array
     {
-        $key   = config('ai.gemini.key');
-        $model = config('ai.gemini.embedding_model');
-        $url   = config('ai.gemini.base_url') . "/models/{$model}:embedContent?key={$key}";
+        return $this->createEmbedding($text, 'search_document');
+    }
 
-        $response = Http::timeout(15)->post($url, [
+    public function embedQuery(string $text): array
+    {
+        return $this->createEmbedding($text, 'search_query');
+    }
+
+    private function createEmbedding(string $text, string $inputType): array
+    {
+        $feature = SiteSetting::embeddingFeatureConfig();
+
+        return $feature['provider'] === 'openrouter'
+            ? $this->embedWithOpenRouter($text, $feature['model'], $feature['timeout'], $inputType)
+            : $this->embedWithGemini($text, $feature['model'], $feature['timeout']);
+    }
+
+    private function embedWithGemini(string $text, string $model, int $timeout): array
+    {
+        $settings = SiteSetting::geminiEmbeddingConfig();
+        $key = SiteSetting::geminiEmbeddingApiKey() ?? config('ai.gemini.key');
+        $url = rtrim($settings['base_url'], '/') . "/models/{$model}:embedContent";
+
+        if (! is_string($key) || $key === '') {
+            throw new RuntimeException('Gemini embedding API key is not configured.');
+        }
+
+        $response = Http::withHeaders(['x-goog-api-key' => $key])->timeout($timeout)->post($url, [
             'model'   => "models/{$model}",
             'content' => [
                 'parts' => [['text' => $text]],
@@ -30,6 +54,33 @@ class EmbeddingService
 
         return $response->json('embedding.values') ?? throw new RuntimeException(
             'Unexpected Gemini response: ' . $response->body()
+        );
+    }
+
+    private function embedWithOpenRouter(string $text, string $model, int $timeout, string $inputType): array
+    {
+        $settings = SiteSetting::openRouterProviderConfig();
+        $key = SiteSetting::openRouterProviderApiKey();
+
+        if (! is_string($key) || $key === '') {
+            throw new RuntimeException('OpenRouter embedding API key is not configured.');
+        }
+
+        $response = Http::acceptJson()
+            ->withToken($key)
+            ->timeout($timeout)
+            ->post(rtrim($settings['base_url'], '/') . '/embeddings', [
+                'model' => $model,
+                'input' => $text,
+                'input_type' => $inputType,
+            ]);
+
+        if (! $response->successful()) {
+            throw new RuntimeException('OpenRouter embedding failed: ' . $response->status() . ' ' . $response->body());
+        }
+
+        return $response->json('data.0.embedding') ?? throw new RuntimeException(
+            'Unexpected OpenRouter embedding response: ' . $response->body()
         );
     }
 

@@ -10,8 +10,10 @@ use App\Jobs\ComputeUserEmbedding;
 use App\Models\BotUser;
 use App\Models\LoginToken;
 use App\Services\EmbeddingService;
+use App\Services\AiAssistantService;
 use App\Services\MatchingService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\View\View;
@@ -160,7 +162,7 @@ class AccountController extends Controller
             $request->validate(['q' => ['string', 'max:500']]);
 
             try {
-                $vector  = $embedder->embed($query);
+                $vector  = $embedder->embedQuery($query);
                 $results = $matcher->searchByQuery($vector, $accountUser);
             } catch (\Throwable $e) {
                 logger()->warning('AI search failed', ['error' => $e->getMessage()]);
@@ -174,6 +176,52 @@ class AccountController extends Controller
     public function knowledge(): View
     {
         return $this->themedView('knowledge');
+    }
+
+    public function assistantMessage(Request $request, AiAssistantService $assistant): JsonResponse
+    {
+        /** @var BotUser $user */
+        $user = view()->shared('accountUser');
+        $data = $request->validate([
+            'message' => ['required', 'string', 'max:1200'],
+            'history' => ['nullable', 'array', 'max:8'],
+            'history.*.role' => ['required', 'in:user,assistant'],
+            'history.*.content' => ['required', 'string', 'max:1600'],
+        ]);
+
+        try {
+            return response()->json($assistant->respond(
+                $user,
+                trim($data['message']),
+                $data['history'] ?? [],
+                app()->getLocale(),
+            ));
+        } catch (\Throwable $e) {
+            logger()->warning('AI assistant failed', ['message' => $e->getMessage()]);
+
+            return response()->json([
+                'message' => __('account.assistant.unavailable'),
+            ], 503);
+        }
+    }
+
+    public function assistantProfileUpdate(Request $request): JsonResponse
+    {
+        /** @var BotUser $user */
+        $user = view()->shared('accountUser');
+        $data = $request->validate([
+            'description' => ['nullable', 'string', 'max:1000'],
+            'expectation' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        if (! array_filter($data, fn ($value): bool => is_string($value) && trim($value) !== '')) {
+            return response()->json(['message' => __('account.assistant.nothing_to_save')], 422);
+        }
+
+        $user->update($data);
+        ComputeUserEmbedding::dispatch($user);
+
+        return response()->json(['message' => __('account.assistant.profile_saved')]);
     }
 
     public function deleteProfile(Request $request): RedirectResponse
