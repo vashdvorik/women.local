@@ -192,6 +192,20 @@
         .fortun-direction-card--resources .fortun-direction-card__icon { color: var(--fortun-ink-deep); }
         .fortun-direction-card--partnership .fortun-direction-card__icon { color: var(--fortun-purple-light); }
 
+        .fortun-director-note { padding: 56px 0 60px; border-bottom: 1px solid var(--fortun-hairline-soft); background: var(--fortun-canvas); }
+        .fortun-director-note__grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(260px, .85fr); align-items: start; gap: 56px; }
+        .fortun-director-note__copy { position: relative; max-width: 760px; padding-left: 24px; border-left: 3px solid var(--fortun-coral); color: var(--fortun-slate); font-size: 15px; line-height: 1.55; }
+        .fortun-director-note__copy > div { position: relative; z-index: 1; }
+        .fortun-director-note__copy p { margin: 0 0 14px; }
+        .fortun-director-note__copy p:last-child { margin-bottom: 0; color: var(--fortun-ink-deep); font-weight: 500; }
+        .fortun-director-note__meta { position: relative; z-index: 1; display: grid; gap: 7px; margin: 0 0 20px; }
+        .fortun-director-note__meta p { margin: 0; color: var(--fortun-ink-deep); font-size: 14px; line-height: 1.4; }
+        .fortun-director-note__eyebrow { display: inline-flex; width: fit-content; padding: 4px 10px; border-radius: 9999px; background: var(--fortun-cream); color: var(--fortun-ink-deep); font-size: 12px; font-weight: 600; line-height: 1.3; }
+        .fortun-director-note__quote { position: absolute; top: 44px; left: 10px; color: var(--fortun-coral-strong); font-family: Georgia, serif; font-size: 52px; line-height: 1; opacity: .55; }
+        .fortun-director-note__portrait { position: relative; justify-self: end; width: min(100%, 320px); height: 400px; margin: 0; overflow: visible; border-radius: 24px 24px 24px 8px; box-shadow: 0 8px 22px rgba(38,17,83,.08); }
+        .fortun-director-note__portrait img { position: relative; z-index: 1; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; border-radius: 24px 24px 24px 8px; }
+        .fortun-director-note__accent { position: absolute; right: -16px; bottom: -16px; width: 86px; height: 86px; border-radius: 50%; background: var(--fortun-coral); opacity: .8; }
+
         .miro-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 72px; }
         .miro-split--reverse > :first-child { order: 2; }
         .miro-split__copy p { max-width: 540px; margin: 20px 0 0; color: var(--fortun-slate); font-size: 17px; }
@@ -320,6 +334,11 @@
             .fortun-directions__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
             .fortun-direction-card { min-height: 140px; padding: 14px 10px 15px; }
             .fortun-direction-card__icon { margin-bottom: 10px; }
+            .fortun-director-note { padding: 40px 0 44px; }
+            .fortun-director-note__grid { grid-template-columns: 1fr; gap: 28px; }
+            .fortun-director-note__copy { padding-left: 18px; font-size: 14px; }
+            .fortun-director-note__quote { top: 44px; left: 4px; font-size: 44px; }
+            .fortun-director-note__portrait { justify-self: center; width: min(100%, 300px); height: 360px; }
             .miro-steps { gap: 32px; }
             .miro-steps::before { top: 36px; right: auto; bottom: 36px; left: 50%; border-top: 0; border-left: 2px dashed var(--fortun-hairline-strong); }
             .miro-feature-card { min-height: 260px; padding: 24px; }

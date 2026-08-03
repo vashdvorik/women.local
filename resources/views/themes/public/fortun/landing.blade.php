@@ -165,6 +165,39 @@
                 </article>
             </div>
         </section>
+        <section class="fortun-director-note" aria-label="Message from the director">
+            <div class="miro-container fortun-director-note__grid">
+                <div class="fortun-director-note__copy">
+                    <div class="fortun-director-note__meta">
+                        <span class="fortun-director-note__eyebrow"><span data-lang="ru">Обращение руководителя</span><span data-lang="en">A message from the head</span><span data-lang="ro">Mesajul conducătoarei</span></span>
+                        <p><strong>Елена Синика</strong><span data-lang="ru"> · Руководитель Платформы женщин-предпринимателей</span><span data-lang="en"> · Head of the Women Entrepreneurs Platform</span><span data-lang="ro"> · Conducătoarea Platformei Femeilor Antreprenoare</span></p>
+                    </div>
+                    
+                    <div data-lang="ru">
+                        <p>Уважаемые коллеги и партнёры!</p>
+                        <p>Платформа женщин-предпринимателей — это пространство поддержки и развития для женщин, создающих и развивающих собственный бизнес. Здесь женщины-предпринимательницы находят профессиональное сообщество, практические знания, экспертную поддержку и возможности для обмена опытом, необходимые для устойчивого роста и реализации бизнес-идей.</p>
+                        <p>Наша цель — укреплять женское предпринимательство, развивать лидерские и управленческие компетенции, способствовать финансовой самостоятельности женщин и созданию конкурентоспособных бизнесов. Мы объединяем женщин-предпринимательниц, помогая им действовать сообща и усиливать голос женского бизнес-сообщества через обучающие программы, консультации, тематические мероприятия и конференции.</p>
+                        <p>Если вы ищете новые возможности для развития бизнеса и профессионального роста, мы будем рады видеть вас в сообществе Платформы женщин-предпринимателей.</p>
+                    </div>
+                    <div data-lang="en">
+                        <p>Dear colleagues and partners!</p>
+                        <p>The Women Entrepreneurs Platform is a space of support and development for women who create and grow their own businesses. Here, women entrepreneurs find a professional community, practical knowledge, expert support and opportunities to exchange experience — everything needed for sustainable growth and the implementation of business ideas.</p>
+                        <p>Our goal is to strengthen women’s entrepreneurship, develop leadership and management skills, support women’s financial independence and help create competitive businesses. We bring women entrepreneurs together, helping them act collectively and amplify the voice of the women’s business community through educational programmes, consultations, thematic events and conferences.</p>
+                        <p>If you are looking for new opportunities for business development and professional growth, we will be glad to welcome you to the Women Entrepreneurs Platform community.</p>
+                    </div>
+                    <div data-lang="ro">
+                        <p>Dragi colegi și parteneri!</p>
+                        <p>Platforma Femeilor Antreprenoare este un spațiu de sprijin și dezvoltare pentru femeile care creează și își dezvoltă propria afacere. Aici, femeile antreprenoare găsesc o comunitate profesională, cunoștințe practice, sprijin din partea experților și oportunități de schimb de experiență — tot ce este necesar pentru o creștere durabilă și realizarea ideilor de afaceri.</p>
+                        <p>Scopul nostru este să consolidăm antreprenoriatul feminin, să dezvoltăm competențele de leadership și management, să contribuim la independența financiară a femeilor și la crearea unor afaceri competitive. Reunim femeile antreprenoare, ajutându-le să acționeze împreună și să consolideze vocea comunității de business feminin prin programe educaționale, consultații, evenimente tematice și conferințe.</p>
+                        <p>Dacă sunteți în căutarea unor noi oportunități pentru dezvoltarea afacerii și creșterea profesională, ne vom bucura să vă avem în comunitatea Platformei Femeilor Antreprenoare.</p>
+                    </div>
+                </div>
+                <figure class="fortun-director-note__portrait">
+                    <span class="fortun-director-note__accent" aria-hidden="true"></span>
+                    <img src="{{ asset('themes/public/fortun/images/222.png') }}" alt="Елена Синика">
+                </figure>
+            </div>
+        </section>
         <section class="miro-logo-wall">
             <div class="miro-container miro-logo-wall__layout">
                 <div class="miro-logo-wall__copy">
