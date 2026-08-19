@@ -118,6 +118,12 @@
     .account-theme-preview.is-fortun .account-theme-preview__card { background: #fff; border: 1px solid #eef0f3; }
     .account-theme-preview.is-fortun .account-theme-preview__line { background: #c3faf5; }
 
+    .account-theme-preview.is-fortuntwo { background: #fafbfc; }
+    .account-theme-preview.is-fortuntwo .account-theme-preview__sidebar { background: #1c1c1e; }
+    .account-theme-preview.is-fortuntwo .account-theme-preview__header { background: #ffd8f4; }
+    .account-theme-preview.is-fortuntwo .account-theme-preview__card { background: #fff; border: 1px solid #eef0f3; }
+    .account-theme-preview.is-fortuntwo .account-theme-preview__line { background: #c3faf5; }
+
     .account-theme-card__body {
         padding: 18px;
     }
@@ -178,6 +184,8 @@
     $descriptions = [
         'classic' => 'Текущий кабинет: светлый интерфейс с фиолетовой навигацией и акцентами.',
         'miro' => 'Белое рабочее пространство с чёрными CTA, жёлтыми акцентами и пастельными карточками.',
+        'fortun' => 'Fortun: светлый кабинет с мягкой палитрой и AI-помощником.',
+        'fortuntwo' => 'Fortun Two: полная независимая копия Fortun для дальнейшей настройки.',
     ];
 @endphp
 

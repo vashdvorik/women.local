@@ -1,0 +1,102 @@
+:root { --fortun-primary:#1C1C1E; --fortun-primary-hover:#452074; --fortun-primary-pressed:#35165C; --fortun-purple-light:#A78FC7; --fortun-teal-dark:#006A77; --fortun-teal-light:#A4D0D4; --fortun-surface-featured:#F5F0FA; --fortun-pink:#E9E1F2; --fortun-cream:#F5F0FA; --fortun-blue:#53288A; --fortun-coral:#F6E3DD; --fortun-rose:#E9E1F2; --fortun-teal:#E2F2F3; --fortun-orange:#F5F0FA; --fortun-surface:#F8FAFB; --fortun-surface-soft:#FBFBFC; --fortun-hairline:#E7E7E9; --fortun-hairline-soft:#F0EDF3; --fortun-hairline-strong:#CFC6D9; --fortun-ink-deep:#261153; --fortun-ink:#1C1C1E; --fortun-charcoal:#342A42; --fortun-slate:#585364; --fortun-steel:#706A79; --fortun-muted:#AAA4B1; --fortun-shadow:rgba(38,17,83,.08) 0 12px 32px -4px; --fortun-font:"Roobert PRO","Noto Sans",-apple-system,BlinkMacSystemFont,sans-serif; }
+        * { box-sizing:border-box; }
+        html { overflow-x:hidden; }
+        body { margin:0; background:#fff; color:var(--fortun-ink); font-family:var(--fortun-font); font-size:16px; line-height:1.5; }
+        a { color:inherit; text-decoration:none; }
+        button, a { -webkit-tap-highlight-color:transparent; }
+        img { display:block; max-width:100%; }
+        html:not([lang="ru"]) [data-lang="ru"], html:not([lang="en"]) [data-lang="en"], html:not([lang="ro"]) [data-lang="ro"] { display:none!important; }
+        :focus-visible { outline:2px solid var(--fortun-blue); outline-offset:3px; border-radius:6px; }
+        .miro-container { width:min(1360px,calc(100% - 64px)); margin:0 auto; }
+        .miro-nav { position:sticky; top:0; z-index:30; min-height:68px; border-bottom:1px solid var(--fortun-hairline-soft); background:rgba(255,255,255,.94); backdrop-filter:blur(16px); }
+        .miro-nav__inner { min-height:68px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+        .miro-brand { display:inline-flex; align-items:center; gap:10px; white-space:nowrap; font-size:16px; font-weight:600; letter-spacing:-.02em; }
+        .miro-brand__mark { width:28px; height:28px; display:grid; place-items:center; border-radius:6px; background:var(--fortun-pink); color:var(--fortun-primary); font-size:13px; font-weight:600; }
+        .miro-brand__logo { width:176px; height:52px; object-fit:contain; }
+        .miro-nav__links { display:flex; align-items:center; gap:28px; color:var(--fortun-slate); font-size:14px; }
+        .miro-nav__links a { transition:color .18s ease; }
+        .miro-nav__links a:hover, .miro-nav__links a.is-active { color:var(--fortun-primary); }
+        .miro-nav__links a.is-active { font-weight:600; }
+        .miro-nav__actions { display:flex; align-items:center; gap:10px; }
+        .miro-languages { display:inline-flex; align-items:center; gap:2px; margin-right:8px; padding:3px; border:1px solid var(--fortun-hairline); border-radius:9999px; background:var(--fortun-surface); }
+        .miro-languages button { border:0; border-radius:9999px; padding:5px 7px; background:transparent; color:var(--fortun-steel); cursor:pointer; font:500 11px/1 var(--fortun-font); }
+        .miro-languages button.is-active { background:var(--fortun-primary); color:#fff; }
+        .miro-mobile-toggle { display:none; width:40px; height:40px; flex:0 0 40px; border:1px solid var(--fortun-hairline); border-radius:9999px; background:#fff; color:var(--fortun-primary); cursor:pointer; }
+        .miro-nav__mobile-menu { display:none; }
+        .miro-button { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:12px 24px; border-radius:9999px; font-size:14px; font-weight:500; line-height:1.3; transition:transform .18s ease,background .18s ease,border-color .18s ease; }
+        .miro-button:hover { transform:translateY(-1px); }
+        .miro-button--primary { background:var(--fortun-primary); color:#fff; }
+        .miro-button--primary:hover { background:var(--fortun-primary-hover); }
+        .miro-button--secondary { border:1px solid var(--fortun-hairline-strong); background:transparent; color:var(--fortun-ink); }
+        .miro-button--secondary:hover { border-color:var(--fortun-primary); }
+        .miro-button--accent { background:var(--fortun-pink); color:var(--fortun-primary); }
+        .miro-button--small { min-height:40px; padding:10px 18px; }
+        .miro-about-page { background:linear-gradient(180deg,#fff 0%,#FBFBFC 45%,#fff 100%); }
+        .miro-about-hero { position:relative; overflow:hidden; padding:64px 0 56px; background:#fff; }
+        .miro-about-hero::before { content:""; position:absolute; top:-120px; right:8%; width:290px; height:290px; border:1px solid rgba(83,40,138,.3); border-radius:50%; }
+        .miro-about-hero__inner { position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,1fr) minmax(360px,.8fr); align-items:center; gap:40px; }
+        .miro-eyebrow { margin:0 0 18px; color:var(--fortun-blue); font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
+        .miro-about-hero h1 { max-width:760px; margin:0; color:var(--fortun-ink-deep); font-size:clamp(46px,7vw,80px); font-weight:500; line-height:1.03; letter-spacing:-.06em; }
+        .miro-about-hero__copy { max-width:620px; margin:24px 0 0; color:var(--fortun-slate); font-size:18px; }
+        .miro-about-hero__visual { position:relative; min-height:370px; }
+        .miro-about-hero__visual::before { content:""; position:absolute; inset:18px 0 0 24px; border-radius:48px 0 48px 48px; background:var(--fortun-teal); transform:rotate(3deg); }
+        .miro-about-hero__visual img { position:relative; width:100%; height:370px; object-fit:cover; border-radius:48px 0 48px 48px; box-shadow:var(--fortun-shadow); }
+        .miro-about-hero__sticker { position:absolute; z-index:2; right:-12px; bottom:20px; padding:12px 16px; border-radius:10px; background:var(--fortun-primary); color:#fff; font-size:13px; font-weight:500; transform:rotate(3deg); }
+        .miro-about-section { padding:64px 0; }
+        .miro-about-section--soft { background:var(--fortun-surface-soft); }
+        .miro-about-section__head { max-width:760px; margin-bottom:40px; }
+        .miro-about-section__head--center { margin-right:auto; margin-left:auto; text-align:center; }
+        .miro-about-section h2 { margin:0; color:var(--fortun-ink-deep); font-size:clamp(34px,5vw,58px); font-weight:500; line-height:1.08; letter-spacing:-.05em; }
+        .miro-about-section__head p { margin:16px 0 0; color:var(--fortun-slate); font-size:18px; }
+        .miro-about-split { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:center; gap:40px; }
+        .miro-about-split__image { overflow:hidden; border-radius:28px; background:var(--fortun-teal); box-shadow:var(--fortun-shadow); }
+        .miro-about-split__image img { width:100%; aspect-ratio:4 / 3; object-fit:cover; }
+        .miro-about-split__copy p { margin:18px 0 0; color:var(--fortun-slate); font-size:17px; }
+        .miro-about-list { display:grid; gap:14px; margin:26px 0 0; padding:0; list-style:none; }
+        .miro-about-list li { display:flex; gap:12px; align-items:flex-start; color:var(--fortun-charcoal); }
+        .miro-about-list__mark { flex:0 0 22px; width:22px; height:22px; display:grid; place-items:center; border-radius:50%; background:var(--fortun-coral); color:var(--fortun-primary); font-size:12px; font-weight:600; }
+        .miro-about-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+        .miro-about-card { min-height:210px; padding:26px; border-radius:24px; background:var(--fortun-pink); }
+        .miro-about-card:nth-child(2) { background:var(--fortun-teal); }
+        .miro-about-card:nth-child(3) { background:var(--fortun-rose); }
+        .miro-about-card:nth-child(4) { background:var(--fortun-orange); }
+        .miro-about-card:nth-child(5) { background:var(--fortun-coral); }
+        .miro-about-card:nth-child(6) { background:var(--fortun-surface-featured); }
+        .miro-about-card__number { display:block; margin-bottom:38px; color:var(--fortun-primary); font-size:14px; font-weight:600; }
+        .miro-about-card h3 { margin:0; color:var(--fortun-ink-deep); font-size:22px; font-weight:500; line-height:1.2; }
+        .miro-about-card p { margin:10px 0 0; color:var(--fortun-charcoal); font-size:14px; line-height:1.5; }
+        .miro-about-audience { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+        .miro-about-audience__item { padding:22px 24px; border:1px solid var(--fortun-hairline-soft); border-radius:20px; background:#fff; box-shadow:0 8px 20px rgba(38,17,83,.04); }
+        .miro-about-audience__item strong { display:block; color:var(--fortun-ink-deep); font-size:18px; font-weight:500; }
+        .miro-about-audience__item span { display:block; margin-top:7px; color:var(--fortun-slate); font-size:14px; }
+        .miro-about-steps { position:relative; display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+        .miro-about-steps::before { content:""; position:absolute; top:34px; right:12%; left:12%; border-top:2px dashed var(--fortun-hairline-strong); }
+        .miro-about-step { position:relative; z-index:1; text-align:center; }
+        .miro-about-step__number { width:68px; height:68px; display:grid; place-items:center; margin:0 auto 20px; border:6px solid #fff; border-radius:50%; background:var(--fortun-coral); box-shadow:0 0 0 1px var(--fortun-hairline-strong); color:var(--fortun-primary); font-size:19px; font-weight:600; }
+        .miro-about-step:nth-child(2) .miro-about-step__number { background:var(--fortun-rose); }
+        .miro-about-step:nth-child(3) .miro-about-step__number { background:var(--fortun-teal); }
+        .miro-about-step:nth-child(4) .miro-about-step__number { background:var(--fortun-orange); }
+        .miro-about-step h3 { margin:0; color:var(--fortun-ink-deep); font-size:19px; font-weight:500; }
+        .miro-about-step p { max-width:220px; margin:9px auto 0; color:var(--fortun-slate); font-size:14px; }
+        .miro-about-bridge { padding:58px 32px; border-radius:30px; background:var(--fortun-primary); color:#fff; }
+        .miro-about-bridge__inner { display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:48px; }
+        .miro-about-bridge h2 { color:#fff; }
+        .miro-about-bridge p { margin:18px 0 0; color:var(--fortun-muted); font-size:17px; }
+        .miro-about-proof { display:flex; align-items:center; gap:16px; padding:22px; border:1px solid rgba(255,255,255,.15); border-radius:22px; background:rgba(255,255,255,.06); }
+        .miro-about-proof strong { color:var(--fortun-pink); font-size:46px; font-weight:500; line-height:1; letter-spacing:-.05em; }
+        .miro-about-proof span { color:#fff; font-size:14px; }
+        .miro-about-cta { margin-top:48px; padding:48px 28px; border-radius:28px; background:var(--fortun-teal); text-align:center; }
+        .miro-about-cta h2 { max-width:700px; margin:0 auto; color:var(--fortun-ink-deep); font-size:clamp(34px,5vw,58px); font-weight:500; line-height:1.08; letter-spacing:-.05em; }
+        .miro-about-cta p { max-width:580px; margin:18px auto 0; color:var(--fortun-slate); font-size:18px; }
+        .miro-about-cta__actions { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin-top:28px; }
+        .miro-footer { padding:64px 0 28px; background:var(--fortun-primary); color:#fff; }
+        .miro-footer__top { display:grid; grid-template-columns:1.4fr repeat(4,1fr); gap:32px; padding-bottom:56px; }
+        .miro-footer__brand p { max-width:250px; margin:18px 0 0; color:var(--fortun-muted); font-size:14px; }
+        .miro-footer .miro-brand__logo { width:214px; height:62px; padding:7px 10px; border-radius:12px; background:#fff; }
+        .miro-footer h4 { margin:0 0 14px; font-size:16px; font-weight:500; }
+        .miro-footer ul { display:grid; gap:8px; margin:0; padding:0; list-style:none; color:var(--fortun-muted); font-size:14px; }
+        .miro-footer li a:hover { color:#fff; }
+        .miro-footer__bottom { display:flex; justify-content:space-between; gap:20px; padding-top:22px; border-top:1px solid rgba(255,255,255,.12); color:var(--fortun-muted); font-size:12px; }
+        @media (max-width:1023px) { .miro-container{width:min(100% - 40px,760px)} .miro-nav__links,.miro-nav__actions>.miro-languages,.miro-nav__actions>.miro-button{display:none} .miro-mobile-toggle{display:grid;place-items:center} .miro-nav.is-open .miro-nav__links{position:absolute;top:68px;left:0;right:0;display:grid;gap:0;padding:12px 20px 20px;border-bottom:1px solid var(--fortun-hairline);background:#fff} .miro-nav.is-open .miro-nav__links a{padding:14px 0;border-bottom:1px solid var(--fortun-hairline-soft)} .miro-nav.is-open .miro-nav__mobile-menu{display:grid;gap:10px;padding-top:14px} .miro-nav.is-open .miro-nav__mobile-menu .miro-languages{width:max-content;margin:0 0 4px} .miro-nav.is-open .miro-nav__mobile-menu .miro-button{width:100%} .miro-about-hero__inner,.miro-about-bridge__inner{grid-template-columns:1fr;gap:36px} .miro-about-hero__visual{max-width:620px} .miro-about-cards{grid-template-columns:repeat(2,minmax(0,1fr))} .miro-about-steps{grid-template-columns:repeat(2,1fr)} .miro-about-steps::before{display:none} .miro-footer__top{grid-template-columns:repeat(3,1fr)} .miro-footer__brand{grid-column:1/-1} }
+        @media (max-width:767px) { .miro-container{width:min(100% - 32px,540px)} .miro-brand{font-size:14px} .miro-about-hero{padding:64px 0 56px} .miro-about-hero h1{font-size:48px} .miro-about-hero__copy,.miro-about-section__head p,.miro-about-cta p{font-size:16px} .miro-about-section{padding:64px 0} .miro-about-section h2,.miro-about-cta h2{font-size:38px} .miro-about-hero__visual,.miro-about-hero__visual img{height:300px;min-height:300px} .miro-about-split{grid-template-columns:1fr;gap:36px} .miro-about-cards,.miro-about-audience,.miro-about-steps{grid-template-columns:1fr} .miro-about-steps{gap:30px} .miro-about-steps::before{display:block;top:34px;right:auto;bottom:34px;left:50%;border-top:0;border-left:2px dashed var(--fortun-hairline-strong)} .miro-about-bridge{padding:42px 24px;border-radius:24px} .miro-about-cta{padding:48px 22px;border-radius:24px} .miro-footer__top{grid-template-columns:repeat(2,1fr)} .miro-footer__bottom{flex-direction:column} }
+        @media (max-width:479px) { .miro-footer__top{gap:28px 16px} }

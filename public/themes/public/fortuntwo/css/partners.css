@@ -1,0 +1,78 @@
+:root { --fortun-primary:#1C1C1E; --fortun-primary-hover:#452074; --fortun-primary-pressed:#35165C; --fortun-purple-light:#A78FC7; --fortun-teal-dark:#006A77; --fortun-teal-light:#A4D0D4; --fortun-surface-featured:#F5F0FA; --fortun-pink:#E9E1F2; --fortun-cream:#F5F0FA; --fortun-blue:#53288A; --fortun-coral:#F6E3DD; --fortun-rose:#E9E1F2; --fortun-teal:#E2F2F3; --fortun-orange:#F5F0FA; --fortun-surface:#F8FAFB; --fortun-surface-soft:#FBFBFC; --fortun-hairline:#E7E7E9; --fortun-hairline-soft:#F0EDF3; --fortun-hairline-strong:#CFC6D9; --fortun-ink-deep:#261153; --fortun-ink:#1C1C1E; --fortun-charcoal:#342A42; --fortun-slate:#585364; --fortun-steel:#706A79; --fortun-muted:#AAA4B1; --fortun-shadow:rgba(38,17,83,.08) 0 12px 32px -4px; --fortun-font:"Roobert PRO","Noto Sans",-apple-system,BlinkMacSystemFont,sans-serif; }
+        * { box-sizing:border-box; }
+        html { overflow-x:hidden; }
+        body { margin:0; background:#fff; color:var(--fortun-ink); font-family:var(--fortun-font); font-size:16px; line-height:1.5; }
+        a { color:inherit; text-decoration:none; }
+        button, a { -webkit-tap-highlight-color:transparent; }
+        img { display:block; max-width:100%; }
+        html:not([lang="ru"]) [data-lang="ru"], html:not([lang="en"]) [data-lang="en"], html:not([lang="ro"]) [data-lang="ro"] { display:none!important; }
+        :focus-visible { outline:2px solid var(--fortun-blue); outline-offset:3px; border-radius:6px; }
+        .miro-container { width:min(1360px,calc(100% - 64px)); margin:0 auto; }
+        .miro-nav { position:sticky; top:0; z-index:30; min-height:68px; border-bottom:1px solid var(--fortun-hairline-soft); background:rgba(255,255,255,.94); backdrop-filter:blur(16px); }
+        .miro-nav__inner { min-height:68px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+        .miro-brand { display:inline-flex; align-items:center; gap:10px; white-space:nowrap; font-size:16px; font-weight:600; letter-spacing:-.02em; }
+        .miro-brand__mark { width:28px; height:28px; display:grid; place-items:center; border-radius:6px; background:var(--fortun-pink); color:var(--fortun-primary); font-size:13px; font-weight:600; }
+        .miro-brand__logo { width:176px; height:52px; object-fit:contain; }
+        .miro-nav__links { display:flex; align-items:center; gap:28px; color:var(--fortun-slate); font-size:14px; }
+        .miro-nav__links a { transition:color .18s ease; }
+        .miro-nav__links a:hover, .miro-nav__links a.is-active { color:var(--fortun-primary); }
+        .miro-nav__links a.is-active { font-weight:600; }
+        .miro-nav__actions { display:flex; align-items:center; gap:10px; }
+        .miro-languages { display:inline-flex; align-items:center; gap:2px; margin-right:8px; padding:3px; border:1px solid var(--fortun-hairline); border-radius:9999px; background:var(--fortun-surface); }
+        .miro-languages button { border:0; border-radius:9999px; padding:5px 7px; background:transparent; color:var(--fortun-steel); cursor:pointer; font:500 11px/1 var(--fortun-font); }
+        .miro-languages button.is-active { background:var(--fortun-primary); color:#fff; }
+        .miro-mobile-toggle { display:none; width:40px; height:40px; flex:0 0 40px; border:1px solid var(--fortun-hairline); border-radius:9999px; background:#fff; color:var(--fortun-primary); cursor:pointer; }
+        .miro-nav__mobile-menu { display:none; }
+        .miro-button { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:12px 24px; border-radius:9999px; font-size:14px; font-weight:500; line-height:1.3; transition:transform .18s ease,background .18s ease,border-color .18s ease; }
+        .miro-button:hover { transform:translateY(-1px); }
+        .miro-button--primary { background:var(--fortun-primary); color:#fff; }
+        .miro-button--primary:hover { background:var(--fortun-primary-hover); }
+        .miro-button--secondary { border:1px solid var(--fortun-hairline-strong); background:transparent; color:var(--fortun-ink); }
+        .miro-button--secondary:hover { border-color:var(--fortun-primary); }
+        .miro-button--small { min-height:40px; padding:10px 18px; }
+        .miro-partners-page { background:linear-gradient(180deg,#fff 0%,#FBFBFC 50%,#fff 100%); }
+        .miro-partners-hero { position:relative; overflow:hidden; padding:64px 0 56px; background:var(--fortun-pink); }
+        .miro-partners-hero::before, .miro-partners-hero::after { content:""; position:absolute; border:1px solid rgba(83,40,138,.24); border-radius:50%; }
+        .miro-partners-hero::before { width:360px; height:360px; top:-190px; right:10%; }
+        .miro-partners-hero::after { width:190px; height:190px; bottom:-120px; left:5%; border-color:rgba(83,40,138,.16); }
+        .miro-partners-hero__inner { position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr); align-items:end; gap:40px; }
+        .miro-eyebrow { margin:0 0 18px; color:var(--fortun-blue); font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
+        .miro-partners-hero h1 { max-width:800px; margin:0; color:var(--fortun-ink-deep); font-size:clamp(48px,7vw,84px); font-weight:500; line-height:1.02; letter-spacing:-.06em; }
+        .miro-partners-hero__copy { max-width:630px; margin:24px 0 0; color:var(--fortun-slate); font-size:18px; }
+        .miro-partners-hero__note { padding:24px; border:1px solid rgba(38,17,83,.12); border-radius:24px; background:rgba(255,255,255,.62); box-shadow:var(--fortun-shadow); }
+        .miro-partners-hero__note strong { display:block; color:var(--fortun-ink-deep); font-size:24px; font-weight:500; line-height:1.15; }
+        .miro-partners-hero__note span { display:block; margin-top:10px; color:var(--fortun-slate); font-size:14px; }
+        .miro-partners-section { padding:64px 0 24px; }
+        .miro-partners-group { padding:0 0 72px; }
+        .miro-partners-group__head { display:flex; align-items:end; justify-content:space-between; gap:28px; margin-bottom:28px; }
+        .miro-partners-group__heading { max-width:700px; }
+        .miro-partners-group__heading h2 { margin:0; color:var(--fortun-ink-deep); font-size:clamp(32px,4vw,52px); font-weight:500; line-height:1.08; letter-spacing:-.05em; }
+        .miro-partners-group__heading p { max-width:680px; margin:14px 0 0; color:var(--fortun-slate); font-size:16px; }
+        .miro-partners-group__count { flex:0 0 auto; padding:10px 14px; border-radius:9999px; background:var(--fortun-surface); color:var(--fortun-steel); font-size:13px; }
+        .miro-partners-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+        .miro-partner-card { min-height:250px; display:flex; flex-direction:column; justify-content:space-between; padding:22px; border-radius:24px; background:var(--fortun-pink); transition:transform .18s ease,box-shadow .18s ease; }
+        .miro-partner-card:hover { transform:translateY(-3px); box-shadow:var(--fortun-shadow); }
+        .miro-partner-card--teal { background:var(--fortun-teal); }
+        .miro-partner-card--coral { background:var(--fortun-cream); }
+        .miro-partner-card--rose { background:var(--fortun-rose); }
+        .miro-partner-card__logo { min-height:145px; display:grid; place-items:center; padding:20px; border-radius:16px; background:rgba(255,255,255,.68); }
+        .miro-partner-card__logo img { width:min(100%,220px); height:100px; object-fit:contain; }
+        .miro-partner-card__bottom { display:flex; align-items:end; justify-content:space-between; gap:16px; margin-top:20px; }
+        .miro-partner-card h3 { margin:0; color:var(--fortun-ink-deep); font-size:17px; font-weight:500; line-height:1.3; }
+        .miro-partner-link { flex:0 0 auto; display:inline-flex; align-items:center; gap:6px; padding:9px 12px; border:1px solid rgba(38,17,83,.18); border-radius:9999px; color:var(--fortun-ink-deep); font-size:12px; font-weight:600; white-space:nowrap; transition:background .18s ease,color .18s ease,border-color .18s ease; }
+        .miro-partner-link:hover { border-color:var(--fortun-primary); background:var(--fortun-primary); color:#fff; }
+        .miro-partners-cta { margin:8px auto 88px; padding:56px 32px; border-radius:30px; background:var(--fortun-primary); color:#fff; text-align:center; }
+        .miro-partners-cta h2 { max-width:680px; margin:0 auto; color:#fff; font-size:clamp(34px,5vw,56px); font-weight:500; line-height:1.08; letter-spacing:-.05em; }
+        .miro-partners-cta p { max-width:590px; margin:18px auto 0; color:var(--fortun-muted); font-size:17px; }
+        .miro-partners-cta__actions { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin-top:28px; }
+        .miro-footer { padding:64px 0 28px; background:var(--fortun-primary); color:#fff; }
+        .miro-footer__top { display:grid; grid-template-columns:1.4fr repeat(4,1fr); gap:32px; padding-bottom:56px; }
+        .miro-footer__brand p { max-width:250px; margin:18px 0 0; color:var(--fortun-muted); font-size:14px; }
+        .miro-footer .miro-brand__logo { width:214px; height:62px; padding:7px 10px; border-radius:12px; background:#fff; }
+        .miro-footer h4 { margin:0 0 14px; font-size:16px; font-weight:500; }
+        .miro-footer ul { display:grid; gap:8px; margin:0; padding:0; list-style:none; color:var(--fortun-muted); font-size:14px; }
+        .miro-footer li a:hover { color:#fff; }
+        .miro-footer__bottom { display:flex; justify-content:space-between; gap:20px; padding-top:22px; border-top:1px solid rgba(255,255,255,.12); color:var(--fortun-muted); font-size:12px; }
+        @media (max-width:1023px) { .miro-container{width:min(100% - 40px,760px)} .miro-nav__links,.miro-nav__actions>.miro-languages,.miro-nav__actions>.miro-button{display:none} .miro-mobile-toggle{display:grid;place-items:center} .miro-nav.is-open .miro-nav__links{position:absolute;top:68px;left:0;right:0;display:grid;gap:0;padding:12px 20px 20px;border-bottom:1px solid var(--fortun-hairline);background:#fff} .miro-nav.is-open .miro-nav__links a{padding:14px 0;border-bottom:1px solid var(--fortun-hairline-soft)} .miro-nav.is-open .miro-nav__mobile-menu{display:grid;gap:10px;padding-top:14px} .miro-nav.is-open .miro-nav__mobile-menu .miro-languages{width:max-content;margin:0 0 4px} .miro-nav.is-open .miro-nav__mobile-menu .miro-button{width:100%} .miro-partners-hero__inner{grid-template-columns:1fr;gap:34px} .miro-partners-hero__note{max-width:560px} .miro-partners-grid{grid-template-columns:repeat(2,minmax(0,1fr))} .miro-footer__top{grid-template-columns:repeat(3,1fr)} .miro-footer__brand{grid-column:1/-1} }
+        @media (max-width:767px) { .miro-container{width:min(100% - 32px,540px)} .miro-brand{font-size:14px} .miro-partners-hero{padding:66px 0 58px} .miro-partners-hero h1{font-size:48px} .miro-partners-hero__copy{font-size:16px} .miro-partners-section{padding-top:64px} .miro-partners-group{padding-bottom:56px} .miro-partners-group__head{display:block} .miro-partners-group__count{display:inline-block; margin-top:18px} .miro-partners-grid{grid-template-columns:1fr} .miro-partners-cta{padding:46px 22px; margin-bottom:64px; border-radius:24px} .miro-footer__top{grid-template-columns:repeat(2,1fr)} .miro-footer__bottom{flex-direction:column} }
+        @media (max-width:479px) { .miro-footer__top{gap:28px 16px} }

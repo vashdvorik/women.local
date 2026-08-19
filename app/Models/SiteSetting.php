@@ -28,6 +28,7 @@ class SiteSetting extends Model
     public const LANDING_THEMES = [
         'miro'     => 'Miro',
         'fortun'   => 'Fortun',
+        'fortuntwo' => 'Fortun Two',
         'platform' => 'Platform',
     ];
 
@@ -40,6 +41,7 @@ class SiteSetting extends Model
     public const ACCOUNT_THEMES = [
         'miro'    => 'Miro',
         'fortun'  => 'Fortun',
+        'fortuntwo' => 'Fortun Two',
         'classic' => 'Классическая фиолетовая',
     ];
 

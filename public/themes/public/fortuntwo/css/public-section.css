@@ -1,0 +1,46 @@
+:root {
+    --fortun-public-ink: var(--fortun-ink-deep, #261153);
+}
+
+.fortun-public-page { min-height: 70vh; background: var(--fortun-canvas, #fff); color: var(--fortun-ink, #1c1c1e); }
+.fortun-public-hero { position: relative; overflow: hidden; padding: 64px 0 56px; border-bottom: 1px solid var(--fortun-hairline-soft, #f0edf3); background: linear-gradient(135deg, var(--fortun-surface-featured, #f5f0fa), #fff 65%); }
+.fortun-public-hero__inner { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 220px; align-items: center; gap: 48px; }
+.fortun-public-hero__copy { max-width: 760px; }
+.fortun-public-hero h1 { margin: 0; color: var(--fortun-public-ink); font-size: clamp(42px, 6vw, 72px); font-weight: 500; line-height: 1.08; letter-spacing: -.05em; }
+.fortun-public-hero__intro { max-width: 680px; margin: 24px 0 0; color: var(--fortun-slate, #585364); font-size: 18px; line-height: 1.55; }
+.fortun-public-hero__accent { position: relative; min-height: 170px; }
+.fortun-public-hero__accent span { position: absolute; display: block; border-radius: 50%; }
+.fortun-public-hero__accent span:nth-child(1) { top: 10px; right: 20px; width: 140px; height: 140px; background: var(--fortun-pink, #e9e1f2); }
+.fortun-public-hero__accent span:nth-child(2) { right: 0; bottom: 0; width: 92px; height: 92px; background: var(--fortun-teal, #e2f2f3); }
+.fortun-public-hero__accent span:nth-child(3) { top: 0; right: 106px; width: 26px; height: 26px; background: var(--fortun-coral, #f6e3dd); }
+.fortun-public-content { padding: 64px 0 72px; }
+.fortun-public-placeholder { max-width: 720px; margin: 0 auto; padding: 48px 40px; border: 1px solid var(--fortun-hairline-soft, #f0edf3); border-radius: 28px; background: #fff; box-shadow: 0 12px 32px rgba(38,17,83,.06); text-align: center; }
+.fortun-public-placeholder__mark { width: 56px; height: 56px; display: grid; place-items: center; margin: 0 auto 20px; border-radius: 50%; background: var(--fortun-teal-light, #a4d0d4); color: var(--fortun-teal-dark, #006a77); font-size: 22px; }
+.fortun-public-placeholder h2, .fortun-public-item h2, .fortun-public-step h2, .fortun-public-cta h2 { margin: 0; color: var(--fortun-public-ink); font-size: 28px; font-weight: 500; line-height: 1.25; }
+.fortun-public-placeholder p, .fortun-public-step p, .fortun-public-cta p { max-width: 620px; margin: 14px auto 0; color: var(--fortun-slate, #585364); font-size: 16px; line-height: 1.5; }
+.fortun-public-items { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.fortun-public-item { min-height: 180px; padding: 28px 24px; border: 1px solid var(--fortun-hairline-soft, #f0edf3); border-radius: 20px; background: #fff; box-shadow: 0 8px 24px rgba(38,17,83,.04); }
+.fortun-public-item:nth-child(3n+1) { background: var(--fortun-pink, #e9e1f2); }
+.fortun-public-item:nth-child(3n+2) { background: var(--fortun-teal, #e2f2f3); }
+.fortun-public-item:nth-child(3n) { background: var(--fortun-coral, #f6e3dd); }
+.fortun-public-item__number, .fortun-public-step__number { display: inline-grid; width: 36px; height: 36px; place-items: center; margin-bottom: 28px; border-radius: 50%; background: #fff; color: var(--fortun-blue, #53288a); font-size: 13px; font-weight: 600; }
+.fortun-public-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.fortun-public-step { padding: 28px; border: 1px solid var(--fortun-hairline-soft, #f0edf3); border-radius: 20px; background: #fff; }
+.fortun-public-step p { margin-left: 0; margin-right: 0; }
+.fortun-public-cta { max-width: 760px; margin: 48px auto 0; padding: 40px 28px; border-radius: 28px; background: var(--fortun-primary, #1c1c1e); color: #fff; text-align: center; }
+.fortun-public-cta h2 { color: #fff; }
+.fortun-public-cta p { color: rgba(255,255,255,.76); }
+.fortun-public-cta .miro-button { margin-top: 24px; background: var(--fortun-pink, #e9e1f2); color: var(--fortun-primary, #1c1c1e); }
+
+@media (max-width: 767px) {
+    .fortun-public-hero { padding: 60px 0 52px; }
+    .fortun-public-hero__inner { grid-template-columns: 1fr; gap: 20px; }
+    .fortun-public-hero__accent { min-height: 80px; }
+    .fortun-public-hero__accent span:nth-child(1) { right: 10%; width: 90px; height: 90px; }
+    .fortun-public-hero__accent span:nth-child(2) { right: 4%; width: 58px; height: 58px; }
+    .fortun-public-hero__accent span:nth-child(3) { right: 28%; }
+    .fortun-public-content { padding: 48px 0 64px; }
+    .fortun-public-placeholder { padding: 32px 20px; }
+    .fortun-public-items, .fortun-public-steps { grid-template-columns: 1fr; }
+    .fortun-public-cta { margin-top: 40px; padding: 32px 20px; }
+}
