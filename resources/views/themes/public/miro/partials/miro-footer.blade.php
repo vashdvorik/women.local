@@ -1,4 +1,4 @@
-﻿<footer class="miro-footer" id="contact">
+<footer class="miro-footer" id="contact">
     <div class="miro-container">
         <div class="miro-footer__top">
             <div class="miro-footer__brand">

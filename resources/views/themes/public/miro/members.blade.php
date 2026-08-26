@@ -1,4 +1,4 @@
-﻿@php
+@php
     $botUrl = 'https://t.me/WomenComBot';
     $managerUrl = 'https://t.me/lesnichenkoP';
     $communityUrl = config('nutgram.community_url', $botUrl);
@@ -200,7 +200,7 @@
     <meta name="description" content="Public catalogue of experts, founders and participants of Women Entrepreneurs Platform.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Prata&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/css/members.css') }}">
     <link rel="stylesheet" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/css/navigation.css') }}">
 </head>
