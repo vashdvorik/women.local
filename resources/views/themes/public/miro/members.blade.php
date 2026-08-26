@@ -294,7 +294,6 @@
     </footer>
     @endif
 
-    <script src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/js/members.js') }}"></script>
 </body>
 </html>
 

@@ -124,7 +124,6 @@
 
     @include('themes.public.miro.partials.miro-footer')
 
-    <script src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/js/about.js') }}"></script>
 </body>
 </html>
 

@@ -85,6 +85,5 @@
     </main>
 
     @include('themes.public.' . $sectionTheme . '.partials.miro-footer')
-    <script src="{{ asset('themes/public/' . $sectionTheme . '/js/landing.js') }}"></script>
 </body>
 </html>

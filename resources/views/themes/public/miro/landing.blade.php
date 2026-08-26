@@ -104,7 +104,7 @@
                     </div>
                     <div class="miro-hero__visual" aria-label="Women entrepreneurs collaborating">
                         <div class="miro-hero__image">
-                            <img src="{{ asset('themes/public/miro/images/bannerhero.png') }}" alt="Women entrepreneurs collaborating around a laptop">
+                            <img src="{{ asset('themes/public/miro/images/bannerhero.webp') }}" alt="Women entrepreneurs collaborating around a laptop">
                         </div>
                     </div>
                     <svg class="miro-hero__bottom-curve" viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true">
@@ -551,6 +551,5 @@
     </footer>
     @endif
 
-    <script src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/js/landing.js') }}"></script>
 </body>
 </html>

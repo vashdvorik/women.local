@@ -165,6 +165,14 @@ body { background: var(--miro-canvas) !important; color: var(--miro-ink); }
 .miro-page .miro-hero--image .miro-proof,
 .miro-page .miro-hero--image .miro-proof :is(span, strong, p) { color: var(--miro-text-dark); }
 
+/* Dropdowns stay light even when the landing navigation is dark. */
+.miro-page .miro-nav__dropdown-menu,
+.miro-page .miro-nav__dropdown-menu :is(a, span, button) { color: var(--miro-text-dark); }
+.miro-page .miro-nav__dropdown-menu a:hover,
+.miro-page .miro-nav__dropdown-menu a:hover :is(span, strong) { color: var(--miro-text-dark); }
+.miro-page .miro-landing-page .miro-nav .miro-nav__dropdown-menu,
+.miro-page .miro-landing-page .miro-nav .miro-nav__dropdown-menu :is(a, span, button) { color: var(--miro-text-dark) !important; }
+
 /* Align the visible logo mark with the public-page content grid. */
 @media (min-width: 768px) {
     .miro-nav .miro-brand { margin-left: -20px; }

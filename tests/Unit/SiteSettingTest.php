@@ -71,7 +71,7 @@ class SiteSettingTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee('miro-page')
-            ->assertSee('bannerhero.png')
+            ->assertSee('bannerhero.webp')
             ->assertSee('PLATFORM<br>FOR WOMEN', false)
             ->assertDontSee('<div class="miro-board"', false);
     }

@@ -236,7 +236,6 @@
     </footer>
     @endif
 
-    <script src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/js/events.js') }}"></script>
 </body>
 </html>
 
