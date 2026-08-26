@@ -435,7 +435,7 @@
         }
 
         /* Directions: stronger editorial grouping with quiet, varied accents. */
-        .miro-directions { position: relative; padding-top: 28px; background: var(--miro-surface-soft); }
+        .miro-directions { position: relative; padding-top: 28px; background: var(--miro-canvas); }
         .miro-directions__grid { gap: 16px; }
         .miro-direction-card { min-height: 164px; border-color: var(--miro-hairline-strong); background: var(--miro-canvas); box-shadow: 0 8px 20px rgba(33, 20, 15, .06); }
         .miro-direction-card:nth-child(1) { background: #E8D1C2; }

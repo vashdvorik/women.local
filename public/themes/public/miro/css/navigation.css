@@ -172,6 +172,8 @@ body { background: var(--miro-canvas) !important; color: var(--miro-ink); }
 .miro-page .miro-nav__dropdown-menu a:hover :is(span, strong) { color: var(--miro-text-dark); }
 .miro-page .miro-landing-page .miro-nav .miro-nav__dropdown-menu,
 .miro-page .miro-landing-page .miro-nav .miro-nav__dropdown-menu :is(a, span, button) { color: var(--miro-text-dark) !important; }
+.miro-page .miro-nav__dropdown-menu,
+.miro-page .miro-nav__dropdown-menu::before { background: #FAF4F1; }
 
 /* Align the visible logo mark with the public-page content grid. */
 @media (min-width: 768px) {
