@@ -28,6 +28,9 @@
     --miro-shadow: rgba(33, 20, 15, .12) 0 14px 34px -6px;
 }
 
+/* Miro is intentionally a fixed editorial light/dark composition, not an OS-driven theme. */
+html { color-scheme: light; }
+
 /* Shared Miro controls: caramel is the primary visual accent. */
 .miro-nav__links a:hover,
 .miro-nav__links a.is-active { color: var(--miro-accent-deep); }
