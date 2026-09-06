@@ -81,6 +81,20 @@
 
         /* Landing hero: a high-contrast editorial composition inspired by the supplied reference. */
         .miro-landing-page { background: var(--miro-canvas); }
+        .miro-landing-page main { display: flex; flex-direction: column; }
+        .miro-landing-page main > .miro-hero { order: 1; }
+        .miro-landing-page main > .miro-directions { order: 2; }
+        .miro-landing-page main > .miro-director-note { order: 3; }
+        .miro-landing-page main > #members { order: 4; }
+        .miro-landing-page main > #events { order: 5; }
+        .miro-landing-page main > #benefits { order: 6; }
+        .miro-landing-page main > #how-it-works { order: 7; }
+        .miro-landing-page main > #features { order: 8; }
+        .miro-landing-page main > #learning { order: 9; }
+        .miro-landing-page main > #stories { order: 10; }
+        .miro-landing-page main > section:not([class*="miro-hero"]):not(.miro-directions):not(.miro-director-note):not(.miro-logo-wall):not([id]) { order: 11; }
+        .miro-landing-page main > .miro-logo-wall { order: 12; }
+        .miro-landing-page main > .miro-section:last-child { display: none; }
         .miro-landing-page .miro-nav { border-bottom-color: rgba(201, 154, 115, .32); background: #21140F; }
         .miro-landing-page .miro-brand__logo { filter: brightness(0) invert(1); opacity: .94; }
         .miro-landing-page .miro-nav__links,
@@ -116,6 +130,10 @@
             word-spacing: .10em;
             transform: none;
         }
+        .miro-hero__title-main,
+        .miro-hero__title-sub { display: block; }
+        .miro-hero__title-main { margin-bottom: 12px; font-size: 1.18em; line-height: 1; letter-spacing: -.045em; }
+        .miro-hero__title-sub { max-width: 620px; font-size: .58em; line-height: 1.08; letter-spacing: -.025em; }
         .miro-hero--image .miro-eyebrow { color: #DBB89B; }
         .miro-hero--image .miro-hero__subtitle { max-width: 380px; color: #E9DCD5; font-size: 15px; line-height: 1.58; }
         .miro-hero--image .miro-hero__actions { justify-content: flex-start; }
@@ -136,6 +154,10 @@
         .miro-hero--image .miro-proof__icon { background: #E3C5B4; color: #2A1913; }
         .miro-hero--image .miro-proof__value { color: #74472F; }
         .miro-hero--image .miro-proof__label { color: #493129; }
+        .miro-director-note__grid { position: relative; }
+        .miro-director-note__sticker { position: absolute; top: calc(100% - 8px); right: 0; z-index: 2; display: inline-block; padding: 12px 18px; border: 1px solid rgba(201,154,115,.7); border-radius: 999px; background: var(--miro-cream); color: var(--miro-ink-deep); font-size: 14px; font-weight: 600; box-shadow: 0 10px 24px rgba(33,20,15,.14); transform: rotate(-3deg); animation: miro-sticker-float 5s ease-in-out infinite; }
+        @keyframes miro-sticker-float { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-6px) rotate(-1deg); } }
+        .miro-logo-wall__sticker--brand { display: none; }
         .miro-hero--image .miro-floating-accents--hero { display: none; }
 
         .miro-logo-wall { position: relative; overflow: hidden; padding: 40px 0 72px; }
@@ -265,6 +287,8 @@
         .miro-director-note__copy p:last-child { margin-bottom: 0; color: var(--miro-ink-deep); font-weight: 500; }
         .miro-director-note__meta { position: relative; z-index: 1; display: grid; gap: 7px; margin: 0 0 20px; }
         .miro-director-note__meta p { margin: 0; color: var(--miro-ink-deep); font-size: 14px; line-height: 1.4; }
+        .miro-director-note__meta p { font-size: 0; }
+        .miro-director-note__meta p::after { content: "Валерия Зелинская · Руководитель Women's hub"; font-size: 14px; line-height: 1.4; }
         .miro-director-note__eyebrow { display: inline-flex; width: fit-content; padding: 4px 10px; border-radius: 9999px; background: var(--miro-cream); color: var(--miro-ink-deep); font-size: 12px; font-weight: 600; line-height: 1.3; }
         .miro-director-note__quote { position: absolute; top: 44px; left: 10px; color: var(--miro-coral-strong); font-family: Georgia, serif; font-size: 52px; line-height: 1; opacity: .55; }
         .miro-director-note__portrait { position: relative; justify-self: end; width: min(100%, 320px); height: 400px; margin: 0; overflow: visible; border-radius: 24px 24px 24px 8px; box-shadow: 0 8px 22px rgba(33, 20, 15,.08); }
@@ -414,6 +438,7 @@
             .miro-director-note__copy { padding-left: 18px; font-size: 14px; }
             .miro-director-note__quote { top: 44px; left: 4px; font-size: 44px; }
             .miro-director-note__portrait { justify-self: center; width: min(100%, 300px); height: 360px; }
+            .miro-director-note__sticker { position: relative; top: auto; right: auto; grid-column: 1; justify-self: center; margin-top: -12px; }
             .miro-steps { gap: 32px; }
             .miro-steps::before { top: 36px; right: auto; bottom: 36px; left: 50%; border-top: 0; border-left: 2px dashed var(--miro-hairline-strong); }
             .miro-feature-card { min-height: 260px; padding: 24px; }

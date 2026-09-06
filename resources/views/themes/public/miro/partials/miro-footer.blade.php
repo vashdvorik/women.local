@@ -2,8 +2,8 @@
     <div class="miro-container">
         <div class="miro-footer__top">
             <div class="miro-footer__brand">
-                <a href="{{ url('/') }}" class="miro-brand" aria-label="Women Entrepreneurs Platform"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/logo.webp') }}" alt="Women Entrepreneurs Platform" class="miro-brand__logo"></a>
-                <p><span data-lang="ru">Цифровое пространство для женщин-предпринимательниц из двух берегов.</span><span data-lang="en">A digital space for women entrepreneurs from both banks.</span><span data-lang="ro">Un spațiu digital pentru femeile antreprenoare de pe ambele maluri.</span></p>
+                <a href="{{ url('/') }}" class="miro-brand" aria-label="Women Entrepreneurs Platform"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/logo-white.webp') }}" alt="Women Entrepreneurs Platform" class="miro-brand__logo"></a>
+            <p><span data-lang="ru">Пространство для обучения, деловых связей, наставничества и развития бизнеса</span><span data-lang="en">A space for learning, business connections, mentorship and business growth.</span><span data-lang="ro">Un spațiu pentru învățare, conexiuni de afaceri, mentorat și dezvoltarea afacerii.</span></p>
             </div>
             <div>
                 <h4><span data-lang="ru">Платформа</span><span data-lang="en">Platform</span><span data-lang="ro">Platformă</span></h4>

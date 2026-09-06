@@ -3,7 +3,7 @@
 <nav class="miro-nav" id="miro-nav">
     <div class="miro-container miro-nav__inner">
         <a href="{{ url('/') }}" class="miro-brand" aria-label="Women Entrepreneurs Platform">
-            <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/logo.webp') }}" alt="Women Entrepreneurs Platform" class="miro-brand__logo">
+            <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/logo-white.webp') }}" alt="Women Entrepreneurs Platform" class="miro-brand__logo">
         </a>
         <div class="miro-nav__links" id="miro-nav-links">
             <div class="miro-nav__dropdown" data-nav-dropdown>

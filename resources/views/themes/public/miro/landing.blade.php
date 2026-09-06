@@ -26,7 +26,7 @@
     <nav class="miro-nav" id="miro-nav">
         <div class="miro-container miro-nav__inner">
             <a href="#top" class="miro-brand">
-                <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/logo.png') }}" alt="Women Entrepreneurs Platform" class="miro-brand__logo">
+                <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/logo-white.webp') }}" alt="Women Entrepreneurs Platform" class="miro-brand__logo">
                 <span>Women</span>
             </a>
             <div class="miro-nav__links" id="miro-nav-links">
@@ -76,9 +76,9 @@
                     <div class="miro-floating-accents miro-floating-accents--hero" aria-hidden="true"><span></span><span></span><span></span></div>
                     <div class="miro-hero__content">
                         <h1>
-                            <span data-lang="ru"><br> ПЛАТФОРМА<br>ЖЕНЩИН<br>ПРЕДПРИНИМАТЕЛЕЙ</span>
-                            <span data-lang="en"><br> PLATFORM<br>FOR WOMEN<br>ENTREPRENEURS</span>
-                            <span data-lang="ro"><br> PLATFORMĂ<br>PENTRU FEMEI<br>ANTREPRENOARE</span>
+                            <span data-lang="ru"><span class="miro-hero__title-main">Women's hub</span><span class="miro-hero__title-sub">ПЛАТФОРМА ЖЕНЩИН ПРЕДПРИНИМАТЕЛЕЙ</span></span>
+                            <span data-lang="en"><span class="miro-hero__title-main">Women's hub</span><span class="miro-hero__title-sub">PLATFORM FOR WOMEN ENTREPRENEURS</span></span>
+                            <span data-lang="ro"><span class="miro-hero__title-main">Women's hub</span><span class="miro-hero__title-sub">PLATFORMĂ PENTRU FEMEI ANTREPRENOARE</span></span>
                         </h1>
                         <p class="miro-hero__subtitle">
                             <span data-lang="ru">Пространство для обучения, деловых связей,
@@ -183,7 +183,6 @@
             <div class="miro-container miro-director-note__grid">
                 <div class="miro-director-note__copy">
                     <div class="miro-director-note__meta">
-                        <span class="miro-director-note__eyebrow"><span data-lang="ru">Обращение руководителя</span><span data-lang="en">A message from the head</span><span data-lang="ro">Mesajul conducătoarei</span></span>
                         <p><strong>Елена Синика</strong><span data-lang="ru"> · Руководитель Платформы женщин-предпринимателей</span><span data-lang="en"> · Head of the Women Entrepreneurs Platform</span><span data-lang="ro"> · Conducătoarea Platformei Femeilor Antreprenoare</span></p>
                     </div>
 
@@ -208,14 +207,14 @@
                 </div>
                 <figure class="miro-director-note__portrait">
                     <span class="miro-director-note__accent" aria-hidden="true"></span>
-                    <img src="{{ asset('themes/public/miro/images/222.png') }}" alt="Елена Синика">
+                    <img src="{{ asset('themes/public/miro/images/director.webp') }}" alt="Елена Синика">
                 </figure>
+                <span class="miro-director-note__sticker">Валерия Зелинская</span>
             </div>
         </section>
         <section class="miro-logo-wall">
             <div class="miro-container miro-logo-wall__layout">
                 <div class="miro-logo-wall__copy">
-                    <p><span data-lang="ru">Цифровое пространство для развития бизнеса с обоих берегов</span><span data-lang="en">One digital space for women entrepreneurs across both banks</span><span data-lang="ro">Un spațiu digital pentru femei antreprenoare de pe ambele maluri</span></p>
                     <div class="miro-logo-wall__items">
                         <span><span data-lang="ru">Видимость бизнеса</span><span data-lang="en">Business visibility</span><span data-lang="ro">Vizibilitatea afacerii</span></span>
                         <span><span data-lang="ru">Обучение</span><span data-lang="en">Learning</span><span data-lang="ro">Învățare</span></span>
@@ -226,9 +225,6 @@
                     </div>
                 </div>
                 <div class="miro-logo-wall__visual" aria-hidden="true">
-                    <div class="miro-logo-wall__photo">
-                        <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/333.png') }}" alt="">
-                    </div>
                     <span class="miro-logo-wall__sticker miro-logo-wall__sticker--brand"><span data-lang="ru">Связи, которые работают</span><span data-lang="en">Connections that move business</span><span data-lang="ro">Conexiuni care dezvoltă afaceri</span></span>
                 </div>
             </div>
