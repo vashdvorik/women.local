@@ -359,7 +359,29 @@ body.miro-landing-page .miro-nav__dropdown-menu a:hover span { background: #3423
 html[lang="ru"] body.miro-landing-page .miro-nav__dropdown-menu [data-lang="ru"],
 html[lang="en"] body.miro-landing-page .miro-nav__dropdown-menu [data-lang="en"],
 html[lang="ro"] body.miro-landing-page .miro-nav__dropdown-menu [data-lang="ro"] { display: inline !important; color: #F8E8DF !important; }
+body.miro-landing-page .miro-nav__links > a,
+body.miro-landing-page .miro-nav__links > a span,
+body.miro-landing-page .miro-nav__dropdown-trigger,
+body.miro-landing-page .miro-nav__dropdown-trigger span { color: #F8E8DF !important; }
+body.miro-landing-page .miro-nav__links > a:hover,
+body.miro-landing-page .miro-nav__links > a:hover span,
+body.miro-landing-page .miro-nav__dropdown-trigger:hover,
+body.miro-landing-page .miro-nav__dropdown-trigger:hover span { color: #FFF9F5 !important; }
 }
+
+/* Stable shared navigation colors, outside motion media queries. */
+body.miro-landing-page .miro-nav__links > a,
+body.miro-landing-page .miro-nav__links > a span,
+body.miro-landing-page .miro-nav__dropdown-trigger,
+body.miro-landing-page .miro-nav__dropdown-trigger span { color: #F8E8DF !important; }
+body.miro-landing-page .miro-nav__links > a:hover,
+body.miro-landing-page .miro-nav__links > a:hover span,
+body.miro-landing-page .miro-nav__dropdown-trigger:hover,
+body.miro-landing-page .miro-nav__dropdown-trigger:hover span { color: #FFF9F5 !important; }
+body.miro-landing-page .miro-nav__dropdown-menu,
+body.miro-landing-page .miro-nav__dropdown-menu::before { background: #21140F !important; }
+body.miro-landing-page .miro-nav__dropdown-menu a,
+body.miro-landing-page .miro-nav__dropdown-menu a span { color: #F8E8DF !important; }
 
 @keyframes miro-image-settle {
     from { transform: scale(1.035); }

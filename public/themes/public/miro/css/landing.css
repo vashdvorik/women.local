@@ -351,6 +351,10 @@
         .miro-event-card__body p { margin: 10px 0 0; color: var(--miro-slate); }
         .miro-event-card__link { display: inline-flex; align-items: center; margin-top: 20px; padding: 10px 16px; border-radius: 9999px; background: var(--miro-primary); color: #fff; font-size: 13px; font-weight: 500; transition: transform .18s ease, background .18s ease; }
         .miro-event-card__link:hover { background: var(--miro-primary-hover); transform: translateY(-1px); }
+        #events .miro-event-card__link,
+        #events .miro-events__all-link { border-color: var(--miro-accent); background: var(--miro-cream); color: var(--miro-primary); }
+        #events .miro-event-card__link:hover,
+        #events .miro-events__all-link:hover { border-color: var(--miro-accent-deep); background: #fffaf6; color: var(--miro-primary); }
         .miro-events__footer { display: flex; justify-content: center; margin-top: 32px; }
         .miro-events__all-link { display: inline-flex; align-items: center; min-height: 44px; padding: 11px 22px; border: 1px solid var(--miro-hairline-strong); border-radius: 9999px; color: var(--miro-primary); font-size: 14px; font-weight: 500; transition: border-color .18s ease, background .18s ease; }
         .miro-events__all-link:hover { border-color: var(--miro-primary); background: var(--miro-surface); }
