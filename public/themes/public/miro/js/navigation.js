@@ -43,6 +43,8 @@
         mobileToggle.addEventListener('click', function () {
             var open = nav.classList.toggle('is-open');
             mobileToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            // Keep the page from scrolling behind the open mobile panel.
+            document.documentElement.classList.toggle('miro-nav-open', open);
         });
     }
 

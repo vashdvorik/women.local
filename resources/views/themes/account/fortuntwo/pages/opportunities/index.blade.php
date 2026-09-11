@@ -36,7 +36,7 @@
                                     @endif
                                     {{ $opportunity->typeLabel() }}
                                 </span>
-                                <h2 class="mt-4 text-2xl font-medium tracking-tight text-[#261153]">{{ $opportunity->title }}</h2>
+                                <h2 class="mt-4 text-2xl font-medium tracking-tight text-[#21140F]">{{ $opportunity->title }}</h2>
                             </div>
 
                             @if($opportunity->bot_user_id === $accountUser->id)
@@ -48,12 +48,12 @@
                             @endif
                         </div>
 
-                        <p class="mt-5 whitespace-pre-line text-sm leading-7 text-[#585364]">{{ $opportunity->body }}</p>
+                        <p class="mt-5 whitespace-pre-line text-sm leading-7 text-[#756158]">{{ $opportunity->body }}</p>
 
-                        <div class="mt-6 flex flex-wrap gap-2 text-xs text-[#706a79]">
-                            @if($opportunity->event_date)<span class="rounded-full bg-[#fbfbfc] px-3 py-2">{{ $opportunity->event_date->format('d.m.Y') }}</span>@endif
-                            @if($opportunity->location)<span class="rounded-full bg-[#fbfbfc] px-3 py-2">{{ $opportunity->location }}</span>@endif
-                            @if($opportunity->author)<span class="rounded-full bg-[#fbfbfc] px-3 py-2">{{ __('account.published_by') }}: {{ $opportunity->author->full_name }}</span>@endif
+                        <div class="mt-6 flex flex-wrap gap-2 text-xs text-[#8C776E]">
+                            @if($opportunity->event_date)<span class="rounded-full bg-[#FCF8F6] px-3 py-2">{{ $opportunity->event_date->format('d.m.Y') }}</span>@endif
+                            @if($opportunity->location)<span class="rounded-full bg-[#FCF8F6] px-3 py-2">{{ $opportunity->location }}</span>@endif
+                            @if($opportunity->author)<span class="rounded-full bg-[#FCF8F6] px-3 py-2">{{ __('account.published_by') }}: {{ $opportunity->author->full_name }}</span>@endif
                         </div>
 
                         @if($opportunity->contact_url)

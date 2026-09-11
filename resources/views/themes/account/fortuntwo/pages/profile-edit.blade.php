@@ -18,22 +18,22 @@
             <div class="miro-form-field">
                 <label for="full_name">{{ __('account.profile.full_name') }} <span>{{ __('account.profile_edit.full_name_help') }}</span></label>
                 <input id="full_name" name="full_name" value="{{ old('full_name', $accountUser->full_name) }}" maxlength="120" autocomplete="name">
-                @error('full_name')<p class="mt-2 text-xs font-medium text-[#704a0b]">{{ $message }}</p>@enderror
+                @error('full_name')<p class="mt-2 text-xs font-medium text-[#8C4842]">{{ $message }}</p>@enderror
             </div>
             <div class="miro-form-field">
                 <label for="description">{{ __('account.profile_edit.description_label') }} <span>1000</span></label>
                 <textarea id="description" name="description" maxlength="1000" placeholder="{{ __('account.profile_edit.description_placeholder') }}">{{ old('description', $accountUser->description) }}</textarea>
                 <small>{{ __('account.profile_edit.description_help') }}</small>
-                @error('description')<p class="mt-2 text-xs font-medium text-[#704a0b]">{{ $message }}</p>@enderror
+                @error('description')<p class="mt-2 text-xs font-medium text-[#8C4842]">{{ $message }}</p>@enderror
             </div>
             <div class="miro-form-field">
                 <label for="expectation">{{ __('account.profile_edit.expectation_label') }} <span>1000</span></label>
                 <textarea id="expectation" name="expectation" maxlength="1000" placeholder="{{ __('account.profile_edit.expectation_placeholder') }}">{{ old('expectation', $accountUser->expectation) }}</textarea>
                 <small>{{ __('account.profile_edit.expectation_help') }}</small>
-                @error('expectation')<p class="mt-2 text-xs font-medium text-[#704a0b]">{{ $message }}</p>@enderror
+                @error('expectation')<p class="mt-2 text-xs font-medium text-[#8C4842]">{{ $message }}</p>@enderror
             </div>
         </div>
-        <div class="mt-8 flex flex-col-reverse gap-3 border-t border-[#e7e7e9] pt-6 sm:flex-row sm:justify-end">
+        <div class="mt-8 flex flex-col-reverse gap-3 border-t border-[#E9DCD5] pt-6 sm:flex-row sm:justify-end">
             <a href="{{ route('account.profile') }}" class="miro-button miro-button--outline">{{ __('account.back') }}</a>
             <button class="miro-button miro-button--dark">{{ __('account.profile_edit.save') }}</button>
         </div>

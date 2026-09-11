@@ -12,17 +12,17 @@
     <link rel="icon" type="image/png" href="{{ asset('themes/account/fortuntwo/images/brand/favicon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Prata&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
-        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Roobert PRO', 'Noto Sans', 'Inter', 'system-ui', 'sans-serif'] }, colors: { brand: { 50:'#f3edf8',100:'#e9e1f2',200:'#cfc6d9',300:'#a78fc7',400:'#6b43a0',500:'#53288a',600:'#452074',700:'#35165c' } } } } }
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Manrope', 'Inter', 'system-ui', 'sans-serif'], serif: ['Prata', 'Georgia', 'serif'] }, colors: { brand: { 50:'#F1E3DA',100:'#E6CFC1',200:'#D8C5BA',300:'#DBB89B',400:'#C99A73',500:'#B9855B',600:'#8E5B3D',700:'#74472F' } } } } }
     </script>
     <link rel="stylesheet" href="{{ asset('themes/account/fortuntwo/css/theme.css') }}">
     @stack('head')
 </head>
-<body class="h-full bg-white text-[#1c1c1e] antialiased account-theme-fortuntwo" x-data="{ sidebarOpen: false }">
+<body class="h-full bg-white text-[#21140F] antialiased account-theme-fortuntwo" x-data="{ sidebarOpen: false }">
     <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 z-20 bg-black/50 backdrop-blur-sm lg:hidden" @click="sidebarOpen = false"></div>
 
     <div class="flex h-full">
@@ -34,7 +34,7 @@
                     <img src="{{ asset('themes/account/fortuntwo/images/brand/favicon.png') }}" alt="Women Entrepreneurs Platform" class="h-full w-full object-contain">
                 </span>
                 <div class="min-w-0 leading-none">
-                    <p class="truncate text-sm font-medium tracking-tight text-[#1c1c1e]">Women Entrepreneurs Platform</p>
+                    <p class="truncate text-sm font-medium tracking-tight text-[#21140F]">Women Entrepreneurs Platform</p>
                     <p class="mt-0.5 text-[10px] font-medium uppercase tracking-widest text-gray-400">of the Two Banks</p>
                 </div>
             </div>
@@ -49,7 +49,7 @@
                         </div>
                     @endif
                     <div class="min-w-0 flex-1">
-                        <p class="truncate text-sm font-medium text-[#1c1c1e]">{{ explode(' ', (string) $accountUser->full_name)[0] }}</p>
+                        <p class="truncate text-sm font-medium text-[#21140F]">{{ explode(' ', (string) $accountUser->full_name)[0] }}</p>
                         @if($accountUser->telegram_username)
                             <p class="mt-0.5 truncate text-xs font-medium text-brand-600">{{ '@' . $accountUser->telegram_username }}</p>
                         @endif
@@ -98,7 +98,7 @@
                 </a>
                 <form action="{{ route('account.logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#918b99] transition hover:bg-[#f3edf8] hover:text-[#452074]">
+                    <button type="submit" class="group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#8C776E] transition hover:bg-[#F1E3DA] hover:text-[#74472F]">
                         {{ __('account.logout') }}
                     </button>
                 </form>
@@ -110,7 +110,7 @@
                 <button @click="sidebarOpen = true" class="flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 transition" aria-label="{{ __('account.open_menu') }}">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
                 </button>
-                <span class="text-sm font-medium text-[#1c1c1e]">@yield('title', __('account.cabinet'))</span>
+                <span class="text-sm font-medium text-[#21140F]">@yield('title', __('account.cabinet'))</span>
             </header>
 
             <main class="account-main flex-1 overflow-y-auto px-6 py-8 lg:px-10">

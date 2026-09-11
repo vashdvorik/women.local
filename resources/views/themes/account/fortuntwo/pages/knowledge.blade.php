@@ -15,17 +15,17 @@
         <div class="miro-card miro-card--pink p-6 sm:p-10">
             <div class="grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
                 <div>
-                    <span class="inline-flex rounded-full bg-white/75 px-4 py-2 text-xs font-medium text-[#261153]">{{ __('account.nav.knowledge') }}</span>
-                    <h2 class="mt-6 max-w-xl text-3xl font-medium tracking-tight text-[#261153] sm:text-4xl">{{ __('account.knowledge.coming_title') }}</h2>
-                    <p class="mt-4 max-w-xl text-sm leading-7 text-[#261153]/75">{{ __('account.knowledge.coming_text') }}</p>
+                    <span class="inline-flex rounded-full bg-white/75 px-4 py-2 text-xs font-medium text-[#21140F]">{{ __('account.nav.knowledge') }}</span>
+                    <h2 class="mt-6 max-w-xl text-3xl font-medium tracking-tight text-[#21140F] sm:text-4xl" style="font-family: var(--fortun-display-font); font-weight: 400;">{{ __('account.knowledge.coming_title') }}</h2>
+                    <p class="mt-4 max-w-xl text-sm leading-7 text-[#21140F]/75">{{ __('account.knowledge.coming_text') }}</p>
                     <a href="{{ route('account.opportunities.index') }}" class="miro-button miro-button--dark mt-7">{{ __('account.nav.opportunities') }}</a>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     @foreach(__('account.knowledge.modules') as $index => $module)
                         <div class="rounded-[28px] border border-white/70 bg-white/65 p-5">
-                            <div class="mb-8 flex h-10 w-10 items-center justify-center rounded-2xl {{ $index % 2 === 0 ? 'bg-[#e2f2f3] text-[#261153]' : 'bg-[#e2f2f3] text-[#261153]' }} text-sm font-medium">0{{ $index + 1 }}</div>
-                            <p class="font-medium text-[#261153]">{{ $module }}</p>
+                            <div class="mb-8 flex h-10 w-10 items-center justify-center rounded-2xl {{ $index % 2 === 0 ? 'bg-[#FAEEE8] text-[#21140F]' : 'bg-[#FAEEE8] text-[#21140F]' }} text-sm font-medium">0{{ $index + 1 }}</div>
+                            <p class="font-medium text-[#21140F]">{{ $module }}</p>
                         </div>
                     @endforeach
                 </div>

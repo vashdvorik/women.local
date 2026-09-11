@@ -93,10 +93,60 @@ html { color-scheme: light; }
 .miro-nav__actions .miro-button--secondary:hover,
 .miro-nav__mobile-menu .miro-button--secondary:hover { border-color: #DBB89B !important; background: rgba(255,249,245,.1) !important; }
 @media (max-width:1023px) {
-    .miro-nav.is-open .miro-nav__links { border-bottom-color: rgba(201,154,115,.32) !important; background: #21140F !important; }
+    /* The open panel must fill the full nav width; the desktop flex rule's
+       justify-content:center otherwise centers the single-column grid and
+       leaves a large empty gap on tablet widths. */
+    .miro-nav.is-open .miro-nav__links { grid-template-columns: 1fr !important; justify-content: stretch !important; border-bottom-color: rgba(201,154,115,.32) !important; background: #21140F !important; }
     .miro-nav.is-open .miro-nav__links a,
     .miro-nav.is-open .miro-nav__dropdown-trigger { color: #F8E8DF !important; }
     .miro-nav.is-open .miro-nav__links a { border-bottom-color: rgba(255,249,245,.14) !important; }
+
+    /* Quiet entrance/exit for the mobile panel instead of an abrupt display swap.
+       The panel stays laid out (display:grid) at all times within this breakpoint —
+       position:absolute already keeps it out of normal flow — and visibility is
+       carried entirely by opacity/transform so it can be transitioned. */
+    .miro-nav__links {
+        position: absolute !important;
+        top: 68px !important;
+        left: 0 !important;
+        right: 0 !important;
+        display: grid !important;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(-10px);
+        transition: opacity .26s cubic-bezier(.22,.61,.36,1), transform .26s cubic-bezier(.22,.61,.36,1), visibility 0s linear .26s;
+    }
+    .miro-nav.is-open .miro-nav__links {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        transform: translateY(0) !important;
+        transition: opacity .26s cubic-bezier(.22,.61,.36,1), transform .26s cubic-bezier(.22,.61,.36,1);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .miro-nav__links, .miro-nav.is-open .miro-nav__links { transition: opacity .01ms linear, visibility 0s linear; transform: none !important; }
+    }
+
+    /* Hamburger → close animation, three bars morphing into an X. */
+    .miro-mobile-toggle__bars { position: relative; display: block; width: 18px; height: 13px; }
+    .miro-mobile-toggle__bars span {
+        position: absolute; left: 0; width: 100%; height: 1.6px; border-radius: 2px;
+        background: currentColor;
+        transition: transform .26s cubic-bezier(.22,.61,.36,1), opacity .18s ease, top .26s cubic-bezier(.22,.61,.36,1);
+    }
+    .miro-mobile-toggle__bars span:nth-child(1) { top: 0; }
+    .miro-mobile-toggle__bars span:nth-child(2) { top: 50%; margin-top: -.8px; }
+    .miro-mobile-toggle__bars span:nth-child(3) { top: 100%; margin-top: -1.6px; }
+    .miro-nav.is-open .miro-mobile-toggle__bars span:nth-child(1) { top: 50%; margin-top: -.8px; transform: rotate(45deg); }
+    .miro-nav.is-open .miro-mobile-toggle__bars span:nth-child(2) { opacity: 0; }
+    .miro-nav.is-open .miro-mobile-toggle__bars span:nth-child(3) { top: 50%; margin-top: -.8px; transform: rotate(-45deg); }
+    @media (prefers-reduced-motion: reduce) {
+        .miro-mobile-toggle__bars span { transition: opacity .01ms linear; }
+    }
+
+    /* Lock background scroll while the panel is open. */
+    html.miro-nav-open { overflow: hidden; }
 }
 
 /* Contrast system: typography leads; surfaces only frame the content. */

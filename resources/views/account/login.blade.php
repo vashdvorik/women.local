@@ -1,7 +1,7 @@
 @php
     $publicTheme = \App\Models\SiteSetting::landingTheme();
     $publicTheme = array_key_exists($publicTheme, \App\Models\SiteSetting::LANDING_THEMES) ? $publicTheme : 'miro';
-    $themeLogo = asset('themes/public/' . $publicTheme . '/images/brand/logo.png');
+    $themeLogo = asset('themes/public/miro/images/brand/logo-ink.webp');
     $themeFavicon = asset('themes/public/' . $publicTheme . '/images/brand/favicon.png');
 @endphp
 <!DOCTYPE html>
@@ -14,50 +14,51 @@
     <link rel="icon" type="image/png" href="{{ $themeFavicon }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Prata&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --login-primary: #1c1c1e;
-            --login-primary-hover: #452074;
-            --login-canvas: #ffffff;
-            --login-surface: #f8fafb;
-            --login-card: #ffffff;
-            --login-ink: #261153;
-            --login-text: #585364;
-            --login-muted: #706a79;
-            --login-border: #e7e7e9;
-            --login-border-strong: #cfc6d9;
-            --login-accent: #e9e1f2;
-            --login-accent-ink: #261153;
-            --login-focus: #53288a;
-            --login-success: #078890;
-            --login-error-bg: #e9e1f2;
-            --login-error-border: #cfc1dd;
-            --login-error-text: #261153;
-            --login-shadow: 0 12px 32px rgba(38, 17, 83, .08);
+            --login-primary: #2A1913;
+            --login-primary-hover: #34231F;
+            --login-canvas: #FFFDFC;
+            --login-surface: #FAF4F1;
+            --login-card: #FFFDFC;
+            --login-ink: #21140F;
+            --login-text: #756158;
+            --login-muted: #8C776E;
+            --login-border: #E9DCD5;
+            --login-border-strong: #D8C5BA;
+            --login-accent: #F1E3DA;
+            --login-accent-ink: #21140F;
+            --login-focus: #74472F;
+            --login-success: #526B5A;
+            --login-error-bg: #F4E6E2;
+            --login-error-border: rgba(140,72,66,.35);
+            --login-error-text: #8C4842;
+            --login-shadow: 0 12px 32px rgba(33, 20, 15, .08);
             --login-radius-card: 28px;
             --login-radius-button: 9999px;
+            --login-display-font: "Prata", Georgia, "Times New Roman", serif;
         }
 
         body.public-theme-miro {
-            --login-canvas: #fafbfc;
-            --login-surface: #f7f8fa;
-            --login-primary-hover: #2c2c34;
-            --login-ink: #050038;
-            --login-text: #555a6a;
-            --login-muted: #6b6f7e;
-            --login-border: #eef0f3;
-            --login-border-strong: #c7cad5;
-            --login-accent: #ffd8f4;
-            --login-accent-ink: #050038;
-            --login-focus: #4262ff;
-            --login-success: #00b473;
-            --login-error-bg: #fbd4d4;
-            --login-error-border: #e3c5c5;
-            --login-error-text: #600000;
-            --login-shadow: 0 12px 32px rgba(5, 0, 56, .06);
+            --login-canvas: #FFFDFC;
+            --login-surface: #FAF4F1;
+            --login-primary-hover: #34231F;
+            --login-ink: #21140F;
+            --login-text: #756158;
+            --login-muted: #8C776E;
+            --login-border: #E9DCD5;
+            --login-border-strong: #D8C5BA;
+            --login-accent: #F1E3DA;
+            --login-accent-ink: #21140F;
+            --login-focus: #74472F;
+            --login-success: #526B5A;
+            --login-error-bg: #F4E6E2;
+            --login-error-border: rgba(140,72,66,.35);
+            --login-error-text: #8C4842;
+            --login-shadow: 0 12px 32px rgba(33, 20, 15, .06);
             --login-radius-card: 24px;
         }
 
@@ -86,10 +87,12 @@
             min-height: 100vh;
             background: var(--login-canvas) !important;
             color: var(--login-ink) !important;
-            font-family: "Roobert PRO", "Noto Sans", Inter, system-ui, sans-serif;
+            font-family: "Manrope", Inter, system-ui, sans-serif;
         }
 
         body.public-theme-platform.account-login-page { font-family: Inter, system-ui, sans-serif; }
+        body.account-login-page .account-login-heading { font-family: var(--login-display-font, "Manrope"); font-weight: 400; }
+        body.public-theme-platform .account-login-heading { font-family: Inter, system-ui, sans-serif; font-weight: 700; }
         body.account-login-page :focus-visible { outline: 2px solid var(--login-focus); outline-offset: 3px; border-radius: 8px; }
         body.account-login-page .account-login-languages {
             border-color: var(--login-border) !important;
@@ -115,7 +118,7 @@
         }
         body.account-login-page .account-login-button {
             border-radius: var(--login-radius-button) !important;
-            background: #1c1c1e !important;
+            background: var(--login-primary) !important;
             color: #fff !important;
             box-shadow: none !important;
         }
@@ -184,7 +187,7 @@
             <div class="mb-6 space-y-3 text-left">
                 @foreach([__('account.login.step_1'), __('account.login.step_2')] as $index => $step)
                     <div class="flex items-start gap-3">
-                        <span class="account-login-step__number mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-violet-100 text-xs font-bold text-violet-700">{{ $index + 1 }}</span>
+                        <span class="account-login-step__number mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold">{{ $index + 1 }}</span>
                         <p class="account-login-step text-sm text-gray-600">{{ $step }}</p>
                     </div>
                 @endforeach

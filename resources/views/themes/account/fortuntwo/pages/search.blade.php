@@ -59,9 +59,9 @@
                                 </div>
                                 <div class="min-w-0">
                                     <p class="miro-eyebrow mb-2">{{ __('account.search.title') }}</p>
-                                    <h2 class="truncate text-xl font-medium tracking-tight text-[#261153]">{{ $person->full_name ?: __('account.not_specified') }}</h2>
-                                    @if($person->telegram_username)<p class="mt-1 text-sm text-[#706a79]">{{ '@' . $person->telegram_username }}</p>@endif
-                                    <p class="mt-3 line-clamp-2 text-sm leading-6 text-[#585364]">{{ $person->description ?: $person->expectation ?: __('account.not_filled') }}</p>
+                                    <h2 class="truncate text-xl font-medium tracking-tight text-[#21140F]">{{ $person->full_name ?: __('account.not_specified') }}</h2>
+                                    @if($person->telegram_username)<p class="mt-1 text-sm text-[#8C776E]">{{ '@' . $person->telegram_username }}</p>@endif
+                                    <p class="mt-3 line-clamp-2 text-sm leading-6 text-[#756158]">{{ $person->description ?: $person->expectation ?: __('account.not_filled') }}</p>
                                 </div>
                             </div>
 

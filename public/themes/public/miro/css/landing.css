@@ -74,7 +74,7 @@
 
         .miro-hero { padding: 76px 0 72px; text-align: left; }
         .miro-eyebrow { margin: 0 0 20px; color: var(--miro-blue); font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
-        .miro-hero h1 { max-width: 920px; margin: 0; color: var(--miro-ink-deep); font-size: clamp(46px, 7vw, 80px); font-weight: 500; line-height: 1.05; letter-spacing: -.055em; }
+        .miro-hero h1 { max-width: 920px; margin: 0; color: var(--miro-ink-deep); font-family: var(--miro-display-font); font-size: clamp(46px, 7vw, 80px); font-weight: 400; line-height: 1.05; letter-spacing: -.03em; }
         .miro-hero__subtitle { max-width: 620px; margin: 28px 0 0; color: var(--miro-slate); font-size: 18px; line-height: 1.5; }
         .miro-hero__actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
         .miro-hero__note { margin: 14px 0 0; color: var(--miro-muted); font-size: 13px; }
@@ -94,7 +94,6 @@
         .miro-landing-page main > #stories { order: 10; }
         .miro-landing-page main > section:not([class*="miro-hero"]):not(.miro-directions):not(.miro-director-note):not(.miro-logo-wall):not([id]) { order: 11; }
         .miro-landing-page main > .miro-logo-wall { order: 12; }
-        .miro-landing-page main > .miro-section:last-child { display: none; }
         .miro-landing-page .miro-nav { border-bottom-color: rgba(201, 154, 115, .32); background: #21140F; }
         .miro-landing-page .miro-brand__logo { filter: brightness(0) invert(1); opacity: .94; }
         .miro-landing-page .miro-nav__links,
@@ -187,8 +186,9 @@
         .miro-section--soft { background: var(--miro-surface-soft); }
         .miro-section__head { max-width: 720px; margin-bottom: 40px; }
         .miro-section__head--center { margin-right: auto; margin-left: auto; text-align: center; }
-        .miro-section h2 { margin: 0; color: var(--miro-ink-deep); font-size: clamp(34px, 5vw, 60px); font-weight: 500; line-height: 1.1; letter-spacing: -.045em; }
-        .miro-section h3 { margin: 0; color: var(--miro-ink-deep); font-size: 28px; font-weight: 500; line-height: 1.25; letter-spacing: -.025em; }
+        .miro-section h2 { margin: 0; color: var(--miro-ink-deep); font-family: var(--miro-display-font); font-size: clamp(34px, 5vw, 58px); font-weight: 400; line-height: 1.12; letter-spacing: -.015em; }
+        .miro-section h3 { margin: 0; color: var(--miro-ink-deep); font-size: 28px; font-weight: 600; line-height: 1.25; letter-spacing: -.01em; }
+        .miro-split__copy h3 { font-family: var(--miro-display-font); font-weight: 400; font-size: clamp(26px, 3vw, 32px); line-height: 1.2; letter-spacing: -.015em; }
         .miro-section__head p { margin: 18px 0 0; color: var(--miro-slate); font-size: 18px; }
         .miro-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .miro-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
@@ -216,8 +216,9 @@
         .miro-benefit-card--rose { background: var(--miro-rose); }
         .miro-benefit-card--orange { background: var(--miro-orange); }
         .miro-benefit-card--surface { background: var(--miro-surface); }
-        .miro-benefit-card__icon { width: 46px; height: 46px; display: grid; place-items: center; margin-bottom: 32px; border-radius: 50%; background: rgba(255,255,255,.76); color: var(--miro-primary); font-size: 19px; font-weight: 600; }
-        .miro-benefit-card h3 { margin: 0; color: var(--miro-ink-deep); font-size: 21px; font-weight: 500; line-height: 1.2; }
+        .miro-benefit-card__icon { width: 44px; height: 44px; display: grid; place-items: center; margin-bottom: 28px; border-radius: 12px; background: rgba(255,255,255,.6); color: var(--miro-primary); font-size: 21px; }
+        .miro-benefit-card__icon .ph { display: block; }
+        .miro-benefit-card h3 { margin: 0; color: var(--miro-ink-deep); font-size: 20px; font-weight: 600; line-height: 1.25; letter-spacing: -.005em; }
         .miro-benefit-card p { margin: 10px 0 0; color: var(--miro-charcoal); font-size: 14px; line-height: 1.5; }
 
         .miro-steps { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
@@ -227,7 +228,7 @@
         .miro-step:nth-child(2) .miro-step__number { background: var(--miro-rose); }
         .miro-step:nth-child(3) .miro-step__number { background: var(--miro-teal); }
         .miro-step:nth-child(4) .miro-step__number { background: var(--miro-orange); }
-        .miro-step h3 { margin: 0; color: var(--miro-ink-deep); font-size: 20px; font-weight: 500; line-height: 1.2; }
+        .miro-step h3 { margin: 0; color: var(--miro-ink-deep); font-size: 19px; font-weight: 600; line-height: 1.25; }
         .miro-step p { margin: 10px auto 0; max-width: 220px; color: var(--miro-slate); font-size: 14px; line-height: 1.5; }
 
         .miro-directions { padding: 16px 0 56px; background: #fff; }
@@ -314,7 +315,7 @@
         .miro-roadmap__cell.is-blue { background: var(--miro-surface-featured); border-color: var(--miro-purple-light); }
         .miro-ai-card { max-width: 370px; margin: 20px auto 0; padding: 22px; border: 1px solid rgba(0,106,119,.18); border-radius: 16px; background: rgba(255,255,255,.84); box-shadow: 0 8px 24px rgba(33, 20, 15,.06); }
         .miro-ai-card__tag { display: inline-flex; padding: 4px 10px; border-radius: 9999px; background: var(--miro-surface-featured); color: var(--miro-blue); font-size: 12px; font-weight: 600; }
-        .miro-ai-card h4 { margin: 16px 0 8px; color: var(--miro-ink-deep); font-size: 22px; font-weight: 500; }
+        .miro-ai-card h4 { margin: 16px 0 8px; color: var(--miro-ink-deep); font-size: 21px; font-weight: 600; }
         .miro-ai-card p { margin: 0; color: var(--miro-slate); font-size: 14px; }
         .miro-ai-card__meter { height: 8px; margin-top: 18px; overflow: hidden; border-radius: 9999px; background: #E9DCD5; }
         .miro-ai-card__meter span { display: block; width: 86%; height: 100%; border-radius: inherit; background: var(--miro-blue); }
@@ -327,7 +328,7 @@
 
         .miro-member-card { display: grid; grid-template-columns: 112px 1fr; gap: 20px; align-items: center; padding: 16px; border: 1px solid var(--miro-hairline-soft); border-radius: 16px; background: #fff; }
         .miro-member-card img { width: 112px; height: 112px; border-radius: 12px; object-fit: cover; }
-        .miro-member-card h4 { margin: 0; color: var(--miro-ink-deep); font-size: 18px; font-weight: 500; }
+        .miro-member-card h4 { margin: 0; color: var(--miro-ink-deep); font-size: 18px; font-weight: 600; }
         .miro-member-card__role { margin: 5px 0 0; color: var(--miro-charcoal); font-size: 13px; line-height: 1.35; }
         .miro-member-card__specialization { margin: 8px 0 0; color: var(--miro-blue); font-size: 13px; font-weight: 600; line-height: 1.35; }
         .miro-member-card__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
@@ -347,7 +348,7 @@
         .miro-event-card img { width: 100%; height: 196px; object-fit: cover; }
         .miro-event-card__body { padding: 24px; }
         .miro-event-card__date { margin-top: 14px; color: var(--miro-blue); font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
-        .miro-event-card__body h3 { margin-top: 16px; font-size: 22px; }
+        .miro-event-card__body h3 { margin-top: 16px; font-size: 21px; font-weight: 600; line-height: 1.28; color: var(--miro-ink-deep); }
         .miro-event-card__body p { margin: 10px 0 0; color: var(--miro-slate); }
         .miro-event-card__link { display: inline-flex; align-items: center; margin-top: 20px; padding: 10px 16px; border-radius: 9999px; background: var(--miro-primary); color: #fff; font-size: 13px; font-weight: 500; transition: transform .18s ease, background .18s ease; }
         .miro-event-card__link:hover { background: var(--miro-primary-hover); transform: translateY(-1px); }
@@ -362,7 +363,7 @@
         .miro-story { display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; border-radius: 28px; background: var(--miro-primary); color: #fff; }
         .miro-story img { width: 100%; height: 100%; min-height: 360px; object-fit: cover; }
         .miro-story__body { display: flex; flex-direction: column; justify-content: center; padding: 48px; }
-        .miro-story__body blockquote { margin: 20px 0 24px; color: #fff; font-size: clamp(24px, 3vw, 36px); font-weight: 500; line-height: 1.2; letter-spacing: -.025em; }
+        .miro-story__body blockquote { margin: 20px 0 24px; color: #fff; font-family: var(--miro-display-font); font-size: clamp(24px, 3vw, 36px); font-weight: 400; line-height: 1.22; letter-spacing: -.01em; }
         .miro-story__body p { margin: 0; color: var(--miro-muted); }
 
         .miro-cta { padding: 64px 32px; border-radius: 32px; background: var(--miro-primary); color: #fff; text-align: center; }

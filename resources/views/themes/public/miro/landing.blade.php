@@ -241,32 +241,32 @@
                 </div>
                 <div class="miro-benefits">
                     <article class="miro-benefit-card miro-benefit-card--pink">
-                        <div class="miro-benefit-card__icon">↗</div>
+                        <div class="miro-benefit-card__icon" aria-hidden="true"><i class="ph ph-book-open"></i></div>
                         <h3><span data-lang="ru">Центр обучения</span><span data-lang="en">Learning Hub</span><span data-lang="ro">Hub de învățare</span></h3>
                         <p><span data-lang="ru">Онлайн-курсы, видео и практические модули для бизнеса.</span><span data-lang="en">Online courses, videos and practical business modules.</span><span data-lang="ro">Cursuri online, videoclipuri și module practice pentru afaceri.</span></p>
                     </article>
                     <article class="miro-benefit-card miro-benefit-card--teal">
-                        <div class="miro-benefit-card__icon">◎</div>
+                        <div class="miro-benefit-card__icon" aria-hidden="true"><i class="ph ph-address-book"></i></div>
                         <h3><span data-lang="ru">Каталог участниц</span><span data-lang="en">Member Directory</span><span data-lang="ro">Directorul membrelor</span></h3>
                         <p><span data-lang="ru">Находите предпринимательниц и легко открывайте полезные связи.</span><span data-lang="en">Discover women-led businesses and connect easily.</span><span data-lang="ro">Descoperă afaceri conduse de femei și conectează-te ușor.</span></p>
                     </article>
                     <article class="miro-benefit-card miro-benefit-card--rose">
-                        <div class="miro-benefit-card__icon">✦</div>
+                        <div class="miro-benefit-card__icon" aria-hidden="true"><i class="ph ph-sparkle"></i></div>
                         <h3><span data-lang="ru">AI-подбор</span><span data-lang="en">AI Matching</span><span data-lang="ro">Potrivire AI</span></h3>
                         <p><span data-lang="ru">Умные рекомендации партнёров, менторов и возможностей.</span><span data-lang="en">Smart recommendations for partners, mentors and opportunities.</span><span data-lang="ro">Recomandări inteligente pentru partenere, mentori și oportunități.</span></p>
                     </article>
                     <article class="miro-benefit-card miro-benefit-card--coral">
-                        <div class="miro-benefit-card__icon">◫</div>
+                        <div class="miro-benefit-card__icon" aria-hidden="true"><i class="ph ph-calendar-check"></i></div>
                         <h3><span data-lang="ru">События и возможности</span><span data-lang="en">Events &amp; Opportunities</span><span data-lang="ro">Evenimente și oportunități</span></h3>
                         <p><span data-lang="ru">Тренинги, форумы, гранты и встречи для сотрудничества.</span><span data-lang="en">Trainings, forums, grants and meetings for collaboration.</span><span data-lang="ro">Traininguri, forumuri, granturi și întâlniri pentru colaborare.</span></p>
                     </article>
                     <article class="miro-benefit-card miro-benefit-card--orange">
-                        <div class="miro-benefit-card__icon">↔</div>
+                        <div class="miro-benefit-card__icon" aria-hidden="true"><i class="ph ph-hand-heart"></i></div>
                         <h3><span data-lang="ru">Менторство</span><span data-lang="en">Mentorship</span><span data-lang="ro">Mentorat</span></h3>
                         <p><span data-lang="ru">Получайте советы от опытных предпринимательниц и эксперток.</span><span data-lang="en">Access advice from experienced women entrepreneurs.</span><span data-lang="ro">Primește sfaturi de la antreprenoare cu experiență.</span></p>
                     </article>
                     <article class="miro-benefit-card miro-benefit-card--surface">
-                        <div class="miro-benefit-card__icon">➤</div>
+                        <div class="miro-benefit-card__icon" aria-hidden="true"><i class="ph ph-bell-ringing"></i></div>
                         <h3><span data-lang="ru">Уведомления Telegram</span><span data-lang="en">Telegram Alerts</span><span data-lang="ro">Alerte Telegram</span></h3>
                         <p><span data-lang="ru">Будьте в курсе новостей и получайте персональные уведомления.</span><span data-lang="en">Stay updated with news and tailored notifications.</span><span data-lang="ro">Rămâi la curent cu noutățile și notificările personalizate.</span></p>
                     </article>
