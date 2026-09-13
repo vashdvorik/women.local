@@ -88,7 +88,7 @@
                         </p>
                         <div class="miro-hero__actions">
                             <a href="{{ route('account.login') }}" class="miro-button miro-button--primary miro-button--brand">
-                                <span data-lang="ru">Присоединиться к платформе</span><span data-lang="en">Join the Platform</span><span data-lang="ro">Alătură-te platformei</span>
+                                <span data-lang="ru">Присоединиться</span><span data-lang="en">Join the Platform</span><span data-lang="ro">Alătură-te platformei</span>
                             </a>
                             <a href="{{ route('members') }}" class="miro-button miro-button--secondary">
                                 <span data-lang="ru">Наши эксперты</span><span data-lang="en">Our Experts</span><span data-lang="ro">Experții noștri</span>
@@ -183,7 +183,7 @@
             <div class="miro-container miro-director-note__grid">
                 <div class="miro-director-note__copy">
                     <div class="miro-director-note__meta">
-                        <p><strong>Елена Синика</strong><span data-lang="ru"> · Руководитель Платформы женщин-предпринимателей</span><span data-lang="en"> · Head of the Women Entrepreneurs Platform</span><span data-lang="ro"> · Conducătoarea Platformei Femeilor Antreprenoare</span></p>
+                        <p><strong>Валерия Зелинская</strong><span data-lang="ru"> · Руководитель Платформы женщин-предпринимателей</span><span data-lang="en"> · Head of the Women Entrepreneurs Platform</span><span data-lang="ro"> · Conducătoarea Platformei Femeilor Antreprenoare</span></p>
                     </div>
 
                     <div data-lang="ru">
@@ -207,9 +207,8 @@
                 </div>
                 <figure class="miro-director-note__portrait">
                     <span class="miro-director-note__accent" aria-hidden="true"></span>
-                    <img src="{{ asset('themes/public/miro/images/director.webp') }}" alt="Елена Синика">
+                    <img src="{{ asset('themes/public/miro/images/director.webp') }}" alt="Валерия Зелинская">
                 </figure>
-                <span class="miro-director-note__sticker">Валерия Зелинская</span>
             </div>
         </section>
         <section class="miro-logo-wall">
@@ -235,11 +234,18 @@
         <section class="miro-section" id="benefits">
             <div class="miro-container">
                 <div class="miro-section__head miro-section__head--center">
-                    <p class="miro-eyebrow"><span data-lang="ru">Зачем присоединяться</span><span data-lang="en">Why join?</span><span data-lang="ro">De ce să te alături?</span></p>
                     <h2><span data-lang="ru">Ключевые преимущества платформы</span><span data-lang="en">Key benefits for your next step</span><span data-lang="ro">Beneficii pentru următorul tău pas</span></h2>
                     <p><span data-lang="ru">Всё необходимое для обучения, полезных знакомств и роста бизнеса — в одном понятном пространстве.</span><span data-lang="en">Everything you need to learn, connect and grow your business in one clear space.</span><span data-lang="ro">Tot ce ai nevoie pentru a învăța, a te conecta și a-ți dezvolta afacerea într-un singur spațiu clar.</span></p>
                 </div>
                 <div class="miro-benefits">
+                    <article class="miro-benefit-card miro-benefit-card--rose miro-benefit-card--featured">
+                        <div class="miro-benefit-card__icon" aria-hidden="true"><i class="ph ph-sparkle"></i></div>
+                        <div class="miro-benefit-card__copy">
+                            <h3><span data-lang="ru">AI-подбор</span><span data-lang="en">AI Matching</span><span data-lang="ro">Potrivire AI</span></h3>
+                            <p><span data-lang="ru">Умные рекомендации партнёров, менторов и возможностей.</span><span data-lang="en">Smart recommendations for partners, mentors and opportunities.</span><span data-lang="ro">Recomandări inteligente pentru partenere, mentori și oportunități.</span></p>
+                        </div>
+                    </article>
+                    <div class="miro-benefits__grid">
                     <article class="miro-benefit-card miro-benefit-card--pink">
                         <div class="miro-benefit-card__icon" aria-hidden="true"><i class="ph ph-book-open"></i></div>
                         <h3><span data-lang="ru">Центр обучения</span><span data-lang="en">Learning Hub</span><span data-lang="ro">Hub de învățare</span></h3>
@@ -249,11 +255,6 @@
                         <div class="miro-benefit-card__icon" aria-hidden="true"><i class="ph ph-address-book"></i></div>
                         <h3><span data-lang="ru">Каталог участниц</span><span data-lang="en">Member Directory</span><span data-lang="ro">Directorul membrelor</span></h3>
                         <p><span data-lang="ru">Находите предпринимательниц и легко открывайте полезные связи.</span><span data-lang="en">Discover women-led businesses and connect easily.</span><span data-lang="ro">Descoperă afaceri conduse de femei și conectează-te ușor.</span></p>
-                    </article>
-                    <article class="miro-benefit-card miro-benefit-card--rose">
-                        <div class="miro-benefit-card__icon" aria-hidden="true"><i class="ph ph-sparkle"></i></div>
-                        <h3><span data-lang="ru">AI-подбор</span><span data-lang="en">AI Matching</span><span data-lang="ro">Potrivire AI</span></h3>
-                        <p><span data-lang="ru">Умные рекомендации партнёров, менторов и возможностей.</span><span data-lang="en">Smart recommendations for partners, mentors and opportunities.</span><span data-lang="ro">Recomandări inteligente pentru partenere, mentori și oportunități.</span></p>
                     </article>
                     <article class="miro-benefit-card miro-benefit-card--coral">
                         <div class="miro-benefit-card__icon" aria-hidden="true"><i class="ph ph-calendar-check"></i></div>
@@ -270,11 +271,12 @@
                         <h3><span data-lang="ru">Уведомления Telegram</span><span data-lang="en">Telegram Alerts</span><span data-lang="ro">Alerte Telegram</span></h3>
                         <p><span data-lang="ru">Будьте в курсе новостей и получайте персональные уведомления.</span><span data-lang="en">Stay updated with news and tailored notifications.</span><span data-lang="ro">Rămâi la curent cu noutățile și notificările personalizate.</span></p>
                     </article>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="miro-section miro-section--soft" id="how-it-works">
+        <section class="miro-section miro-section--dark" id="how-it-works">
             <div class="miro-container">
                 <div class="miro-section__head miro-section__head--center">
                     <p class="miro-eyebrow"><span data-lang="ru">Как это работает</span><span data-lang="en">How it works</span><span data-lang="ro">Cum funcționează</span></p>
@@ -381,7 +383,6 @@
         <section class="miro-section miro-section--soft" id="members">
             <div class="miro-container">
                 <div class="miro-section__head">
-                    <p class="miro-eyebrow"><span data-lang="ru">Профили платформы</span><span data-lang="en">Platform profiles</span><span data-lang="ro">Profilurile platformei</span></p>
                     <h2><span data-lang="ru">Знакомьтесь с нашими экспертами</span><span data-lang="en">Meet registered members and experts</span><span data-lang="ro">Cunoaște participantele și expertele platformei</span></h2>
                     <p><span data-lang="ru">Здесь представлены предприниматели и эксперты, которые уже зарегистрированы на платформе, рассказывают о своей работе и открыты к сотрудничеству.</span><span data-lang="en">Meet women entrepreneurs and experts already registered on the platform, presenting their work and open to collaboration.</span><span data-lang="ro">Descoperă antreprenoarele și expertele deja înregistrate pe platformă, care își prezintă activitatea și sunt deschise colaborării.</span></p>
                 </div>
@@ -392,8 +393,6 @@
                             <h4><span data-lang="ru">Каролина Бугаян</span><span data-lang="en">Carolina Bugaiyan</span><span data-lang="ro">Carolina Bugaiyan</span></h4>
                             <p class="miro-member-card__role"><span data-lang="ru">Президент Ассоциации деловых женщин Молдовы (AFAM)</span><span data-lang="en">President of the Association of Women Entrepreneurs in Moldova (AFAM)</span><span data-lang="ro">Președinta Asociației Femeilor de Afaceri din Moldova (AFAM)</span></p>
                             <p class="miro-member-card__specialization"><span data-lang="ru">Женское предпринимательство и развитие делового сообщества</span><span data-lang="en">Women’s entrepreneurship &amp; business community development</span><span data-lang="ro">Antreprenoriat feminin și dezvoltarea comunității de business</span></p>
-                            <div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Эксперт</span><span data-lang="en">Expert</span><span data-lang="ro">Expertă</span></span><span class="miro-profile-tag miro-profile-tag--rose">AFAM</span><span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Партнёрства</span><span data-lang="en">Partnerships</span><span data-lang="ro">Parteneriate</span></span></div>
-                            <p><span data-lang="ru">Развивает женское предпринимательство и деловые связи в Молдове.</span><span data-lang="en">Develops women’s entrepreneurship and business connections in Moldova.</span><span data-lang="ro">Dezvoltă antreprenoriatul feminin și conexiunile de business în Moldova.</span></p>
                         </div>
                     </article>
                     <article class="miro-member-card">
@@ -402,8 +401,6 @@
                             <h4><span data-lang="ru">Аурелия Саликов</span><span data-lang="en">Aurelia Salicov</span><span data-lang="ro">Aurelia Salicov</span></h4>
                             <p class="miro-member-card__role"><span data-lang="ru">Вице-президент Международного бизнес-сообщества в Молдове</span><span data-lang="en">Vice-President of the International Business Society in Moldova</span><span data-lang="ro">Vicepreședinta International Business Society din Moldova</span></p>
                             <p class="miro-member-card__specialization"><span data-lang="ru">Международное деловое сотрудничество</span><span data-lang="en">International business cooperation</span><span data-lang="ro">Cooperare internațională de business</span></p>
-                            <div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Эксперт</span><span data-lang="en">Expert</span><span data-lang="ro">Expertă</span></span><span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Международные связи</span><span data-lang="en">International relations</span><span data-lang="ro">Relații internaționale</span></span><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Партнёрства</span><span data-lang="en">Partnerships</span><span data-lang="ro">Parteneriate</span></span></div>
-                            <p><span data-lang="ru">Развивает международное деловое сотрудничество и новые партнёрства.</span><span data-lang="en">Builds international business cooperation and new partnerships.</span><span data-lang="ro">Dezvoltă cooperarea internațională de business și parteneriate noi.</span></p>
                         </div>
                     </article>
                     <article class="miro-member-card">
@@ -412,8 +409,6 @@
                             <h4><span data-lang="ru">Влада Лысенко</span><span data-lang="en">Vlada Lysenko</span><span data-lang="ro">Vlada Lysenko</span></h4>
                             <p class="miro-member-card__role"><span data-lang="ru">Доктор наук, профессор, международный консультант</span><span data-lang="en">Doctor of Sciences, Professor &amp; International Consultant</span><span data-lang="ro">Doctor în științe, profesor și consultant internațional</span></p>
                             <p class="miro-member-card__specialization"><span data-lang="ru">Наука, образование и международный консалтинг</span><span data-lang="en">Research, education &amp; international consulting</span><span data-lang="ro">Cercetare, educație și consultanță internațională</span></p>
-                            <div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Эксперт</span><span data-lang="en">Expert</span><span data-lang="ro">Expertă</span></span><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Образование</span><span data-lang="en">Education</span><span data-lang="ro">Educație</span></span><span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Консалтинг</span><span data-lang="en">Consulting</span><span data-lang="ro">Consultanță</span></span></div>
-                            <p><span data-lang="ru">Объединяет академический опыт, образование и международный консалтинг.</span><span data-lang="en">Combines academic experience, education and international consulting.</span><span data-lang="ro">Combină experiența academică, educația și consultanța internațională.</span></p>
                         </div>
                     </article>
                     <article class="miro-member-card">
@@ -422,8 +417,22 @@
                             <h4><span data-lang="ru">Зинаида Емельянова</span><span data-lang="en">Zinaida Emelyanova</span><span data-lang="ro">Zinaida Emelyanova</span></h4>
                             <p class="miro-member-card__role"><span data-lang="ru">Директор Агентства инноваций и развития</span><span data-lang="en">Director of the Agency for Innovation and Development</span><span data-lang="ro">Directoarea Agenției pentru Inovații și Dezvoltare</span></p>
                             <p class="miro-member-card__specialization"><span data-lang="ru">Инновации и развитие проектов</span><span data-lang="en">Innovation &amp; project development</span><span data-lang="ro">Inovații și dezvoltarea proiectelor</span></p>
-                            <div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Инновации</span><span data-lang="en">Innovation</span><span data-lang="ro">Inovație</span></span><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Развитие</span><span data-lang="en">Development</span><span data-lang="ro">Dezvoltare</span></span><span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Возможности</span><span data-lang="en">Opportunities</span><span data-lang="ro">Oportunități</span></span></div>
-                            <p><span data-lang="ru">Развивает инновационные проекты и поддерживает предпринимательские инициативы.</span><span data-lang="en">Develops innovation projects and supports entrepreneurial initiatives.</span><span data-lang="ro">Dezvoltă proiecte inovatoare și susține inițiative antreprenoriale.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-member-card">
+                        <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/experts/expert-mariana.png') }}" alt="Mariana Rufa" loading="lazy">
+                        <div>
+                            <h4><span data-lang="ru">Мариана Руфа</span><span data-lang="en">Mariana Rufa</span><span data-lang="ro">Mariana Rufa</span></h4>
+                            <p class="miro-member-card__role"><span data-lang="ru">Исполнительный директор Европейской бизнес-ассоциации в Молдове (EBA)</span><span data-lang="en">Executive Director of the European Business Association of Moldova (EBA)</span><span data-lang="ro">Directoarea executivă a European Business Association of Moldova (EBA)</span></p>
+                            <p class="miro-member-card__specialization"><span data-lang="ru">Европейский бизнес и деловые ассоциации</span><span data-lang="en">European business &amp; business associations</span><span data-lang="ro">Business european și asociații de business</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-member-card">
+                        <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/experts/expert-valeria.png') }}" alt="Valeria Zelinskaya" loading="lazy">
+                        <div>
+                            <h4><span data-lang="ru">Валерия Зелинская</span><span data-lang="en">Valeria Zelinskaya</span><span data-lang="ro">Valeria Zelinskaya</span></h4>
+                            <p class="miro-member-card__role"><span data-lang="ru">Стилистка, основательница бренда L’emone и собственного ателье</span><span data-lang="en">Stylist, founder of L’emone and her own atelier</span><span data-lang="ro">Stilistă, fondatoarea brandului L’emone și a propriului atelier</span></p>
+                            <p class="miro-member-card__specialization"><span data-lang="ru">Стиль, мода и собственный бренд</span><span data-lang="en">Styling, fashion &amp; brand building</span><span data-lang="ro">Stil, modă și dezvoltarea unui brand</span></p>
                         </div>
                     </article>
                 </div>

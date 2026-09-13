@@ -13,17 +13,16 @@
             'welcome' => 'Здравствуйте! Я помогу найти партнёров, экспертов и возможности для вашего бизнеса.',
             'user_message' => 'Хочу найти партнёров',
             'assistant_response' => 'Отлично. Я могу подобрать контакты по вашей сфере и задачам. С чего начнём?',
-            'popular' => 'Популярные запросы:',
             'placeholder' => 'Например: “Найдите эксперта по маркетингу”',
             'send' => 'Спросить',
             'generic_response' => 'Подскажу, с чего начать. Выберите нужный раздел платформы:',
             'actions' => [
-                ['key' => 'profile', 'label' => 'Заполнить профиль', 'response' => 'Заполните описание и ожидания — так ИИ сможет точнее подобрать для вас людей и возможности.', 'links' => [['label' => 'Открыть профиль', 'url' => route('account.profile.edit')]]],
-                ['key' => 'partners', 'label' => 'Найти партнёров', 'response' => 'Откройте подбор участников с похожими интересами, запросами и опытом.', 'links' => [['label' => 'Найти партнёров', 'url' => route('account.matches')], ['label' => 'Все участники', 'url' => route('account.people')]]],
-                ['key' => 'expert', 'label' => 'Найти эксперта', 'response' => 'Опишите задачу в поиске — например, маркетинг, продажи или выход на новый рынок.', 'links' => [['label' => 'Открыть поиск', 'url' => route('account.search')]]],
-                ['key' => 'opportunities', 'label' => 'Подобрать возможности', 'response' => 'Посмотрите актуальные возможности, встречи и запросы, которые можно добавить в свой маршрут развития.', 'links' => [['label' => 'Открыть возможности', 'url' => route('account.opportunities.index')]]],
+                ['key' => 'profile', 'label' => 'Заполнить профиль'],
+                ['key' => 'partners', 'label' => 'Найти партнёров'],
+                ['key' => 'expert', 'label' => 'Найти эксперта'],
+                ['key' => 'opportunities', 'label' => 'Подобрать возможности'],
+                ['key' => 'matching', 'label' => 'Как работает подбор контактов?'],
             ],
-            'queries' => ['Как заполнить профиль?', 'Кого можно найти на платформе?', 'Где посмотреть возможности?', 'Как работает подбор контактов?'],
             'profile_title' => 'Ваша визитка',
             'profile_text' => 'Так вас видят участницы платформы. Чем точнее описание, тем полезнее будут будущие рекомендации.',
             'profile_public' => 'Виден участницам',
@@ -37,17 +36,16 @@
             'welcome' => 'Hello! I can help you find partners, experts and opportunities for your business.',
             'user_message' => 'I want to find partners',
             'assistant_response' => 'Great. I can match contacts to your field and goals. Where shall we start?',
-            'popular' => 'Popular requests:',
             'placeholder' => 'For example: “Find a marketing expert”',
             'send' => 'Ask',
             'generic_response' => 'I can point you in the right direction. Choose a platform section:',
             'actions' => [
-                ['key' => 'profile', 'label' => 'Complete your profile', 'response' => 'Add your description and expectations so AI can find more relevant people and opportunities for you.', 'links' => [['label' => 'Open profile', 'url' => route('account.profile.edit')]]],
-                ['key' => 'partners', 'label' => 'Find partners', 'response' => 'Explore participants with similar interests, needs and experience.', 'links' => [['label' => 'Find partners', 'url' => route('account.matches')], ['label' => 'All participants', 'url' => route('account.people')]]],
-                ['key' => 'expert', 'label' => 'Find an expert', 'response' => 'Describe your need in Search — for example, marketing, sales or entering a new market.', 'links' => [['label' => 'Open search', 'url' => route('account.search')]]],
-                ['key' => 'opportunities', 'label' => 'Find opportunities', 'response' => 'Explore current opportunities, events and requests that can support your next step.', 'links' => [['label' => 'Open opportunities', 'url' => route('account.opportunities.index')]]],
+                ['key' => 'profile', 'label' => 'Complete your profile'],
+                ['key' => 'partners', 'label' => 'Find partners'],
+                ['key' => 'expert', 'label' => 'Find an expert'],
+                ['key' => 'opportunities', 'label' => 'Find opportunities'],
+                ['key' => 'matching', 'label' => 'How does contact matching work?'],
             ],
-            'queries' => ['How do I complete my profile?', 'Who can I find on the platform?', 'Where can I see opportunities?', 'How does contact matching work?'],
             'profile_title' => 'Your business card',
             'profile_text' => 'This is how platform participants see you. The clearer your description, the more useful future recommendations will be.',
             'profile_public' => 'Visible to participants',
@@ -61,17 +59,16 @@
             'welcome' => 'Bună ziua! Vă ajut să găsiți parteneri, experți și oportunități pentru afacerea dvs.',
             'user_message' => 'Vreau să găsesc parteneri',
             'assistant_response' => 'Perfect. Pot selecta contacte după domeniul și obiectivele dvs. Cu ce începem?',
-            'popular' => 'Solicitări populare:',
             'placeholder' => 'De exemplu: „Găsiți un expert în marketing”',
             'send' => 'Întreabă',
             'generic_response' => 'Vă pot indica direcția potrivită. Alegeți o secțiune a platformei:',
             'actions' => [
-                ['key' => 'profile', 'label' => 'Completați profilul', 'response' => 'Adăugați descrierea și așteptările pentru ca AI să vă poată recomanda persoane și oportunități relevante.', 'links' => [['label' => 'Deschideți profilul', 'url' => route('account.profile.edit')]]],
-                ['key' => 'partners', 'label' => 'Găsiți parteneri', 'response' => 'Descoperiți participante cu interese, nevoi și experiență similare.', 'links' => [['label' => 'Găsiți parteneri', 'url' => route('account.matches')], ['label' => 'Toate participantele', 'url' => route('account.people')]]],
-                ['key' => 'expert', 'label' => 'Găsiți un expert', 'response' => 'Descrieți nevoia în secțiunea Căutare — de exemplu marketing, vânzări sau accesarea unei piețe noi.', 'links' => [['label' => 'Deschideți căutarea', 'url' => route('account.search')]]],
-                ['key' => 'opportunities', 'label' => 'Găsiți oportunități', 'response' => 'Descoperiți oportunități, evenimente și solicitări care vă pot susține următorul pas.', 'links' => [['label' => 'Deschideți oportunitățile', 'url' => route('account.opportunities.index')]]],
+                ['key' => 'profile', 'label' => 'Completați profilul'],
+                ['key' => 'partners', 'label' => 'Găsiți parteneri'],
+                ['key' => 'expert', 'label' => 'Găsiți un expert'],
+                ['key' => 'opportunities', 'label' => 'Găsiți oportunități'],
+                ['key' => 'matching', 'label' => 'Cum funcționează potrivirea contactelor?'],
             ],
-            'queries' => ['Cum completez profilul?', 'Pe cine pot găsi pe platformă?', 'Unde văd oportunitățile?', 'Cum funcționează potrivirea contactelor?'],
             'profile_title' => 'Cartea dvs. de vizită',
             'profile_text' => 'Așa vă văd participantele platformei. Cu cât descrierea este mai clară, cu atât recomandările viitoare vor fi mai utile.',
             'profile_public' => 'Vizibil pentru participante',
@@ -86,15 +83,8 @@
             <header class="fortun-ai-chat-header">
                 <div class="fortun-ai-chat-header__identity">
                     <span class="fortun-ai-assistant__mark" aria-hidden="true">AI</span>
-                    <div>
-                        <div class="fortun-ai-chat-header__name-row">
-                            <h1 id="fortun-ai-title">{{ $copy['label'] }}</h1>
-                            <span class="fortun-ai-chat-header__status"><i aria-hidden="true"></i>{{ $copy['status'] }}</span>
-                        </div>
-                        <p>{{ $copy['role'] }}</p>
-                    </div>
+                    <p id="fortun-ai-title" class="fortun-ai-chat-header__role">{{ $copy['role'] }}</p>
                 </div>
-                <span class="fortun-ai-chat-header__spark" aria-hidden="true">✦</span>
             </header>
 
             <div class="fortun-ai-chat-body" aria-label="{{ $copy['label'] }}">
@@ -108,14 +98,6 @@
                                 @foreach($copy['actions'] as $action)
                                     <button type="button" class="fortun-ai-quick-reply" data-ai-query="{{ $action['label'] }}">{{ $action['label'] }}</button>
                                 @endforeach
-                            </div>
-                            <div class="fortun-ai-popular">
-                                <p class="fortun-ai-popular__title">{{ $copy['popular'] }}</p>
-                                <div class="fortun-ai-popular__list">
-                                    @foreach($copy['queries'] as $query)
-                                        <button type="button" class="fortun-ai-query" data-ai-query="{{ $query }}">{{ $query }}</button>
-                                    @endforeach
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -163,6 +145,8 @@
         const assistantLabel = @json($copy['label']);
         const openLabel = @json(__('account.assistant.open'));
         const saveLabel = @json(__('account.assistant.save_changes'));
+        const descriptionLabel = @json(__('account.profile.description'));
+        const expectationLabel = @json(__('account.profile.expectation'));
         const sendLabel = @json($copy['send']);
         const generatingLabel = @json(['ru' => 'Думаю…', 'en' => 'Thinking…', 'ro' => 'Mă gândesc…'][app()->getLocale()] ?? 'Thinking…');
         const sendText = send.querySelector('span:first-child');
@@ -202,6 +186,22 @@
                 bubble.append(action);
             }
             if (result?.profile_proposal) {
+                // Show the actual proposed text before asking the user to confirm — a bare
+                // "Save" button with nothing to check made the assistant's own "review it"
+                // message meaningless.
+                const preview = document.createElement('div');
+                preview.className = 'fortun-ai-proposal';
+                [['description', descriptionLabel], ['expectation', expectationLabel]].forEach(([field, label]) => {
+                    if (!result.profile_proposal[field]) return;
+                    const row = document.createElement('p');
+                    row.className = 'fortun-ai-proposal__row';
+                    const term = document.createElement('strong');
+                    term.textContent = label + ':';
+                    row.append(term, document.createTextNode(' ' + result.profile_proposal[field]));
+                    preview.append(row);
+                });
+                bubble.append(preview);
+
                 const save = document.createElement('button');
                 save.type = 'button'; save.className = 'fortun-ai-response__link'; save.textContent = saveLabel;
                 save.addEventListener('click', async () => {
@@ -218,6 +218,13 @@
             chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: 'smooth' });
         };
 
+        input.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) {
+                event.preventDefault();
+                form.requestSubmit();
+            }
+        });
+
         root.querySelectorAll('[data-ai-query]').forEach((button) => {
             button.addEventListener('click', () => {
                 input.value = button.dataset.aiQuery || '';
@@ -225,16 +232,27 @@
             });
         });
 
+        const unavailableText = @json(__('account.assistant.unavailable'));
+        const HISTORY_LIMIT = 8; // matches the server's own validation cap and the window it actually reads
+        const pushHistory = (role, content) => {
+            history.push({role, content});
+            if (history.length > HISTORY_LIMIT) history.splice(0, history.length - HISTORY_LIMIT);
+        };
+
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
             const message = input.value.trim(); if (!message) return;
-            addMessage('user', message); history.push({role: 'user', content: message}); input.value = ''; setLoading(true);
+            addMessage('user', message); pushHistory('user', message); input.value = ''; setLoading(true);
             try {
                 const response = await fetch(messageUrl, { method: 'POST', headers: {'Content-Type': 'application/json', 'Accept':'application/json', 'X-CSRF-TOKEN': csrf}, body: JSON.stringify({message, history}) });
                 const result = await response.json();
-                const text = result.reply || result.message || @json(__('account.assistant.unavailable'));
-                addMessage('assistant', text, result); history.push({role: 'assistant', content: text});
-            } catch (_) { addMessage('assistant', @json(__('account.assistant.unavailable'))); }
+                // Only ever show model-generated text from a successful response. On any
+                // failure (validation error, provider outage, ...) the server's error
+                // shapes vary and are not meant for end users — always fall back to our
+                // own localized message instead of surfacing raw backend text.
+                const text = (response.ok && typeof result.reply === 'string' && result.reply !== '') ? result.reply : unavailableText;
+                addMessage('assistant', text, response.ok ? result : null); pushHistory('assistant', text);
+            } catch (_) { addMessage('assistant', unavailableText); }
             finally { setLoading(false); input.focus(); }
         });
     })();

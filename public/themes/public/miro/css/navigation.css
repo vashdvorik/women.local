@@ -66,7 +66,7 @@ html { color-scheme: light; }
 
 /* One navigation treatment across all public pages. */
 .miro-nav { border-bottom-color: rgba(201,154,115,.32) !important; background: #21140F !important; }
-.miro-brand__logo { filter: none !important; }
+.miro-brand__logo { filter: none !important; object-fit: contain; object-position: left center; }
 .miro-nav__links,
 .miro-nav__dropdown-trigger { color: #F8E8DF !important; }
 .miro-nav__links { flex: 1 1 auto !important; min-width: 0; justify-content: center; gap: 24px; overflow: visible; }
@@ -289,7 +289,7 @@ body { background: var(--miro-canvas) !important; color: var(--miro-ink); }
 
 /* Align the visible logo mark with the public-page content grid. */
 @media (min-width: 768px) {
-    .miro-nav .miro-brand { margin-left: -20px; }
+    .miro-nav .miro-brand { margin-left: 0; }
 }
 
 /* On compact desktops, preserve the navigation labels and remove the least critical action first. */

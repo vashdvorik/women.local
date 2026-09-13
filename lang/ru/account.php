@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'brand' => 'Women Entrepreneurs Platform of the Two Banks',
+    'brand' => 'Платформа женщин предпринимателей',
     'cabinet' => 'Кабинет',
     'language' => 'Язык',
     'open_menu' => 'Открыть меню',

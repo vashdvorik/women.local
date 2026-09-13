@@ -1,5 +1,6 @@
 <?php
 
+use App\Filament\Pages\ImpactMetrics;
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\DevAccountLoginController;
 use App\Http\Controllers\Account\OpportunityController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\Account\TmaAuthController;
 use App\Http\Middleware\RequireAccountAuth;
 use App\Models\LoginToken;
 use App\Services\PublicThemeView;
+use Filament\Http\Middleware\Authenticate as FilamentAuthenticate;
 use Illuminate\Support\Facades\Route;
 use SergiX44\Nutgram\Nutgram;
 
@@ -177,6 +179,13 @@ Route::get('/go/{code}', function (string $code) {
 
     return redirect()->route('account.auth', ['token' => $token->token]);
 })->middleware('throttle:20,1')->where('code', '[0-9a-f]{8}')->name('account.go');
+
+// Admin: plain HTTP download for the impact report PDF. A normal browser download of a
+// normal route, rather than a Livewire wire:click action returning a binary response —
+// see the docblock on ImpactMetrics::downloadPdf() for why.
+Route::get('/admin/impact-metrics/pdf', fn () => (new ImpactMetrics())->downloadPdf())
+    ->middleware(['web', FilamentAuthenticate::class])
+    ->name('admin.impact-metrics.pdf');
 
 // Account: protected cabinet
 Route::middleware(RequireAccountAuth::class)

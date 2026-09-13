@@ -7,7 +7,9 @@ namespace App\Filament\Pages;
 use App\Models\BotUser;
 use App\Models\LoginToken;
 use App\Models\Opportunity;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Pages\Page;
+use Illuminate\Http\Response;
 
 class ImpactMetrics extends Page
 {
@@ -93,7 +95,10 @@ class ImpactMetrics extends Page
             ->limit(5)
             ->get(['id', 'bot_user_id', 'type', 'title', 'created_at']);
 
-        return [
+        $registrationChart = $this->buildMemberChart();
+        $opportunityChart  = $this->buildOpportunityChart();
+
+        $data = [
             'totalApplications'         => $totalApplications,
             'approvedCount'             => $approvedCount,
             'pendingCount'              => $pendingCount,
@@ -120,12 +125,116 @@ class ImpactMetrics extends Page
             'publicationActivationRate' => $publicationActivationRate,
             'cabinetActivationRate'     => $cabinetActivationRate,
             'platformReadiness'         => $platformReadiness,
-            'registrationChart'         => $this->buildMemberChart(),
-            'opportunityChart'          => $this->buildOpportunityChart(),
+            'registrationChart'         => $registrationChart,
+            'opportunityChart'          => $opportunityChart,
             'latestMembers'             => $latestMembers,
             'latestOpportunities'       => $latestOpportunities,
             'generatedAt'               => now()->format('d.m.Y H:i'),
         ];
+
+        return [
+            ...$data,
+            ...$this->buildPresentation($data),
+            // Passed as closures (rather than called via $this->) because the PDF export
+            // renders this same data through a plain Blade view outside of the Livewire
+            // component context, where `$this` is not the page instance.
+            'formatNumber' => fn (int|float $value): string => $this->formatNumber($value),
+            'safePercent'  => fn (int|float $value): int => $this->safePercent($value),
+        ];
+    }
+
+    /**
+     * Turns the raw metrics into the shapes the report views render (funnel rows, quality
+     * bars, etc). Shared by the on-screen dashboard and the PDF export so both always show
+     * exactly the same numbers, computed once.
+     *
+     * Deliberately narrower than the metrics fetched in getViewData(): a few fields that
+     * only duplicated another row in different words (a business-description/expectation
+     * breakdown that repeated "complete profiles"; a footer snapshot that repeated the KPI
+     * row; a donut chart with invented per-type colors) were dropped rather than restyled —
+     * removing the repeat was the fix, not a fresh coat of brand colors on it.
+     *
+     * @param array<string, mixed> $d
+     * @return array<string, mixed>
+     */
+    private function buildPresentation(array $d): array
+    {
+        // Approved/pending/rejected get the three muted semantic tones the design system
+        // reserves for exactly this kind of state — not a rotating decorative palette.
+        $statusRows = [
+            ['label' => 'Одобрено', 'value' => $d['approvedCount'], 'percent' => $d['approvalRate'], 'tone' => 'success'],
+            ['label' => 'Ожидают решения', 'value' => $d['pendingCount'], 'percent' => $this->percent($d['pendingCount'], $d['totalApplications']), 'tone' => 'warning'],
+            ['label' => 'Отклонено', 'value' => $d['rejectedCount'], 'percent' => $this->percent($d['rejectedCount'], $d['totalApplications']), 'tone' => 'error'],
+        ];
+
+        // One consistent bar treatment for every readiness dimension — no per-row color
+        // coding, since none of these six states are mutually exclusive alternatives the
+        // way approved/pending/rejected are.
+        $qualityRows = [
+            ['label' => 'Заполнили бизнес-профиль', 'caption' => 'Указали описание бизнеса и запрос к сообществу', 'value' => $d['completeProfiles'], 'total' => $d['approvedCount'], 'percent' => $d['profileCompletionRate']],
+            ['label' => 'Готовы к AI-рекомендациям', 'caption' => 'Профиль проиндексирован для поиска и подбора контактов', 'value' => $d['withEmbedding'], 'total' => $d['approvedCount'], 'percent' => $d['aiReadinessRate']],
+            ['label' => 'Активировали личный кабинет', 'caption' => 'Хотя бы один вход по Telegram-токену', 'value' => $d['activeCabinetUsers'], 'total' => $d['approvedCount'], 'percent' => $d['cabinetActivationRate']],
+            ['label' => 'Публиковали возможности', 'caption' => 'Разместили запрос, партнёрство или событие', 'value' => $d['opportunityAuthors'], 'total' => $d['approvedCount'], 'percent' => $d['publicationActivationRate']],
+            ['label' => 'Указали Telegram для связи', 'caption' => 'Участницы могут написать напрямую', 'value' => $d['withUsername'], 'total' => $d['approvedCount'], 'percent' => $this->percent($d['withUsername'], $d['approvedCount'])],
+            ['label' => 'Добавили фото профиля', 'caption' => 'Профиль с фотографией, а не инициалом', 'value' => $d['withAvatar'], 'total' => $d['approvedCount'], 'percent' => $this->percent($d['withAvatar'], $d['approvedCount'])],
+        ];
+
+        $typeMeta = [
+            'project' => ['label' => 'Запросы', 'icon' => '💼'],
+            'meeting' => ['label' => 'Партнёрства', 'icon' => '🤝'],
+            'event'   => ['label' => 'События', 'icon' => '📅'],
+        ];
+
+        $opportunitiesTotal  = $d['opportunitiesTotal'];
+        $opportunitiesByType = $d['opportunitiesByType'];
+
+        $opportunityTypeRows = collect($typeMeta)->map(function (array $meta, string $type) use ($opportunitiesByType, $opportunitiesTotal): array {
+            $count = (int) ($opportunitiesByType[$type] ?? 0);
+
+            return [
+                ...$meta,
+                'type'    => $type,
+                'count'   => $count,
+                'percent' => $this->percent($count, $opportunitiesTotal),
+            ];
+        })->values()->all();
+
+        return [
+            'statusRows'          => $statusRows,
+            'qualityRows'         => $qualityRows,
+            'typeMeta'            => $typeMeta,
+            'opportunityTypeRows' => $opportunityTypeRows,
+            'maxMemberChart'      => max(1, (int) collect($d['registrationChart'])->max('applications'), (int) collect($d['registrationChart'])->max('approved')),
+            'maxOpportunityChart' => max(1, (int) collect($d['opportunityChart'])->max('opportunities')),
+        ];
+    }
+
+    public function formatNumber(int|float $value): string
+    {
+        return number_format((float) $value, 0, ',', ' ');
+    }
+
+    public function safePercent(int|float $value): int
+    {
+        return max(0, min(100, (int) round($value)));
+    }
+
+    /**
+     * Plain HTTP download (see the `admin.impact-metrics.pdf` route) rather than a Livewire
+     * action: returning a binary response from a wire:click method has to go through
+     * Livewire's own file-download effect, which turned out unreliable for a page this size
+     * inside Filament — a normal browser download of a normal route is simpler and always works.
+     */
+    public function downloadPdf(): Response
+    {
+        $binary = Pdf::loadView('filament.pages.impact-metrics-pdf', $this->getViewData())
+            ->setPaper('a4', 'portrait')
+            ->output();
+
+        return response($binary, 200, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="impact-report-' . now()->format('Y-m-d') . '.pdf"',
+        ]);
     }
 
     private function percent(int $value, int $total): int

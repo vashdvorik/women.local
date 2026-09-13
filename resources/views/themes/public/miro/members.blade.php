@@ -257,10 +257,6 @@
                                 <h3>@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $profile['name'][$locale] }}</span>@endforeach</h3>
                                 <p class="miro-public-member__specialization">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $profile['role'][$locale] }}</span>@endforeach</p>
                                 <p class="miro-public-member__description">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $profile['description'][$locale] }}</span>@endforeach</p>
-                                <div class="miro-public-member__details">
-                                    <div class="miro-public-member__detail"><strong><span data-lang="ru">Ищет</span><span data-lang="en">Looking for</span><span data-lang="ro">Caută</span></strong><span>@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $profile['looking_for'][$locale] }}</span>@endforeach</span></div>
-                                    <div class="miro-public-member__detail"><strong><span data-lang="ru">Может предложить</span><span data-lang="en">Can offer</span><span data-lang="ro">Poate oferi</span></strong><span>@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $profile['can_offer'][$locale] }}</span>@endforeach</span></div>
-                                </div>
                             </div>
                         </article>
                     @endforeach

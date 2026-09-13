@@ -117,7 +117,30 @@
         .miro-hero__grid { position: relative; min-height: 630px; }
         .miro-hero__grid::before,
         .miro-hero__grid::after { content: none; }
-        .miro-hero__content { position: relative; z-index: 2; width: min(36%, 480px); margin-left: max(32px, calc((100vw - 1360px) / 2)); padding: 82px 0 48px; }
+        .miro-hero__content { position: absolute; z-index: 2; left: max(32px, calc((100vw - 1360px) / 2)); bottom: 64px; width: min(36%, 480px); padding: 0; }
+
+        /* Short desktop/tablet-landscape viewports (laptops, Nest Hub-class devices):
+           the fixed 630px hero plus its bottom-anchored copy no longer fit above the
+           fold, so the proof card gets visually sliced off. Shrink the hero and switch
+           the copy from magic-number absolute positioning to a flex column anchored to
+           the bottom: if the copy ever needs more room than the shrunk hero offers
+           (e.g. once the display font finishes loading and its line-height renders
+           taller than the fallback font used at first paint), the grid simply grows to
+           fit it instead of silently clipping the title behind `overflow: hidden`. */
+        @media (min-width: 1024px) and (max-height: 820px) {
+            .miro-hero--image, .miro-hero__grid { min-height: 560px; }
+            .miro-hero__grid { display: flex; flex-direction: column; justify-content: flex-end; padding: 40px 0 32px max(32px, calc((100vw - 1360px) / 2)); }
+            .miro-hero__content { position: static; left: auto; bottom: auto; width: min(36%, 480px); }
+        }
+        @media (min-width: 1024px) and (max-height: 680px) {
+            .miro-hero--image, .miro-hero__grid { min-height: 500px; }
+            .miro-hero__grid { padding-top: 28px; padding-bottom: 24px; }
+            .miro-hero__title-main { font-size: 1.32em; margin-bottom: 8px; }
+            .miro-hero__title-sub { font-size: .5em; }
+            .miro-hero--image .miro-hero__subtitle { margin-top: 16px; font-size: 13px; line-height: 1.45; }
+            .miro-hero--image .miro-hero__actions { margin-top: 18px; }
+            .miro-hero--image .miro-proof { margin-top: 16px; }
+        }
         .miro-hero--image h1 {
             max-width: 480px;
             color: #FFF9F5;
@@ -131,8 +154,8 @@
         }
         .miro-hero__title-main,
         .miro-hero__title-sub { display: block; }
-        .miro-hero__title-main { margin-bottom: 12px; font-size: 1.18em; line-height: 1; letter-spacing: -.045em; }
-        .miro-hero__title-sub { max-width: 620px; font-size: .58em; line-height: 1.08; letter-spacing: -.025em; }
+        .miro-hero__title-main { margin-bottom: 12px; font-size: 1.55em; line-height: 1; letter-spacing: -.045em; }
+        .miro-hero__title-sub { max-width: 620px; font-size: .58em; line-height: 1.3; letter-spacing: .05em; }
         .miro-hero--image .miro-eyebrow { color: #DBB89B; }
         .miro-hero--image .miro-hero__subtitle { max-width: 380px; color: #E9DCD5; font-size: 15px; line-height: 1.58; }
         .miro-hero--image .miro-hero__actions { justify-content: flex-start; }
@@ -154,7 +177,6 @@
         .miro-hero--image .miro-proof__value { color: #74472F; }
         .miro-hero--image .miro-proof__label { color: #493129; }
         .miro-director-note__grid { position: relative; }
-        .miro-director-note__sticker { position: absolute; top: calc(100% - 8px); right: 0; z-index: 2; display: inline-block; padding: 12px 18px; border: 1px solid rgba(201,154,115,.7); border-radius: 999px; background: var(--miro-cream); color: var(--miro-ink-deep); font-size: 14px; font-weight: 600; box-shadow: 0 10px 24px rgba(33,20,15,.14); transform: rotate(-3deg); animation: miro-sticker-float 5s ease-in-out infinite; }
         @keyframes miro-sticker-float { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-6px) rotate(-1deg); } }
         .miro-logo-wall__sticker--brand { display: none; }
         .miro-hero--image .miro-floating-accents--hero { display: none; }
@@ -191,7 +213,7 @@
         .miro-split__copy h3 { font-family: var(--miro-display-font); font-weight: 400; font-size: clamp(26px, 3vw, 32px); line-height: 1.2; letter-spacing: -.015em; }
         .miro-section__head p { margin: 18px 0 0; color: var(--miro-slate); font-size: 18px; }
         .miro-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .miro-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+        .miro-grid-2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .miro-feature-card { min-height: 300px; padding: 32px; border-radius: 28px; }
         .miro-feature-card__icon { width: 44px; height: 44px; display: grid; place-items: center; margin-bottom: 56px; border-radius: 50%; background: rgba(255,255,255,.72); color: var(--miro-primary); font-size: 18px; font-weight: 600; }
         .miro-feature-card p { margin: 14px 0 0; color: var(--miro-charcoal); line-height: 1.55; }
@@ -208,7 +230,8 @@
         .miro-proof__value { display: block; color: var(--miro-blue); font-size: 24px; font-weight: 600; line-height: 1; letter-spacing: -.03em; white-space: nowrap; }
         .miro-proof__label { display: block; color: var(--miro-charcoal); font-size: 13px; line-height: 1.3; }
 
-        .miro-benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .miro-benefits { display: block; }
+        .miro-benefits__grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 16px; }
         .miro-benefit-card { min-height: 236px; padding: 24px; border: 1px solid var(--miro-hairline-soft); border-radius: 24px; background: #fff; box-shadow: 0 8px 24px rgba(33, 20, 15,.04); }
         .miro-benefit-card--pink, .miro-benefit-card--accent { background: var(--miro-pink); }
         .miro-benefit-card--coral { background: var(--miro-coral); }
@@ -220,6 +243,19 @@
         .miro-benefit-card__icon .ph { display: block; }
         .miro-benefit-card h3 { margin: 0; color: var(--miro-ink-deep); font-size: 20px; font-weight: 600; line-height: 1.25; letter-spacing: -.005em; }
         .miro-benefit-card p { margin: 10px 0 0; color: var(--miro-charcoal); font-size: 14px; line-height: 1.5; }
+        .miro-benefit-card.miro-benefit-card--featured {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 28px;
+            min-height: 0;
+            padding: 36px 40px;
+            border-radius: 28px;
+        }
+        .miro-benefit-card.miro-benefit-card--featured .miro-benefit-card__icon { width: 68px; height: 68px; flex: 0 0 68px; margin-bottom: 0; border-radius: 18px; font-size: 30px; }
+        .miro-benefit-card.miro-benefit-card--featured .miro-benefit-card__copy { min-width: 0; }
+        .miro-benefit-card.miro-benefit-card--featured h3 { font-family: var(--miro-display-font); font-size: clamp(22px, 2.4vw, 28px); font-weight: 400; letter-spacing: -.01em; }
+        .miro-benefit-card.miro-benefit-card--featured p { max-width: 480px; font-size: 15px; }
 
         .miro-steps { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
         .miro-steps::before { content: ""; position: absolute; top: 36px; right: 12%; left: 12%; border-top: 2px dashed var(--miro-hairline-strong); }
@@ -231,25 +267,38 @@
         .miro-step h3 { margin: 0; color: var(--miro-ink-deep); font-size: 19px; font-weight: 600; line-height: 1.25; }
         .miro-step p { margin: 10px auto 0; max-width: 220px; color: var(--miro-slate); font-size: 14px; line-height: 1.5; }
 
+        /* One dark chocolate moment mid-page for rhythm, between the otherwise
+           unbroken run of light/porcelain sections. */
+        #how-it-works.miro-section--dark { background: var(--miro-primary, #21140F); }
+        #how-it-works.miro-section--dark .miro-eyebrow { color: var(--miro-orange, #DBB89B); }
+        #how-it-works.miro-section--dark .miro-section__head h2 { color: #FFF9F5; }
+        #how-it-works.miro-section--dark .miro-steps::before { border-top-color: rgba(255,249,245,.18); }
+        #how-it-works.miro-section--dark .miro-step__number { border-color: rgba(255,249,245,.14); background: var(--miro-coral-strong, #B9855B); color: #21140F; box-shadow: 0 0 0 1px rgba(255,249,245,.12); }
+        #how-it-works.miro-section--dark .miro-step:nth-child(2) .miro-step__number,
+        #how-it-works.miro-section--dark .miro-step:nth-child(3) .miro-step__number,
+        #how-it-works.miro-section--dark .miro-step:nth-child(4) .miro-step__number { background: var(--miro-coral-strong, #B9855B); }
+        #how-it-works.miro-section--dark .miro-step h3 { color: #FFF9F5; }
+        #how-it-works.miro-section--dark .miro-step p { color: #DCC8BC; }
+
         .miro-directions { padding: 16px 0 56px; background: #fff; }
         .miro-directions__grid { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 14px; }
         .miro-direction-card { position: relative; min-width: 0; min-height: 150px; display: flex; flex-direction: column; align-items: center; padding: 18px 12px 16px; border: 1px solid var(--miro-hairline); border-radius: 16px; background: #fff; text-align: center; box-shadow: 0 8px 20px rgba(33, 20, 15,.055); transition: border-color .25s ease, box-shadow .25s ease, background .25s ease; }
-        .miro-direction-card:nth-child(1) { --direction-icon-surface: var(--miro-surface-featured); --direction-icon-color: var(--miro-blue); }
-        .miro-direction-card:nth-child(2) { --direction-icon-surface: var(--miro-coral); --direction-icon-color: var(--miro-coral-dark); }
-        .miro-direction-card:nth-child(3) { --direction-icon-surface: var(--miro-teal); --direction-icon-color: var(--miro-teal-dark); border-color: rgba(185, 133, 91,.34); }
-        .miro-direction-card:nth-child(4) { --direction-icon-surface: var(--miro-pink); --direction-icon-color: var(--miro-blue); border-color: rgba(185, 133, 91,.34); }
-        .miro-direction-card:nth-child(5) { --direction-icon-surface: rgba(185, 133, 91,.13); --direction-icon-color: var(--miro-primary); }
-        .miro-direction-card:nth-child(6) { --direction-icon-surface: var(--miro-surface); --direction-icon-color: var(--miro-charcoal); }
-        .miro-direction-card:nth-child(7) { --direction-icon-surface: #FAEEE8; --direction-icon-color: var(--miro-ink-deep); }
-        .miro-direction-card:nth-child(8) { --direction-icon-surface: var(--miro-coral); --direction-icon-color: var(--miro-blue); }
+        .miro-directions__grid > .miro-direction-card:nth-child(1) { --direction-icon-surface: var(--miro-surface-featured); --direction-icon-color: var(--miro-blue); }
+        .miro-directions__grid > .miro-direction-card:nth-child(2) { --direction-icon-surface: var(--miro-coral); --direction-icon-color: var(--miro-coral-dark); }
+        .miro-directions__grid > .miro-direction-card:nth-child(3) { --direction-icon-surface: var(--miro-teal); --direction-icon-color: var(--miro-teal-dark); border-color: rgba(185, 133, 91,.34); }
+        .miro-directions__grid > .miro-direction-card:nth-child(4) { --direction-icon-surface: var(--miro-pink); --direction-icon-color: var(--miro-blue); border-color: rgba(185, 133, 91,.34); }
+        .miro-directions__grid > .miro-direction-card:nth-child(5) { --direction-icon-surface: rgba(185, 133, 91,.13); --direction-icon-color: var(--miro-primary); }
+        .miro-directions__grid > .miro-direction-card:nth-child(6) { --direction-icon-surface: var(--miro-surface); --direction-icon-color: var(--miro-charcoal); }
+        .miro-directions__grid > .miro-direction-card:nth-child(7) { --direction-icon-surface: #FAEEE8; --direction-icon-color: var(--miro-ink-deep); }
+        .miro-directions__grid > .miro-direction-card:nth-child(8) { --direction-icon-surface: var(--miro-coral); --direction-icon-color: var(--miro-blue); }
         .miro-directions__grid.is-visible .miro-direction-card { animation: miro-direction-card-drift 8.4s ease-in-out infinite; will-change: transform; }
-        .miro-directions__grid.is-visible .miro-direction-card:nth-child(2) { animation-delay: .7s; }
-        .miro-directions__grid.is-visible .miro-direction-card:nth-child(3) { animation-delay: 1.4s; }
-        .miro-directions__grid.is-visible .miro-direction-card:nth-child(4) { animation-delay: 2.1s; }
-        .miro-directions__grid.is-visible .miro-direction-card:nth-child(5) { animation-delay: 2.8s; }
-        .miro-directions__grid.is-visible .miro-direction-card:nth-child(6) { animation-delay: 3.5s; }
-        .miro-directions__grid.is-visible .miro-direction-card:nth-child(7) { animation-delay: 4.2s; }
-        .miro-directions__grid.is-visible .miro-direction-card:nth-child(8) { animation-delay: 4.9s; }
+        .miro-directions__grid.is-visible > .miro-direction-card:nth-child(2) { animation-delay: .7s; }
+        .miro-directions__grid.is-visible > .miro-direction-card:nth-child(3) { animation-delay: 1.4s; }
+        .miro-directions__grid.is-visible > .miro-direction-card:nth-child(4) { animation-delay: 2.1s; }
+        .miro-directions__grid.is-visible > .miro-direction-card:nth-child(5) { animation-delay: 2.8s; }
+        .miro-directions__grid.is-visible > .miro-direction-card:nth-child(6) { animation-delay: 3.5s; }
+        .miro-directions__grid.is-visible > .miro-direction-card:nth-child(7) { animation-delay: 4.2s; }
+        .miro-directions__grid.is-visible > .miro-direction-card:nth-child(8) { animation-delay: 4.9s; }
         .miro-direction-card:hover { border-color: var(--miro-coral-dark); background: var(--miro-surface-soft); box-shadow: 0 14px 28px rgba(33, 20, 15,.12); }
         .miro-direction-card__icon { width: 48px; height: 48px; flex: 0 0 48px; display: grid; place-items: center; margin-bottom: 12px; border-radius: 14px; background: var(--direction-icon-surface, var(--miro-surface-featured)); color: var(--direction-icon-color, var(--miro-blue)); transition: background-color .25s ease; }
         .miro-direction-card__icon > .ph { display: block; font-size: 44px; line-height: 1; }
@@ -285,13 +334,10 @@
         .miro-director-note__copy { position: relative; max-width: 760px; padding-left: 24px; color: var(--miro-slate); font-size: 15px; line-height: 1.55; }
         .miro-director-note__copy > div { position: relative; z-index: 1; }
         .miro-director-note__copy p { margin: 0 0 14px; }
+        .miro-director-note__copy > div[data-lang] > p:first-child { color: var(--miro-ink-deep); font-family: var(--miro-display-font); font-size: 19px; font-weight: 400; }
         .miro-director-note__copy p:last-child { margin-bottom: 0; color: var(--miro-ink-deep); font-weight: 500; }
-        .miro-director-note__meta { position: relative; z-index: 1; display: grid; gap: 7px; margin: 0 0 20px; }
-        .miro-director-note__meta p { margin: 0; color: var(--miro-ink-deep); font-size: 14px; line-height: 1.4; }
-        .miro-director-note__meta p { font-size: 0; }
-        .miro-director-note__meta p::after { content: "Валерия Зелинская · Руководитель Women's hub"; font-size: 14px; line-height: 1.4; }
-        .miro-director-note__eyebrow { display: inline-flex; width: fit-content; padding: 4px 10px; border-radius: 9999px; background: var(--miro-cream); color: var(--miro-ink-deep); font-size: 12px; font-weight: 600; line-height: 1.3; }
-        .miro-director-note__quote { position: absolute; top: 44px; left: 10px; color: var(--miro-coral-strong); font-family: Georgia, serif; font-size: 52px; line-height: 1; opacity: .55; }
+        .miro-director-note__meta { position: relative; z-index: 1; display: grid; gap: 7px; margin: 0 0 22px; }
+        .miro-director-note__meta p { margin: 0; color: var(--miro-ink-deep); font-size: 15px; font-weight: 600; line-height: 1.4; }
         .miro-director-note__portrait { position: relative; justify-self: end; width: min(100%, 320px); height: 400px; margin: 0; overflow: visible; border-radius: 24px 24px 24px 8px; box-shadow: 0 8px 22px rgba(33, 20, 15,.08); }
         .miro-director-note__portrait img { position: relative; z-index: 1; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; border-radius: 24px 24px 24px 8px; }
         .miro-director-note__accent { position: absolute; right: -16px; bottom: -16px; width: 86px; height: 86px; border-radius: 50%; background: var(--miro-coral); opacity: .8; }
@@ -326,20 +372,22 @@
         .miro-image-card__caption p { margin: 10px 0 0; color: var(--miro-slate); }
         .miro-tag { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 9999px; background: var(--miro-cream); color: #21140F; font-size: 13px; font-weight: 600; }
 
-        .miro-member-card { display: grid; grid-template-columns: 112px 1fr; gap: 20px; align-items: center; padding: 16px; border: 1px solid var(--miro-hairline-soft); border-radius: 16px; background: #fff; }
-        .miro-member-card img { width: 112px; height: 112px; border-radius: 12px; object-fit: cover; }
-        .miro-member-card h4 { margin: 0; color: var(--miro-ink-deep); font-size: 18px; font-weight: 600; }
-        .miro-member-card__role { margin: 5px 0 0; color: var(--miro-charcoal); font-size: 13px; line-height: 1.35; }
-        .miro-member-card__specialization { margin: 8px 0 0; color: var(--miro-blue); font-size: 13px; font-weight: 600; line-height: 1.35; }
+        /* Editorial profile card: a tall portrait leads, copy follows underneath —
+           replaces the old photo-plus-row layout and its multicolour tag confetti. */
+        /* A quiet editorial "id card": a softly, asymmetrically rounded portrait
+           sits beside the copy rather than stacking above it, so the card stays
+           a calm horizontal shape no matter how much text a profile carries —
+           the same rounding trick used on the director portrait higher up the page. */
+        .miro-member-card { display: grid; grid-template-columns: 148px minmax(0, 1fr); gap: 18px; align-items: center; padding: 20px; border: 1px solid var(--miro-hairline-soft); border-radius: 24px; background: #fff; transition: border-color .2s ease, box-shadow .2s ease; }
+        .miro-member-card:hover { border-color: var(--miro-hairline-strong); box-shadow: 0 14px 30px rgba(33, 20, 15, .07); }
+        .miro-member-card img { width: 148px; aspect-ratio: 4 / 5; border-radius: 20px 20px 20px 6px; object-fit: cover; object-position: center top; box-shadow: 0 8px 18px rgba(33, 20, 15, .08); align-self: start; }
+        .miro-member-card > div { min-width: 0; }
+        .miro-member-card h4 { margin: 0; color: var(--miro-ink-deep); font-size: 19px; font-weight: 600; line-height: 1.32; }
+        .miro-member-card__role { margin: 8px 0 0; color: var(--miro-charcoal); font-size: 13px; line-height: 1.45; }
+        .miro-member-card__specialization { margin: 10px 0 0; color: var(--miro-blue); font-size: 12px; font-weight: 600; line-height: 1.45; }
         .miro-member-card__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-        .miro-profile-tag { display: inline-flex; align-items: center; padding: 5px 9px; border-radius: 9999px; color: var(--miro-primary); font-size: 11px; font-weight: 500; line-height: 1.2; }
-        .miro-profile-tag--pink, .miro-profile-tag--accent { background: var(--miro-cream); }
-        .miro-profile-tag--teal { background: var(--miro-teal); color: var(--miro-teal-dark); }
-        .miro-profile-tag--rose { background: var(--miro-rose); }
-        .miro-profile-tag--coral { background: var(--miro-coral); }
-        .miro-profile-tag--blue { background: var(--miro-surface-featured); color: var(--miro-blue); }
-        .miro-profile-tag--orange { background: var(--miro-orange); }
-        .miro-member-card p { margin: 6px 0 0; color: var(--miro-steel); font-size: 14px; }
+        .miro-profile-tag { display: inline-flex; align-items: center; padding: 5px 10px; border: 1px solid var(--miro-hairline-strong); border-radius: 9999px; background: transparent; color: var(--miro-charcoal); font-size: 11px; font-weight: 500; line-height: 1.2; }
+        .miro-member-card p { margin: 10px 0 0; color: var(--miro-steel); font-size: 13px; line-height: 1.55; }
         .miro-members__cta { display: flex; justify-content: center; margin-top: 32px; }
         .miro-members__legacy { display: none; }
         .miro-members__cta a[href*="account/login"] { display: none; }
@@ -374,7 +422,7 @@
         .miro-footer { padding: 64px 0 28px; background: var(--miro-primary); color: #fff; }
         .miro-footer__top { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 32px; padding-bottom: 56px; }
         .miro-footer__brand p { max-width: 250px; margin: 18px 0 0; color: var(--miro-muted); font-size: 14px; }
-        .miro-footer .miro-brand__logo { width: 214px; height: 62px; padding: 7px 10px; border-radius: 12px; background: #fff; }
+        .miro-footer .miro-brand__logo { width: 214px; height: 62px; padding: 0; border-radius: 0; background: transparent; }
         .miro-footer h4 { margin: 0 0 14px; font-size: 16px; font-weight: 500; }
         .miro-footer ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; color: var(--miro-muted); font-size: 14px; }
         .miro-footer li a:hover { color: #fff; }
@@ -382,10 +430,13 @@
 
         @media (max-width: 1023px) {
             .miro-container { width: min(100% - 40px, 760px); }
+            .miro-grid-2 { grid-template-columns: repeat(2, 1fr); }
+            .miro-member-card { grid-template-columns: 128px minmax(0, 1fr); gap: 18px; padding: 18px; }
+            .miro-member-card img { width: 128px; }
             .miro-hero--image { min-height: 0; }
             .miro-hero--image .miro-container { width: min(100% - 40px, 760px); }
             .miro-hero__grid { min-height: 0; }
-            .miro-hero__content { width: 100%; margin-left: 0; padding: 72px 0 80px; }
+            .miro-hero__content { position: relative; left: auto; bottom: auto; width: 100%; margin-left: 0; padding: 72px 0 80px; }
             .miro-hero__visual { display: none; }
             .miro-hero__bottom-curve { display: none; }
             .miro-landing-page .miro-nav.is-open .miro-nav__links { border-bottom-color: rgba(201, 154, 115, .32); background: #21140F; }
@@ -401,7 +452,8 @@
             .miro-nav.is-open .miro-nav__mobile-menu .miro-button { width: 100%; }
             .miro-grid-3 { grid-template-columns: 1fr; }
             .miro-logo-wall__layout { grid-template-columns: 1fr 1fr; gap: 28px; }
-            .miro-benefits { grid-template-columns: repeat(2, 1fr); }
+            .miro-benefits__grid { grid-template-columns: repeat(2, 1fr); }
+            .miro-benefit-card.miro-benefit-card--featured { padding: 28px 30px; }
             .miro-directions { padding: 14px 0 44px; }
             .miro-directions__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
             .miro-split { grid-template-columns: 1fr; gap: 40px; }
@@ -412,6 +464,8 @@
 
         @media (max-width: 767px) {
             .miro-container { width: min(100% - 32px, 540px); }
+            .miro-member-card { grid-template-columns: 1fr; gap: 16px; padding: 18px; }
+            .miro-member-card img { width: 100%; aspect-ratio: 3 / 2; border-radius: 18px 18px 18px 6px; }
             .miro-nav__inner { gap: 12px; }
             .miro-brand { font-size: 14px; }
             .miro-languages { margin-right: 0; }
@@ -419,7 +473,7 @@
             .miro-hero--image { width: 100%; min-height: 0; margin: 0; border-radius: 0; background: #21140F; }
             .miro-hero--image .miro-container { width: min(100% - 32px, 540px); }
             .miro-hero__grid { display: flex; min-height: 0; flex-direction: column; gap: 18px; }
-            .miro-hero__content { width: 100%; padding: 48px 0 58px; }
+            .miro-hero__content { position: relative; left: auto; bottom: auto; width: 100%; padding: 48px 0 58px; }
             .miro-hero--image h1 { font-size: 44px; transform: none; }
             .miro-hero__bottom-curve { display: none; }
             .miro-hero--image .miro-hero__actions { gap: 10px; margin-top: 26px; }
@@ -433,7 +487,8 @@
             .miro-section { padding: 64px 0; }
             .miro-section h2 { font-size: 38px; }
             .miro-grid-2 { grid-template-columns: 1fr; }
-            .miro-benefits, .miro-steps { grid-template-columns: 1fr; }
+            .miro-benefits__grid, .miro-steps { grid-template-columns: 1fr; }
+            .miro-benefit-card.miro-benefit-card--featured { flex-direction: column; align-items: flex-start; gap: 16px; padding: 26px 22px; }
             .miro-directions { padding: 12px 0 40px; }
             .miro-directions__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
             .miro-direction-card { min-height: 140px; padding: 14px 10px 15px; }
@@ -441,17 +496,13 @@
             .miro-director-note { padding: 40px 0 44px; }
             .miro-director-note__grid { grid-template-columns: 1fr; gap: 28px; }
             .miro-director-note__copy { padding-left: 18px; font-size: 14px; }
-            .miro-director-note__quote { top: 44px; left: 4px; font-size: 44px; }
             .miro-director-note__portrait { justify-self: center; width: min(100%, 300px); height: 360px; }
-            .miro-director-note__sticker { position: relative; top: auto; right: auto; grid-column: 1; justify-self: center; margin-top: -12px; }
             .miro-steps { gap: 32px; }
             .miro-steps::before { top: 36px; right: auto; bottom: 36px; left: 50%; border-top: 0; border-left: 2px dashed var(--miro-hairline-strong); }
             .miro-feature-card { min-height: 260px; padding: 24px; }
             .miro-feature-card__icon { margin-bottom: 40px; }
             .miro-roadmap__row { grid-template-columns: 66px repeat(3, 1fr); }
             .miro-roadmap__cell { min-height: 76px; padding: 8px; font-size: 10px; }
-            .miro-member-card { grid-template-columns: 80px 1fr; gap: 14px; }
-            .miro-member-card img { width: 80px; height: 80px; }
             .miro-story { grid-template-columns: 1fr; }
             .miro-story img { min-height: 240px; max-height: 280px; }
             .miro-story__body { padding: 28px; }
@@ -468,30 +519,30 @@
         .miro-directions { position: relative; padding-top: 28px; background: var(--miro-canvas); }
         .miro-directions__grid { gap: 16px; }
         .miro-direction-card { min-height: 164px; border-color: var(--miro-hairline-strong); background: var(--miro-canvas); box-shadow: 0 8px 20px rgba(33, 20, 15, .06); }
-        .miro-direction-card:nth-child(1) { background: #E8D1C2; }
-        .miro-direction-card:nth-child(2) { background: #F1E3DA; }
-        .miro-direction-card:nth-child(3) { background: #FAEEE8; }
-        .miro-direction-card:nth-child(4) { background: #E6CFC1; }
-        .miro-direction-card:nth-child(5) { background: #DBB89B; }
-        .miro-direction-card:nth-child(6) { background: #F1E3DA; }
-        .miro-direction-card:nth-child(7) { background: #FAEEE8; }
-        .miro-direction-card:nth-child(8) { background: #E8D1C2; }
-        .miro-direction-card:nth-child(1) { border-top: 3px solid var(--miro-caramel-500, #B9855B); }
-        .miro-direction-card:nth-child(2) { border-top: 3px solid var(--miro-cognac-600, #8E5B3D); }
-        .miro-direction-card:nth-child(3) { border-top: 3px solid var(--miro-chocolate-700, #493129); }
-        .miro-direction-card:nth-child(4) { border-top: 3px solid var(--miro-caramel-400, #C99A73); }
-        .miro-direction-card:nth-child(5) { border-top: 3px solid var(--miro-cognac-700, #74472F); }
-        .miro-direction-card:nth-child(6) { border-top: 3px solid var(--miro-chocolate-800, #34231F); }
-        .miro-direction-card:nth-child(7) { border-top: 3px solid var(--miro-caramel-300, #DBB89B); }
-        .miro-direction-card:nth-child(8) { border-top: 3px solid var(--miro-cognac-600, #8E5B3D); }
-        .miro-direction-card:nth-child(1) .miro-direction-card__icon { --direction-icon-surface: #F1E3DA; --direction-icon-color: #74472F; }
-        .miro-direction-card:nth-child(2) .miro-direction-card__icon { --direction-icon-surface: #E6CFC1; --direction-icon-color: #493129; }
-        .miro-direction-card:nth-child(3) .miro-direction-card__icon { --direction-icon-surface: #FFF9F5; --direction-icon-color: #34231F; }
-        .miro-direction-card:nth-child(4) .miro-direction-card__icon { --direction-icon-surface: #F1E3DA; --direction-icon-color: #74472F; }
-        .miro-direction-card:nth-child(5) .miro-direction-card__icon { --direction-icon-surface: #F1E3DA; --direction-icon-color: #21140F; }
-        .miro-direction-card:nth-child(6) .miro-direction-card__icon { --direction-icon-surface: #FAEEE8; --direction-icon-color: #493129; }
-        .miro-direction-card:nth-child(7) .miro-direction-card__icon { --direction-icon-surface: #FFF9F5; --direction-icon-color: #74472F; }
-        .miro-direction-card:nth-child(8) .miro-direction-card__icon { --direction-icon-surface: #F1E3DA; --direction-icon-color: #74472F; }
+        .miro-directions__grid > .miro-direction-card:nth-child(1) { background: #E8D1C2; }
+        .miro-directions__grid > .miro-direction-card:nth-child(2) { background: #F1E3DA; }
+        .miro-directions__grid > .miro-direction-card:nth-child(3) { background: #FAEEE8; }
+        .miro-directions__grid > .miro-direction-card:nth-child(4) { background: #E6CFC1; }
+        .miro-directions__grid > .miro-direction-card:nth-child(5) { background: #DBB89B; }
+        .miro-directions__grid > .miro-direction-card:nth-child(6) { background: #F1E3DA; }
+        .miro-directions__grid > .miro-direction-card:nth-child(7) { background: #FAEEE8; }
+        .miro-directions__grid > .miro-direction-card:nth-child(8) { background: #E8D1C2; }
+        .miro-directions__grid > .miro-direction-card:nth-child(1) { border-top: 3px solid var(--miro-caramel-500, #B9855B); }
+        .miro-directions__grid > .miro-direction-card:nth-child(2) { border-top: 3px solid var(--miro-cognac-600, #8E5B3D); }
+        .miro-directions__grid > .miro-direction-card:nth-child(3) { border-top: 3px solid var(--miro-chocolate-700, #493129); }
+        .miro-directions__grid > .miro-direction-card:nth-child(4) { border-top: 3px solid var(--miro-caramel-400, #C99A73); }
+        .miro-directions__grid > .miro-direction-card:nth-child(5) { border-top: 3px solid var(--miro-cognac-700, #74472F); }
+        .miro-directions__grid > .miro-direction-card:nth-child(6) { border-top: 3px solid var(--miro-chocolate-800, #34231F); }
+        .miro-directions__grid > .miro-direction-card:nth-child(7) { border-top: 3px solid var(--miro-caramel-300, #DBB89B); }
+        .miro-directions__grid > .miro-direction-card:nth-child(8) { border-top: 3px solid var(--miro-cognac-600, #8E5B3D); }
+        .miro-directions__grid > .miro-direction-card:nth-child(1) .miro-direction-card__icon { --direction-icon-surface: #F1E3DA; --direction-icon-color: #74472F; }
+        .miro-directions__grid > .miro-direction-card:nth-child(2) .miro-direction-card__icon { --direction-icon-surface: #E6CFC1; --direction-icon-color: #493129; }
+        .miro-directions__grid > .miro-direction-card:nth-child(3) .miro-direction-card__icon { --direction-icon-surface: #FFF9F5; --direction-icon-color: #34231F; }
+        .miro-directions__grid > .miro-direction-card:nth-child(4) .miro-direction-card__icon { --direction-icon-surface: #F1E3DA; --direction-icon-color: #74472F; }
+        .miro-directions__grid > .miro-direction-card:nth-child(5) .miro-direction-card__icon { --direction-icon-surface: #F1E3DA; --direction-icon-color: #21140F; }
+        .miro-directions__grid > .miro-direction-card:nth-child(6) .miro-direction-card__icon { --direction-icon-surface: #FAEEE8; --direction-icon-color: #493129; }
+        .miro-directions__grid > .miro-direction-card:nth-child(7) .miro-direction-card__icon { --direction-icon-surface: #FFF9F5; --direction-icon-color: #74472F; }
+        .miro-directions__grid > .miro-direction-card:nth-child(8) .miro-direction-card__icon { --direction-icon-surface: #F1E3DA; --direction-icon-color: #74472F; }
         .miro-direction-card__icon { width: 52px; height: 52px; margin-bottom: 14px; border-radius: 12px; }
         .miro-direction-card__icon { background: rgba(255, 249, 245, .58); }
         .miro-direction-card h3 { color: var(--miro-text-dark, #21140F); font-weight: 600; }
