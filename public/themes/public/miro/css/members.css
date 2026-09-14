@@ -29,7 +29,13 @@
         .miro-button--primary:hover { background:var(--miro-primary-hover); }
         .miro-button--secondary { border:1px solid var(--miro-hairline-strong); background:transparent; color:var(--miro-ink); }
         .miro-button--secondary:hover { border-color:var(--miro-primary); }
-        .miro-button--accent { background:var(--miro-pink); color:var(--miro-primary); }
+        .miro-button--pink, .miro-button--accent { background:var(--miro-pink); color:var(--miro-primary); }
+        .miro-button--pink:hover, .miro-button--accent:hover { background:var(--miro-coral); }
+        /* navigation.css forces light text on any link inside .miro-members-cta (it assumes a
+           dark-background button there); this specific button has a light pink fill, so it
+           needs dark text — outrank that rule instead of fighting it with !important. */
+        .miro-page .miro-members-cta .miro-button--pink,
+        .miro-page .miro-members-cta .miro-button--pink span { color:var(--miro-primary); }
         .miro-button--small { min-height:40px; padding:10px 18px; }
         .miro-members-page { background:linear-gradient(180deg,#fff 0%,#FCF8F6 42%,#fff 100%); }
         .miro-members-hero { position:relative; overflow:hidden; padding:64px 0 56px; background:var(--miro-pink); }
@@ -46,28 +52,28 @@
         .miro-section__head { max-width:760px; margin-bottom:40px; }
         .miro-section__head h2 { margin:0; color:var(--miro-ink-deep); font-family:var(--miro-display-font); font-size:clamp(32px,5vw,54px); font-weight:400; line-height:1.12; letter-spacing:-.015em; }
         .miro-section__head p { margin:16px 0 0; color:var(--miro-slate); font-size:18px; }
-        .miro-members-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
-        .miro-public-member { display:flex; min-width:0; flex-direction:column; overflow:hidden; border:1px solid var(--miro-hairline-soft); border-radius:26px; background:#fff; box-shadow:0 8px 24px rgba(33, 20, 15,.045); transition:transform .2s ease,box-shadow .2s ease; }
-        .miro-public-member:hover { transform:translateY(-3px); box-shadow:var(--miro-shadow); }
-        .miro-public-member__visual { position:relative; height:270px; background:var(--miro-teal); }
-        .miro-public-member__visual::after { content:""; position:absolute; right:-20px; bottom:-28px; width:120px; height:120px; border:14px solid rgba(255,255,255,.5); border-radius:50%; }
-        .miro-public-member__visual img { position:relative; z-index:1; width:100%; height:100%; object-fit:cover; object-position:center; }
-        .miro-public-member__body { display:flex; flex:1; flex-direction:column; padding:24px; }
-        .miro-public-member h3 { margin:0; color:var(--miro-ink-deep); font-size:21px; font-weight:600; line-height:1.25; letter-spacing:-.01em; }
-        .miro-public-member__specialization { margin:8px 0 0; color:var(--miro-blue); font-size:14px; font-weight:600; }
-        .miro-public-member__tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:0; margin-bottom:18px; }
-        .miro-public-member__tag { display:inline-flex; align-items:center; padding:5px 9px; border-radius:9999px; color:var(--miro-primary); font-size:11px; font-weight:500; line-height:1.2; }
-        .miro-public-member__tag--pink, .miro-public-member__tag--accent { background:var(--miro-cream); }
-        .miro-public-member__tag--teal { background:var(--miro-teal); color:var(--miro-teal-dark); }
-        .miro-public-member__tag--rose { background:var(--miro-rose); }
-        .miro-public-member__tag--coral { background:var(--miro-coral); }
-        .miro-public-member__tag--blue { background:var(--miro-surface-featured); color:var(--miro-blue); }
-        .miro-public-member__tag--orange { background:var(--miro-orange); }
-        .miro-public-member__description { margin:18px 0 0; color:var(--miro-slate); font-size:14px; line-height:1.5; }
-        .miro-public-member__details { display:grid; gap:12px; margin-top:auto; padding-top:22px; }
-        .miro-public-member__detail { padding-top:12px; border-top:1px solid var(--miro-hairline-soft); }
-        .miro-public-member__detail strong { display:block; margin-bottom:4px; color:var(--miro-ink-deep); font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; }
-        .miro-public-member__detail span { display:block; color:var(--miro-charcoal); font-size:13px; line-height:1.4; }
+        /* Compact directory tile for the "Участницы" tab — deliberately lighter than the
+           editorial expert-profile card (experts.css): small circular avatar, one tag, one
+           clamped line of summary. See design-system card families: this is the "compact
+           UI" family, the expert grid is the "editorial portrait" family — they shouldn't
+           look alike. */
+        .miro-participants-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; }
+        .miro-participant-card { display:flex; align-items:center; gap:14px; min-width:0; padding:16px; border:1px solid var(--miro-hairline-soft); border-radius:16px; background:#fff; transition:border-color .18s ease,box-shadow .18s ease,opacity .32s ease,transform .32s ease; }
+        .miro-participant-card:hover { border-color:var(--miro-hairline-strong); box-shadow:var(--miro-shadow); }
+        .miro-participant-card__avatar { width:56px; height:56px; flex:0 0 auto; border-radius:9999px; object-fit:cover; object-position:center top; }
+        /* "Beautiful placeholder" for the ~12 women whose journal profile has no matching
+           photo folder — a soft chocolate/caramel gradient initial instead of a broken
+           image or a generic grey silhouette, so the card still reads as finished. */
+        .miro-participant-card__avatar--placeholder { display:grid; place-items:center; background:radial-gradient(120% 120% at 28% 22%,var(--miro-blue) 0%,var(--miro-primary) 100%); font-family:var(--miro-display-font); font-size:18px; font-weight:400; color:var(--miro-pink); letter-spacing:.01em; }
+        .miro-participant-card__body { min-width:0; }
+        .miro-participant-card__tag { display:block; margin-bottom:4px; color:var(--miro-blue); font-size:11px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; }
+        .miro-participant-card h3 { margin:0; color:var(--miro-ink-deep); font-size:15px; font-weight:600; line-height:1.3; }
+        .miro-participant-card p { display:-webkit-box; overflow:hidden; margin:4px 0 0; color:var(--miro-slate); font-size:13px; line-height:1.4; -webkit-box-orient:vertical; -webkit-line-clamp:2; }
+        /* Cards appended by members.js start in this state and have it removed a frame
+           later, so newly-revealed participants ease in instead of popping into place. */
+        .miro-participant-card--enter { opacity:0; transform:translateY(6px); }
+        .miro-participants-count { margin:28px 0 0; color:var(--miro-steel); font-size:13px; text-align:center; }
+        .miro-participants-loadmore { display:flex; justify-content:center; margin:14px 0 0; }
         .miro-members-cta { margin-top:48px; padding:48px 28px; border-radius:28px; background:var(--miro-primary); color:#fff; text-align:center; }
         .miro-members-cta h2 { max-width:700px; margin:0 auto; color:#fff; font-family:var(--miro-display-font); font-size:clamp(32px,5vw,54px); font-weight:400; line-height:1.1; letter-spacing:-.015em; }
         .miro-members-cta p { max-width:580px; margin:18px auto 0; color:var(--miro-muted); font-size:18px; }
@@ -80,6 +86,6 @@
         .miro-footer ul { display:grid; gap:8px; margin:0; padding:0; list-style:none; color:var(--miro-muted); font-size:14px; }
         .miro-footer li a:hover { color:#fff; }
         .miro-footer__bottom { display:flex; justify-content:space-between; gap:20px; padding-top:22px; border-top:1px solid rgba(255,255,255,.12); color:var(--miro-muted); font-size:12px; }
-        @media (max-width:1023px) { .miro-container{width:min(100% - 40px,760px)} .miro-nav__links,.miro-nav__actions>.miro-languages,.miro-nav__actions>.miro-button{display:none} .miro-mobile-toggle{display:grid;place-items:center} .miro-nav.is-open .miro-nav__links{position:absolute;top:68px;left:0;right:0;display:grid;gap:0;padding:12px 20px 20px;border-bottom:1px solid var(--miro-hairline);background:#fff} .miro-nav.is-open .miro-nav__links a{padding:14px 0;border-bottom:1px solid var(--miro-hairline-soft)} .miro-nav.is-open .miro-nav__mobile-menu{display:grid;gap:10px;padding-top:14px} .miro-nav.is-open .miro-nav__mobile-menu .miro-languages{width:max-content;margin:0 0 4px} .miro-nav.is-open .miro-nav__mobile-menu .miro-button{width:100%} .miro-members-hero__inner{grid-template-columns:1fr;gap:32px} .miro-members-hero__note{justify-self:start} .miro-members-grid{grid-template-columns:repeat(2,minmax(0,1fr))} .miro-footer__top{grid-template-columns:repeat(3,1fr)} .miro-footer__brand{grid-column:1/-1} }
-        @media (max-width:767px) { .miro-container{width:min(100% - 32px,540px)} .miro-brand{font-size:14px} .miro-members-hero{padding:64px 0 56px} .miro-members-hero h1{font-size:48px} .miro-members-hero__copy,.miro-section__head p,.miro-members-cta p{font-size:16px} .miro-members-section{padding:64px 0 76px} .miro-section__head h2,.miro-members-cta h2{font-size:38px} .miro-members-grid{grid-template-columns:1fr} .miro-members-cta{padding:48px 22px;border-radius:24px} .miro-footer__top{grid-template-columns:repeat(2,1fr)} .miro-footer__bottom{flex-direction:column} }
+        @media (max-width:1023px) { .miro-container{width:min(100% - 40px,760px)} .miro-nav__links,.miro-nav__actions>.miro-languages,.miro-nav__actions>.miro-button{display:none} .miro-mobile-toggle{display:grid;place-items:center} .miro-nav.is-open .miro-nav__links{position:absolute;top:68px;left:0;right:0;display:grid;gap:0;padding:12px 20px 20px;border-bottom:1px solid var(--miro-hairline);background:#fff} .miro-nav.is-open .miro-nav__links a{padding:14px 0;border-bottom:1px solid var(--miro-hairline-soft)} .miro-nav.is-open .miro-nav__mobile-menu{display:grid;gap:10px;padding-top:14px} .miro-nav.is-open .miro-nav__mobile-menu .miro-languages{width:max-content;margin:0 0 4px} .miro-nav.is-open .miro-nav__mobile-menu .miro-button{width:100%} .miro-members-hero__inner{grid-template-columns:1fr;gap:32px} .miro-members-hero__note{justify-self:start} .miro-participants-grid{grid-template-columns:repeat(2,minmax(0,1fr))} .miro-footer__top{grid-template-columns:repeat(3,1fr)} .miro-footer__brand{grid-column:1/-1} }
+        @media (max-width:767px) { .miro-container{width:min(100% - 32px,540px)} .miro-brand{font-size:14px} .miro-members-hero{padding:64px 0 56px} .miro-members-hero h1{font-size:48px} .miro-members-hero__copy,.miro-section__head p,.miro-members-cta p{font-size:16px} .miro-members-section{padding:64px 0 76px} .miro-section__head h2,.miro-members-cta h2{font-size:38px} .miro-participants-grid{grid-template-columns:1fr} .miro-members-cta{padding:48px 22px;border-radius:24px} .miro-footer__top{grid-template-columns:repeat(2,1fr)} .miro-footer__bottom{flex-direction:column} }
         @media (max-width:479px) { .miro-footer__top{gap:28px 16px} }

@@ -91,7 +91,7 @@ Telegram Bot Token (@BotFather)
   php artisan make:filament-user
 
   # Telegram webhook (указать свой домен)
-  php artisan nutgram:hook:set https://women.granatlab.com/telegram/webhook
+  php artisan nutgram:hook:set https://womenhub.innovation.md/telegram/webhook
 
   # AI-эмбеддинги (после появления пользователей)
   php artisan ai:recompute-embeddings
@@ -101,8 +101,8 @@ Telegram Bot Token (@BotFather)
 5. CRON (shared hosting)
 ------------------------------------------------------------
 
-  * * * * * /usr/local/bin/php /home/tirastyl/public_html/women.granatlab.com/artisan schedule:run >> /dev/null 2>&1
-  * * * * * /usr/local/bin/php /home/tirastyl/public_html/women.granatlab.com/artisan queue:work database --stop-when-empty --tries=3 >> /dev/null 2>&1
+  * * * * * /usr/local/bin/php /home/tirastyl/public_html/womenhub.innovation.md/artisan schedule:run >> /dev/null 2>&1
+  * * * * * /usr/local/bin/php /home/tirastyl/public_html/womenhub.innovation.md/artisan queue:work database --stop-when-empty --tries=3 >> /dev/null 2>&1
 
 
 ------------------------------------------------------------
@@ -144,7 +144,7 @@ Telegram Bot Token (@BotFather)
 ------------------------------------------------------------
 
   php artisan about
-  php artisan nutgram:get-webhook
+  php artisan nutgram:hook:info
   php artisan tinker --execute="echo DB::table('jobs')->count() . ' pending';"
   php artisan tinker --execute="echo \App\Models\BotUser::whereNotNull('embedding')->count() . ' with embeddings';"
 

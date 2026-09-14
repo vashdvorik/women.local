@@ -20,6 +20,10 @@ Route::get('/members', function () {
     return PublicThemeView::render('members');
 })->name('members');
 
+Route::get('/experts', function () {
+    return PublicThemeView::render('experts');
+})->name('experts');
+
 Route::get('/events', function () {
     return PublicThemeView::render('events');
 })->name('events');
@@ -75,7 +79,7 @@ Route::get('/about/reports', fn () => $publicSection([
 ]))->name('about.reports');
 
 Route::get('/members/participants', fn () => redirect()->route('members'))->name('members.participants');
-Route::get('/members/experts', fn () => redirect()->route('members'))->name('members.experts');
+Route::get('/members/experts', fn () => redirect()->route('experts'))->name('members.experts');
 
 Route::get('/members/honorary', fn () => $publicSection([
     'pageKey' => 'honorary',

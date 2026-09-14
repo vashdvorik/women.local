@@ -23,9 +23,9 @@
                     <span data-lang="ru">Люди</span><span data-lang="en">People</span><span data-lang="ro">Oameni</span>
                 </button>
                 <div class="miro-nav__dropdown-menu" id="miro-people-menu" role="menu">
-                    <a href="{{ route('members.participants') }}" role="menuitem"><span data-lang="ru">Участницы</span><span data-lang="en">Members</span><span data-lang="ro">Membre</span></a>
+                    <a href="{{ route('members') }}" role="menuitem"><span data-lang="ru">Участницы</span><span data-lang="en">Members</span><span data-lang="ro">Membre</span></a>
                     <a href="{{ route('members.honorary') }}" role="menuitem"><span data-lang="ru">Почётные члены</span><span data-lang="en">Honorary members</span><span data-lang="ro">Membre onorifice</span></a>
-                    <a href="{{ route('members.experts') }}" role="menuitem"><span data-lang="ru">Эксперты</span><span data-lang="en">Experts</span><span data-lang="ro">Experți</span></a>
+                    <a href="{{ route('experts') }}" role="menuitem"><span data-lang="ru">Эксперты</span><span data-lang="en">Experts</span><span data-lang="ro">Experți</span></a>
                     <a href="{{ route('members.join') }}" role="menuitem"><span data-lang="ru">Как стать членом</span><span data-lang="en">How to become a member</span><span data-lang="ro">Cum să devii membră</span></a>
                 </div>
             </div>

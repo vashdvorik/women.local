@@ -90,7 +90,7 @@
                             <a href="{{ route('account.login') }}" class="miro-button miro-button--primary miro-button--brand">
                                 <span data-lang="ru">Присоединиться</span><span data-lang="en">Join the Platform</span><span data-lang="ro">Alătură-te platformei</span>
                             </a>
-                            <a href="{{ route('members') }}" class="miro-button miro-button--secondary">
+                            <a href="{{ route('experts') }}" class="miro-button miro-button--secondary">
                                 <span data-lang="ru">Наши эксперты</span><span data-lang="en">Our Experts</span><span data-lang="ro">Experții noștri</span>
                             </a>
                         </div>
