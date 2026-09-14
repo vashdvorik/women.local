@@ -211,30 +211,14 @@
                 </figure>
             </div>
         </section>
-        <section class="miro-logo-wall">
-            <div class="miro-container miro-logo-wall__layout">
-                <div class="miro-logo-wall__copy">
-                    <div class="miro-logo-wall__items">
-                        <span><span data-lang="ru">Видимость бизнеса</span><span data-lang="en">Business visibility</span><span data-lang="ro">Vizibilitatea afacerii</span></span>
-                        <span><span data-lang="ru">Обучение</span><span data-lang="en">Learning</span><span data-lang="ro">Învățare</span></span>
-                        <span><span data-lang="ru">Партнёры и рынки</span><span data-lang="en">Partners &amp; markets</span><span data-lang="ro">Partenere și piețe</span></span>
-                        <span><span data-lang="ru">Наставничество</span><span data-lang="en">Mentorship</span><span data-lang="ro">Mentorat</span></span>
-                        <span><span data-lang="ru">Возможности</span><span data-lang="en">Opportunities</span><span data-lang="ro">Oportunități</span></span>
-                        <span><span data-lang="ru">Запросы и предложения</span><span data-lang="en">Requests &amp; offers</span><span data-lang="ro">Solicitări și oferte</span></span>
-                    </div>
-                </div>
-                <div class="miro-logo-wall__visual" aria-hidden="true">
-                    <span class="miro-logo-wall__sticker miro-logo-wall__sticker--brand"><span data-lang="ru">Связи, которые работают</span><span data-lang="en">Connections that move business</span><span data-lang="ro">Conexiuni care dezvoltă afaceri</span></span>
-                </div>
-            </div>
-        </section>
+        {{-- .miro-logo-wall moved to priorities.blade.php (see /about/priorities). --}}
 
 
 
         <section class="miro-section" id="benefits">
             <div class="miro-container">
                 <div class="miro-section__head miro-section__head--center">
-                    <h2><span data-lang="ru">Ключевые преимущества платформы</span><span data-lang="en">Key benefits for your next step</span><span data-lang="ro">Beneficii pentru următorul tău pas</span></h2>
+                    <h2><span data-lang="ru">Преимущества платформы</span><span data-lang="en">Key benefits for your next step</span><span data-lang="ro">Beneficii pentru următorul tău pas</span></h2>
                     <p><span data-lang="ru">Всё необходимое для обучения, полезных знакомств и роста бизнеса — в одном понятном пространстве.</span><span data-lang="en">Everything you need to learn, connect and grow your business in one clear space.</span><span data-lang="ro">Tot ce ai nevoie pentru a învăța, a te conecta și a-ți dezvolta afacerea într-un singur spațiu clar.</span></p>
                 </div>
                 <div class="miro-benefits">
@@ -276,7 +260,7 @@
             </div>
         </section>
 
-        <section class="miro-section miro-section--dark" id="how-it-works">
+        <section class="miro-section miro-section--surface" id="how-it-works">
             <div class="miro-container">
                 <div class="miro-section__head miro-section__head--center">
                     <p class="miro-eyebrow"><span data-lang="ru">Как это работает</span><span data-lang="en">How it works</span><span data-lang="ro">Cum funcționează</span></p>
@@ -307,78 +291,22 @@
             </div>
         </section>
 
-        <section class="miro-section miro-section--surface" id="features">
+        <section class="miro-section" id="register-cta">
             <div class="miro-container">
                 <div class="miro-section__head miro-section__head--center">
-                    <p class="miro-eyebrow"><span data-lang="ru">Возможности</span><span data-lang="en">What you can do</span><span data-lang="ro">Ce poți face</span></p>
-                    <h2><span data-lang="ru">От идеи к следующему действию</span><span data-lang="en">From an idea to the next action</span><span data-lang="ro">De la idee la următoarea acțiune</span></h2>
-                    <p><span data-lang="ru">Платформа помогает не просто хранить информацию, а превращать её в движение.</span><span data-lang="en">The platform turns information into momentum, not just another place to store it.</span><span data-lang="ro">Platforma transformă informația în mișcare, nu doar într-un alt loc de stocare.</span></p>
+                    <h2><span data-lang="ru">Присоединяйтесь к платформе</span><span data-lang="en">Join the platform</span><span data-lang="ro">Alătură-te platformei</span></h2>
+                    <p><span data-lang="ru">Создайте профиль за несколько минут и получите доступ к сообществу, знаниям и новым возможностям.</span><span data-lang="en">Create your profile in minutes and get access to the community, resources and new opportunities.</span><span data-lang="ro">Creează-ți profilul în câteva minute și obții acces la comunitate, resurse și oportunități noi.</span></p>
                 </div>
-                <div class="miro-split">
-                    <div class="miro-split__copy">
-                        <span class="miro-tag"><span data-lang="ru">AI-powered</span><span data-lang="en">AI-powered</span><span data-lang="ro">Cu AI</span></span>
-                        <h3 style="margin-top: 18px;"><span data-lang="ru">Найдите контакт, который нужен именно сейчас</span><span data-lang="en">Find the connection you need right now</span><span data-lang="ro">Găsește conexiunea de care ai nevoie acum</span></h3>
-                        <p><span data-lang="ru">Опишите свой запрос обычными словами. AI сопоставит его с профилями участниц и покажет близкие варианты.</span><span data-lang="en">Describe your request in your own words. AI matches it with member profiles and surfaces relevant options.</span><span data-lang="ro">Descrie cererea în cuvintele tale. AI o potrivește cu profilurile membrelor.</span></p>
-                        <ul class="miro-list">
-                            <li><span class="miro-list__check">✓</span><span data-lang="ru">Поиск партнёров, экспертов и клиентов</span><span data-lang="en">Find partners, experts and clients</span><span data-lang="ro">Găsește partenere, experte și clienți</span></li>
-                            <li><span class="miro-list__check">✓</span><span data-lang="ru">Рекомендации на основе профиля</span><span data-lang="en">Recommendations based on your profile</span><span data-lang="ro">Recomandări bazate pe profil</span></li>
-                            <li><span class="miro-list__check">✓</span><span data-lang="ru">Прямой контакт через Telegram</span><span data-lang="en">Direct contact through Telegram</span><span data-lang="ro">Contact direct prin Telegram</span></li>
-                        </ul>
-                    </div>
-                    <div class="miro-mockup">
-                        <div class="miro-mockup__bar"><i></i><i></i><i></i></div>
-                        <div class="miro-mockup__body miro-mockup__body--ai">
-                            <div class="miro-ai-card">
-                                <span class="miro-ai-card__tag">AI match</span>
-                                <h4>Export partner</h4>
-                                <p>Three relevant profiles found in your community.</p>
-                                <div class="miro-ai-card__meter"><span></span></div>
-                                <p style="margin-top: 8px; color: var(--miro-blue); font-weight: 500;">86% relevance</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="miro-split miro-split--reverse" style="margin-top: 96px;">
-                    <div class="miro-split__copy">
-                        <span class="miro-tag" style="background: var(--miro-surface-featured); color: var(--miro-blue);"><span data-lang="ru">Shared workspace</span><span data-lang="en">Shared workspace</span><span data-lang="ro">Spațiu comun</span></span>
-                        <h3 style="margin-top: 18px;"><span data-lang="ru">Публикуйте возможности, а не только новости</span><span data-lang="en">Share opportunities, not just updates</span><span data-lang="ro">Distribuie oportunități, nu doar noutăți</span></h3>
-                        <p><span data-lang="ru">Проект, встреча, событие или запрос на сотрудничество — публикация сразу попадает в общий поток и Telegram-уведомления участниц.</span><span data-lang="en">A project, meeting, event or collaboration request reaches the shared feed and Telegram notifications.</span><span data-lang="ro">Un proiect, o întâlnire, un eveniment sau o cerere de colaborare ajunge în fluxul comun și în Telegram.</span></p>
-                        <a href="{{ route('account.login') }}" class="miro-button miro-button--primary" style="margin-top: 28px;"><span data-lang="ru">Открыть кабинет</span><span data-lang="en">Open the cabinet</span><span data-lang="ro">Deschide cabinetul</span></a>
-                    </div>
-                    <div class="miro-mockup">
-                        <div class="miro-mockup__bar"><i></i><i></i><i></i></div>
-                        <div class="miro-mockup__body">
-                            <div class="miro-roadmap">
-                                <div class="miro-roadmap__row"><span class="miro-roadmap__label">Need</span><div class="miro-roadmap__cell is-pink">Find a mentor</div><div class="miro-roadmap__cell">New market</div><div class="miro-roadmap__cell">Local partner</div></div>
-                                <div class="miro-roadmap__row"><span class="miro-roadmap__label">Action</span><div class="miro-roadmap__cell is-blue">Workshop · 14 Jun</div><div class="miro-roadmap__cell">Ask the community</div><div class="miro-roadmap__cell is-pink">Post an opportunity</div></div>
-                                <div class="miro-roadmap__row"><span class="miro-roadmap__label">Result</span><div class="miro-roadmap__cell">New contact</div><div class="miro-roadmap__cell is-blue">Shared learning</div><div class="miro-roadmap__cell">Next step</div></div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="miro-register-cta__actions">
+                    <a href="{{ route('account.login') }}" class="miro-button miro-button--primary"><span data-lang="ru">Зарегистрироваться&nbsp;→</span><span data-lang="en">Register now&nbsp;→</span><span data-lang="ro">Înregistrează-te acum&nbsp;→</span></a>
+                    <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button" style="border: 1px solid var(--miro-hairline-strong); color: var(--miro-ink-deep);"><span data-lang="ru">Начать в Telegram</span><span data-lang="en">Start in Telegram</span><span data-lang="ro">Începe în Telegram</span></a>
                 </div>
             </div>
         </section>
 
-        <section class="miro-section" id="learning">
-            <div class="miro-container">
-                <div class="miro-split">
-                    <div class="miro-image-card">
-                        <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/story-mentor.webp') }}" alt="Mentoring conversation" loading="lazy">
-                        <div class="miro-image-card__caption">
-                            <span class="miro-tag"><span data-lang="ru">Learning & mentoring</span><span data-lang="en">Learning & mentoring</span><span data-lang="ro">Învățare și mentorat</span></span>
-                            <p><span data-lang="ru">Знания становятся полезнее, когда их можно сразу обсудить и применить.</span><span data-lang="en">Knowledge becomes more useful when you can discuss and apply it right away.</span><span data-lang="ro">Cunoștințele devin mai utile când le poți discuta și aplica imediat.</span></p>
-                        </div>
-                    </div>
-                    <div class="miro-split__copy">
-                        <p class="miro-eyebrow"><span data-lang="ru">Обучение</span><span data-lang="en">Learning</span><span data-lang="ro">Învățare</span></p>
-                        <h2><span data-lang="ru">Учитесь в своём темпе, растите рядом с другими</span><span data-lang="en">Learn at your pace, grow with others</span><span data-lang="ro">Învață în ritmul tău, crește alături de comunitate</span></h2>
-                        <p><span data-lang="ru">Материалы, практические встречи, менторство и опыт других предпринимательниц помогают переходить от вопроса к решению.</span><span data-lang="en">Materials, practical sessions, mentoring and peer experience help you move from a question to a solution.</span><span data-lang="ro">Materiale, sesiuni practice, mentorat și experiența comunității te ajută să ajungi de la întrebare la soluție.</span></p>
-                        <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button miro-button--pink" style="margin-top: 28px;"><span data-lang="ru">Присоединиться к сообществу</span><span data-lang="en">Join the community</span><span data-lang="ro">Alătură-te comunității</span></a>
-                    </div>
-                </div>
-            </div>
-        </section>
+        {{-- #features moved to priorities.blade.php (see /about/priorities). --}}
+
+        {{-- #learning moved to priorities.blade.php (see /about/priorities). --}}
 
         <section class="miro-section miro-section--soft" id="members">
             <div class="miro-container">
@@ -487,7 +415,213 @@
                     <article class="miro-member-card"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/hero-community.webp') }}" alt="Women entrepreneurs community profile" loading="lazy"><div><h4><span data-lang="ru">Эксперт · Развитие сообщества</span><span data-lang="en">Expert · Community building</span><span data-lang="ro">Expertă · Dezvoltarea comunității</span></h4><div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Эксперт</span><span data-lang="en">Expert</span><span data-lang="ro">Expertă</span></span><span class="miro-profile-tag miro-profile-tag--teal"><span data-lang="ru">Менторство</span><span data-lang="en">Mentorship</span><span data-lang="ro">Mentorat</span></span><span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Открыта к сотрудничеству</span><span data-lang="en">Open to collaboration</span><span data-lang="ro">Deschisă colaborării</span></span></div><p><span data-lang="ru">Соединяет людей, идеи и возможности для общего результата.</span><span data-lang="en">Connecting people, ideas and opportunities for a shared result.</span><span data-lang="ro">Conectează oameni, idei și oportunități pentru rezultate comune.</span></p></div></article>
                 </div>
                 <div class="miro-members__cta">
-                    <a class="miro-button miro-button--primary" href="{{ route('members') }}"><span data-lang="ru">Найти похожие профили&nbsp;→</span><span data-lang="en">Find similar profiles&nbsp;→</span><span data-lang="ro">Găsește profiluri similare&nbsp;→</span></a>
+                    <a class="miro-button miro-button--primary" href="{{ route('experts') }}"><span data-lang="ru">Найти похожие профили&nbsp;→</span><span data-lang="en">Find similar profiles&nbsp;→</span><span data-lang="ro">Găsește profiluri similare&nbsp;→</span></a>
+                </div>
+            </div>
+        </section>
+
+        <section class="miro-section miro-section--surface" id="participants">
+            <div class="miro-container">
+                <div class="miro-section__head">
+                    <h2><span data-lang="ru">Участницы платформы</span><span data-lang="en">Platform participants</span><span data-lang="ro">Participantele platformei</span></h2>
+                    <p><span data-lang="ru">Предпринимательницы, которые уже развивают собственное дело при поддержке платформы — от пищевого производства до туризма и ремёсел.</span><span data-lang="en">Entrepreneurs already growing their businesses with the platform’s support — from food production to tourism and crafts.</span><span data-lang="ro">Antreprenoare care își dezvoltă deja afacerea cu sprijinul platformei — de la producție alimentară la turism și meșteșuguri.</span></p>
+                </div>
+                <div class="miro-participants-grid">
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-andreeva.jpg') }}" alt="Elena Andreeva" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Производство</span><span data-lang="en">Manufacturing</span><span data-lang="ro">Producție</span></span>
+                            <h4><span data-lang="ru">Елена Андреева</span><span data-lang="en">Elena Andreeva</span><span data-lang="ro">Elena Andreeva</span></h4>
+                            <p><span data-lang="ru">«Биофрост» — шоковая заморозка хлебобулочных изделий.</span><span data-lang="en">"Biofrost" — flash-frozen bakery products.</span><span data-lang="ro">„Biofrost” — produse de panificație congelate rapid.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-balyka.jpg') }}" alt="Kristina Balyka" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Гостеприимство</span><span data-lang="en">Hospitality</span><span data-lang="ro">Ospitalitate</span></span>
+                            <h4><span data-lang="ru">Кристина Балыка</span><span data-lang="en">Kristina Balyka</span><span data-lang="ro">Kristina Balyka</span></h4>
+                            <p><span data-lang="ru">Capsula Hostel — первый капсульный отель в Приднестровье.</span><span data-lang="en">Capsula Hostel — the first capsule hotel in Transnistria.</span><span data-lang="ro">Capsula Hostel — primul hotel-capsulă din Transnistria.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-gavriluta.jpg') }}" alt="Anna Gavrilutsa" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Сельское хозяйство</span><span data-lang="en">Agriculture</span><span data-lang="ro">Agricultură</span></span>
+                            <h4><span data-lang="ru">Анна Гаврилуца</span><span data-lang="en">Anna Gavrilutsa</span><span data-lang="ro">Anna Gavrilutsa</span></h4>
+                            <p><span data-lang="ru">VioBerry — тепличное выращивание клубники.</span><span data-lang="en">VioBerry — greenhouse strawberry growing.</span><span data-lang="ro">VioBerry — cultivarea căpșunilor în seră.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-galkina.jpg') }}" alt="Arina Galkina" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Эко-товары</span><span data-lang="en">Eco goods</span><span data-lang="ro">Produse eco</span></span>
+                            <h4><span data-lang="ru">Арина Галкина</span><span data-lang="en">Arina Galkina</span><span data-lang="ro">Arina Galkina</span></h4>
+                            <p><span data-lang="ru">«ЭКО торба» и Goodwin.glass — эко-товары ручной работы.</span><span data-lang="en">"ECO torba" and Goodwin.glass — handmade eco goods.</span><span data-lang="ro">„ECO torba” și Goodwin.glass — produse eco lucrate manual.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-rozhenko-elena.jpg') }}" alt="Elena Rozhenko" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Красота</span><span data-lang="en">Beauty</span><span data-lang="ro">Frumusețe</span></span>
+                            <h4><span data-lang="ru">Елена Роженко</span><span data-lang="en">Elena Rozhenko</span><span data-lang="ro">Elena Rozhenko</span></h4>
+                            <p><span data-lang="ru">«ФЁКЛА» — органическая косметика из натуральных трав и масел.</span><span data-lang="en">"FEKLA" — organic cosmetics made from natural herbs and oils.</span><span data-lang="ro">„FEKLA” — cosmetice organice din plante și uleiuri naturale.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-tabunchik-marina.jpg') }}" alt="Marina Tabunchik" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Мода</span><span data-lang="en">Fashion</span><span data-lang="ro">Modă</span></span>
+                            <h4><span data-lang="ru">Марина Табунчик</span><span data-lang="en">Marina Tabunchik</span><span data-lang="ro">Marina Tabunchik</span></h4>
+                            <p><span data-lang="ru">Accent Textile — детская одежда из органического хлопка.</span><span data-lang="en">"Accent Textile" — children's clothing made from organic cotton.</span><span data-lang="ro">„Accent Textile” — haine pentru copii din bumbac organic.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-volskaya-anastasiya.jpg') }}" alt="Anastasiya Volskaya" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">IT</span><span data-lang="en">IT</span><span data-lang="ro">IT</span></span>
+                            <h4><span data-lang="ru">Анастасия Вольская</span><span data-lang="en">Anastasiya Volskaya</span><span data-lang="ro">Anastasiya Volskaya</span></h4>
+                            <p><span data-lang="ru">IT-предприятие — мониторинг полей дронами для аграриев.</span><span data-lang="en">A drone-based field monitoring service for farmers.</span><span data-lang="ro">Un serviciu de monitorizare a câmpurilor cu drone pentru fermieri.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-zatyka-alina.jpg') }}" alt="Alina Zatyka" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Пчеловодство</span><span data-lang="en">Beekeeping</span><span data-lang="ro">Apicultură</span></span>
+                            <h4><span data-lang="ru">Алина Затыка</span><span data-lang="en">Alina Zatyka</span><span data-lang="ro">Alina Zatyka</span></h4>
+                            <p><span data-lang="ru">Семейная пасека — мёд, пыльца, прополис и воск.</span><span data-lang="en">A family apiary producing honey, pollen, propolis and wax.</span><span data-lang="ro">O stupină de familie — miere, polen, propolis și ceară.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-shchukina-olga.jpg') }}" alt="Olga Shchukina" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Образование</span><span data-lang="en">Education</span><span data-lang="ro">Educație</span></span>
+                            <h4><span data-lang="ru">Ольга Щукина</span><span data-lang="en">Olga Shchukina</span><span data-lang="ro">Olga Shchukina</span></h4>
+                            <p><span data-lang="ru">Консалтинговый центр — профориентация и международное образование для молодёжи.</span><span data-lang="en">A consulting centre for career guidance and international education.</span><span data-lang="ro">Un centru de consiliere pentru orientare profesională și studii internaționale.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-boynegri-irina.jpg') }}" alt="Irina Boynegri" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Здоровье и фитнес</span><span data-lang="en">Health &amp; fitness</span><span data-lang="ro">Sănătate și fitness</span></span>
+                            <h4><span data-lang="ru">Ирина Бойнегри</span><span data-lang="en">Irina Boynegri</span><span data-lang="ro">Irina Boynegri</span></h4>
+                            <p><span data-lang="ru">TERRA-fit — студия ЭМС-тренировок и реабилитационного фитнеса.</span><span data-lang="en">"TERRA-fit" — an EMS training and rehabilitation fitness studio.</span><span data-lang="ro">„TERRA-fit” — un studio de antrenamente EMS și fitness de recuperare.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-lashko-anna.jpg') }}" alt="Anna Lashko" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Общепит</span><span data-lang="en">Food service</span><span data-lang="ro">Alimentație</span></span>
+                            <h4><span data-lang="ru">Анна Лашко</span><span data-lang="en">Anna Lashko</span><span data-lang="ro">Anna Lashko</span></h4>
+                            <p><span data-lang="ru">Итальянское мороженое «Джелато» из свежего молдавского сырья.</span><span data-lang="en">Italian "Gelato" ice cream made with fresh local ingredients.</span><span data-lang="ro">„Gelato” — înghețată italiană din ingrediente locale proaspete.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-mileva-dmitrishina-mariya.jpg') }}" alt="Mariya Mileva-Dmitrishina" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Сыроварение</span><span data-lang="en">Cheesemaking</span><span data-lang="ro">Fabricarea brânzei</span></span>
+                            <h4><span data-lang="ru">Мария Милева-Дмитришина</span><span data-lang="en">Mariya Mileva-Dmitrishina</span><span data-lang="ro">Mariya Mileva-Dmitrishina</span></h4>
+                            <p><span data-lang="ru">Крафтовые сыры по европейским технологиям из приднестровского молока.</span><span data-lang="en">Craft cheeses made by European methods from local milk.</span><span data-lang="ro">Brânzeturi artizanale, după tehnologii europene, din lapte local.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-gaypel-nadezhda.jpg') }}" alt="Nadezhda Gaypel" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Кондитерское дело</span><span data-lang="en">Confectionery</span><span data-lang="ro">Cofetărie</span></span>
+                            <h4><span data-lang="ru">Надежда Гайпель</span><span data-lang="en">Nadezhda Gaypel</span><span data-lang="ro">Nadezhda Gaypel</span></h4>
+                            <p><span data-lang="ru">«Фрея» — натуральные снеки: пастила, сухофрукты, ореховая паста.</span><span data-lang="en">"Freya" — natural snacks: fruit pastila, dried fruit, nut butter.</span><span data-lang="ro">„Freya” — gustări naturale: pastilă de fructe, fructe uscate, unt de nuci.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-vyushkova-vladlena.jpg') }}" alt="Vladlena Vyushkova" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Текстиль</span><span data-lang="en">Textiles</span><span data-lang="ro">Textile</span></span>
+                            <h4><span data-lang="ru">Владлена Вьюшкова</span><span data-lang="en">Vladlena Vyushkova</span><span data-lang="ro">Vladlena Vyushkova</span></h4>
+                            <p><span data-lang="ru">«Вышивальная сказка» — авторская вышивка на эко-одежде.</span><span data-lang="en">"Embroidery Tale" — original embroidery on eco-friendly clothing.</span><span data-lang="ro">„Povestea Brodată” — broderie originală pe haine ecologice.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-mushinski-viktoriya.jpg') }}" alt="Viktoriya Mushinski" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Туризм</span><span data-lang="en">Tourism</span><span data-lang="ro">Turism</span></span>
+                            <h4><span data-lang="ru">Виктория Мушински</span><span data-lang="en">Viktoriya Mushinski</span><span data-lang="ro">Viktoriya Mushinski</span></h4>
+                            <p><span data-lang="ru">«Приключение на Днестре» — экологичные прогулки на понтонном катере.</span><span data-lang="en">"Dniester Adventure" — eco-friendly pontoon boat river tours.</span><span data-lang="ro">„Aventura pe Nistru” — plimbări ecologice cu barca-pontoane.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-hamuraru-olesya.jpg') }}" alt="Olesya Hamuraru" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Ремёсла</span><span data-lang="en">Crafts</span><span data-lang="ro">Meșteșuguri</span></span>
+                            <h4><span data-lang="ru">Олеся Хамурару</span><span data-lang="en">Olesya Hamuraru</span><span data-lang="ro">Olesya Hamuraru</span></h4>
+                            <p><span data-lang="ru">Top Candles — свечи из натурального воска с живыми цветами.</span><span data-lang="en">"Top Candles" — natural wax candles with real flowers.</span><span data-lang="ro">„Top Candles” — lumânări din ceară naturală cu flori adevărate.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-dronik-elena.jpg') }}" alt="Elena Dronik" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Флористика</span><span data-lang="en">Florals</span><span data-lang="ro">Floristică</span></span>
+                            <h4><span data-lang="ru">Елена Дроник</span><span data-lang="en">Elena Dronik</span><span data-lang="ro">Elena Dronik</span></h4>
+                            <p><span data-lang="ru">House of Flowers — экологичные сухоцветы для флористики.</span><span data-lang="en">"House of Flowers" — eco-friendly dried flowers for florists.</span><span data-lang="ro">„House of Flowers” — flori uscate ecologice pentru floristică.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-vikol-tatyana.jpg') }}" alt="Tatyana Vikol" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Животноводство</span><span data-lang="en">Livestock</span><span data-lang="ro">Zootehnie</span></span>
+                            <h4><span data-lang="ru">Татьяна Викол</span><span data-lang="en">Tatyana Vikol</span><span data-lang="ro">Tatyana Vikol</span></h4>
+                            <p><span data-lang="ru">Разведение кроликов — экологически чистое диетическое мясо.</span><span data-lang="en">Rabbit farming — eco-friendly, dietetic meat.</span><span data-lang="ro">Creșterea iepurilor — carne dietetică, ecologică.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-robytnik-irina.jpg') }}" alt="Irina Robytnik" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Дизайн</span><span data-lang="en">Design</span><span data-lang="ro">Design</span></span>
+                            <h4><span data-lang="ru">Ирина Робытник</span><span data-lang="en">Irina Robytnik</span><span data-lang="ro">Irina Robytnik</span></h4>
+                            <p><span data-lang="ru">Дизайн интерьера, экстерьера и ландшафта — более 30 проектов.</span><span data-lang="en">Interior, exterior and landscape design — over 30 projects.</span><span data-lang="ro">Design interior, exterior și peisagistic — peste 30 de proiecte.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-svetlana-bulavkina.jpg') }}" alt="Svetlana Bulavkina" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Фотография</span><span data-lang="en">Photography</span><span data-lang="ro">Fotografie</span></span>
+                            <h4><span data-lang="ru">Светлана Булавкина</span><span data-lang="en">Svetlana Bulavkina</span><span data-lang="ro">Svetlana Bulavkina</span></h4>
+                            <p><span data-lang="ru">Ньюборн-фотосессии — первый такой формат на местном рынке.</span><span data-lang="en">Newborn photo sessions — the first of their kind locally.</span><span data-lang="ro">Ședințe foto newborn — primele de acest fel pe piața locală.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-tsurkan-dorunga-ekaterina.jpg') }}" alt="Ekaterina Tsurkan-Dorunga" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Психология</span><span data-lang="en">Psychology</span><span data-lang="ro">Psihologie</span></span>
+                            <h4><span data-lang="ru">Екатерина Цуркан-Дорунга</span><span data-lang="en">Ekaterina Tsurkan-Dorunga</span><span data-lang="ro">Ekaterina Tsurkan-Dorunga</span></h4>
+                            <p><span data-lang="ru">«Шаги к себе» — тренинги по психологии и личностному росту.</span><span data-lang="en">"Steps to Yourself" — psychology and personal-growth training.</span><span data-lang="ro">„Pași spre Tine” — traininguri de psihologie și dezvoltare personală.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-gaypel-elena.jpg') }}" alt="Elena Gaypel" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Столярное дело</span><span data-lang="en">Woodworking</span><span data-lang="ro">Tâmplărie</span></span>
+                            <h4><span data-lang="ru">Елена Гайпель</span><span data-lang="en">Elena Gaypel</span><span data-lang="ro">Elena Gaypel</span></h4>
+                            <p><span data-lang="ru">Столярная мастерская — изделия из дерева и смолы.</span><span data-lang="en">A woodworking studio — pieces made of wood and resin.</span><span data-lang="ro">Un atelier de tâmplărie — obiecte din lemn și rășină.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-ermuraki-irina.jpg') }}" alt="Irina Ermuraki" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Клининг</span><span data-lang="en">Cleaning</span><span data-lang="ro">Curățenie</span></span>
+                            <h4><span data-lang="ru">Ирина Ермураки</span><span data-lang="en">Irina Ermuraki</span><span data-lang="ro">Irina Ermuraki</span></h4>
+                            <p><span data-lang="ru">Клининговая компания — уборка квартир, домов и офисов.</span><span data-lang="en">A cleaning company for homes, houses and offices.</span><span data-lang="ro">O companie de curățenie pentru case și birouri.</span></p>
+                        </div>
+                    </article>
+                    <article class="miro-participant-card">
+                        <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/participants/participant-shirokova-aleksandra.jpg') }}" alt="Aleksandra Shirokova" loading="lazy">
+                        <div class="miro-participant-card__body">
+                            <span class="miro-participant-card__tag"><span data-lang="ru">Событийный бизнес</span><span data-lang="en">Events</span><span data-lang="ro">Evenimente</span></span>
+                            <h4><span data-lang="ru">Александра Широкова</span><span data-lang="en">Aleksandra Shirokova</span><span data-lang="ro">Aleksandra Shirokova</span></h4>
+                            <p><span data-lang="ru">Аэродизайн — оформление праздников гелиевыми и биоразлагаемыми шарами.</span><span data-lang="en">Balloon decor for events, using biodegradable balloons.</span><span data-lang="ro">Decor cu baloane pentru evenimente, cu baloane biodegradabile.</span></p>
+                        </div>
+                    </article>
+                </div>
+                <div class="miro-participants__cta">
+                    <a class="miro-button miro-button--secondary" href="{{ route('members') }}"><span data-lang="ru">Все участницы&nbsp;→</span><span data-lang="en">All participants&nbsp;→</span><span data-lang="ro">Toate participantele&nbsp;→</span></a>
                 </div>
             </div>
         </section>
@@ -510,28 +644,22 @@
             </div>
         </section>
 
-        <section class="miro-section miro-section--surface" id="stories">
-            <div class="miro-container">
-                <div class="miro-story">
-                    <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/story-export.webp') }}" alt="Women entrepreneurs collaborating" loading="lazy">
-                    <div class="miro-story__body">
-                        <span class="miro-tag" style="width: fit-content; background: var(--miro-pink); color: var(--miro-primary);">Member story</span>
-                        <blockquote><span data-lang="ru">«Нужный контакт оказался не где-то далеко — он уже был внутри сообщества.»</span><span data-lang="en">“The right connection was not far away — it was already inside the community.”</span><span data-lang="ro">„Conexiunea potrivită nu era departe — era deja în comunitate.”</span></blockquote>
-                        <p>Women Entrepreneurs Platform member</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        {{-- #stories and the closing "Готовы собрать свой следующий шаг?" CTA moved to
+             priorities.blade.php (see /about/priorities). --}}
 
-        <section class="miro-section">
+        <section class="miro-section" id="partners-strip">
             <div class="miro-container">
-                <div class="miro-cta">
-                    <h2><span data-lang="ru">Готовы собрать свой следующий шаг?</span><span data-lang="en">Ready to bring your next step together?</span><span data-lang="ro">Ești gata să construiești următorul pas?</span></h2>
-                    <p><span data-lang="ru">Присоединяйтесь к платформе через Telegram и начните с простого профиля.</span><span data-lang="en">Join through Telegram and start with a simple profile.</span><span data-lang="ro">Alătură-te prin Telegram și începe cu un profil simplu.</span></p>
-                    <div class="miro-hero__actions">
-                        <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button miro-button--on-dark"><span data-lang="ru">Начать в Telegram</span><span data-lang="en">Start in Telegram</span><span data-lang="ro">Începe în Telegram</span></a>
-                        <a href="{{ route('account.login') }}" class="miro-button" style="border: 1px solid rgba(255,255,255,.35); color: #fff;"><span data-lang="ru">У меня уже есть доступ</span><span data-lang="en">I already have access</span><span data-lang="ro">Am deja acces</span></a>
-                    </div>
+                <div class="miro-partners-strip">
+                    <a class="miro-partner-chip" href="https://innovation.md/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/coordinator-ida.png') }}" alt="Агентство инноваций и развития" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://creativity.md/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/coordinator-creative.png') }}" alt="Ассоциация креативных индустрий Приднестровья" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://social.innovation.md/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/coordinator-platform.png') }}" alt="Платформа социального предпринимательства" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://eba.md/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/local-eba.png') }}" alt="European Business Association Moldova" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://afam.md/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/local-afam.png') }}" alt="AFAM" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://glia.md/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/local-glia.png') }}" alt="Glia Impact Hub" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://progen.md/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/local-progen.png') }}" alt="Centrul Parteneriat pentru Dezvoltare" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://www.netherlandsandyou.nl/web/moldova" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/intl-netherlands.png') }}" alt="Королевство Нидерландов" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://www.nrc.no/moldova" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/intl-nrc.png') }}" alt="Норвежский совет по делам беженцев" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://moldova.unwomen.org/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/intl-unwomen.png') }}" alt="ООН-женщины" loading="lazy"></a>
                 </div>
             </div>
         </section>

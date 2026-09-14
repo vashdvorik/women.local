@@ -42,17 +42,9 @@ Route::get('/contact', function () {
 
 $publicSection = static fn (array $data) => PublicThemeView::render('public-section', $data);
 
-Route::get('/about/priorities', fn () => $publicSection([
-    'pageKey' => 'priorities',
-    'eyebrow' => ['ru' => 'О нас', 'en' => 'About us', 'ro' => 'Despre noi'],
-    'title' => ['ru' => 'Приоритеты платформы', 'en' => 'Our priorities', 'ro' => 'Prioritățile platformei'],
-    'intro' => ['ru' => 'Мы создаём практическую среду, в которой женщины могут развивать бизнес, находить поддержку и открывать новые возможности.', 'en' => 'We create a practical environment where women can grow their businesses, find support and discover new opportunities.', 'ro' => 'Creăm un mediu practic în care femeile își pot dezvolta afacerile, găsi sprijin și descoperi oportunități noi.'],
-    'items' => [
-        ['ru' => 'Доступ к знаниям и развитию', 'en' => 'Access to knowledge and growth', 'ro' => 'Acces la cunoștințe și dezvoltare'],
-        ['ru' => 'Связи между предпринимательницами', 'en' => 'Connections between women entrepreneurs', 'ro' => 'Conexiuni între femeile antreprenoare'],
-        ['ru' => 'Поддержка новых проектов и партнёрств', 'en' => 'Support for new projects and partnerships', 'ro' => 'Sprijin pentru proiecte și parteneriate noi'],
-    ],
-]))->name('about.priorities');
+Route::get('/about/priorities', function () {
+    return PublicThemeView::render('priorities');
+})->name('about.priorities');
 
 Route::get('/about/leadership', fn () => $publicSection([
     'pageKey' => 'leadership',

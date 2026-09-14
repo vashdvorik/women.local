@@ -17,9 +17,9 @@
             <div>
                 <h4><span data-lang="ru">Ресурсы</span><span data-lang="en">Resources</span><span data-lang="ro">Resurse</span></h4>
                 <ul>
-                    <li><a href="{{ url('/') }}#learning"><span data-lang="ru">Обучение</span><span data-lang="en">Learning</span><span data-lang="ro">Învățare</span></a></li>
+                    <li><a href="{{ route('about.priorities') }}#learning"><span data-lang="ru">Обучение</span><span data-lang="en">Learning</span><span data-lang="ro">Învățare</span></a></li>
                     <li><a href="{{ url('/') }}#opportunities"><span data-lang="ru">Возможности</span><span data-lang="en">Opportunities</span><span data-lang="ro">Oportunități</span></a></li>
-                    <li><a href="{{ url('/') }}#stories"><span data-lang="ru">Истории</span><span data-lang="en">Stories</span><span data-lang="ro">Istorii</span></a></li>
+                    <li><a href="{{ route('about.priorities') }}#stories"><span data-lang="ru">Истории</span><span data-lang="en">Stories</span><span data-lang="ro">Istorii</span></a></li>
                 </ul>
             </div>
             <div>

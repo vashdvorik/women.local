@@ -52,16 +52,22 @@
         .miro-section__head { max-width:760px; margin-bottom:40px; }
         .miro-section__head h2 { margin:0; color:var(--miro-ink-deep); font-family:var(--miro-display-font); font-size:clamp(32px,5vw,54px); font-weight:400; line-height:1.12; letter-spacing:-.015em; }
         .miro-section__head p { margin:16px 0 0; color:var(--miro-slate); font-size:18px; }
-        .miro-members-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:20px; }
-        .miro-public-member { display:flex; min-width:0; flex-direction:column; overflow:hidden; border:1px solid var(--miro-hairline-soft); border-radius:26px; background:#fff; box-shadow:0 8px 24px rgba(33, 20, 15,.045); transition:transform .2s ease,box-shadow .2s ease; }
+        /* Refined "editorial portrait" card — square (not 4:5) crop, tighter chrome and
+           clamped text so every card in a row ends at the same height. The tall rectangular
+           photo, heavy 26px radius and unclamped role/description were what made the grid
+           read as bulky and uneven — a long role line would push one card's bottom edge well
+           past its neighbours'. Square photos plus 2-line clamps fix both at once, while
+           staying visually distinct from the small circular avatars on the compact
+           participant cards (/members). */
+        .miro-members-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px; }
+        .miro-public-member { display:flex; min-width:0; flex-direction:column; overflow:hidden; border:1px solid var(--miro-hairline-soft); border-radius:18px; background:#fff; box-shadow:0 6px 16px rgba(33, 20, 15,.04); transition:transform .2s ease,box-shadow .2s ease; }
         .miro-public-member:hover { transform:translateY(-3px); box-shadow:var(--miro-shadow); }
-        .miro-public-member__visual { position:relative; aspect-ratio:4/5; background:var(--miro-teal); }
-        .miro-public-member__visual::after { content:""; position:absolute; right:-20px; bottom:-28px; width:120px; height:120px; border:14px solid rgba(255,255,255,.5); border-radius:50%; }
-        .miro-public-member__visual img { position:relative; z-index:1; width:100%; height:100%; object-fit:cover; object-position:center top; }
-        .miro-public-member__body { display:flex; flex:1; flex-direction:column; padding:24px; }
-        .miro-public-member h3 { margin:0; color:var(--miro-ink-deep); font-size:21px; font-weight:600; line-height:1.25; letter-spacing:-.01em; }
-        .miro-public-member__specialization { margin:8px 0 0; color:var(--miro-blue); font-size:14px; font-weight:600; }
-        .miro-public-member__description { margin:12px 0 0; color:var(--miro-slate); font-size:14px; line-height:1.5; }
+        .miro-public-member__visual { position:relative; aspect-ratio:1/1; background:var(--miro-teal); }
+        .miro-public-member__visual img { width:100%; height:100%; object-fit:cover; object-position:center top; }
+        .miro-public-member__body { display:flex; flex:1; flex-direction:column; padding:18px 20px 20px; }
+        .miro-public-member h3 { margin:0; color:var(--miro-ink-deep); font-family:var(--miro-display-font); font-size:19px; font-weight:400; line-height:1.28; letter-spacing:-.005em; }
+        .miro-public-member__specialization { display:-webkit-box; overflow:hidden; margin:6px 0 0; color:var(--miro-blue); font-size:13px; font-weight:600; line-height:1.4; -webkit-box-orient:vertical; -webkit-line-clamp:2; }
+        .miro-public-member__description { display:-webkit-box; overflow:hidden; margin:10px 0 0; color:var(--miro-slate); font-size:13px; line-height:1.5; -webkit-box-orient:vertical; -webkit-line-clamp:2; }
         .miro-members-cta { margin-top:48px; padding:48px 28px; border-radius:28px; background:var(--miro-primary); color:#fff; text-align:center; }
         .miro-members-cta h2 { max-width:700px; margin:0 auto; color:#fff; font-family:var(--miro-display-font); font-size:clamp(32px,5vw,54px); font-weight:400; line-height:1.1; letter-spacing:-.015em; }
         .miro-members-cta p { max-width:580px; margin:18px auto 0; color:var(--miro-muted); font-size:18px; }
