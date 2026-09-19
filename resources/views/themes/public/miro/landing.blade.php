@@ -647,8 +647,11 @@
         {{-- #stories and the closing "Готовы собрать свой следующий шаг?" CTA moved to
              priorities.blade.php (see /about/priorities). --}}
 
-        <section class="miro-section" id="partners-strip">
+        <section class="miro-section miro-section--surface" id="partners-strip">
             <div class="miro-container">
+                <div class="miro-section__head miro-section__head--center">
+                    <h2><span data-lang="ru">Наши партнёры</span><span data-lang="en">Our partners</span><span data-lang="ro">Partenerii noștri</span></h2>
+                </div>
                 <div class="miro-partners-strip">
                     <a class="miro-partner-chip" href="https://innovation.md/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/coordinator-ida.png') }}" alt="Агентство инноваций и развития" loading="lazy"></a>
                     <a class="miro-partner-chip" href="https://creativity.md/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/coordinator-creative.png') }}" alt="Ассоциация креативных индустрий Приднестровья" loading="lazy"></a>
