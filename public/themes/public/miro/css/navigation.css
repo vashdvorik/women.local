@@ -67,6 +67,14 @@ html { color-scheme: light; }
 /* One navigation treatment across all public pages. */
 .miro-nav { border-bottom-color: rgba(201,154,115,.32) !important; background: #21140F !important; }
 .miro-brand__logo { filter: none !important; object-fit: contain; object-position: left center; }
+/* The logo file is now trimmed to its artwork (no transparent padding), so size it by
+   height and let the width follow the ~4.6:1 aspect ratio — every page's own
+   `.miro-brand__logo { width:176px; height:52px }` used to letterbox it into a box much
+   smaller than the artwork looked. The header height scales with the viewport
+   (38px at the narrowest desktop width, where the nav links are tight, up to 46px) so
+   it never crowds the menu. */
+.miro-nav .miro-brand__logo { width: auto; height: clamp(38px, 3.6vw, 46px); max-width: 100%; }
+.miro-footer .miro-brand__logo { width: auto; height: 52px; max-width: 100%; }
 .miro-nav__links,
 .miro-nav__dropdown-trigger { color: #F8E8DF !important; }
 .miro-nav__links { flex: 1 1 auto !important; min-width: 0; justify-content: center; gap: 24px; overflow: visible; }
