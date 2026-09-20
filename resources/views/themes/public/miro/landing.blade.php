@@ -2,6 +2,9 @@
     $botUrl = 'https://t.me/WomenComBot';
     $managerUrl = 'https://t.me/lesnichenkoP';
     $communityUrl = config('nutgram.community_url', $botUrl);
+    $locales = ['ru', 'en', 'ro'];
+    $landingExperts = $landingExperts ?? collect();
+    $landingEvents = $landingEvents ?? collect();
 @endphp
 
 <!DOCTYPE html>
@@ -315,104 +318,18 @@
                     <p><span data-lang="ru">Здесь представлены предприниматели и эксперты, которые уже зарегистрированы на платформе, рассказывают о своей работе и открыты к сотрудничеству.</span><span data-lang="en">Meet women entrepreneurs and experts already registered on the platform, presenting their work and open to collaboration.</span><span data-lang="ro">Descoperă antreprenoarele și expertele deja înregistrate pe platformă, care își prezintă activitatea și sunt deschise colaborării.</span></p>
                 </div>
                 <div class="miro-grid-2">
-                    <article class="miro-member-card">
-                        <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/experts/expert-carolina.png') }}" alt="Carolina Bugaiyan" loading="lazy">
-                        <div>
-                            <h4><span data-lang="ru">Каролина Бугаян</span><span data-lang="en">Carolina Bugaiyan</span><span data-lang="ro">Carolina Bugaiyan</span></h4>
-                            <p class="miro-member-card__role"><span data-lang="ru">Президент Ассоциации деловых женщин Молдовы (AFAM)</span><span data-lang="en">President of the Association of Women Entrepreneurs in Moldova (AFAM)</span><span data-lang="ro">Președinta Asociației Femeilor de Afaceri din Moldova (AFAM)</span></p>
-                            <p class="miro-member-card__specialization"><span data-lang="ru">Женское предпринимательство и развитие делового сообщества</span><span data-lang="en">Women’s entrepreneurship &amp; business community development</span><span data-lang="ro">Antreprenoriat feminin și dezvoltarea comunității de business</span></p>
-                        </div>
-                    </article>
-                    <article class="miro-member-card">
-                        <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/experts/expert-aurelia.png') }}" alt="Aurelia Salicov" loading="lazy">
-                        <div>
-                            <h4><span data-lang="ru">Аурелия Саликов</span><span data-lang="en">Aurelia Salicov</span><span data-lang="ro">Aurelia Salicov</span></h4>
-                            <p class="miro-member-card__role"><span data-lang="ru">Вице-президент Международного бизнес-сообщества в Молдове</span><span data-lang="en">Vice-President of the International Business Society in Moldova</span><span data-lang="ro">Vicepreședinta International Business Society din Moldova</span></p>
-                            <p class="miro-member-card__specialization"><span data-lang="ru">Международное деловое сотрудничество</span><span data-lang="en">International business cooperation</span><span data-lang="ro">Cooperare internațională de business</span></p>
-                        </div>
-                    </article>
-                    <article class="miro-member-card">
-                        <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/experts/expert-vlada.png') }}" alt="Vlada Lysenko" loading="lazy">
-                        <div>
-                            <h4><span data-lang="ru">Влада Лысенко</span><span data-lang="en">Vlada Lysenko</span><span data-lang="ro">Vlada Lysenko</span></h4>
-                            <p class="miro-member-card__role"><span data-lang="ru">Доктор наук, профессор, международный консультант</span><span data-lang="en">Doctor of Sciences, Professor &amp; International Consultant</span><span data-lang="ro">Doctor în științe, profesor și consultant internațional</span></p>
-                            <p class="miro-member-card__specialization"><span data-lang="ru">Наука, образование и международный консалтинг</span><span data-lang="en">Research, education &amp; international consulting</span><span data-lang="ro">Cercetare, educație și consultanță internațională</span></p>
-                        </div>
-                    </article>
-                    <article class="miro-member-card">
-                        <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/experts/expert-zinaida.png') }}" alt="Zinaida Emelyanova" loading="lazy">
-                        <div>
-                            <h4><span data-lang="ru">Зинаида Емельянова</span><span data-lang="en">Zinaida Emelyanova</span><span data-lang="ro">Zinaida Emelyanova</span></h4>
-                            <p class="miro-member-card__role"><span data-lang="ru">Директор Агентства инноваций и развития</span><span data-lang="en">Director of the Agency for Innovation and Development</span><span data-lang="ro">Directoarea Agenției pentru Inovații și Dezvoltare</span></p>
-                            <p class="miro-member-card__specialization"><span data-lang="ru">Инновации и развитие проектов</span><span data-lang="en">Innovation &amp; project development</span><span data-lang="ro">Inovații și dezvoltarea proiectelor</span></p>
-                        </div>
-                    </article>
-                    <article class="miro-member-card">
-                        <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/experts/expert-mariana.png') }}" alt="Mariana Rufa" loading="lazy">
-                        <div>
-                            <h4><span data-lang="ru">Мариана Руфа</span><span data-lang="en">Mariana Rufa</span><span data-lang="ro">Mariana Rufa</span></h4>
-                            <p class="miro-member-card__role"><span data-lang="ru">Исполнительный директор Европейской бизнес-ассоциации в Молдове (EBA)</span><span data-lang="en">Executive Director of the European Business Association of Moldova (EBA)</span><span data-lang="ro">Directoarea executivă a European Business Association of Moldova (EBA)</span></p>
-                            <p class="miro-member-card__specialization"><span data-lang="ru">Европейский бизнес и деловые ассоциации</span><span data-lang="en">European business &amp; business associations</span><span data-lang="ro">Business european și asociații de business</span></p>
-                        </div>
-                    </article>
-                    <article class="miro-member-card">
-                        <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/experts/expert-valeria.png') }}" alt="Valeria Zelinskaya" loading="lazy">
-                        <div>
-                            <h4><span data-lang="ru">Валерия Зелинская</span><span data-lang="en">Valeria Zelinskaya</span><span data-lang="ro">Valeria Zelinskaya</span></h4>
-                            <p class="miro-member-card__role"><span data-lang="ru">Стилистка, основательница бренда L’emone и собственного ателье</span><span data-lang="en">Stylist, founder of L’emone and her own atelier</span><span data-lang="ro">Stilistă, fondatoarea brandului L’emone și a propriului atelier</span></p>
-                            <p class="miro-member-card__specialization"><span data-lang="ru">Стиль, мода и собственный бренд</span><span data-lang="en">Styling, fashion &amp; brand building</span><span data-lang="ro">Stil, modă și dezvoltarea unui brand</span></p>
-                        </div>
-                    </article>
-                </div>
-                <div class="miro-grid-2 miro-members__legacy">
-                    <article class="miro-member-card">
-                        <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/experts/expert-diana.png') }}" alt="Diana Sakirchuk" loading="lazy">
-                        <div>
-                            <h4><span data-lang="ru">Диана Сакирчук</span><span data-lang="en">Diana Sakirchuk</span><span data-lang="ro">Diana Sakirchuk</span></h4>
-                            <p class="miro-member-card__role"><span data-lang="ru">Основательница PureCup</span><span data-lang="en">Founder of PureCup</span><span data-lang="ro">Fondatoarea PureCup</span></p>
-                            <p class="miro-member-card__specialization"><span data-lang="ru">Предпринимательство и развитие продукта</span><span data-lang="en">Entrepreneurship &amp; product development</span><span data-lang="ro">Antreprenoriat și dezvoltarea produsului</span></p>
-                            <div class="miro-member-card__tags">
-                                <span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Основательница</span><span data-lang="en">Founder</span><span data-lang="ro">Fondatoare</span></span>
-                                <span class="miro-profile-tag miro-profile-tag--rose">PureCup</span>
-                                <span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Продукт</span><span data-lang="en">Product</span><span data-lang="ro">Produs</span></span>
+                    @foreach($landingExperts as $expert)
+                        <article class="miro-member-card">
+                            @if($expert->photoUrl())
+                                <img src="{{ $expert->photoUrl() }}" alt="{{ $expert->field('name', 'en') }}" loading="lazy">
+                            @endif
+                            <div>
+                                <h4>@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $expert->field('name', $locale) }}</span>@endforeach</h4>
+                                <p class="miro-member-card__role">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $expert->field('role', $locale) }}</span>@endforeach</p>
+                                <p class="miro-member-card__specialization">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $expert->field('specialization', $locale) }}</span>@endforeach</p>
                             </div>
-                            <p><span data-lang="ru">Развивает PureCup и собственный предпринимательский проект.</span><span data-lang="en">Builds PureCup and her own entrepreneurial project.</span><span data-lang="ro">Dezvoltă PureCup și propriul proiect antreprenorial.</span></p>
-                        </div>
-                    </article>
-                    <article class="miro-member-card">
-                        <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/experts/expert-olga-melnichuk.png') }}" alt="Olga Melnichuk" loading="lazy">
-                        <div>
-                            <h4><span data-lang="ru">Ольга Мельничук</span><span data-lang="en">Olga Melnichuk</span><span data-lang="ro">Olga Melnichuk</span></h4>
-                            <p class="miro-member-card__role"><span data-lang="ru">Соосновательница Business Angels Moldova, исполнительный директор Startup Moldova</span><span data-lang="en">Co-founder of Business Angels Moldova, Executive Director of Startup Moldova</span><span data-lang="ro">Co-fondatoarea Business Angels Moldova, directoarea executivă Startup Moldova</span></p>
-                            <p class="miro-member-card__specialization"><span data-lang="ru">Стартапы, инвестиции и предпринимательство</span><span data-lang="en">Startups, investment &amp; entrepreneurship</span><span data-lang="ro">Startupuri, investiții și antreprenoriat</span></p>
-                            <div class="miro-member-card__tags">
-                                <span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Стартапы</span><span data-lang="en">Startups</span><span data-lang="ro">Startupuri</span></span>
-                                <span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Инвестиции</span><span data-lang="en">Investment</span><span data-lang="ro">Investiții</span></span>
-                                <span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Сообщества</span><span data-lang="en">Community</span><span data-lang="ro">Comunitate</span></span>
-                            </div>
-                            <p><span data-lang="ru">Развивает стартап- и инвестиционную экосистему Молдовы.</span><span data-lang="en">Develops Moldova’s startup and investment ecosystem.</span><span data-lang="ro">Dezvoltă ecosistemul de startupuri și investiții din Moldova.</span></p>
-                        </div>
-                    </article>
-                    <article class="miro-member-card">
-                        <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/experts/expert-irina.png') }}" alt="Irina Pleshkova" loading="lazy">
-                        <div>
-                            <h4><span data-lang="ru">Ирина Плешкова</span><span data-lang="en">Irina Pleshkova</span><span data-lang="ro">Irina Pleshkova</span></h4>
-                            <p class="miro-member-card__role"><span data-lang="ru">Эксперт по внедрению AI и цифровой эффективности</span><span data-lang="en">Expert in AI adoption and digital efficiency</span><span data-lang="ro">Expertă în implementarea AI și eficiență digitală</span></p>
-                            <p class="miro-member-card__specialization"><span data-lang="ru">AI, цифровая трансформация и эффективность</span><span data-lang="en">AI, digital transformation &amp; efficiency</span><span data-lang="ro">AI, transformare digitală și eficiență</span></p>
-                            <div class="miro-member-card__tags">
-                                <span class="miro-profile-tag miro-profile-tag--coral">AI</span>
-                                <span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Цифровизация</span><span data-lang="en">Digital</span><span data-lang="ro">Digital</span></span>
-                                <span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Эффективность</span><span data-lang="en">Efficiency</span><span data-lang="ro">Eficiență</span></span>
-                            </div>
-                            <p><span data-lang="ru">Помогает предпринимателям внедрять AI и цифровые инструменты для роста эффективности.</span><span data-lang="en">Helps entrepreneurs adopt AI and digital tools to improve efficiency.</span><span data-lang="ro">Ajută antreprenorii să adopte AI și instrumente digitale pentru eficiență.</span></p>
-                        </div>
-                    </article>
-                </div>
-                <div class="miro-grid-2 miro-members__legacy">
-                    <article class="miro-member-card"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/member-fashion.webp') }}" alt="Fashion and design participant profile" loading="lazy"><div><h4><span data-lang="ru">Участница · Мода и дизайн</span><span data-lang="en">Member · Fashion &amp; design</span><span data-lang="ro">Participantă · Modă și design</span></h4><div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--accent"><span data-lang="ru">Участница</span><span data-lang="en">Member</span><span data-lang="ro">Participantă</span></span><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Дизайн</span><span data-lang="en">Design</span><span data-lang="ro">Design</span></span><span class="miro-profile-tag miro-profile-tag--teal"><span data-lang="ru">Ищет партнёров</span><span data-lang="en">Looking for a partner</span><span data-lang="ro">Caută partener</span></span></div><p><span data-lang="ru">President of the Association of Women Entrepreneurs in Moldova (AFAM).</span><span data-lang="en">Building a product and open to new sales channels and partnerships.</span><span data-lang="ro">Dezvoltă un produs și este deschisă canalelor noi de vânzare și parteneriatelor.</span></p></div></article>
-                    <article class="miro-member-card"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/member-digital.webp') }}" alt="Digital services expert profile" loading="lazy"><div><h4><span data-lang="ru">Каролина Бугаян · Президент Ассоциации </span><span data-lang="en">Expert · Digital services</span><span data-lang="ro">Expertă · Servicii digitale</span></h4><div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Эксперт</span><span data-lang="en">Expert</span><span data-lang="ro">Expertă</span></span><span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Бизнесмен</span><span data-lang="en">Marketing</span><span data-lang="ro">Marketing</span></span><span class="miro-profile-tag miro-profile-tag--accent"><span data-lang="ru">Ищет партнеров</span><span data-lang="en">Offers services</span><span data-lang="ro">Oferă servicii</span></span></div><p><span data-lang="ru">President of the Association of Women Entrepreneurs in Moldova (AFAM).</span><span data-lang="en">Helping businesses become more visible, clear and effective.</span><span data-lang="ro">Ajută afacerile să devină mai vizibile, mai clare și mai eficiente.</span></p></div></article>
-                    <article class="miro-member-card"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/member-agrifood.webp') }}" alt="Agrifood participant profile" loading="lazy"><div><h4><span data-lang="ru">Участница · Агро и продукты</span><span data-lang="en">Member · Agri &amp; food</span><span data-lang="ro">Participantă · Agri și produse</span></h4><div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--teal"><span data-lang="ru">Участница</span><span data-lang="en">Member</span><span data-lang="ro">Participantă</span></span><span class="miro-profile-tag miro-profile-tag--orange"><span data-lang="ru">Агро и продукты</span><span data-lang="en">Agri &amp; food</span><span data-lang="ro">Agri și produse</span></span><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Ищет новые рынки</span><span data-lang="en">Looking for new markets</span><span data-lang="ro">Caută piețe noi</span></span></div><p><span data-lang="ru">Развивает локальный бизнес и ищет устойчивые деловые связи.</span><span data-lang="en">Growing a local business and building sustainable business connections.</span><span data-lang="ro">Dezvoltă o afacere locală și construiește conexiuni de business durabile.</span></p></div></article>
-                    <article class="miro-member-card"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/hero-community.webp') }}" alt="Women entrepreneurs community profile" loading="lazy"><div><h4><span data-lang="ru">Эксперт · Развитие сообщества</span><span data-lang="en">Expert · Community building</span><span data-lang="ro">Expertă · Dezvoltarea comunității</span></h4><div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Эксперт</span><span data-lang="en">Expert</span><span data-lang="ro">Expertă</span></span><span class="miro-profile-tag miro-profile-tag--teal"><span data-lang="ru">Менторство</span><span data-lang="en">Mentorship</span><span data-lang="ro">Mentorat</span></span><span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Открыта к сотрудничеству</span><span data-lang="en">Open to collaboration</span><span data-lang="ro">Deschisă colaborării</span></span></div><p><span data-lang="ru">Соединяет людей, идеи и возможности для общего результата.</span><span data-lang="en">Connecting people, ideas and opportunities for a shared result.</span><span data-lang="ro">Conectează oameni, idei și oportunități pentru rezultate comune.</span></p></div></article>
+                        </article>
+                    @endforeach
                 </div>
                 <div class="miro-members__cta">
                     <a class="miro-button miro-button--primary" href="{{ route('experts') }}"><span data-lang="ru">Найти похожие профили&nbsp;→</span><span data-lang="en">Find similar profiles&nbsp;→</span><span data-lang="ro">Găsește profiluri similare&nbsp;→</span></a>
@@ -634,9 +551,28 @@
                     <p><span data-lang="ru">Практические воркшопы, нетворкинг, объявления, гранты и партнёрские возможности — всё, что помогает двигаться дальше.</span><span data-lang="en">Practical workshops, networking, announcements, grants and partner opportunities to help you move forward.</span><span data-lang="ro">Workshopuri practice, networking, anunțuri, granturi și oportunități de parteneriat pentru următorul tău pas.</span></p>
                 </div>
                 <div class="miro-grid-3">
-                    <article class="miro-event-card"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/news/news-white-noise.jpg') }}" alt="White Noise — where creativity meets entrepreneurship" loading="lazy"><div class="miro-event-card__body"><span class="miro-tag" style="background:var(--miro-pink);color:var(--miro-primary)"><span data-lang="ru">Новости</span><span data-lang="en">News</span><span data-lang="ro">Noutăți</span></span><div class="miro-event-card__date">20.05.2026</div><h3><span data-lang="ru">«Белый Шум» — встреча креатива и предпринимательства</span><span data-lang="en">White Noise — where creativity meets entrepreneurship</span><span data-lang="ro">„White Noise” — întâlnirea dintre creativitate și antreprenoriat</span></h3><p><span data-lang="ru">Арт-выставка, где встретились искусство, мода и предпринимательство.</span><span data-lang="en">An art exhibition where art, fashion and entrepreneurship came together.</span><span data-lang="ro">O expoziție de artă în care s-au întâlnit arta, moda și antreprenoriatul.</span></p><a href="https://women.creativity.md/2026/05/20/%d0%b1%d0%b5%d0%bb%d1%8b%d0%b9-%d1%88%d1%83%d0%bc-%d0%b2%d1%81%d1%82%d1%80%d0%b5%d1%87%d0%b0-%d0%ba%d1%80%d0%b5%d0%b0%d1%82%d0%b8%d0%b2%d0%b0-%d0%b8-%d0%bf%d1%80%d0%b5%d0%b4/" target="_blank" rel="noopener" class="miro-event-card__link"><span data-lang="ru">Подробнее&nbsp;→</span><span data-lang="en">Read more&nbsp;→</span><span data-lang="ro">Află mai multe&nbsp;→</span></a></div></article>
-                    <article class="miro-event-card"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/news/news-conference.jpg') }}" alt="International conference for women entrepreneurs" loading="lazy"><div class="miro-event-card__body"><span class="miro-tag" style="background:var(--miro-surface-featured);color:var(--miro-blue)"><span data-lang="ru">Конференция</span><span data-lang="en">Conference</span><span data-lang="ro">Conferință</span></span><div class="miro-event-card__date">20.05.2026</div><h3><span data-lang="ru">Международная конференция для женщин-предпринимателей</span><span data-lang="en">International conference for women entrepreneurs</span><span data-lang="ro">Conferință internațională pentru femei antreprenoare</span></h3><p><span data-lang="ru">Конференция о лидерстве, инновациях и развитии женского предпринимательства.</span><span data-lang="en">A conference about leadership, innovation and women’s entrepreneurship.</span><span data-lang="ro">O conferință despre leadership, inovație și antreprenoriat feminin.</span></p><a href="https://women.creativity.md/2026/05/20/%d0%bc%d0%b5%d0%b6%d0%b4%d1%83%d0%bd%d0%b0%d1%80%d0%be%d0%b4%d0%bd%d0%b0%d1%8f-%d0%ba%d0%be%d0%bd%d1%84%d0%b5%d1%80%d0%b5%d0%bd%d1%86%d0%b8%d1%8f-%d0%b4%d0%bb%d1%8f-%d0%b6%d0%b5%d0%bd%d1%89%d0%b8/" target="_blank" rel="noopener" class="miro-event-card__link"><span data-lang="ru">Подробнее&nbsp;→</span><span data-lang="en">Read more&nbsp;→</span><span data-lang="ro">Află mai multe&nbsp;→</span></a></div></article>
-                    <article class="miro-event-card"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/news/news-networking.jpg') }}" alt="Dream Takes Flight networking event at Glia Impact Hub" loading="lazy"><div class="miro-event-card__body"><span class="miro-tag" style="background:var(--miro-coral);color:var(--miro-primary)"><span data-lang="ru">Нетворкинг</span><span data-lang="en">Networking</span><span data-lang="ro">Networking</span></span><div class="miro-event-card__date">20.05.2026</div><h3><span data-lang="ru">В Glia Impact Hub состоялось нетворкинг-мероприятие</span><span data-lang="en">“Dream Takes Flight” networking event at Glia Impact Hub</span><span data-lang="ro">Evenimentul de networking „Visul își ia zborul” la Glia Impact Hub</span></h3><p><span data-lang="ru">Встреча предпринимательниц, организованная AFAM вместе с партнёрами.</span><span data-lang="en">A gathering of women entrepreneurs organised by AFAM and community partners.</span><span data-lang="ro">O întâlnire a femeilor antreprenoare organizată de AFAM și partenerii comunității.</span></p><a href="https://women.creativity.md/2026/05/20/%d0%b2-glia-impact-hub-%d1%81%d0%be%d1%81%d1%82%d0%be%d1%8f%d0%bb%d0%be%d1%81%d1%8c-%d0%bd%d0%b5%d1%82%d0%b2%d0%be%d1%80%d0%ba%d0%b8%d0%bd%d0%b3-%d0%bc%d0%b5%d1%80%d0%be%d0%bf%d1%80%d0%b8%d1%8f%d1%82/" target="_blank" rel="noopener" class="miro-event-card__link"><span data-lang="ru">Подробнее&nbsp;→</span><span data-lang="en">Read more&nbsp;→</span><span data-lang="ro">Află mai multe&nbsp;→</span></a></div></article>
+                    @foreach($landingEvents as $event)
+                        @php
+                            $tone = $event->toneKey();
+                            $tagStyle = $tone === 'blue'
+                                ? 'background:var(--miro-surface-featured);color:var(--miro-blue)'
+                                : 'background:var(--miro-'.$tone.');color:var(--miro-primary)';
+                        @endphp
+                        <article class="miro-event-card">
+                            @if($event->imageUrl())
+                                <img src="{{ $event->imageUrl() }}" alt="{{ $event->field('title', 'en') }}" loading="lazy">
+                            @endif
+                            <div class="miro-event-card__body">
+                                <span class="miro-tag" style="{{ $tagStyle }}">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->field('type', $locale) }}</span>@endforeach</span>
+                                <div class="miro-event-card__date">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->dateLabel($locale) }}</span>@endforeach</div>
+                                <h3>@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->field('title', $locale) }}</span>@endforeach</h3>
+                                <p>@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->field('description', $locale) }}</span>@endforeach</p>
+                                @if($event->url)
+                                    <a href="{{ $event->url }}" target="_blank" rel="noopener" class="miro-event-card__link"><span data-lang="ru">Подробнее&nbsp;→</span><span data-lang="en">Read more&nbsp;→</span><span data-lang="ro">Află mai multe&nbsp;→</span></a>
+                                @endif
+                            </div>
+                        </article>
+                    @endforeach
                 </div>
                 <div class="miro-events__footer">
                     <a href="{{ route('events') }}" class="miro-events__all-link"><span data-lang="ru">Все новости&nbsp;→</span><span data-lang="en">All news&nbsp;→</span><span data-lang="ro">Toate noutățile&nbsp;→</span></a>

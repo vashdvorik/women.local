@@ -16,7 +16,12 @@ class OpportunityController extends Controller
 {
     public function index(): View
     {
+        /** @var BotUser $accountUser */
+        $accountUser = view()->shared('accountUser');
+
+        // Одобренные посты видны всем, свои (в том числе ожидающие решения) — их автору.
         $opportunities = Opportunity::with('author')
+            ->visibleTo($accountUser)
             ->latest()
             ->paginate(15);
 
@@ -33,12 +38,13 @@ class OpportunityController extends Controller
         /** @var BotUser $accountUser */
         $accountUser = view()->shared('accountUser');
 
-        $opportunity = Opportunity::create([
+        Opportunity::create([
             'bot_user_id' => $accountUser->id,
+            'status' => Opportunity::STATUS_PENDING,
             ...$request->validated(),
         ]);
 
-        NotifyOpportunity::dispatch($opportunity);
+        // Уведомление участницам уходит только после одобрения (ProfileModeration / админка).
 
         return redirect()->route('account.opportunities.index')
             ->with('success', __('account.messages.opportunity_created'));

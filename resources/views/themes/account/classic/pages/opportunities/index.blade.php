@@ -48,6 +48,9 @@
                             @endif
                         </div>
 
+                        @unless($opportunity->isApproved())
+                            <p class="mt-4 text-xs font-semibold" style="color:{{ $opportunity->isRejected() ? '#b42318' : '#b25000' }}">{{ __('account.opportunities.status_' . $opportunity->status) }}</p>
+                        @endunless
                         <p class="mt-5 whitespace-pre-line text-sm leading-7 text-[#555a6a]">{{ $opportunity->body }}</p>
 
                         <div class="mt-6 flex flex-wrap gap-2 text-xs text-[#6b6f7e]">

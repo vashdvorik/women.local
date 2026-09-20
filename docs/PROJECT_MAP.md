@@ -1,6 +1,7 @@
 # Карта проекта Women Entrepreneurs Platform
 
-> Рабочая карта для дальнейшей разработки. Составлена по исходному коду проекта и проверена 25.07.2026.
+> Рабочая карта для дальнейшей разработки. Составлена по исходному коду проекта и проверена 25.07.2026;
+> раздел про админку и публичные материалы обновлён 20.09.2026 после переноса админки из education3 (см. docs/ADMIN_MIGRATION.md).
 > Это карта фактически подключённых механизмов, а не список планируемых разделов из маркетингового лендинга.
 
 ## 1. Коротко о проекте
@@ -9,14 +10,14 @@
 
 1. публичный лендинг;
 2. кабинет одобренной участницы, связанный с Telegram;
-3. закрытая админ-панель Filament.
+3. закрытая админ-панель (Blade, Alpine.js, Tailwind; перенесена из education3).
 
 Telegram одновременно используется как канал регистрации и уведомлений, источник идентичности участницы и точка запуска AI-поиска. Кабинет работает через обычную web-сессию, которую можно создать magic-link из Telegram или через Telegram Mini App.
 
 Стек:
 
 - PHP 8.2+, Laravel 12;
-- Filament 5.6 для `/admin`;
+- собственная админка `/admin` (Blade, Alpine.js, Tailwind 3.4, Vite); собранные ассеты коммитятся в `public/build`; Intervention Image (WebP) и Purifier (очистка HTML);
 - Nutgram Laravel для Telegram webhook и conversations;
 - Gemini API для text embeddings;
 - MySQL/SQLite через Laravel migrations;
@@ -69,7 +70,12 @@ Telegram одновременно используется как канал р�
 ├── /go/{8 hex chars}       короткая ссылка из Telegram
 ├── /language/{ru|en|ro}    переключение языка в session + cookie
 ├── POST /telegram/webhook  входящие обновления Telegram
-└── /admin                  Filament: администрирование и метрики
+├── /experts, /events       карточки из БД (админка: «Эксперты», «Новости»)
+├── /media/publications[/{slug}], /media/photos[/{slug}], /media/videos, /projects, /opportunities[/{slug}]
+│                           материалы из админки, тема miro
+├── POST /subscribe         подписка на новости (форма в подвале)
+├── /login                  вход администратора
+└── /admin                  админка в двух лагерях: «Внешний сайт» (/admin) и «Кабинеты участниц» (/admin/cabinets)
 ```
 
 Все маршруты кабинета, кроме `/login`, `/auth` и `/tma-auth`, защищены `RequireAccountAuth`.
@@ -207,29 +213,54 @@ Callback-и:
 - `reg:yes`, `reg:skip` — шаги регистрации;
 - `search:more` — показать остальные результаты поиска.
 
-Регистрация собирает имя, описание бизнеса и ожидания. Затем создаёт `BotUser` со статусом `pending`, пытается скачать аватар из Telegram и ставит `ComputeUserEmbedding` в очередь. Одобрение/отклонение выполняется администратором в Filament.
+Регистрация собирает имя, описание бизнеса и ожидания. Затем создаёт `BotUser` со статусом `pending`, пытается скачать аватар из Telegram и ставит `ComputeUserEmbedding` в очередь. Одобрение/отклонение выполняется администратором в админке (раздел «Профили участниц»).
 
-## 6. Админка Filament
+## 6. Админка
 
-Провайдер: `app/Providers/Filament/AdminPanelProvider.php`. Базовый путь — `/admin`, доступ через стандартную Filament-аутентификацию модели `User`.
+Собственная админка на `/admin`, перенесённая из проекта education3 (`D:\OSPanel\home\education3`, его `AGENTS.md` и `DESIGN.md` — контракт и дизайн-система). Blade + Alpine.js + Tailwind 3.4, сборка Vite; готовые ассеты лежат в `public/build` и коммитятся (на хостинге нет Node). Filament удалён.
 
-| Экран | URL | Назначение |
+**Доступ.** Ролей нет: пускается ровно одна почта из `ADMIN_EMAIL` (`config/admin.php`), проверку делает `EnsureAdminEmail` на всей группе роутов, одного `auth` мало. Вход — `/login`, перебор пароля режется в трёх слоях (`LoginRequest`: почта+IP 5/мин, почта 20/15 мин; `throttle:login` 30/мин по IP). Админка всегда по-русски (`AdminLocale`), независимо от языка сайта.
+
+Админка разделена на **два лагеря**, чтобы администратор не путал управление публичным сайтом и управление кабинетами. Переключатель — вверху левого меню; под ним показывается меню только текущего лагеря, а в шапке каждой страницы стоит подпись лагеря. Число на вкладке «Кабинеты участниц» — сколько профилей и постов ждут решения (видно из любого раздела сайта). Лагерь определяется по имени маршрута (`App\Support\AdminCamp`): `admin.cabinets.*`, `admin.profiles.*`, `admin.member-posts.*`, `admin.statistics.*` — «Кабинеты участниц», всё остальное — «Внешний сайт». **Новый раздел админки нужно сразу отнести к одному из двух лагерей** (имя маршрута и пункт в `components/admin/sidebar.blade.php`).
+
+**Лагерь 1 — «Внешний сайт»** (то, что видят посетители):
+
+| Раздел | URL | Назначение |
 |---|---|---|
-| Dashboard | `/admin` | Стандартный Filament dashboard и виджеты |
-| Профили участниц | `/admin/bot-users` | Таблица, поиск, фильтр по статусу, просмотр, редактирование, удаление |
-| Просмотр профиля | `/admin/bot-users/{record}` | Детали `BotUser` |
-| Редактирование | `/admin/bot-users/{record}/edit` | Редактирование профиля/статуса |
-| Impact metrics | `/admin/impact-metrics` | Метрики заявок, профилей, AI, публикаций, токенов и графики |
-| Тема лендинга | `/admin/landing-theme-settings` | Выбор `classic`, `warm`, `dark`, `platform`, `miro` |
-| Тема кабинета участницы | `/admin/account-theme-settings` | Выбор темы закрытого `/app/account`: `classic`, `warm`, `dark`, `miro` |
+| Инфопанель | `/admin` | Быстрые «добавить …», счётчик черновиков, плашка о очереди модерации кабинетов, памятка |
+| Публикации | `/admin/news` | Статьи со своей страницей: блоки (текст, заголовок, HTML, картинка, галереи), теги, черновик/публикация → «Медиатека → Публикации» (`/media/publications`, у каждой статьи `/media/publications/{slug}`). Не то же самое, что «Новости» |
+| Возможности | `/admin/opportunities` | Гранты и программы с дедлайном (`SiteOpportunity`) → `/opportunities` |
+| Новости | `/admin/events` | Карточки новостей (модель `Event`): обложка, цвет, дата или подпись, ссылка «Подробнее», порядок → страница `/events` («Новости» в меню сайта) и главная |
+| Эксперты | `/admin/experts` | Карточки экспертов: портрет, цвет, порядок, тексты и теги → `/experts` и главная |
+| Проекты | `/admin/projects` | Плоские карточки → `/projects` |
+| Фотоальбомы, видео | `/admin/albums`, `/admin/videos` | Альбомы с галереями и кроппером; ролики YouTube с ручным порядком |
+| Теги | `/admin/tags` | Названия на трёх языках и произвольный цвет |
+| Подписчики | `/admin/subscribers` | Форма в подвале сайта: список, поиск, экспорт CSV/TXT |
+| Настройки сайта | `/admin/settings` | Вкладки: сжатие изображений, тема публичного сайта |
 
-Главная бизнес-операция в `BotUserResource`: approve/reject. При approve отправляются два Telegram-сообщения и клавиатура; при reject отправляется уведомление, а при отзыве доступа у уже approved-профиля ещё удаляется keyboard в Telegram.
+**Лагерь 2 — «Кабинеты участниц»** (закрытый кабинет и Telegram-бот):
+
+| Раздел | URL | Назначение |
+|---|---|---|
+| Инфопанель | `/admin/cabinets` | Очереди модерации (профили, посты) и быстрые переходы, памятка |
+| Профили участниц | `/admin/profiles` | Модерация `BotUser` (бывший Filament `BotUserResource`): вкладки статусов, поиск, одобрить/отклонить с уведомлением в Telegram, правка текстов, массовое удаление |
+| Посты участниц | `/admin/member-posts` | Премодерация постов из кабинета (`Opportunity`): одобренный виден всем и уходит рассылкой, ожидающий и отклонённый виден только автору |
+| Статистика | `/admin/statistics` | Отчёт по заявкам, готовности профилей и публикациям (`ImpactReport`), PDF-выгрузка |
+| Настройки кабинетов | `/admin/cabinets/settings` | Вкладки: тема кабинета, ИИ-провайдеры (ключи шифруются, проверка подключения), база знаний ассистента |
+
+**Переводы** — как в education3: таблицы `*_translations`, трейт `HasTranslations`; русский обязателен, румынский и английский по желанию, при пустом поле сайт подставляет русский. Публичные страницы по-прежнему выводят все три языка сразу в `data-lang`-спанах.
+
+**Картинки.** Реестр пропорций `App\Support\AspectRatio::SLOTS`, кадрирование в Cropper.js, сохранение WebP (`StoreUploadedImage`, качество и размер — в настройках), диск `uploads` → `public/uploads/ГГГГ/ММ` без `storage:link`; в БД хранится относительный путь.
+
+**Что осталось массивами в Blade:** партнёры, каталог 112 участниц, служебные страницы-заглушки (руководство, положение, отчёты, почётные члены, gala, join), приоритеты и тексты лендинга, about, contact.
+
+**Только тема miro.** Страницы, подключённые к админке, есть только в теме miro; остальные публичные темы получают её версию (`PublicThemeView`).
 
 ## 7. Данные и связи
 
 ```text
-User (Filament admin)
-└── auth для /admin
+User (администратор)
+└── единственная почта ADMIN_EMAIL, вход /login
 
 BotUser
 ├── 1:N LoginToken по telegram_id
@@ -312,7 +343,7 @@ Telegram /start
   → RegistrationConversation
   → BotUser(status=pending)
   → ComputeUserEmbedding
-  → Admin approve в Filament
+  → Admin approve в админке (/admin/profiles)
   → Telegram approval message + keyboard
   → /login или /start login
   → LoginToken /go/{prefix}
@@ -377,19 +408,24 @@ routes/
 
 app/Http/
 ├── Controllers/Account/    cabinet/auth/opportunities controllers
+├── Controllers/Admin/      разделы админки
+├── Controllers/PublicSite/ публичные страницы с материалами из админки
 ├── Middleware/             SetLocale, RequireAccountAuth
 └── Requests/Account/       profile/opportunity validation
 
-app/Models/                 User, BotUser, LoginToken, Opportunity, SiteSetting
+app/Models/                 User, BotUser, LoginToken, Opportunity (посты кабинета), SiteSetting,
+                            Post, SiteOpportunity, Album, Video, Project, Tag, Expert, Event, Subscriber (+ *Translation)
 app/Services/               MatchingService, EmbeddingService
 app/Jobs/                   ComputeUserEmbedding, NotifyOpportunity
 app/Telegram/               keyboard and conversations
-app/Filament/               admin resource and custom pages
+app/Actions/, app/Support/    сохранение материалов, картинки, блоки, переводы (из education3)
 
 resources/views/
 ├── landing*.blade.php      public landing variants, including landing-miro.blade.php
 ├── account/                cabinet screens and layout
-└── filament/pages/         custom Filament page views
+├── admin/                  экраны админки
+├── components/admin/       компоненты админки (sidebar, формы, редакторы)
+└── themes/public/miro/     публичная тема: content-layout/list/article, partials
 
 database/
 ├── migrations/              schema history
@@ -410,7 +446,7 @@ tests/
 2. Поле `login_tokens.used_at` учитывается в impact-метриках, но текущий `AccountController::auth()` его не заполняет. Поэтому метрики «использованных» токенов могут быть нулевыми, а токен остаётся действительным до `expires_at`.
 3. `knowledge` и ответ «Чат сообщества» в Telegram являются статическими/временными экранами, полноценный контентный раздел и чат-интеграция не подключены.
 4. `region` уже есть в схеме БД, но не проведён через модель, форму регистрации, админку или фильтры кабинета.
-5. Landing содержит маркетинговые разделы обучения, событий и историй, но в текущем приложении для них нет отдельных backend-маршрутов и моделей; это секции одной страницы.
+5. Новости (`Event`) и эксперты (`Expert`) теперь модели и редактируются в админке; разделы обучения и историй на лендинге остаются секциями одной страницы без backend.
 6. Очередь важна для AI и рассылок. Для production должны работать `queue:work`/cron, иначе профиль сохранится, но embedding и уведомления останутся невыполненными.
 7. Старые прототипные файлы в `docs/` могут отсутствовать в рабочем дереве и сейчас отмечены Git как удалённые. Не восстанавливать их автоматически без отдельного запроса.
 
@@ -429,5 +465,5 @@ php artisan config:clear
 - cabinet/profile/catalog: `AccountCabinetTest.php`;
 - token semantics: `tests/Unit/LoginTokenTest.php`;
 - queue: наличие worker и записей в `jobs`;
-- landing: активную тему в `/admin/landing-theme-settings` и публичный `/`;
+- landing: активную тему в `/admin/settings` (вкладка «Темы сайта») и публичный `/`;
 - Telegram: webhook status и команды `/start`, `/login` после деплоя.

@@ -29,5 +29,10 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('20,1', function (Request $request) {
             return Limit::perMinute(20)->by($request->ip());
         });
+
+        // Грубый заслон от флуда на форму входа в админку: не больше 30 запросов
+        // в минуту с одного адреса. Настоящий перебор пароля (в том числе
+        // распределённый) режется в App\Http\Requests\Auth\LoginRequest.
+        RateLimiter::for('login', fn (Request $request) => Limit::perMinute(30)->by($request->ip()));
     }
 }

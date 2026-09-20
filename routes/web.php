@@ -1,32 +1,26 @@
 <?php
 
-use App\Filament\Pages\ImpactMetrics;
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\DevAccountLoginController;
 use App\Http\Controllers\Account\OpportunityController;
 use App\Http\Controllers\Account\TmaAuthController;
+use App\Http\Controllers\Admin;
+use App\Http\Controllers\PublicSite;
 use App\Http\Middleware\RequireAccountAuth;
 use App\Models\LoginToken;
 use App\Services\PublicThemeView;
-use Filament\Http\Middleware\Authenticate as FilamentAuthenticate;
 use Illuminate\Support\Facades\Route;
 use SergiX44\Nutgram\Nutgram;
 
-Route::get('/', function () {
-    return PublicThemeView::render('landing');
-});
+Route::get('/', PublicSite\LandingController::class);
 
 Route::get('/members', function () {
     return PublicThemeView::render('members');
 })->name('members');
 
-Route::get('/experts', function () {
-    return PublicThemeView::render('experts');
-})->name('experts');
+Route::get('/experts', PublicSite\ExpertsController::class)->name('experts');
 
-Route::get('/events', function () {
-    return PublicThemeView::render('events');
-})->name('events');
+Route::get('/events', PublicSite\EventsController::class)->name('events');
 
 Route::get('/about', function () {
     return PublicThemeView::render('about');
@@ -102,45 +96,20 @@ Route::get('/gala', fn () => $publicSection([
     'placeholder' => true,
 ]))->name('gala');
 
-Route::get('/projects', fn () => $publicSection([
-    'pageKey' => 'projects',
-    'eyebrow' => ['ru' => 'Платформа', 'en' => 'Platform', 'ro' => 'Platformă'],
-    'title' => ['ru' => 'Проекты', 'en' => 'Projects', 'ro' => 'Proiecte'],
-    'intro' => ['ru' => 'Здесь будут собраны проекты, инициативы и совместные программы сообщества.', 'en' => 'This page will collect community projects, initiatives and joint programmes.', 'ro' => 'Aici vor fi prezentate proiectele, inițiativele și programele comune ale comunității.'],
-    'placeholder' => true,
-]))->name('projects');
+// Материалы из админки (тема miro): проекты, возможности, медиатека.
+Route::get('/projects', PublicSite\ProjectsController::class)->name('projects');
+Route::get('/opportunities', [PublicSite\OpportunitiesController::class, 'index'])->name('opportunities');
+Route::get('/opportunities/{opportunity}', [PublicSite\OpportunitiesController::class, 'show'])->name('opportunities.show');
+Route::get('/media/photos', [PublicSite\AlbumsController::class, 'index'])->name('media.photos');
+Route::get('/media/photos/{album}', [PublicSite\AlbumsController::class, 'show'])->name('media.photos.show');
+Route::get('/media/videos', PublicSite\VideosController::class)->name('media.videos');
+Route::get('/media/publications', [PublicSite\PublicationsController::class, 'index'])->name('media.publications');
+Route::get('/media/publications/{post}', [PublicSite\PublicationsController::class, 'show'])->name('media.publications.show');
 
-Route::get('/opportunities', fn () => $publicSection([
-    'pageKey' => 'opportunities',
-    'eyebrow' => ['ru' => 'Платформа', 'en' => 'Platform', 'ro' => 'Platformă'],
-    'title' => ['ru' => 'Возможности', 'en' => 'Opportunities', 'ro' => 'Oportunități'],
-    'intro' => ['ru' => 'Гранты, программы, события и партнёрские предложения для развития бизнеса.', 'en' => 'Grants, programmes, events and partnership offers for business growth.', 'ro' => 'Granturi, programe, evenimente și oferte de parteneriat pentru dezvoltarea afacerii.'],
-    'placeholder' => true,
-]))->name('opportunities');
-
-Route::get('/media/photos', fn () => $publicSection([
-    'pageKey' => 'photos',
-    'eyebrow' => ['ru' => 'Медиатека', 'en' => 'Media library', 'ro' => 'Mediatecă'],
-    'title' => ['ru' => 'Фото', 'en' => 'Photos', 'ro' => 'Fotografii'],
-    'intro' => ['ru' => 'Фотографии с мероприятий, встреч и важных моментов сообщества.', 'en' => 'Photos from events, meetings and important community moments.', 'ro' => 'Fotografii de la evenimente, întâlniri și momente importante ale comunității.'],
-    'placeholder' => true,
-]))->name('media.photos');
-
-Route::get('/media/videos', fn () => $publicSection([
-    'pageKey' => 'videos',
-    'eyebrow' => ['ru' => 'Медиатека', 'en' => 'Media library', 'ro' => 'Mediatecă'],
-    'title' => ['ru' => 'Видео', 'en' => 'Videos', 'ro' => 'Video'],
-    'intro' => ['ru' => 'Видео с мероприятий, интервью и образовательных программ платформы.', 'en' => 'Videos from events, interviews and platform learning programmes.', 'ro' => 'Videoclipuri de la evenimente, interviuri și programele educaționale ale platformei.'],
-    'placeholder' => true,
-]))->name('media.videos');
-
-Route::get('/media/publications', fn () => $publicSection([
-    'pageKey' => 'publications',
-    'eyebrow' => ['ru' => 'Медиатека', 'en' => 'Media library', 'ro' => 'Mediatecă'],
-    'title' => ['ru' => 'Публикации', 'en' => 'Publications', 'ro' => 'Publicații'],
-    'intro' => ['ru' => 'Публикации, статьи и материалы платформы будут собраны в отдельном разделе медиатеки.', 'en' => 'Platform publications, articles and materials will be collected in a dedicated media section.', 'ro' => 'Publicațiile, articolele și materialele platformei vor fi reunite într-o secțiune dedicată.'],
-    'placeholder' => true,
-]))->name('media.publications');
+// Подписка на новости (форма в подвале сайта).
+Route::post('/subscribe', [PublicSite\SubscribeController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('subscribe');
 
 Route::get('/language/{locale}', function (string $locale) {
     abort_unless(in_array($locale, ['ru', 'en', 'ro'], true), 404);
@@ -176,13 +145,6 @@ Route::get('/go/{code}', function (string $code) {
     return redirect()->route('account.auth', ['token' => $token->token]);
 })->middleware('throttle:20,1')->where('code', '[0-9a-f]{8}')->name('account.go');
 
-// Admin: plain HTTP download for the impact report PDF. A normal browser download of a
-// normal route, rather than a Livewire wire:click action returning a binary response —
-// see the docblock on ImpactMetrics::downloadPdf() for why.
-Route::get('/admin/impact-metrics/pdf', fn () => (new ImpactMetrics())->downloadPdf())
-    ->middleware(['web', FilamentAuthenticate::class])
-    ->name('admin.impact-metrics.pdf');
-
 // Account: protected cabinet
 Route::middleware(RequireAccountAuth::class)
     ->prefix('app/account')
@@ -203,3 +165,119 @@ Route::middleware(RequireAccountAuth::class)
         Route::resource('opportunities', OpportunityController::class)->only(['index', 'create', 'store', 'destroy']);
         Route::post('/logout', [AccountController::class, 'logout'])->name('logout');
     });
+
+/*
+|--------------------------------------------------------------------------
+| Админка — /admin, всегда по-русски (перенесена из education3)
+|--------------------------------------------------------------------------
+| Каждый роут наследует проверку почты от группы: одного «auth» мало,
+| в панель пускается только ADMIN_EMAIL.
+*/
+
+Route::middleware(['admin.locale', 'auth', 'admin.email'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/', [Admin\DashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('news', [Admin\PostController::class, 'index'])->name('posts.index');
+        Route::get('news/create', [Admin\PostController::class, 'create'])->name('posts.create');
+        Route::post('news', [Admin\PostController::class, 'store'])->name('posts.store');
+        Route::get('news/{post}/edit', [Admin\PostController::class, 'edit'])->name('posts.edit');
+        Route::put('news/{post}', [Admin\PostController::class, 'update'])->name('posts.update');
+        Route::delete('news/{post}', [Admin\PostController::class, 'destroy'])->name('posts.destroy');
+
+        Route::get('opportunities', [Admin\SiteOpportunityController::class, 'index'])->name('opportunities.index');
+        Route::get('opportunities/create', [Admin\SiteOpportunityController::class, 'create'])->name('opportunities.create');
+        Route::post('opportunities', [Admin\SiteOpportunityController::class, 'store'])->name('opportunities.store');
+        Route::get('opportunities/{opportunity}/edit', [Admin\SiteOpportunityController::class, 'edit'])->name('opportunities.edit');
+        Route::put('opportunities/{opportunity}', [Admin\SiteOpportunityController::class, 'update'])->name('opportunities.update');
+        Route::delete('opportunities/{opportunity}', [Admin\SiteOpportunityController::class, 'destroy'])->name('opportunities.destroy');
+
+        Route::resource('tags', Admin\TagController::class)->except(['show']);
+
+        Route::get('albums', [Admin\AlbumController::class, 'index'])->name('albums.index');
+        Route::get('albums/create', [Admin\AlbumController::class, 'create'])->name('albums.create');
+        Route::post('albums', [Admin\AlbumController::class, 'store'])->name('albums.store');
+        Route::get('albums/{album}/edit', [Admin\AlbumController::class, 'edit'])->name('albums.edit');
+        Route::put('albums/{album}', [Admin\AlbumController::class, 'update'])->name('albums.update');
+        Route::delete('albums/{album}', [Admin\AlbumController::class, 'destroy'])->name('albums.destroy');
+
+        Route::get('videos', [Admin\VideoController::class, 'index'])->name('videos.index');
+        Route::get('videos/create', [Admin\VideoController::class, 'create'])->name('videos.create');
+        Route::post('videos', [Admin\VideoController::class, 'store'])->name('videos.store');
+        Route::get('videos/{video}/edit', [Admin\VideoController::class, 'edit'])->name('videos.edit');
+        Route::put('videos/{video}', [Admin\VideoController::class, 'update'])->name('videos.update');
+        Route::delete('videos/{video}', [Admin\VideoController::class, 'destroy'])->name('videos.destroy');
+        Route::post('videos/{video}/move', [Admin\VideoController::class, 'move'])->name('videos.move');
+
+        // Карточки публичного сайта: эксперты и события (плоские карточки с переводами, как проекты).
+        Route::get('experts', [Admin\ExpertController::class, 'index'])->name('experts.index');
+        Route::get('experts/create', [Admin\ExpertController::class, 'create'])->name('experts.create');
+        Route::post('experts', [Admin\ExpertController::class, 'store'])->name('experts.store');
+        Route::get('experts/{expert}/edit', [Admin\ExpertController::class, 'edit'])->name('experts.edit');
+        Route::put('experts/{expert}', [Admin\ExpertController::class, 'update'])->name('experts.update');
+        Route::delete('experts/{expert}', [Admin\ExpertController::class, 'destroy'])->name('experts.destroy');
+        Route::post('experts/{expert}/move', [Admin\ExpertController::class, 'move'])->name('experts.move');
+
+        Route::get('events', [Admin\EventController::class, 'index'])->name('events.index');
+        Route::get('events/create', [Admin\EventController::class, 'create'])->name('events.create');
+        Route::post('events', [Admin\EventController::class, 'store'])->name('events.store');
+        Route::get('events/{event}/edit', [Admin\EventController::class, 'edit'])->name('events.edit');
+        Route::put('events/{event}', [Admin\EventController::class, 'update'])->name('events.update');
+        Route::delete('events/{event}', [Admin\EventController::class, 'destroy'])->name('events.destroy');
+        Route::post('events/{event}/move', [Admin\EventController::class, 'move'])->name('events.move');
+
+        Route::get('projects', [Admin\ProjectController::class, 'index'])->name('projects.index');
+        Route::get('projects/create', [Admin\ProjectController::class, 'create'])->name('projects.create');
+        Route::post('projects', [Admin\ProjectController::class, 'store'])->name('projects.store');
+        Route::get('projects/{project}/edit', [Admin\ProjectController::class, 'edit'])->name('projects.edit');
+        Route::put('projects/{project}', [Admin\ProjectController::class, 'update'])->name('projects.update');
+        Route::delete('projects/{project}', [Admin\ProjectController::class, 'destroy'])->name('projects.destroy');
+        Route::post('projects/{project}/move', [Admin\ProjectController::class, 'move'])->name('projects.move');
+
+        // Профили участниц из Telegram-бота: модерация (раньше — Filament BotUserResource).
+        Route::get('profiles', [Admin\ProfileController::class, 'index'])->name('profiles.index');
+        Route::delete('profiles', [Admin\ProfileController::class, 'bulkDestroy'])->name('profiles.bulk-destroy');
+        Route::get('profiles/{profile}', [Admin\ProfileController::class, 'show'])->name('profiles.show');
+        Route::get('profiles/{profile}/edit', [Admin\ProfileController::class, 'edit'])->name('profiles.edit');
+        Route::put('profiles/{profile}', [Admin\ProfileController::class, 'update'])->name('profiles.update');
+        Route::post('profiles/{profile}/approve', [Admin\ProfileController::class, 'approve'])->name('profiles.approve');
+        Route::post('profiles/{profile}/reject', [Admin\ProfileController::class, 'reject'])->name('profiles.reject');
+        Route::delete('profiles/{profile}', [Admin\ProfileController::class, 'destroy'])->name('profiles.destroy');
+
+        // Посты участниц из кабинета: премодерация.
+        Route::get('member-posts', [Admin\MemberPostController::class, 'index'])->name('member-posts.index');
+        Route::get('member-posts/{post}', [Admin\MemberPostController::class, 'show'])->name('member-posts.show');
+        Route::post('member-posts/{post}/approve', [Admin\MemberPostController::class, 'approve'])->name('member-posts.approve');
+        Route::post('member-posts/{post}/reject', [Admin\MemberPostController::class, 'reject'])->name('member-posts.reject');
+        Route::delete('member-posts/{post}', [Admin\MemberPostController::class, 'destroy'])->name('member-posts.destroy');
+
+        Route::get('subscribers', [Admin\SubscriberController::class, 'index'])->name('subscribers.index');
+        Route::get('subscribers/export.csv', [Admin\SubscriberController::class, 'exportCsv'])->name('subscribers.export.csv');
+        Route::get('subscribers/export.txt', [Admin\SubscriberController::class, 'exportTxt'])->name('subscribers.export.txt');
+        Route::delete('subscribers/{subscriber}', [Admin\SubscriberController::class, 'destroy'])->name('subscribers.destroy');
+
+        Route::get('statistics', [Admin\StatisticsController::class, 'index'])->name('statistics.index');
+        Route::get('statistics/pdf', [Admin\StatisticsController::class, 'pdf'])->name('statistics.pdf');
+
+        // Внешний сайт: «Настройки сайта» — сжатие изображений и тема публичного сайта.
+        Route::get('settings', [Admin\SettingController::class, 'edit'])->name('settings.edit');
+        Route::put('settings', [Admin\SettingController::class, 'update'])->name('settings.update');
+        Route::put('settings/theme', [Admin\ThemeSettingController::class, 'site'])->name('settings.theme');
+
+        // Кабинеты участниц: инфопанель и «Настройки кабинетов» — тема кабинета, ИИ, база знаний.
+        // (Профили, посты участниц и статистика — выше и ниже; лагерь определяет App\Support\AdminCamp.)
+        Route::get('cabinets', [Admin\CabinetDashboardController::class, 'index'])->name('cabinets.dashboard');
+        Route::get('cabinets/settings', [Admin\CabinetSettingController::class, 'edit'])->name('cabinets.settings');
+        Route::put('cabinets/settings/theme', [Admin\ThemeSettingController::class, 'cabinet'])->name('cabinets.settings.theme');
+        Route::put('cabinets/settings/knowledge', [Admin\AssistantKnowledgeController::class, 'update'])->name('cabinets.settings.knowledge');
+        Route::put('cabinets/settings/ai', [Admin\AiSettingController::class, 'update'])->name('cabinets.settings.ai.update');
+        Route::post('cabinets/settings/ai/test/{provider}', [Admin\AiSettingController::class, 'test'])->name('cabinets.settings.ai.test');
+
+        Route::post('uploads', [Admin\UploadController::class, 'store'])->name('uploads.store');
+    });
+
+Route::middleware('admin.locale')->group(function () {
+    require __DIR__.'/auth.php';
+});

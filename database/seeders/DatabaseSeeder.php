@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             BotUserSeeder::class,
             CommunitySeeder::class,
+            ContentSeeder::class,   // эксперты и события публичного сайта
         ]);
     }
 }

@@ -70,7 +70,7 @@ class AiAssistantService
     /** @return Collection<int, array{id:int,title:string,body:string,type:string,event_date:string,location:string}> */
     private function opportunities(): Collection
     {
-        return Opportunity::query()->latest()->limit(12)->get(['id', 'title', 'body', 'type', 'event_date', 'location'])
+        return Opportunity::query()->approved()->latest()->limit(12)->get(['id', 'title', 'body', 'type', 'event_date', 'location'])
             ->map(fn (Opportunity $item): array => [
                 'id' => $item->id,
                 'title' => $this->stripContacts((string) $item->title, 'ru'),

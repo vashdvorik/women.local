@@ -1,11 +1,266 @@
-@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+@layer base {
+    html {
+        -webkit-text-size-adjust: 100%;
+    }
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    body {
+        @apply bg-canvas text-ink font-sans text-ui;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+
+    /* Уменьшение движения — отключаем плавную прокрутку и переходы. */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.001ms !important;
+            transition-duration: 0.001ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+}
+
+@layer utilities {
+    .no-scrollbar { scrollbar-width: none; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+}
+
+@layer components {
+
+    /* ---------- Кнопки ---------- */
+
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 h-10 text-ui font-semibold
+               transition-[background-color,color,opacity] select-none;
+    }
+    .btn:active {
+        transform: scale(0.97);
+    }
+    .btn:focus-visible {
+        @apply outline-none ring-2 ring-accent ring-offset-2;
+    }
+    .btn[disabled],
+    .btn:disabled {
+        @apply bg-neutral-soft text-ink-faint cursor-default pointer-events-none;
+    }
+
+    .btn-primary   { @apply btn rounded-pill px-5 bg-accent text-on-accent hover:bg-accent-hover; }
+    .btn-secondary { @apply btn rounded-sm  px-4 bg-surface text-ink border border-hairline hover:bg-surface-sunken; }
+    .btn-quiet     { @apply btn rounded-sm  px-3 bg-transparent text-accent hover:bg-accent-soft; }
+    .btn-danger    { @apply btn rounded-sm  px-4 bg-surface text-danger border border-hairline hover:bg-danger-soft; }
+
+    .btn-icon {
+        @apply inline-flex items-center justify-center w-8 h-8 rounded-sm text-ink-muted
+               hover:bg-surface-sunken hover:text-ink transition-colors;
+    }
+    .btn-icon[disabled],
+    .btn-icon:disabled {
+        @apply text-ink-faint pointer-events-none hover:bg-transparent;
+    }
+
+    /* ---------- Поля формы ---------- */
+
+    .field-label   { @apply block text-ui-strong font-semibold text-ink; }
+    .field-hint    { @apply block text-caption text-ink-muted; }
+    .field-error   { @apply block text-caption text-danger; }
+
+    /* Служебные поля форм — 14px (поиск, настройки, теги, ссылки). Поля
+       материала — 17px через .field-bare и .prose-editor (DESIGN.md §3). */
+    .field-input {
+        @apply block w-full h-10 px-3 text-ui text-ink bg-surface
+               border border-hairline rounded-sm
+               placeholder:text-ink-faint
+               focus:border-accent focus:ring-2 focus:ring-accent-soft focus:outline-none
+               disabled:bg-surface-sunken disabled:text-ink-faint;
+    }
+    textarea.field-input { @apply h-auto py-2 leading-relaxed; }
+
+    .field-input--invalid { @apply border-danger focus:border-danger focus:ring-danger-soft; }
+
+    /* Поле, содержимое которого уедет на сайт — набирается в 17px. */
+    .field-input--content,
+    .prose-editor { @apply text-reading; }
+
+    /* Заголовок материала и краткое описание: рамка только при наведении и фокусе. */
+    .field-bare {
+        @apply block w-full px-3 py-2 text-reading text-ink bg-surface
+               border border-transparent rounded-sm
+               hover:border-hairline
+               focus:border-accent focus:ring-2 focus:ring-accent-soft focus:outline-none;
+    }
+    .field-bare--title { @apply text-reading-strong font-semibold; }
+
+    /* ---------- Раскладка админки ---------- */
+
+    .admin-sidebar {
+        @apply fixed inset-y-0 left-0 w-sidebar bg-sidebar text-on-sidebar flex flex-col
+               overflow-y-auto z-40 border-r border-hairline;
+    }
+    .admin-main   { @apply lg:pl-sidebar min-h-screen flex flex-col; }
+    .admin-header {
+        @apply sticky top-0 z-30 h-header bg-surface border-b border-hairline
+               flex items-center gap-4 px-8;
+    }
+    .admin-body   { @apply flex-1 px-8 pt-6 pb-16; }
+
+    .nav-group {
+        @apply w-full flex items-center justify-between gap-2 px-4 pt-5 pb-1
+               text-micro font-semibold uppercase text-on-sidebar-muted
+               hover:text-ink transition-colors;
+    }
+    .nav-link {
+        @apply flex items-center gap-2 h-10 px-4 text-ui text-ink-muted
+               border-l-[3px] border-transparent hover:text-ink hover:bg-black/[0.04]
+               transition-colors;
+    }
+    .nav-link--active { @apply text-accent font-semibold bg-accent-soft border-accent; }
+    .nav-sub {
+        @apply flex items-center gap-2 h-9 pl-8 pr-4 text-ui text-ink-muted
+               border-l-[3px] border-transparent hover:text-ink hover:bg-black/[0.04]
+               transition-colors;
+    }
+    /* Иконки наследуют цвет пункта (muted / ink при наведении / accent на активном). */
+
+    /* Сворачивание группы: max-height подобран под самую длинную группу (4 пункта). */
+    .nav-collapsible {
+        overflow: hidden;
+        max-height: 10rem;
+        transition: max-height 220ms ease;
+    }
+    .nav-collapsible--closed { max-height: 0; }
+    @media (prefers-reduced-motion: reduce) {
+        .nav-collapsible { transition: none; }
+    }
+    .nav-sub--active { @apply text-accent font-semibold bg-accent-soft border-accent; }
+    .nav-counter {
+        @apply ml-auto min-w-5 h-5 px-1.5 inline-flex items-center justify-center
+               rounded-pill bg-accent text-on-accent text-micro font-semibold;
+    }
+
+    /* ---------- Переключатель лагерей: «Внешний сайт» / «Кабинеты участниц» ---------- */
+    .camp-switch {
+        @apply mx-3 mt-3 p-1 flex flex-col gap-1 shrink-0 rounded-md bg-surface-sunken
+               border border-hairline;
+    }
+    .camp-switch__tab {
+        @apply flex items-center justify-between gap-2 h-9 px-3 rounded-sm border border-transparent
+               text-ui text-ink-muted transition-colors;
+    }
+    .camp-switch__tab:hover { @apply text-ink; }
+    .camp-switch__tab--active { @apply bg-surface text-ink font-semibold border-hairline; }
+
+    /* ---------- Карточки и таблицы ---------- */
+
+    .card       { @apply bg-surface border border-hairline rounded-md p-6; }
+    .card-flush { @apply bg-surface border border-hairline rounded-md; }
+
+    .form-column { @apply max-w-form; }
+
+    .data-table        { @apply w-full bg-surface border border-hairline rounded-md border-separate border-spacing-0 overflow-hidden; }
+    .data-table thead th {
+        @apply bg-surface-sunken text-ui-strong font-semibold text-ink-muted text-left
+               h-11 px-4 border-b border-hairline;
+    }
+    .data-table tbody td { @apply h-12 px-4 text-ui border-b border-hairline; }
+    .data-table tbody tr:last-child td { @apply border-b-0; }
+    .data-table tbody tr:hover { @apply bg-black/[0.02]; }
+    .table-link { @apply text-ink font-semibold hover:text-accent; }
+
+    /* ---------- Вкладки ---------- */
+
+    .tabs        { @apply flex items-stretch gap-1 bg-surface border-b border-hairline; }
+    .tab {
+        @apply inline-flex items-center gap-2 px-4 py-3 text-ui text-ink-muted
+               border-b-2 border-transparent -mb-px cursor-pointer transition-colors;
+    }
+    .tab--active { @apply text-ink border-accent; }
+
+    .tab-badge      { @apply inline-block w-4 h-4; }
+    .tab-badge--done    { color: theme('colors.success.DEFAULT'); }
+    .tab-badge--partial { color: theme('colors.warning.DEFAULT'); }
+    .tab-badge--empty   { color: theme('colors.ink.faint'); }
+
+    /* ---------- Плашки ---------- */
+
+    .badge        { @apply inline-flex items-center rounded-xs px-2 py-[3px] text-micro font-semibold uppercase; }
+    .badge--published { @apply bg-success-soft text-success; }
+    .badge--draft     { @apply bg-neutral-soft text-neutral; }
+    .badge--new       { @apply bg-accent-soft text-accent; }
+    .badge--pending   { @apply bg-warning-soft text-warning; }
+    .badge--rejected  { @apply bg-danger-soft text-danger; }
+
+    /* ---------- Секция формы ---------- */
+
+    .form-section-title {
+        @apply text-section font-semibold text-ink border-b border-hairline pb-2 mb-4;
+    }
+
+    /* ---------- Сводка ошибок ---------- */
+
+    .error-summary {
+        @apply bg-danger-soft rounded-md p-4 text-ink;
+    }
+    .error-summary__title { @apply text-ui-strong font-semibold; }
+
+    /* ---------- Карточка блока ---------- */
+
+    .block-card { @apply relative bg-surface border border-hairline rounded-sm p-4; }
+    .block-card__type { @apply text-micro font-semibold uppercase text-ink-muted; }
+    .block-card__tools {
+        @apply absolute top-2 right-2 flex items-center gap-1 opacity-0
+               transition-opacity;
+    }
+    .block-card:hover .block-card__tools,
+    .block-card:focus-within .block-card__tools { @apply opacity-100; }
+
+    /* ---------- Ячейка загрузки изображения ---------- */
+
+    .image-cell {
+        @apply relative block w-full overflow-hidden rounded-sm bg-surface-sunken
+               border border-dashed border-hairline;
+    }
+    .image-cell--filled { @apply border-solid; }
+    .image-cell--drag   { @apply border-solid border-accent; }
+    .image-cell__actions {
+        @apply absolute top-2 right-2 flex gap-1 opacity-0 transition-opacity;
+    }
+    .image-cell:hover .image-cell__actions { @apply opacity-100; }
+    .image-cell__action {
+        @apply inline-flex items-center justify-center w-7 h-7 rounded-sm text-white;
+        background: #00000099;
+    }
+
+    /* ---------- Уведомление ---------- */
+
+    .toast {
+        @apply fixed bottom-4 right-4 z-50 max-w-[380px] rounded-md p-4 text-ink;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    }
+    .toast--success { @apply bg-success-soft; }
+    .toast--error   { @apply bg-danger-soft; }
+
+    /* ---------- Модальное окно ---------- */
+
+    .modal-backdrop { @apply fixed inset-0 z-50 flex items-center justify-center p-4; background: rgba(0,0,0,0.4); }
+    .modal {
+        @apply bg-surface rounded-md p-6 w-full max-w-[480px];
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
+    }
+    .modal__title { @apply text-section font-semibold text-ink; }
+
+    /* Форматирование в contenteditable-редакторе админки. */
+    .prose-editor h2 { @apply text-section font-semibold; margin: 0.6em 0 0.3em; }
+    .prose-editor h3 { @apply font-semibold; margin: 0.5em 0 0.3em; }
+    .prose-editor blockquote { @apply border-l-2 border-hairline pl-3 text-ink-muted; margin: 0.5em 0; }
+    .prose-editor ul { list-style: disc; padding-left: 1.4em; }
+    .prose-editor ol { list-style: decimal; padding-left: 1.4em; }
+    .prose-editor a { @apply text-accent underline; }
+    .prose-editor:focus { @apply outline-none; }
 }

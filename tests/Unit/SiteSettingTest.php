@@ -58,7 +58,7 @@ class SiteSettingTest extends TestCase
         $this->get(route('account.login'))
             ->assertOk()
             ->assertSee('public-theme-fortun', false)
-            ->assertSee('/themes/public/fortun/images/brand/logo.png', false)
+            ->assertSee('/themes/public/miro/images/brand/logo-ink.webp', false)
             ->assertDontSee('account-theme-classic', false);
     }
 
@@ -72,7 +72,6 @@ class SiteSettingTest extends TestCase
             ->assertOk()
             ->assertSee('miro-page')
             ->assertSee('bannerhero.webp')
-            ->assertSee('PLATFORM<br>FOR WOMEN', false)
             ->assertDontSee('<div class="miro-board"', false);
     }
 

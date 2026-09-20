@@ -614,3 +614,26 @@ body.miro-landing-page .miro-nav__dropdown-menu a span { color: #F8E8DF !importa
         transition-duration: .01ms !important;
     }
 }
+
+/* ---------- Подписка на новости (подвал) ---------- */
+.miro-subscribe { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 460px); gap: 32px; align-items: center; padding: 32px 0; border-top: 1px solid rgba(255,255,255,.12); }
+.miro-subscribe__copy h4 { margin: 0 0 6px; font-size: 18px; font-weight: 500; }
+.miro-subscribe__copy p { margin: 0; color: #E9DCD5; font-size: 14px; }
+.miro-subscribe__row { display: flex; gap: 12px; align-items: flex-end; }
+.miro-subscribe__field { display: grid; flex: 1; gap: 6px; }
+.miro-subscribe__label { color: #E9DCD5; font-size: 12px; }
+.miro-subscribe input[type="email"] { width: 100%; height: 48px; padding: 0 18px; border: 1px solid rgba(255,255,255,.28); border-radius: 9999px; background: rgba(255,255,255,.08); color: #fff; font: inherit; }
+.miro-subscribe input[type="email"]::placeholder { color: rgba(255,255,255,.5); }
+.miro-subscribe input[type="email"]:focus { outline: 2px solid var(--miro-orange); outline-offset: 2px; }
+.miro-subscribe .miro-button { display: inline-flex; align-items: center; justify-content: center; height: 48px; padding: 0 26px; border: 0; border-radius: 9999px; background: var(--miro-pink); color: var(--miro-primary); font: inherit; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background-color .2s ease; }
+.miro-subscribe .miro-button:hover { background: var(--miro-orange); }
+.miro-subscribe__consent { display: flex; gap: 8px; align-items: flex-start; margin-top: 12px; color: #E9DCD5; font-size: 12px; line-height: 1.4; cursor: pointer; }
+.miro-subscribe__consent input { margin-top: 2px; accent-color: var(--miro-orange); }
+.miro-subscribe__notice, .miro-subscribe__error { margin: 0; font-size: 14px; }
+.miro-subscribe__notice { color: var(--miro-orange); }
+.miro-subscribe__error { margin-top: 10px; color: #FFB4A8; }
+.miro-subscribe__trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+@media (max-width: 767px) {
+    .miro-subscribe { grid-template-columns: 1fr; gap: 20px; padding: 24px 0; }
+    .miro-subscribe__row { flex-direction: column; align-items: stretch; }
+}
