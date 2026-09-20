@@ -3,16 +3,18 @@
   Обновлено: июль 2026
 ============================================================
 
-СТЕК: Laravel 12 + Filament 5.6 + Nutgram (Telegram) + Gemini AI
+СТЕК: Laravel 12 + собственная админка (Blade, Alpine.js, Tailwind; перенесена из education3) + Nutgram (Telegram) + Gemini AI
 
 
 ------------------------------------------------------------
 1. ТРЕБОВАНИЯ
 ------------------------------------------------------------
 
-PHP 8.2+ (pdo_mysql, mbstring, openssl, tokenizer, xml, ctype, json, bcmath, fileinfo, curl)
+PHP 8.2+ (pdo_mysql, mbstring, openssl, tokenizer, xml, ctype, json, bcmath, fileinfo, curl, gd)
 MySQL 8.0+
-Composer 2.x + Node.js 18+
+Composer 2.x
+Node.js 18+ — только на машине разработчика: собранные ассеты админки лежат в public/build и коммитятся,
+на хостинге Node не нужен.
 Gemini API ключ (aistudio.google.com)
 Telegram Bot Token (@BotFather)
 
@@ -29,10 +31,16 @@ Telegram Bot Token (@BotFather)
   php artisan key:generate
   php artisan migrate
   php artisan storage:link
-  npm install && npm run build
+  npm install && npm run build   # только для разработки: пересобрать ассеты админки
 
-  # Создать админа Filament
-  php artisan make:filament-user
+  # Админка (/admin): пускается ровно одна почта из ADMIN_EMAIL.
+  # В .env задать ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD (пароль не короче 12 символов), затем:
+  php artisan db:seed --class=AdminUserSeeder
+  # Если пользователь с этой почтой уже есть, сидер только обновит пароль, когда он изменился.
+
+  # Начальный контент сайта: 12 экспертов и 9 новостей, перенесённые из старых Blade-массивов.
+  # Фото прогоняются через WebP-конвейер админки в public/uploads. Безопасно запускать повторно.
+  php artisan db:seed --class=ContentSeeder
 
   # Запустить всё одной командой (serve + queue + vite + логи):
   composer dev
@@ -87,8 +95,11 @@ Telegram Bot Token (@BotFather)
   php artisan storage:link
   php artisan optimize:clear
 
-  # Админ-панель Filament (/admin)
-  php artisan make:filament-user
+  # Админ-панель (/admin): ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD в .env, затем
+  php artisan db:seed --class=AdminUserSeeder
+
+  # Начальный контент публичного сайта (эксперты, новости); повторный запуск ничего не дублирует
+  php artisan db:seed --class=ContentSeeder
 
   # Telegram webhook (указать свой домен)
   php artisan nutgram:hook:set https://womenhub.innovation.md/telegram/webhook
@@ -114,6 +125,11 @@ Telegram Bot Token (@BotFather)
   php artisan migrate --force
   php artisan optimize:clear
 
+  # Ассеты админки (public/build) приходят в git готовыми. Менялись стили или скрипты админки —
+  # соберите их локально (npm run build) и закоммитьте public/build.
+  # Загруженные в админке картинки лежат в public/uploads/ГГГГ/ММ и в git не попадают:
+  # каталог должен быть доступен веб-серверу на запись и попадать в резервные копии.
+
 
 ------------------------------------------------------------
 7. ТЕСТОВЫЕ ДАННЫЕ (dev)
@@ -129,7 +145,9 @@ Telegram Bot Token (@BotFather)
 ------------------------------------------------------------
 
   /                         — лендинг
-  /admin                    — Filament админка
+  /admin                    — админка (вход /login, только ADMIN_EMAIL)
+  /media/publications       — публикации (из админки)
+  /media/photos, /media/videos, /projects, /opportunities, /events, /experts — материалы из админки
   /app/account/login        — вход по Telegram username
   /app/account/             — личный кабинет
   /app/account/profile      — просмотр профиля

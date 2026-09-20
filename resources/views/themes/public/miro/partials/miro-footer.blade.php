@@ -38,6 +38,7 @@
                 </ul>
             </div>
         </div>
+        @include('themes.public.miro.partials.subscribe-form')
         <div class="miro-footer__bottom">
             <span>© {{ date('Y') }} Women Entrepreneurs Platform</span>
             <span><span data-lang="ru">Сделано для роста через связи</span><span data-lang="en">Made for growth through connection</span><span data-lang="ro">Creat pentru creștere prin conexiuni</span></span>

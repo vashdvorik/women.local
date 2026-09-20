@@ -54,6 +54,19 @@ class SiteSetting extends Model
         'value' => 'array',
     ];
 
+    /** Простое значение настройки: сжатие изображений, флаги и т. п. */
+    public static function read(string $key, mixed $default = null): mixed
+    {
+        $stored = self::query()->where('key', $key)->first()?->value;
+
+        return $stored ?? $default;
+    }
+
+    public static function write(string $key, mixed $value): void
+    {
+        self::updateOrCreate(['key' => $key], ['value' => $value]);
+    }
+
     public static function landingTheme(): string
     {
         return Cache::rememberForever(self::LANDING_THEME_KEY, function (): string {

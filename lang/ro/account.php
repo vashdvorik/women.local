@@ -159,7 +159,9 @@ return [
         'empty_text' => 'Cereri, oferte, evenimente și inițiative noi vor apărea aici.',
         'publish_first' => 'Publică prima →',
         'new_title' => 'Oportunitate nouă',
-        'new_subtitle' => 'Publicați o cerere, ofertă, întâlnire sau eveniment. Participantele vor primi notificare în Telegram.',
+        'new_subtitle' => 'Publicați o cerere, ofertă, întâlnire sau eveniment. După verificarea moderatorului, participantele vor primi notificare în Telegram.',
+        'status_pending' => 'În moderare: va fi vizibilă tuturor după aprobare',
+        'status_rejected' => 'Respinsă de moderator și ascunsă celorlalte participante',
         'type' => 'Tip',
         'title_field' => 'Titlu',
         'title_placeholder' => 'De exemplu: caut parteneri pentru participare la expoziție',
@@ -170,7 +172,7 @@ return [
         'location_placeholder' => 'Chișinău, online, Bălți...',
         'contact_url' => 'Link de contact',
         'contact_placeholder' => 'https://t.me/username sau link către formular',
-        'submit' => 'Publică și notifică participantele',
+        'submit' => 'Trimite la moderare',
         'delete_confirm' => 'Ștergeți această publicație?',
     ],
 
@@ -183,7 +185,7 @@ return [
     'messages' => [
         'profile_updated' => 'Profilul a fost actualizat. Alte participante vor înțelege mai bine afacerea și nevoile dvs.',
         'profile_deleted' => 'Profilul dvs. a fost șters.',
-        'opportunity_created' => 'Publicația a fost adăugată. Participantele vor primi o notificare în Telegram.',
+        'opportunity_created' => 'Publicația a fost trimisă la moderare. După aprobare va apărea în catalog, iar participantele vor fi notificate în Telegram.',
         'opportunity_deleted' => 'Publicația a fost ștearsă.',
         'invalid_link' => 'Linkul nu este valid.',
         'expired_link' => 'Linkul a expirat. Solicitați unul nou prin @WomenComBot cu /login.',

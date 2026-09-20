@@ -38,6 +38,15 @@ return [
             'report' => false,
         ],
 
+        // Изображения пишутся напрямую в public/uploads/ГГГГ/ММ/ — без storage:link.
+        // На shared hosting симлинк часто запрещён или не отдаётся веб-сервером.
+        'uploads' => [
+            'driver' => 'local',
+            'root'   => public_path('uploads'),
+            'url'    => '/uploads',
+            'throw'  => true,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

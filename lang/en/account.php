@@ -159,7 +159,9 @@ return [
         'empty_text' => 'New requests, offers, events and partnership initiatives will appear here.',
         'publish_first' => 'Publish the first one →',
         'new_title' => 'New opportunity',
-        'new_subtitle' => 'Publish a request, offer, meeting or event. Participants will receive a Telegram notification.',
+        'new_subtitle' => 'Publish a request, offer, meeting or event. After moderator review, participants will receive a Telegram notification.',
+        'status_pending' => 'Under review: visible to everyone once approved',
+        'status_rejected' => 'Rejected by a moderator and hidden from other participants',
         'type' => 'Type',
         'title_field' => 'Title',
         'title_placeholder' => 'For example: looking for partners for an exhibition',
@@ -170,7 +172,7 @@ return [
         'location_placeholder' => 'Chisinau, online, Balti...',
         'contact_url' => 'Contact link',
         'contact_placeholder' => 'https://t.me/username or a form link',
-        'submit' => 'Publish and notify participants',
+        'submit' => 'Submit for review',
         'delete_confirm' => 'Delete this publication?',
     ],
 
@@ -183,7 +185,7 @@ return [
     'messages' => [
         'profile_updated' => 'Profile updated. Other participants can better understand your business and needs.',
         'profile_deleted' => 'Your profile has been deleted.',
-        'opportunity_created' => 'Publication added. Participants will receive a Telegram notification.',
+        'opportunity_created' => 'Publication submitted for review. Once approved it will appear in the catalogue and participants will be notified in Telegram.',
         'opportunity_deleted' => 'Publication deleted.',
         'invalid_link' => 'The link is invalid.',
         'expired_link' => 'The link has expired. Request a new one via @WomenComBot with /login.',

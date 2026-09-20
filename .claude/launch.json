@@ -6,6 +6,13 @@
             "runtimeExecutable": "php",
             "runtimeArgs": ["artisan", "serve", "--host=127.0.0.1", "--port=8000"],
             "port": 8000
+        },
+        {
+            "name": "education3",
+            "runtimeExecutable": "php",
+            "runtimeArgs": ["D:/OSPanel/home/education3/artisan", "serve", "--host=127.0.0.1", "--port=8082"],
+            "port": 8082,
+            "url": "http://127.0.0.1:8082"
         }
     ]
 }
