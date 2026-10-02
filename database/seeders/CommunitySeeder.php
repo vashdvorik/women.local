@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Enums\Plan;
 use App\Models\BotUser;
+use App\Services\Subscriptions\SubscriptionService;
 use Illuminate\Database\Seeder;
 
 class CommunitySeeder extends Seeder
@@ -152,7 +154,7 @@ class CommunitySeeder extends Seeder
         ];
 
         foreach ($users as $index => $data) {
-            BotUser::updateOrCreate(
+            $user = BotUser::updateOrCreate(
                 ['telegram_id' => $data['telegram_id']],
                 array_merge($data, [
                     'status'               => BotUser::STATUS_APPROVED,
@@ -161,6 +163,11 @@ class CommunitySeeder extends Seeder
                     'embedding_updated_at' => null,
                 ])
             );
+
+            // Демо-участницам оплачен Community на год: иначе кабинет на Open почти пустой. Сидер работает только вне боевого сервера.
+            if (! $user->hasPlan(Plan::Community)) {
+                app(SubscriptionService::class)->grant($user, Plan::Community, 12, note: 'Демо-данные');
+            }
         }
 
         $this->command->info('Создано/обновлено ' . count($users) . ' дополнительных профилей участниц сообщества.');

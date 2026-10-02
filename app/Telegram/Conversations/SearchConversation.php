@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Telegram\Conversations;
 
+use App\Enums\Plan;
 use App\Models\BotUser;
 use App\Services\EmbeddingService;
 use App\Services\MatchingService;
@@ -47,8 +48,6 @@ class SearchConversation extends Conversation
             return;
         }
 
-        $this->say($bot, 'search_in_progress');
-
         $telegramId  = $bot->userId();
         $currentUser = BotUser::where('telegram_id', $telegramId)->first();
 
@@ -57,6 +56,15 @@ class SearchConversation extends Conversation
             $this->end();
             return;
         }
+
+        // Диалог мог начаться, пока подписка действовала, и дойти сюда уже после её окончания.
+        if (! $currentUser->hasPlan(Plan::Community)) {
+            $this->say($bot, 'plan_required', ['url' => route('account.subscription')]);
+            $this->end();
+            return;
+        }
+
+        $this->say($bot, 'search_in_progress');
 
         try {
             /** @var EmbeddingService $embedder */

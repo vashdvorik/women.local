@@ -36,6 +36,22 @@ class BotUserFactory extends Factory
         ]);
     }
 
+    /** Одобренная участница с оплаченным Community (на год). */
+    public function community(): static
+    {
+        return $this->approved()->afterCreating(function (\App\Models\BotUser $user): void {
+            app(\App\Services\Subscriptions\SubscriptionService::class)->grant($user, \App\Enums\Plan::Community, 12, note: 'Фабрика');
+        });
+    }
+
+    /** Одобренная участница с оплаченным Private (на год). */
+    public function private(): static
+    {
+        return $this->approved()->afterCreating(function (\App\Models\BotUser $user): void {
+            app(\App\Services\Subscriptions\SubscriptionService::class)->grant($user, \App\Enums\Plan::Private, 12, note: 'Фабрика');
+        });
+    }
+
     public function pending(): static
     {
         return $this->state(fn () => [

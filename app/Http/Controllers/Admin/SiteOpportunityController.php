@@ -41,7 +41,7 @@ class SiteOpportunityController extends Controller
     {
         $opportunity = $saver->handle(SiteOpportunity::class, null, $request->validated());
 
-        return $this->finishArticle($opportunity, $request, $publisher, 'admin.opportunities.edit', 'Возможность', created: true);
+        return $this->finishArticle($opportunity, $request, $publisher, 'admin.opportunities.edit', __('Возможность'), created: true);
     }
 
     public function edit(SiteOpportunity $opportunity): View
@@ -58,7 +58,7 @@ class SiteOpportunityController extends Controller
     {
         $opportunity = $saver->handle(SiteOpportunity::class, $opportunity, $request->validated());
 
-        return $this->finishArticle($opportunity, $request, $publisher, 'admin.opportunities.edit', 'Возможность', created: false);
+        return $this->finishArticle($opportunity, $request, $publisher, 'admin.opportunities.edit', __('Возможность'), created: false);
     }
 
     public function destroy(SiteOpportunity $opportunity): RedirectResponse
@@ -67,6 +67,6 @@ class SiteOpportunityController extends Controller
 
         return redirect()
             ->route('admin.opportunities.index')
-            ->with('success', 'Возможность удалена.');
+            ->with('success', __('Возможность удалена.'));
     }
 }

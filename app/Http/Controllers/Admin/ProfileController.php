@@ -66,28 +66,28 @@ class ProfileController extends Controller
     {
         $profile->update($request->validated());
 
-        return redirect()->route('admin.profiles.show', $profile)->with('success', 'Профиль сохранён.');
+        return redirect()->route('admin.profiles.show', $profile)->with('success', __('Профиль сохранён.'));
     }
 
     public function approve(BotUser $profile, ProfileModeration $moderation): RedirectResponse
     {
         $moderation->approve($profile);
 
-        return back()->with('success', 'Профиль участницы одобрен.');
+        return back()->with('success', __('Профиль участницы одобрен.'));
     }
 
     public function reject(BotUser $profile, ProfileModeration $moderation): RedirectResponse
     {
         $moderation->reject($profile);
 
-        return back()->with('success', 'Профиль участницы отклонён.');
+        return back()->with('success', __('Профиль участницы отклонён.'));
     }
 
     public function destroy(BotUser $profile): RedirectResponse
     {
         $profile->delete();
 
-        return redirect()->route('admin.profiles.index')->with('success', 'Профиль удалён.');
+        return redirect()->route('admin.profiles.index')->with('success', __('Профиль удалён.'));
     }
 
     public function bulkDestroy(Request $request): RedirectResponse
@@ -95,10 +95,10 @@ class ProfileController extends Controller
         $ids = $request->validate([
             'ids' => ['required', 'array', 'min:1'],
             'ids.*' => ['integer'],
-        ], [], ['ids' => 'профили'])['ids'];
+        ], [], ['ids' => __('профили')])['ids'];
 
         $deleted = BotUser::query()->whereIn('id', $ids)->delete();
 
-        return redirect()->route('admin.profiles.index')->with('success', "Удалено профилей: {$deleted}.");
+        return redirect()->route('admin.profiles.index')->with('success', __('Удалено профилей: :count.', ['count' => $deleted]));
     }
 }

@@ -1,6 +1,7 @@
 import Alpine from 'alpinejs';
 import { uploadImage, flashError } from './uploader';
 import { openCropper } from './cropper';
+import { t } from './i18n';
 
 /**
  * Одно необязательное изображение с кадрированием под слот.
@@ -26,7 +27,7 @@ Alpine.data('imageField', (initial) => ({
         try {
             this.path = await uploadImage(file, initial.slot, initial.uploadUrl, crop);
         } catch (e) {
-            flashError('Не удалось загрузить изображение.');
+            flashError(t('Не удалось загрузить изображение.'));
         } finally {
             this.uploading = false;
         }

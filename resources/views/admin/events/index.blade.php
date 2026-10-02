@@ -1,12 +1,12 @@
-<x-layouts.admin title="Новости">
+<x-layouts.admin :title="__('Новости')">
     <x-slot:actions>
-        <a href="{{ route('admin.events.create') }}" class="btn-primary">Добавить новость</a>
+        <a href="{{ route('admin.events.create') }}" class="btn-primary">{{ __('Добавить новость') }}</a>
     </x-slot:actions>
 
     @if($events->isEmpty())
         <div class="card text-center">
-            <p class="text-reading text-ink-muted">Новостей пока нет. Страница «Новости» покажет только шапку.</p>
-            <a href="{{ route('admin.events.create') }}" class="btn-primary mt-4">Добавить новость</a>
+            <p class="text-reading text-ink-muted">{{ __('Новостей пока нет. Страница «Новости» покажет только шапку.') }}</p>
+            <a href="{{ route('admin.events.create') }}" class="btn-primary mt-4">{{ __('Добавить новость') }}</a>
         </div>
     @else
         <div class="overflow-x-auto">
@@ -14,12 +14,12 @@
                 <thead>
                     <tr>
                         <th class="w-24"></th>
-                        <th>Название</th>
-                        <th class="w-40">Тип</th>
-                        <th class="w-40">Дата</th>
-                        <th class="w-28">Языки</th>
-                        <th class="w-28">На сайте</th>
-                        <th class="w-28">Порядок</th>
+                        <th>{{ __('Название') }}</th>
+                        <th class="w-40">{{ __('Тип') }}</th>
+                        <th class="w-40">{{ __('Дата') }}</th>
+                        <th class="w-28">{{ __('Языки') }}</th>
+                        <th class="w-28">{{ __('На сайте') }}</th>
+                        <th class="w-28">{{ __('Порядок') }}</th>
                         <th class="w-40"></th>
                     </tr>
                 </thead>
@@ -38,11 +38,11 @@
                             </td>
                             <td>
                                 <a href="{{ route('admin.events.edit', $event) }}" class="table-link">
-                                    {{ $ru?->title ?: 'Без названия' }}
+                                    {{ $ru?->title ?: __('Без названия') }}
                                 </a>
                                 @if($event->hasBody() && filled($event->slug))
                                     <a href="{{ route('events.show', ['event' => $event->slug]) }}" target="_blank" rel="noopener"
-                                       class="block text-caption text-ink-muted hover:underline">Страница на сайте ↗</a>
+                                       class="block text-caption text-ink-muted hover:underline">{{ __('Страница на сайте ↗') }}</a>
                                 @endif
                             </td>
                             <td class="text-ink-muted">{{ $ru?->type ?: '—' }}</td>
@@ -57,9 +57,9 @@
                             </td>
                             <td>
                                 <div class="flex items-center justify-end gap-2">
-                                    <a href="{{ route('admin.events.edit', $event) }}" class="btn-quiet">Изменить</a>
+                                    <a href="{{ route('admin.events.edit', $event) }}" class="btn-quiet">{{ __('Изменить') }}</a>
                                     <x-admin.delete-button :action="route('admin.events.destroy', $event)"
-                                        :subject="$ru?->title ?: 'новость'" noun="новость" />
+                                        :subject="$ru?->title ?: __('новость')" :noun="__('новость')" />
                                 </div>
                             </td>
                         </tr>

@@ -30,10 +30,10 @@ class TagRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'color' => 'цвет',
-            'names.ru' => 'название по-русски',
-            'names.ro' => 'название по-румынски',
-            'names.en' => 'название по-английски',
+            'color' => __('цвет'),
+            'names.ru' => __('название по-русски'),
+            'names.ro' => __('название по-румынски'),
+            'names.en' => __('название по-английски'),
         ];
     }
 }

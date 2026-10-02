@@ -1,14 +1,14 @@
 @php
     $tabs = [
-        '' => ['Все', $counts->sum()],
-        \App\Models\Opportunity::STATUS_PENDING => ['Ожидают', $counts[\App\Models\Opportunity::STATUS_PENDING] ?? 0],
-        \App\Models\Opportunity::STATUS_APPROVED => ['Одобрены', $counts[\App\Models\Opportunity::STATUS_APPROVED] ?? 0],
-        \App\Models\Opportunity::STATUS_REJECTED => ['Отклонены', $counts[\App\Models\Opportunity::STATUS_REJECTED] ?? 0],
+        '' => [__('Все'), $counts->sum()],
+        \App\Models\Opportunity::STATUS_PENDING => [__('Ожидают'), $counts[\App\Models\Opportunity::STATUS_PENDING] ?? 0],
+        \App\Models\Opportunity::STATUS_APPROVED => [__('Одобрены'), $counts[\App\Models\Opportunity::STATUS_APPROVED] ?? 0],
+        \App\Models\Opportunity::STATUS_REJECTED => [__('Отклонены'), $counts[\App\Models\Opportunity::STATUS_REJECTED] ?? 0],
     ];
-    $types = ['project' => 'Запрос', 'meeting' => 'Партнёрство', 'event' => 'Событие'];
+    $types = ['project' => __('Запрос'), 'meeting' => __('Партнёрство'), 'event' => __('Событие')];
 @endphp
 
-<x-layouts.admin title="Посты участниц">
+<x-layouts.admin :title="__('Посты участниц')">
     <div class="space-y-4">
         <div class="tabs">
             @foreach($tabs as $key => [$label, $count])
@@ -21,21 +21,21 @@
 
         <form method="GET" class="flex flex-wrap gap-2 max-w-2xl">
             @if($status !== '') <input type="hidden" name="status" value="{{ $status }}"> @endif
-            <input type="search" name="q" value="{{ $search }}" placeholder="Поиск по заголовку или автору"
+            <input type="search" name="q" value="{{ $search }}" placeholder="{{ __('Поиск по заголовку или автору') }}"
                    class="field-input flex-1 min-w-[12rem]">
             <select name="type" class="field-input w-44" onchange="this.form.submit()">
-                <option value="">Все типы</option>
+                <option value="">{{ __('Все типы') }}</option>
                 @foreach($types as $value => $label)
                     <option value="{{ $value }}" @selected($type === $value)>{{ $label }}</option>
                 @endforeach
             </select>
-            <button type="submit" class="btn-secondary">Найти</button>
+            <button type="submit" class="btn-secondary">{{ __('Найти') }}</button>
         </form>
 
         @if($posts->isEmpty())
             <div class="card text-center">
                 <p class="text-reading text-ink-muted">
-                    {{ ($search !== '' || $status !== '' || $type !== '') ? 'Ничего не найдено.' : 'Постов участниц пока нет.' }}
+                    {{ ($search !== '' || $status !== '' || $type !== '') ? __('Ничего не найдено.') : __('Постов участниц пока нет.') }}
                 </p>
             </div>
         @else
@@ -43,11 +43,11 @@
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th class="min-w-[12rem]">Заголовок</th>
-                            <th class="whitespace-nowrap">Тип</th>
-                            <th class="whitespace-nowrap">Автор</th>
-                            <th class="whitespace-nowrap">Статус</th>
-                            <th class="whitespace-nowrap">Создан</th>
+                            <th class="min-w-[12rem]">{{ __('Заголовок') }}</th>
+                            <th class="whitespace-nowrap">{{ __('Тип') }}</th>
+                            <th class="whitespace-nowrap">{{ __('Автор') }}</th>
+                            <th class="whitespace-nowrap">{{ __('Статус') }}</th>
+                            <th class="whitespace-nowrap">{{ __('Создан') }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -66,22 +66,22 @@
                                         @unless($post->isApproved())
                                             <x-admin.confirm-button
                                                 :action="route('admin.member-posts.approve', $post)"
-                                                label="Одобрить"
-                                                title="Одобрить публикацию?"
-                                                message="Она появится в кабинете у всех участниц, а они получат уведомление в Telegram." />
+                                                :label="__('Одобрить')"
+                                                :title="__('Одобрить публикацию?')"
+                                                :message="__('Она появится в кабинете у всех участниц, а они получат уведомление в Telegram.')" />
                                         @endunless
                                         @unless($post->isRejected())
                                             <x-admin.confirm-button
                                                 :action="route('admin.member-posts.reject', $post)"
-                                                label="Отклонить"
-                                                title="Отклонить публикацию?"
-                                                message="Публикация будет скрыта от других участниц. Автор увидит пометку об отказе."
+                                                :label="__('Отклонить')"
+                                                :title="__('Отклонить публикацию?')"
+                                                :message="__('Публикация будет скрыта от других участниц. Автор увидит пометку об отказе.')"
                                                 :danger="true" />
                                         @endunless
                                         <x-admin.delete-button
                                             :action="route('admin.member-posts.destroy', $post)"
                                             :subject="$post->title"
-                                            noun="публикацию" />
+                                            :noun="__('публикацию')" />
                                     </div>
                                 </td>
                             </tr>

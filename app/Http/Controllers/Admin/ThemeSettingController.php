@@ -19,23 +19,23 @@ class ThemeSettingController extends Controller
     {
         $data = $request->validate([
             'landing_theme' => ['required', Rule::in(array_keys(SiteSetting::LANDING_THEMES))],
-        ], [], ['landing_theme' => 'тема сайта']);
+        ], [], ['landing_theme' => __('тема сайта')]);
 
         SiteSetting::setLandingTheme($data['landing_theme']);
 
         return redirect()->route('admin.settings.edit', ['tab' => 'theme'])
-            ->with('success', 'Тема сайта сохранена и уже применяется.');
+            ->with('success', __('Тема сайта сохранена и уже применяется.'));
     }
 
     public function cabinet(Request $request): RedirectResponse
     {
         $data = $request->validate([
             'account_theme' => ['required', Rule::in(array_keys(SiteSetting::ACCOUNT_THEMES))],
-        ], [], ['account_theme' => 'тема кабинета']);
+        ], [], ['account_theme' => __('тема кабинета')]);
 
         SiteSetting::setAccountTheme($data['account_theme']);
 
         return redirect()->route('admin.cabinets.settings', ['tab' => 'theme'])
-            ->with('success', 'Тема кабинета сохранена и уже применяется.');
+            ->with('success', __('Тема кабинета сохранена и уже применяется.'));
     }
 }

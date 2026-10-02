@@ -1,20 +1,20 @@
-<x-layouts.admin title="Подписчики">
+<x-layouts.admin :title="__('Подписчики')">
     <x-slot:actions>
-        <a href="{{ route('admin.subscribers.export.csv') }}" class="btn-secondary">Скачать CSV</a>
-        <a href="{{ route('admin.subscribers.export.txt') }}" class="btn-secondary">Список почт (.txt)</a>
+        <a href="{{ route('admin.subscribers.export.csv') }}" class="btn-secondary">{{ __('Скачать CSV') }}</a>
+        <a href="{{ route('admin.subscribers.export.txt') }}" class="btn-secondary">{{ __('Список почт (.txt)') }}</a>
     </x-slot:actions>
 
     <div class="space-y-4">
         <form method="GET" class="flex gap-2 max-w-sm">
-            <input type="search" name="q" value="{{ $search }}" placeholder="Поиск по имени или почте"
+            <input type="search" name="q" value="{{ $search }}" placeholder="{{ __('Поиск по имени или почте') }}"
                    class="field-input">
-            <button type="submit" class="btn-secondary">Найти</button>
+            <button type="submit" class="btn-secondary">{{ __('Найти') }}</button>
         </form>
 
         @if($subscribers->isEmpty())
             <div class="card text-center">
                 <p class="text-reading text-ink-muted">
-                    {{ $search !== '' ? 'Ничего не найдено.' : 'Подписчиков пока нет.' }}
+                    {{ $search !== '' ? __('Ничего не найдено.') : __('Подписчиков пока нет.') }}
                 </p>
             </div>
         @else
@@ -22,9 +22,9 @@
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th class="w-64">Почта</th>
-                            <th>Имя</th>
-                            <th class="w-40">Дата подписки</th>
+                            <th class="w-64">{{ __('Почта') }}</th>
+                            <th>{{ __('Имя') }}</th>
+                            <th class="w-40">{{ __('Дата подписки') }}</th>
                             <th class="w-24"></th>
                         </tr>
                     </thead>
@@ -40,7 +40,7 @@
                                     <x-admin.delete-button
                                         :action="route('admin.subscribers.destroy', $subscriber)"
                                         :subject="$subscriber->email"
-                                        noun="подписчика" />
+                                        :noun="__('подписчика')" />
                                 </td>
                             </tr>
                         @endforeach

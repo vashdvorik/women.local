@@ -8,10 +8,10 @@
     $chartHeight = 140;
 @endphp
 
-<x-layouts.admin title="Статистика платформы">
+<x-layouts.admin :title="__('Статистика платформы')">
     <x-slot:actions>
-        <a href="{{ route('admin.statistics.pdf') }}" class="btn-primary">Скачать PDF</a>
-        <button type="button" onclick="window.print()" class="btn-secondary hidden md:inline-flex">Печать</button>
+        <a href="{{ route('admin.statistics.pdf') }}" class="btn-primary">{{ __('Скачать PDF') }}</a>
+        <button type="button" onclick="window.print()" class="btn-secondary hidden md:inline-flex">{{ __('Печать') }}</button>
     </x-slot:actions>
 
     <div class="space-y-6">
@@ -19,20 +19,20 @@
         {{-- Итог: индекс готовности + воронка заявок --}}
         <div class="grid gap-6 lg:grid-cols-2">
             <div class="card">
-                <p class="field-hint uppercase">Индекс готовности сообщества</p>
+                <p class="field-hint uppercase">{{ __('Индекс готовности сообщества') }}</p>
                 <p class="mt-2 text-[44px] font-semibold leading-none text-accent">{{ $platformReadiness }}%</p>
                 <p class="mt-3 text-ui text-ink-muted">
-                    Среднее по заполненности профилей, AI-индексации, активности кабинета и публикациям.
-                    Сформировано {{ $generatedAt }}.
+                    {{ __('Среднее по заполненности профилей, AI-индексации, активности кабинета и публикациям.') }}
+                    {{ __('Сформировано :date.', ['date' => $generatedAt]) }}
                 </p>
             </div>
 
             <div class="card">
-                <p class="field-hint uppercase">Заявки на участие</p>
+                <p class="field-hint uppercase">{{ __('Заявки на участие') }}</p>
                 <p class="mt-2 text-[44px] font-semibold leading-none">{{ $formatNumber($approvedCount) }}</p>
                 <p class="mt-3 text-ui text-ink-muted">
-                    одобренных участниц из <b class="text-ink">{{ $formatNumber($totalApplications) }}</b> заявок — {{ $approvalRate }}% принятых.
-                    За 30 дней: {{ $formatNumber($newApplicationsLast30) }} новых заявок, {{ $formatNumber($approvedLast30) }} одобрено.
+                    {!! __('одобренных участниц из :total заявок — :rate% принятых.', ['total' => '<b class="text-ink">'.e($formatNumber($totalApplications)).'</b>', 'rate' => e($approvalRate)]) !!}
+                    {{ __('За 30 дней: :new новых заявок, :approved одобрено.', ['new' => $formatNumber($newApplicationsLast30), 'approved' => $formatNumber($approvedLast30)]) }}
                 </p>
                 <div class="mt-4 space-y-3">
                     @foreach($statusRows as $row)
@@ -52,9 +52,9 @@
 
         {{-- Готовность базы --}}
         <div class="card">
-            <h2 class="form-section-title">Готовность базы участниц</h2>
+            <h2 class="form-section-title">{{ __('Готовность базы участниц') }}</h2>
             <p class="mb-4 text-ui text-ink-muted">
-                Насколько профили одобренных участниц готовы приносить пользу сообществу: от заполненности до цифровой активности.
+                {{ __('Насколько профили одобренных участниц готовы приносить пользу сообществу: от заполненности до цифровой активности.') }}
             </p>
             <div class="grid gap-x-8 gap-y-5 md:grid-cols-2">
                 @foreach($qualityRows as $row)
@@ -75,8 +75,8 @@
         {{-- Динамика --}}
         <div class="grid gap-6 lg:grid-cols-2">
             <div class="card">
-                <h2 class="form-section-title">Динамика сообщества</h2>
-                <p class="mb-4 text-caption text-ink-muted">Заявки и одобрения по месяцам за последний год.</p>
+                <h2 class="form-section-title">{{ __('Динамика сообщества') }}</h2>
+                <p class="mb-4 text-caption text-ink-muted">{{ __('Заявки и одобрения по месяцам за последний год.') }}</p>
                 <div class="flex items-end gap-1.5" style="height: {{ $chartHeight + 24 }}px">
                     @foreach($registrationChart as $month)
                         @php
@@ -85,28 +85,27 @@
                         @endphp
                         <div class="flex flex-1 flex-col items-center justify-end gap-1">
                             <div class="flex items-end gap-0.5">
-                                <div class="w-2 rounded-xs bg-hairline" style="height: {{ $a }}px" title="{{ $month['label'] }}: {{ $month['applications'] }} заявок"></div>
-                                <div class="w-2 rounded-xs bg-accent" style="height: {{ $b }}px" title="{{ $month['label'] }}: {{ $month['approved'] }} одобрено"></div>
+                                <div class="w-2 rounded-xs bg-hairline" style="height: {{ $a }}px" title="{{ __(':month: :count заявок', ['month' => $month['label'], 'count' => $month['applications']]) }}"></div>
+                                <div class="w-2 rounded-xs bg-accent" style="height: {{ $b }}px" title="{{ __(':month: :count одобрено', ['month' => $month['label'], 'count' => $month['approved']]) }}"></div>
                             </div>
                             <span class="text-micro text-ink-faint">{{ $month['label'] }}</span>
                         </div>
                     @endforeach
                 </div>
                 <div class="mt-3 flex gap-4 text-caption text-ink-muted">
-                    <span class="inline-flex items-center gap-1.5"><i class="inline-block h-2 w-2 rounded-xs bg-hairline"></i> Заявки</span>
-                    <span class="inline-flex items-center gap-1.5"><i class="inline-block h-2 w-2 rounded-xs bg-accent"></i> Одобрено</span>
+                    <span class="inline-flex items-center gap-1.5"><i class="inline-block h-2 w-2 rounded-xs bg-hairline"></i> {{ __('Заявки') }}</span>
+                    <span class="inline-flex items-center gap-1.5"><i class="inline-block h-2 w-2 rounded-xs bg-accent"></i> {{ __('Одобрено') }}</span>
                 </div>
             </div>
 
             <div class="card">
-                <h2 class="form-section-title">Публикации участниц</h2>
+                <h2 class="form-section-title">{{ __('Публикации участниц') }}</h2>
                 <p class="text-[36px] font-semibold leading-none">{{ $formatNumber($opportunitiesTotal) }}</p>
                 <p class="mt-2 mb-4 text-ui text-ink-muted">
-                    одобренных публикаций от {{ $formatNumber($opportunityAuthors) }} участниц,
-                    {{ $formatNumber($opportunitiesLast30) }} за последние 30 дней.
+                    {{ __('одобренных публикаций от :authors участниц, :recent за последние 30 дней.', ['authors' => $formatNumber($opportunityAuthors), 'recent' => $formatNumber($opportunitiesLast30)]) }}
                 </p>
                 @if($opportunitiesTotal === 0)
-                    <p class="text-ui text-ink-muted">Пока нет одобренных публикаций.</p>
+                    <p class="text-ui text-ink-muted">{{ __('Пока нет одобренных публикаций.') }}</p>
                 @else
                     <div class="space-y-3">
                         @foreach($opportunityTypeRows as $row)
@@ -128,9 +127,9 @@
         {{-- Последние --}}
         <div class="grid gap-6 lg:grid-cols-2">
             <div class="card">
-                <h2 class="form-section-title">Новые одобренные участницы</h2>
+                <h2 class="form-section-title">{{ __('Новые одобренные участницы') }}</h2>
                 @if($latestMembers->isEmpty())
-                    <p class="text-ui text-ink-muted">Одобренных профилей пока нет.</p>
+                    <p class="text-ui text-ink-muted">{{ __('Одобренных профилей пока нет.') }}</p>
                 @else
                     <ul class="divide-y divide-hairline-soft">
                         @foreach($latestMembers as $member)
@@ -140,10 +139,10 @@
                                 </span>
                                 <div class="min-w-0">
                                     <p class="text-ui-strong font-semibold">
-                                        {{ $member->full_name ?: 'Без имени' }}
+                                        {{ $member->full_name ?: __('Без имени') }}
                                         <span class="ml-2 font-normal text-ink-faint">{{ $member->approved_at?->format('d.m.Y') }}</span>
                                     </p>
-                                    <p class="line-clamp-2 text-caption text-ink-muted">{{ $member->description ?: 'Описание профиля пока не заполнено.' }}</p>
+                                    <p class="line-clamp-2 text-caption text-ink-muted">{{ $member->description ?: __('Описание профиля пока не заполнено.') }}</p>
                                 </div>
                             </li>
                         @endforeach
@@ -152,9 +151,9 @@
             </div>
 
             <div class="card">
-                <h2 class="form-section-title">Последние публикации</h2>
+                <h2 class="form-section-title">{{ __('Последние публикации') }}</h2>
                 @if($latestOpportunities->isEmpty())
-                    <p class="text-ui text-ink-muted">Публикаций пока нет.</p>
+                    <p class="text-ui text-ink-muted">{{ __('Публикаций пока нет.') }}</p>
                 @else
                     <ul class="divide-y divide-hairline-soft">
                         @foreach($latestOpportunities as $post)
@@ -165,7 +164,7 @@
                                     <span class="ml-2 font-normal text-ink-faint">{{ $post->created_at?->format('d.m.Y') }}</span>
                                 </p>
                                 <p class="text-caption text-ink-muted">
-                                    {{ $type['label'] }} · {{ $post->author?->full_name ? 'Опубликовала: '.$post->author->full_name : 'Автор не указан' }}
+                                    {{ $type['label'] }} · {{ $post->author?->full_name ? __('Опубликовала: :name', ['name' => $post->author->full_name]) : __('Автор не указан') }}
                                 </p>
                             </li>
                         @endforeach

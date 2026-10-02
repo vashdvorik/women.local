@@ -18,15 +18,15 @@ class AssistantKnowledgeController extends Controller
             'en' => ['nullable', 'string', 'max:30000'],
             'ro' => ['nullable', 'string', 'max:30000'],
         ], [], [
-            'rules' => 'общие правила',
-            'ru' => 'информация (русский)',
-            'en' => 'информация (English)',
-            'ro' => 'информация (Română)',
+            'rules' => __('общие правила'),
+            'ru' => __('информация (русский)'),
+            'en' => __('информация (English)'),
+            'ro' => __('информация (Română)'),
         ]);
 
         SiteSetting::setAiAssistantKnowledge($data);
 
         return redirect()->route('admin.cabinets.settings', ['tab' => 'knowledge'])
-            ->with('success', 'База знаний сохранена.');
+            ->with('success', __('База знаний сохранена.'));
     }
 }

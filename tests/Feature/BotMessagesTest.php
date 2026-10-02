@@ -18,6 +18,14 @@ class BotMessagesTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Эти проверки смотрят на тексты админки, а она по умолчанию русская (язык по cookie админки — AdminLanguageTest).
+        app()->setLocale('ru');
+    }
+
     public function test_every_message_is_complete_in_all_three_languages(): void
     {
         $registry = BotMessages::registry();

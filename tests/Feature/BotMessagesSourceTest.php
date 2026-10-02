@@ -20,6 +20,7 @@ class BotMessagesSourceTest extends TestCase
             base_path('routes/telegram.php'),
             app_path('Services/ProfileModeration.php'),
             app_path('Services/BotCommandSync.php'),
+            app_path('Services/Subscriptions/SubscriptionNotifier.php'),
             app_path('Jobs/NotifyOpportunity.php'),
             app_path('Http/Controllers/Account/AccountController.php'),
         ];

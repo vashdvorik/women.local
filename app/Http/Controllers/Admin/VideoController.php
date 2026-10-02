@@ -40,7 +40,7 @@ class VideoController extends Controller
             $this->syncTitles($video, $request->validated('translations', []));
         });
 
-        return redirect()->route('admin.videos.index')->with('success', 'Видео добавлено.');
+        return redirect()->route('admin.videos.index')->with('success', __('Видео добавлено.'));
     }
 
     public function edit(Video $video): View
@@ -63,14 +63,14 @@ class VideoController extends Controller
             $this->syncTitles($video, $request->validated('translations', []));
         });
 
-        return redirect()->route('admin.videos.index')->with('success', 'Видео сохранено.');
+        return redirect()->route('admin.videos.index')->with('success', __('Видео сохранено.'));
     }
 
     public function destroy(Video $video): RedirectResponse
     {
         $video->delete();
 
-        return redirect()->route('admin.videos.index')->with('success', 'Видео удалено.');
+        return redirect()->route('admin.videos.index')->with('success', __('Видео удалено.'));
     }
 
     /** Порядок меняется кнопками вверх/вниз. */

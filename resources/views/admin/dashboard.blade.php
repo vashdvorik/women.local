@@ -1,13 +1,13 @@
-<x-layouts.admin title="Инфопанель">
+<x-layouts.admin :title="__('Инфопанель')">
     @php
         $add = [
-            ['route' => 'admin.events.create', 'label' => 'новость'],
-            ['route' => 'admin.projects.create', 'label' => 'проект'],
-            ['route' => 'admin.opportunities.create', 'label' => 'возможность'],
-            ['route' => 'admin.experts.create', 'label' => 'эксперта'],
-            ['route' => 'admin.albums.create', 'label' => 'фотоальбом'],
-            ['route' => 'admin.videos.create', 'label' => 'видео'],
-            ['route' => 'admin.posts.create', 'label' => 'публикацию'],
+            ['route' => 'admin.events.create', 'label' => __('новость')],
+            ['route' => 'admin.projects.create', 'label' => __('проект')],
+            ['route' => 'admin.opportunities.create', 'label' => __('возможность')],
+            ['route' => 'admin.experts.create', 'label' => __('эксперта')],
+            ['route' => 'admin.albums.create', 'label' => __('фотоальбом')],
+            ['route' => 'admin.videos.create', 'label' => __('видео')],
+            ['route' => 'admin.posts.create', 'label' => __('публикацию')],
         ];
     @endphp
 
@@ -16,11 +16,11 @@
         {{-- Напоминание о другом лагере: очередь модерации кабинетов --}}
         @if($pendingProfiles + $pendingPosts > 0)
             <a href="{{ route('admin.cabinets.dashboard') }}" class="card block hover:border-accent transition-colors">
-                <p class="text-ui-strong font-semibold">В кабинетах участниц есть что решить</p>
+                <p class="text-ui-strong font-semibold">{{ __('В кабинетах участниц есть что решить') }}</p>
                 <p class="mt-1 text-ui text-ink-muted">
-                    @if($pendingProfiles > 0)Профили: {{ $pendingProfiles }}.@endif
-                    @if($pendingPosts > 0)Посты участниц: {{ $pendingPosts }}.@endif
-                    Открыть «Кабинеты участниц» →
+                    @if($pendingProfiles > 0){{ __('Профили: :count.', ['count' => $pendingProfiles]) }}@endif
+                    @if($pendingPosts > 0){{ __('Посты участниц: :count.', ['count' => $pendingPosts]) }}@endif
+                    {{ __('Открыть «Кабинеты участниц» →') }}
                 </p>
             </a>
         @endif
@@ -30,17 +30,17 @@
             @foreach($add as $item)
                 <a href="{{ route($item['route']) }}" class="btn-primary">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3v10M3 8h10" stroke-linecap="round"/></svg>
-                    Добавить {{ $item['label'] }}
+                    {{ __('Добавить :item', ['item' => $item['label']]) }}
                 </a>
             @endforeach
         </div>
 
         <div class="flex flex-wrap gap-3">
             <a href="{{ route('admin.subscribers.index') }}" class="btn-secondary">
-                Подписчики{{ $subscriberCount > 0 ? " · {$subscriberCount}" : '' }}
+                {{ __('Подписчики') }}{{ $subscriberCount > 0 ? " · {$subscriberCount}" : '' }}
             </a>
-            <a href="{{ route('admin.tags.index') }}" class="btn-secondary">Теги</a>
-            <a href="{{ route('admin.settings.edit') }}" class="btn-secondary">Настройки сайта</a>
+            <a href="{{ route('admin.tags.index') }}" class="btn-secondary">{{ __('Теги') }}</a>
+            <a href="{{ route('admin.settings.edit') }}" class="btn-secondary">{{ __('Настройки сайта') }}</a>
         </div>
 
         <p class="text-caption text-ink-muted">
@@ -49,46 +49,28 @@
 
         {{-- Инструкция --}}
         <div class="card">
-            <h2 class="text-ui-strong font-semibold mb-4">Как пользоваться админкой</h2>
+            <h2 class="text-ui-strong font-semibold mb-4">{{ __('Как пользоваться админкой') }}</h2>
             <ol class="space-y-3 text-reading text-ink-muted list-decimal pl-5 marker:text-ink-faint marker:font-semibold">
                 <li>
-                    Админка разделена на два лагеря, переключатель — вверху меню.
-                    <b class="text-ink">«Внешний сайт»</b> — всё, что видят посетители: новости, проекты, возможности, эксперты, медиатека (этот раздел).
-                    <b class="text-ink">«Кабинеты участниц»</b> — профили и посты участниц, статистика и настройки кабинета.
+                    {{ __('Админка разделена на два лагеря, переключатель — вверху меню.') }}
+                    {!! __('<b class="text-ink">«Внешний сайт»</b> — всё, что видят посетители: новости, проекты, возможности, эксперты, медиатека (этот раздел).') !!}
+                    {!! __('<b class="text-ink">«Кабинеты участниц»</b> — профили и посты участниц, статистика и настройки кабинета.') !!}
                 </li>
                 <li>
-                    Разделы сайта — в меню слева. У большинства разделов два пункта:
-                    <b class="text-ink">«Все …»</b> — список уже добавленного, <b class="text-ink">«Добавить …»</b> — форма новой записи.
+                    {{ __('Разделы сайта — в меню слева. У большинства разделов два пункта:') }}
+                    {!! __('<b class="text-ink">«Все …»</b> — список уже добавленного, <b class="text-ink">«Добавить …»</b> — форма новой записи.') !!}
+                </li>
+                <li>{!! __('<b class="text-ink">«Медиатека»</b> объединяет фотоальбомы, видео и публикации. Публикации — страницы с каталогами и брошюрами, которые выпустила организация; на сайте они находятся в разделе «Медиатека → Публикации».') !!}</li>
+                <li>{!! __('Чтобы изменить запись, откройте список и нажмите <b class="text-ink">«Изменить»</b> в её строке. Кнопка <b class="text-ink">«Удалить»</b> спросит подтверждение.') !!}</li>
+                <li>{!! __('Статус записи: <b class="text-ink">черновик</b> виден только здесь, в админке; <b class="text-ink">опубликовано</b> — показывается на сайте. Переключается галочкой в форме.') !!}</li>
+                <li>
+                    {{ __('Русский текст обязателен. Румынский и английский — по желанию: там, где перевод не заполнен, сайт покажет русский вариант.') }}
                 </li>
                 <li>
-                    <b class="text-ink">«Медиатека»</b> объединяет фотоальбомы, видео и публикации. Публикации — страницы
-                    с каталогами и брошюрами, которые выпустила организация; на сайте они находятся в разделе
-                    «Медиатека → Публикации».
+                    {{ __('Картинки загружаются прямо в форме — перетащите файл или выберите с компьютера. Кадрирование под нужный размер происходит автоматически.') }}
                 </li>
-                <li>
-                    Чтобы изменить запись, откройте список и нажмите <b class="text-ink">«Изменить»</b> в её строке.
-                    Кнопка <b class="text-ink">«Удалить»</b> спросит подтверждение.
-                </li>
-                <li>
-                    Статус записи: <b class="text-ink">черновик</b> виден только здесь, в админке;
-                    <b class="text-ink">опубликовано</b> — показывается на сайте. Переключается галочкой в форме.
-                </li>
-                <li>
-                    Русский текст обязателен. Румынский и английский — по желанию: там, где перевод не заполнен,
-                    сайт покажет русский вариант.
-                </li>
-                <li>
-                    Картинки загружаются прямо в форме — перетащите файл или выберите с компьютера.
-                    Кадрирование под нужный размер происходит автоматически.
-                </li>
-                <li>
-                    Порядок проектов, экспертов, новостей и видео на сайте задаётся стрелками <b class="text-ink">↑ ↓</b> в списке.
-                </li>
-                <li>
-                    Кто подписался на новости в подвале сайта — раздел <b class="text-ink">«Подписчики»</b>. Список выгружается
-                    кнопками <b class="text-ink">«Скачать CSV»</b> и <b class="text-ink">«Список почт (.txt)»</b> —
-                    их можно загрузить в программу рассылки.
-                </li>
+                <li>{!! __('Порядок проектов, экспертов, новостей и видео на сайте задаётся стрелками <b class="text-ink">↑ ↓</b> в списке.') !!}</li>
+                <li>{!! __('Кто подписался на новости в подвале сайта — раздел <b class="text-ink">«Подписчики»</b>. Список выгружается кнопками <b class="text-ink">«Скачать CSV»</b> и <b class="text-ink">«Список почт (.txt)»</b> — их можно загрузить в программу рассылки.') !!}</li>
             </ol>
         </div>
 

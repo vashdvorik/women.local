@@ -30,7 +30,7 @@ class SubscriberController extends Controller
     {
         $subscriber->delete();
 
-        return redirect()->route('admin.subscribers.index')->with('success', 'Подписчик удалён.');
+        return redirect()->route('admin.subscribers.index')->with('success', __('Подписчик удалён.'));
     }
 
     /** Экспорт для программы рассылки: почта; имя; дата. UTF-8 с BOM — Excel открывает без плясок. */

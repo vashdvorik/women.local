@@ -175,7 +175,7 @@ final class BotMessages
             [$text, $errors] = TelegramHtml::check($text);
 
             if (TelegramHtml::visibleLength($text) > self::MAX_TEXT) {
-                $errors[] = 'Текст слишком длинный: не больше '.self::MAX_TEXT.' знаков (лимит Telegram — 4096, часть нужна под подставляемые значения).';
+                $errors[] = __('Текст слишком длинный: не больше :max знаков (лимит Telegram — 4096, часть нужна под подставляемые значения).', ['max' => self::MAX_TEXT]);
             }
         } else {
             // Подпись кнопки и описание команды — одна строка без разметки.
@@ -183,7 +183,7 @@ final class BotMessages
             $limit = $kind === 'command' ? self::MAX_COMMAND : self::MAX_BUTTON;
 
             if (mb_strlen($text) > $limit) {
-                $errors[] = "Слишком длинно: не больше {$limit} знаков.";
+                $errors[] = __('Слишком длинно: не больше :max знаков.', ['max' => $limit]);
             }
         }
 
@@ -193,8 +193,8 @@ final class BotMessages
         foreach ($found[1] as $name) {
             if (! array_key_exists($name, $definition['vars'])) {
                 $errors[] = $definition['vars'] === []
-                    ? "Переменная {{$name}} здесь недоступна: в этом сообщении переменных нет."
-                    : "Переменная {{$name}} здесь недоступна. Можно использовать: ".implode(', ', array_map(fn (string $v): string => "{{$v}}", array_keys($definition['vars']))).'.';
+                    ? __('Переменная {:name} здесь недоступна: в этом сообщении переменных нет.', ['name' => $name])
+                    : __('Переменная {:name} здесь недоступна. Можно использовать: :list.', ['name' => $name, 'list' => implode(', ', array_map(fn (string $v): string => "{{$v}}", array_keys($definition['vars'])))]);
             }
 
             $used[] = $name;
@@ -202,9 +202,9 @@ final class BotMessages
 
         foreach ($definition['required'] ?? [] as $name) {
             if (! in_array($name, $used, true)) {
-                $hint = $definition['vars'][$name];
+                $hint = __($definition['vars'][$name]);
 
-                $errors[] = "В тексте должна быть переменная {{$name}} — ".mb_strtolower(mb_substr($hint, 0, 1)).mb_substr($hint, 1).'.';
+                $errors[] = __('В тексте должна быть переменная {:name} — :hint.', ['name' => $name, 'hint' => mb_strtolower(mb_substr($hint, 0, 1)).mb_substr($hint, 1)]);
             }
         }
 

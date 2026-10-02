@@ -43,11 +43,11 @@ class EventRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'translations.ru.title' => 'название по-русски',
-            'slug' => 'адрес страницы',
-            'starts_at' => 'дата начала',
-            'url' => 'ссылка «Подробнее»',
-            'tone' => 'цвет карточки',
+            'translations.ru.title' => __('название по-русски'),
+            'slug' => __('адрес страницы'),
+            'starts_at' => __('дата начала'),
+            'url' => __('ссылка «Подробнее»'),
+            'tone' => __('цвет карточки'),
         ];
     }
 

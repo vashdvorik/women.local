@@ -21,15 +21,15 @@ class PublishArticle
         $errors = [];
 
         if (blank($ru?->title)) {
-            $errors['translations.ru.title'] = 'Добавьте русский заголовок.';
+            $errors['translations.ru.title'] = __('Добавьте русский заголовок.');
         }
 
         if (blank($ru?->excerpt)) {
-            $errors['translations.ru.excerpt'] = 'Добавьте краткое описание.';
+            $errors['translations.ru.excerpt'] = __('Добавьте краткое описание.');
         }
 
         if ($article->published_at && Carbon::parse($article->published_at)->isFuture()) {
-            $errors['published_at'] = 'Дата публикации не может быть в будущем.';
+            $errors['published_at'] = __('Дата публикации не может быть в будущем.');
         }
 
         if ($errors !== []) {

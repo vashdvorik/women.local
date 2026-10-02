@@ -1,6 +1,7 @@
 import Alpine from 'alpinejs';
 import { uploadImage, flashError } from './uploader';
 import { openCropper } from './cropper';
+import { t } from './i18n';
 
 /**
  * Необязательная собственная обложка видео (16:9). Без неё берётся миниатюра
@@ -26,7 +27,7 @@ Alpine.data('videoCover', (initial) => ({
         try {
             this.cover = await uploadImage(file, 'video_cover', initial.uploadUrl, crop);
         } catch (e) {
-            flashError('Не удалось загрузить изображение.');
+            flashError(t('Не удалось загрузить изображение.'));
         } finally {
             this.uploading = false;
         }

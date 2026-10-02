@@ -1,15 +1,15 @@
 {{-- «Настройки кабинетов» — лагерь «Кабинеты участниц»: тема кабинета, ИИ (поиск, подбор контактов,
      AI-помощник в кабинете) и база знаний помощника. Настройки публичного сайта — в «Внешний сайт → Настройки сайта». --}}
-<x-layouts.admin title="Настройки кабинетов">
+<x-layouts.admin :title="__('Настройки кабинетов')">
     <div class="form-column" x-data="{ tab: @js($tab) }">
 
         <div class="tabs mb-6 overflow-x-auto no-scrollbar">
             <button type="button" class="tab whitespace-nowrap" :class="{ 'tab--active': tab === 'theme' }"
-                    @click="tab = 'theme'">Тема кабинета</button>
+                    @click="tab = 'theme'">{{ __('Тема кабинета') }}</button>
             <button type="button" class="tab whitespace-nowrap" :class="{ 'tab--active': tab === 'ai' }"
-                    @click="tab = 'ai'">ИИ-провайдеры</button>
+                    @click="tab = 'ai'">{{ __('ИИ-провайдеры') }}</button>
             <button type="button" class="tab whitespace-nowrap" :class="{ 'tab--active': tab === 'knowledge' }"
-                    @click="tab = 'knowledge'">База знаний ассистента</button>
+                    @click="tab = 'knowledge'">{{ __('База знаний ассистента') }}</button>
         </div>
 
         <div x-show="tab === 'theme'" @if($tab !== 'theme') style="display:none" @endif>

@@ -22,7 +22,7 @@
                     <p class="text-reading text-ink-muted mt-2">{{ $message }}</p>
                 @endif
                 <div class="flex justify-end gap-3 mt-6">
-                    <button type="button" @click="open = false" class="btn-quiet">Отмена</button>
+                    <button type="button" @click="open = false" class="btn-quiet">{{ __('Отмена') }}</button>
                     <form method="POST" action="{{ $action }}">
                         @csrf
                         @if(strtoupper($method) !== 'POST') @method($method) @endif

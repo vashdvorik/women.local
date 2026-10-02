@@ -77,7 +77,10 @@ class BotFlowTest extends TestCase
 
     private function participant(string $status = 'approved', ?string $locale = null, array $attributes = [], int $id = self::ID): BotUser
     {
-        return BotUser::factory()->{$status}()->create([
+        // «approved» в этих тестах — участница с Community: на Open часть функций бота закрыта (см. BotPlanTest).
+        $state = $status === 'approved' ? 'community' : $status;
+
+        return BotUser::factory()->{$state}()->create([
             'telegram_id' => $id,
             'full_name' => 'Анна Иванова',
             'locale' => $locale,
@@ -320,10 +323,10 @@ class BotFlowTest extends TestCase
 
     public function test_the_publication_broadcast_goes_out_in_each_recipients_language(): void
     {
-        $author = BotUser::factory()->approved()->create(['locale' => 'ru']);
-        $ru = BotUser::factory()->approved()->create(['locale' => 'ru']);
-        $en = BotUser::factory()->approved()->create(['locale' => 'en']);
-        $unknown = BotUser::factory()->approved()->create(['locale' => null]);
+        $author = BotUser::factory()->community()->create(['locale' => 'ru']);
+        $ru = BotUser::factory()->community()->create(['locale' => 'ru']);
+        $en = BotUser::factory()->community()->create(['locale' => 'en']);
+        $unknown = BotUser::factory()->community()->create(['locale' => null]);
         BotUser::factory()->pending()->create(['locale' => 'en']);
 
         $post = Opportunity::create([

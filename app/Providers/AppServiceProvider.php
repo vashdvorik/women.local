@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Services\Payments\WebPayment\BankGateway;
+use App\Services\Payments\WebPayment\BankSignature;
+use App\Services\Payments\WebPayment\FakeGateway;
+use App\Services\Payments\WebPayment\Gateway;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -15,7 +19,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Канал связи с банком выбирается настройкой webpayment.driver (docs/SUBSCRIPTIONS.md): неизвестное значение
+        // означает настоящий банк, а не имитатор, чтобы опечатка в .env не превратила боевой сервер в «песочницу».
+        $this->app->bind(Gateway::class, fn () => config('webpayment.driver') === 'fake'
+            ? new FakeGateway()
+            : new BankGateway(BankSignature::fromConfig()));
     }
 
     /**

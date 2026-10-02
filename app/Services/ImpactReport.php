@@ -149,24 +149,24 @@ class ImpactReport
     private function presentation(array $d): array
     {
         $statusRows = [
-            ['label' => 'Одобрено', 'value' => $d['approvedCount'], 'percent' => $d['approvalRate'], 'tone' => 'success'],
-            ['label' => 'Ожидают решения', 'value' => $d['pendingCount'], 'percent' => $this->percent($d['pendingCount'], $d['totalApplications']), 'tone' => 'warning'],
-            ['label' => 'Отклонено', 'value' => $d['rejectedCount'], 'percent' => $this->percent($d['rejectedCount'], $d['totalApplications']), 'tone' => 'error'],
+            ['label' => __('Одобрено'), 'value' => $d['approvedCount'], 'percent' => $d['approvalRate'], 'tone' => 'success'],
+            ['label' => __('Ожидают решения'), 'value' => $d['pendingCount'], 'percent' => $this->percent($d['pendingCount'], $d['totalApplications']), 'tone' => 'warning'],
+            ['label' => __('Отклонено'), 'value' => $d['rejectedCount'], 'percent' => $this->percent($d['rejectedCount'], $d['totalApplications']), 'tone' => 'error'],
         ];
 
         $qualityRows = [
-            ['label' => 'Заполнили бизнес-профиль', 'caption' => 'Указали описание бизнеса и запрос к сообществу', 'value' => $d['completeProfiles'], 'total' => $d['approvedCount'], 'percent' => $d['profileCompletionRate']],
-            ['label' => 'Готовы к AI-рекомендациям', 'caption' => 'Профиль проиндексирован для поиска и подбора контактов', 'value' => $d['withEmbedding'], 'total' => $d['approvedCount'], 'percent' => $d['aiReadinessRate']],
-            ['label' => 'Активировали личный кабинет', 'caption' => 'Хотя бы один вход по Telegram-токену', 'value' => $d['activeCabinetUsers'], 'total' => $d['approvedCount'], 'percent' => $d['cabinetActivationRate']],
-            ['label' => 'Публиковали возможности', 'caption' => 'Разместили запрос, партнёрство или событие', 'value' => $d['opportunityAuthors'], 'total' => $d['approvedCount'], 'percent' => $d['publicationActivationRate']],
-            ['label' => 'Указали Telegram для связи', 'caption' => 'Участницы могут написать напрямую', 'value' => $d['withUsername'], 'total' => $d['approvedCount'], 'percent' => $this->percent($d['withUsername'], $d['approvedCount'])],
-            ['label' => 'Добавили фото профиля', 'caption' => 'Профиль с фотографией, а не инициалом', 'value' => $d['withAvatar'], 'total' => $d['approvedCount'], 'percent' => $this->percent($d['withAvatar'], $d['approvedCount'])],
+            ['label' => __('Заполнили бизнес-профиль'), 'caption' => __('Указали описание бизнеса и запрос к сообществу'), 'value' => $d['completeProfiles'], 'total' => $d['approvedCount'], 'percent' => $d['profileCompletionRate']],
+            ['label' => __('Готовы к AI-рекомендациям'), 'caption' => __('Профиль проиндексирован для поиска и подбора контактов'), 'value' => $d['withEmbedding'], 'total' => $d['approvedCount'], 'percent' => $d['aiReadinessRate']],
+            ['label' => __('Активировали личный кабинет'), 'caption' => __('Хотя бы один вход по Telegram-токену'), 'value' => $d['activeCabinetUsers'], 'total' => $d['approvedCount'], 'percent' => $d['cabinetActivationRate']],
+            ['label' => __('Публиковали возможности'), 'caption' => __('Разместили запрос, партнёрство или событие'), 'value' => $d['opportunityAuthors'], 'total' => $d['approvedCount'], 'percent' => $d['publicationActivationRate']],
+            ['label' => __('Указали Telegram для связи'), 'caption' => __('Участницы могут написать напрямую'), 'value' => $d['withUsername'], 'total' => $d['approvedCount'], 'percent' => $this->percent($d['withUsername'], $d['approvedCount'])],
+            ['label' => __('Добавили фото профиля'), 'caption' => __('Профиль с фотографией, а не инициалом'), 'value' => $d['withAvatar'], 'total' => $d['approvedCount'], 'percent' => $this->percent($d['withAvatar'], $d['approvedCount'])],
         ];
 
         $typeMeta = [
-            'project' => ['label' => 'Запросы', 'icon' => '💼'],
-            'meeting' => ['label' => 'Партнёрства', 'icon' => '🤝'],
-            'event' => ['label' => 'События', 'icon' => '📅'],
+            'project' => ['label' => __('Запросы'), 'icon' => '💼'],
+            'meeting' => ['label' => __('Партнёрства'), 'icon' => '🤝'],
+            'event' => ['label' => __('События'), 'icon' => '📅'],
         ];
 
         $opportunitiesTotal = $d['opportunitiesTotal'];
@@ -267,8 +267,8 @@ class ImpactReport
     private function monthLabel(int $month): string
     {
         return [
-            1 => 'Янв', 2 => 'Фев', 3 => 'Мар', 4 => 'Апр', 5 => 'Май', 6 => 'Июн',
-            7 => 'Июл', 8 => 'Авг', 9 => 'Сен', 10 => 'Окт', 11 => 'Ноя', 12 => 'Дек',
+            1 => __('Янв'), 2 => __('Фев'), 3 => __('Мар'), 4 => __('Апр'), 5 => __('Май'), 6 => __('Июн'),
+            7 => __('Июл'), 8 => __('Авг'), 9 => __('Сен'), 10 => __('Окт'), 11 => __('Ноя'), 12 => __('Дек'),
         ][$month] ?? '';
     }
 }

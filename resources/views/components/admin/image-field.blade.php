@@ -2,7 +2,7 @@
     'name',              // имя скрытого поля (хранит путь)
     'aspect',            // слот пропорций из AspectRatio::SLOTS
     'value' => '',       // текущий путь
-    'label' => 'Изображение',
+    'label' => __('Изображение'),
     'hint' => null,
     'width' => 'max-w-md',
 ])
@@ -28,23 +28,23 @@
 
         <label x-show="!path && !uploading"
                class="absolute inset-0 flex items-center justify-center cursor-pointer text-caption text-ink-muted">
-            Загрузить
+            {{ __('Загрузить') }}
             <input type="file" accept="image/jpeg,image/png,image/webp" class="sr-only" @change="upload($event)">
         </label>
 
         <div x-show="uploading" class="absolute inset-0 flex items-center justify-center bg-surface/70 text-caption text-ink-muted">
-            Обработка…
+            {{ __('Обработка…') }}
         </div>
 
         <div class="image-cell__actions" x-show="path">
-            <label class="image-cell__action cursor-pointer" title="Заменить">
+            <label class="image-cell__action cursor-pointer" title="{{ __('Заменить') }}">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                     <path d="M13 3v4h-4M3 13V9h4" stroke-linecap="round"/>
                     <path d="M13 7A5 5 0 003 6M3 9a5 5 0 0010 1" stroke-linecap="round"/>
                 </svg>
                 <input type="file" accept="image/jpeg,image/png,image/webp" class="sr-only" @change="upload($event)">
             </label>
-            <button type="button" class="image-cell__action" title="Удалить" @click="clear()">
+            <button type="button" class="image-cell__action" title="{{ __('Удалить') }}" @click="clear()">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                     <path d="M4 4l8 8M12 4l-8 8" stroke-linecap="round"/>
                 </svg>

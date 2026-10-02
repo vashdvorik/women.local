@@ -1,21 +1,21 @@
-<x-layouts.admin title="Теги">
+<x-layouts.admin :title="__('Теги')">
     <x-slot:actions>
-        <a href="{{ route('admin.tags.create') }}" class="btn-primary">Добавить тег</a>
+        <a href="{{ route('admin.tags.create') }}" class="btn-primary">{{ __('Добавить тег') }}</a>
     </x-slot:actions>
 
     @if($tags->isEmpty())
         <div class="card text-center">
-            <p class="text-reading text-ink-muted">Тегов пока нет.</p>
-            <a href="{{ route('admin.tags.create') }}" class="btn-primary mt-4">Добавить тег</a>
+            <p class="text-reading text-ink-muted">{{ __('Тегов пока нет.') }}</p>
+            <a href="{{ route('admin.tags.create') }}" class="btn-primary mt-4">{{ __('Добавить тег') }}</a>
         </div>
     @else
         <div class="overflow-x-auto">
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>Название</th>
-                        <th class="w-28">Публикаций</th>
-                        <th class="w-32">Возможностей</th>
+                        <th>{{ __('Название') }}</th>
+                        <th class="w-28">{{ __('Публикаций') }}</th>
+                        <th class="w-32">{{ __('Возможностей') }}</th>
                         <th class="w-40"></th>
                     </tr>
                 </thead>
@@ -31,11 +31,11 @@
                             <td class="text-ink-muted">{{ $tag->opportunities_count }}</td>
                             <td>
                                 <div class="flex items-center justify-end gap-2">
-                                    <a href="{{ route('admin.tags.edit', $tag) }}" class="btn-quiet">Изменить</a>
+                                    <a href="{{ route('admin.tags.edit', $tag) }}" class="btn-quiet">{{ __('Изменить') }}</a>
                                     <x-admin.delete-button
                                         :action="route('admin.tags.destroy', $tag)"
                                         :subject="$tag->rawTranslation('ru')?->name"
-                                        noun="тег" />
+                                        :noun="__('тег')" />
                                 </div>
                             </td>
                         </tr>

@@ -1,4 +1,5 @@
 import Alpine from 'alpinejs';
+import { t } from './i18n';
 
 /**
  * Кнопки «Проверить подключение» на вкладке «ИИ». Отправляют текущие значения
@@ -28,7 +29,7 @@ Alpine.data('aiProviders', (testBase) => ({
 
             this.results[provider] = await res.json();
         } catch (e) {
-            this.results[provider] = { ok: false, message: 'Не удалось выполнить запрос.' };
+            this.results[provider] = { ok: false, message: t('Не удалось выполнить запрос.') };
         } finally {
             this.testing = null;
         }

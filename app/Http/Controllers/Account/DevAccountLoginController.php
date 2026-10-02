@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
+use App\Enums\Plan;
 use App\Models\BotUser;
+use App\Services\Subscriptions\SubscriptionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -64,6 +66,11 @@ class DevAccountLoginController extends Controller
                 'approved_at' => now(),
             ],
         );
+
+        // Локальный вход нужен для разработки интерфейса: демо-участнице сразу оплачен Community.
+        if (! $demoUser->hasPlan(Plan::Community)) {
+            app(SubscriptionService::class)->grant($demoUser, Plan::Community, 12, note: 'Локальная демо-участница');
+        }
 
         return collect([$demoUser]);
     }

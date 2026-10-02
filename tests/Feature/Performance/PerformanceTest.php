@@ -35,7 +35,7 @@ class PerformanceTest extends TestCase
      */
     public function test_middleware_executes_exactly_one_db_query_per_request(): void
     {
-        $user = BotUser::factory()->approved()->create();
+        $user = BotUser::factory()->community()->create();
 
         DB::enableQueryLog();
 
@@ -70,7 +70,7 @@ class PerformanceTest extends TestCase
      */
     public function test_dashboard_query_budget(): void
     {
-        $user = BotUser::factory()->approved()->create();
+        $user = BotUser::factory()->community()->create();
 
         DB::enableQueryLog();
 
@@ -100,10 +100,10 @@ class PerformanceTest extends TestCase
      */
     public function test_people_page_has_no_n_plus_one_queries(): void
     {
-        $user = BotUser::factory()->approved()->create();
+        $user = BotUser::factory()->community()->create();
 
         // Создаём 50 пользователей — достаточно для выявления N+1
-        BotUser::factory()->approved()->count(50)->create();
+        BotUser::factory()->community()->count(50)->create();
 
         DB::enableQueryLog();
 
@@ -129,8 +129,8 @@ class PerformanceTest extends TestCase
      */
     public function test_people_page_response_time_with_300_users(): void
     {
-        $user = BotUser::factory()->approved()->create();
-        BotUser::factory()->approved()->count(299)->create();
+        $user = BotUser::factory()->community()->create();
+        BotUser::factory()->community()->count(299)->create();
 
         $start = microtime(true);
 
@@ -159,8 +159,8 @@ class PerformanceTest extends TestCase
      */
     public function test_people_page_uses_exactly_one_select_query(): void
     {
-        $user = BotUser::factory()->approved()->create();
-        BotUser::factory()->approved()->count(20)->create();
+        $user = BotUser::factory()->community()->create();
+        BotUser::factory()->community()->count(20)->create();
 
         DB::enableQueryLog();
 
@@ -199,7 +199,7 @@ class PerformanceTest extends TestCase
      */
     public function test_short_link_redirect_executes_one_db_query(): void
     {
-        $user  = BotUser::factory()->approved()->create();
+        $user  = BotUser::factory()->community()->create();
         $token = LoginToken::generateFor((int) $user->telegram_id);
         $code  = substr($token->token, 0, 8);
 
@@ -237,7 +237,7 @@ class PerformanceTest extends TestCase
      */
     public function test_session_navigation_query_accumulation(): void
     {
-        $user = BotUser::factory()->approved()->create();
+        $user = BotUser::factory()->community()->create();
 
         $routes = [
             route('account.index'),
@@ -277,7 +277,7 @@ class PerformanceTest extends TestCase
      */
     public function test_concurrent_users_query_count_is_linear(): void
     {
-        $users = BotUser::factory()->approved()->count(10)->create();
+        $users = BotUser::factory()->community()->count(10)->create();
 
         $totalQueries = 0;
         $queriesPerUser = [];
@@ -333,7 +333,7 @@ class PerformanceTest extends TestCase
      */
     public function test_login_token_generation_uses_two_queries(): void
     {
-        $user = BotUser::factory()->approved()->create();
+        $user = BotUser::factory()->community()->create();
 
         DB::enableQueryLog();
         LoginToken::generateFor((int) $user->telegram_id);
@@ -371,8 +371,8 @@ class PerformanceTest extends TestCase
      */
     public function test_people_page_selects_only_required_columns(): void
     {
-        $user = BotUser::factory()->approved()->create();
-        BotUser::factory()->approved()->count(10)->create();
+        $user = BotUser::factory()->community()->create();
+        BotUser::factory()->community()->count(10)->create();
 
         DB::enableQueryLog();
 
@@ -412,8 +412,8 @@ class PerformanceTest extends TestCase
      */
     public function test_bottleneck_summary_with_300_users(): void
     {
-        $currentUser = BotUser::factory()->approved()->create();
-        BotUser::factory()->approved()->count(299)->create();
+        $currentUser = BotUser::factory()->community()->create();
+        BotUser::factory()->community()->count(299)->create();
 
         // --- Замер people() ---
         DB::enableQueryLog();

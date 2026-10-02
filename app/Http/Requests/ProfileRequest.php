@@ -24,9 +24,9 @@ class ProfileRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'full_name' => 'имя и фамилия',
-            'description' => 'описание',
-            'expectation' => 'запрос и предложение',
+            'full_name' => __('имя и фамилия'),
+            'description' => __('описание'),
+            'expectation' => __('запрос и предложение'),
         ];
     }
 }

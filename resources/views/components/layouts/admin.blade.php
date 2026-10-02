@@ -1,13 +1,17 @@
-@props(['title' => 'Панель', 'flush' => false])
+@props(['title' => null, 'flush' => false])
 
+@php($title ??= __('Панель'))
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title }} — {{ config('app.name') }}</title>
     <x-favicon />
+    @if(app()->getLocale() !== 'ru')
+        <script>window.adminI18n = @json(\App\Support\AdminI18n::scriptDictionary());</script>
+    @endif
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body x-data="{ menu: false }" class="bg-canvas text-ink">
@@ -21,7 +25,7 @@
     <div class="admin-main">
         @unless($flush)
             <header class="admin-header">
-                <button type="button" @click="menu = !menu" class="btn-icon lg:hidden" aria-label="Меню">
+                <button type="button" @click="menu = !menu" class="btn-icon lg:hidden" aria-label="{{ __('Меню') }}">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M3 5h14M3 10h14M3 15h14" stroke-linecap="round"/>
                     </svg>

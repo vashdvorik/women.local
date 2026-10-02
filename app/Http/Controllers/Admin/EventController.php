@@ -60,7 +60,7 @@ class EventController extends Controller
             $this->syncContent($event, $translations);
         });
 
-        return redirect()->route('admin.events.index')->with('success', 'Новость добавлена.');
+        return redirect()->route('admin.events.index')->with('success', __('Новость добавлена.'));
     }
 
     public function edit(Event $event): View
@@ -88,14 +88,14 @@ class EventController extends Controller
             $this->syncContent($event, $translations);
         });
 
-        return redirect()->route('admin.events.index')->with('success', 'Новость сохранена.');
+        return redirect()->route('admin.events.index')->with('success', __('Новость сохранена.'));
     }
 
     public function destroy(Event $event): RedirectResponse
     {
         $event->delete();
 
-        return redirect()->route('admin.events.index')->with('success', 'Новость удалена.');
+        return redirect()->route('admin.events.index')->with('success', __('Новость удалена.'));
     }
 
     public function move(Request $request, Event $event): RedirectResponse

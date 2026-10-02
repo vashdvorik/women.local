@@ -1,12 +1,12 @@
-<x-layouts.admin title="Эксперты">
+<x-layouts.admin :title="__('Эксперты')">
     <x-slot:actions>
-        <a href="{{ route('admin.experts.create') }}" class="btn-primary">Добавить эксперта</a>
+        <a href="{{ route('admin.experts.create') }}" class="btn-primary">{{ __('Добавить эксперта') }}</a>
     </x-slot:actions>
 
     @if($experts->isEmpty())
         <div class="card text-center">
-            <p class="text-reading text-ink-muted">Экспертов пока нет. Страница «Эксперты» покажет только шапку.</p>
-            <a href="{{ route('admin.experts.create') }}" class="btn-primary mt-4">Добавить эксперта</a>
+            <p class="text-reading text-ink-muted">{{ __('Экспертов пока нет. Страница «Эксперты» покажет только шапку.') }}</p>
+            <a href="{{ route('admin.experts.create') }}" class="btn-primary mt-4">{{ __('Добавить эксперта') }}</a>
         </div>
     @else
         <div class="overflow-x-auto">
@@ -14,11 +14,11 @@
                 <thead>
                     <tr>
                         <th class="w-20"></th>
-                        <th>Имя</th>
-                        <th>Должность</th>
-                        <th class="w-28">Языки</th>
-                        <th class="w-28">На сайте</th>
-                        <th class="w-28">Порядок</th>
+                        <th>{{ __('Имя') }}</th>
+                        <th>{{ __('Должность') }}</th>
+                        <th class="w-28">{{ __('Языки') }}</th>
+                        <th class="w-28">{{ __('На сайте') }}</th>
+                        <th class="w-28">{{ __('Порядок') }}</th>
                         <th class="w-40"></th>
                     </tr>
                 </thead>
@@ -35,7 +35,7 @@
                             </td>
                             <td>
                                 <a href="{{ route('admin.experts.edit', $expert) }}" class="table-link">
-                                    {{ $ru?->name ?: 'Без имени' }}
+                                    {{ $ru?->name ?: __('Без имени') }}
                                 </a>
                             </td>
                             <td class="text-ink-muted">{{ $ru?->role ?: '—' }}</td>
@@ -49,9 +49,9 @@
                             </td>
                             <td>
                                 <div class="flex items-center justify-end gap-2">
-                                    <a href="{{ route('admin.experts.edit', $expert) }}" class="btn-quiet">Изменить</a>
+                                    <a href="{{ route('admin.experts.edit', $expert) }}" class="btn-quiet">{{ __('Изменить') }}</a>
                                     <x-admin.delete-button :action="route('admin.experts.destroy', $expert)"
-                                        :subject="$ru?->name ?: 'эксперта'" noun="эксперта" />
+                                        :subject="$ru?->name ?: __('эксперта')" :noun="__('эксперта')" />
                                 </div>
                             </td>
                         </tr>

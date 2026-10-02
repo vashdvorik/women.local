@@ -38,7 +38,7 @@ class VideoRequest extends FormRequest
             $id = YouTube::id((string) $this->input('youtube_url'));
 
             if ($id === null) {
-                $validator->errors()->add('youtube_url', 'Укажите корректную ссылку на видео YouTube.');
+                $validator->errors()->add('youtube_url', __('Укажите корректную ссылку на видео YouTube.'));
 
                 return;
             }
@@ -51,7 +51,7 @@ class VideoRequest extends FormRequest
             }
 
             if ($query->exists()) {
-                $validator->errors()->add('youtube_url', 'Видео с таким идентификатором уже добавлено.');
+                $validator->errors()->add('youtube_url', __('Видео с таким идентификатором уже добавлено.'));
             }
         });
     }

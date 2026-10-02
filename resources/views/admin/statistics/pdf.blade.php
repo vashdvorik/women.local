@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    <title>Отчёт платформы — {{ $generatedAt }}</title>
+    <title>{{ __('Отчёт платформы') }} — {{ $generatedAt }}</title>
     <style>
         /* dompdf only: no CSS grid/flexbox/gradients, only floats/inline-block/tables.
            Prata/Manrope aren't embedded for PDF, so DejaVu Serif/Sans stand in for them —
@@ -65,23 +65,23 @@
     <div class="hero">
         <table><tr>
             <td style="width:60%; vertical-align:top;">
-                <p class="eyebrow on-dark">Отчёт платформы</p>
-                <h1 class="serif">Платформа женщин предпринимателей</h1>
-                <p>Живой срез по составу сообщества, готовности профилей и активности участниц.</p>
+                <p class="eyebrow on-dark">{{ __('Отчёт платформы') }}</p>
+                <h1 class="serif">{{ __('Платформа женщин предпринимателей') }}</h1>
+                <p>{{ __('Живой срез по составу сообщества, готовности профилей и активности участниц.') }}</p>
             </td>
             <td style="width:40%; vertical-align:top; text-align:right;">
                 <div class="stat serif">{{ $platformReadiness }}%</div>
-                <div class="stat-label" style="margin-left:auto;">Индекс готовности сообщества</div>
-                <div class="meta">Сформировано {{ $generatedAt }}</div>
+                <div class="stat-label" style="margin-left:auto;">{{ __('Индекс готовности сообщества') }}</div>
+                <div class="meta">{{ __('Сформировано :date', ['date' => $generatedAt]) }}</div>
             </td>
         </tr></table>
     </div>
 
     <table><tr>
         <td style="width:54%; vertical-align:top; padding-right:20px;">
-            <p class="eyebrow">Заявки на участие</p>
+            <p class="eyebrow">{{ __('Заявки на участие') }}</p>
             <div class="lead-stat serif">{{ $formatNumber($approvedCount) }}</div>
-            <p class="lead-caption">одобренных участниц из {{ $formatNumber($totalApplications) }} заявок всего — {{ $approvalRate }}% принятых. За 30 дней: {{ $formatNumber($newApplicationsLast30) }} новых, {{ $formatNumber($approvedLast30) }} одобрено.</p>
+            <p class="lead-caption">{{ __('одобренных участниц из :total заявок всего — :rate% принятых. За 30 дней: :new новых, :approved одобрено.', ['total' => $formatNumber($totalApplications), 'rate' => $approvalRate, 'new' => $formatNumber($newApplicationsLast30), 'approved' => $formatNumber($approvedLast30)]) }}</p>
         </td>
         <td style="width:46%; vertical-align:top;">
             @foreach($statusRows as $row)
@@ -93,8 +93,8 @@
         </td>
     </tr></table>
 
-    <div class="section-title serif">Готовность базы участниц</div>
-    <p class="section-note">Насколько профили одобренных участниц готовы приносить пользу сообществу.</p>
+    <div class="section-title serif">{{ __('Готовность базы участниц') }}</div>
+    <p class="section-note">{{ __('Насколько профили одобренных участниц готовы приносить пользу сообществу.') }}</p>
     <table><tr>
         @foreach(array_chunk($qualityRows, (int) ceil(count($qualityRows) / 2)) as $column)
             <td style="width:50%; vertical-align:top; padding-right: {{ $loop->first ? 20 : 0 }}px;">
@@ -109,8 +109,8 @@
         @endforeach
     </tr></table>
 
-    <div class="section-title serif">Динамика сообщества</div>
-    <p class="section-note">Заявки и одобрения по месяцам за последний год.</p>
+    <div class="section-title serif">{{ __('Динамика сообщества') }}</div>
+    <p class="section-note">{{ __('Заявки и одобрения по месяцам за последний год.') }}</p>
     <table class="chart-table"><tr>
         @php($maxM = $maxMemberChart)
         @foreach($registrationChart as $month)
@@ -123,18 +123,18 @@
             </td>
         @endforeach
     </tr></table>
-    <p class="legend"><span style="color:#DBB89B;">■</span> Заявки &nbsp;&nbsp; <span style="color:#B9855B;">■</span> Одобрено</p>
+    <p class="legend"><span style="color:#DBB89B;">■</span> {{ __('Заявки') }} &nbsp;&nbsp; <span style="color:#B9855B;">■</span> {{ __('Одобрено') }}</p>
 
     <table><tr>
         <td style="width:32%; vertical-align:top; padding-right:20px;">
-            <p class="eyebrow">Возможности</p>
+            <p class="eyebrow">{{ __('Возможности') }}</p>
             <div class="lead-stat serif" style="font-size:34px;">{{ $formatNumber($opportunitiesTotal) }}</div>
-            <p class="lead-caption">публикаций от {{ $formatNumber($opportunityAuthors) }} участниц, {{ $formatNumber($opportunitiesLast30) }} за 30 дней</p>
+            <p class="lead-caption">{{ __('публикаций от :authors участниц, :recent за 30 дней', ['authors' => $formatNumber($opportunityAuthors), 'recent' => $formatNumber($opportunitiesLast30)]) }}</p>
         </td>
         <td style="width:68%; vertical-align:top;">
-            <div class="section-title compact" style="margin-top:0;">Из чего складываются публикации</div>
+            <div class="section-title compact" style="margin-top:0;">{{ __('Из чего складываются публикации') }}</div>
             @if($opportunitiesTotal === 0)
-                <p class="empty-note">Пока ни одна участница не опубликовала запрос, партнёрство или событие.</p>
+                <p class="empty-note">{{ __('Пока ни одна участница не опубликовала запрос, партнёрство или событие.') }}</p>
             @else
                 @foreach($opportunityTypeRows as $row)
                     <div class="row">
@@ -148,36 +148,36 @@
 
     <table><tr>
         <td style="width:50%; vertical-align:top; padding-right:16px;">
-            <div class="section-title compact">Новые одобренные участницы</div>
+            <div class="section-title compact">{{ __('Новые одобренные участницы') }}</div>
             @if($latestMembers->isEmpty())
-                <p class="empty-note">Одобренных профилей пока нет.</p>
+                <p class="empty-note">{{ __('Одобренных профилей пока нет.') }}</p>
             @else
                 @foreach($latestMembers as $member)
                     <div class="list-item">
                         <span class="date">{{ $member->approved_at?->format('d.m.Y') }}</span>
-                        <span class="name">{{ $member->full_name ?: 'Без имени' }}</span>
-                        <p>{{ \Illuminate\Support\Str::limit($member->description ?: 'Описание профиля пока не заполнено.', 110) }}</p>
+                        <span class="name">{{ $member->full_name ?: __('Без имени') }}</span>
+                        <p>{{ \Illuminate\Support\Str::limit($member->description ?: __('Описание профиля пока не заполнено.'), 110) }}</p>
                     </div>
                 @endforeach
             @endif
         </td>
         <td style="width:50%; vertical-align:top;">
-            <div class="section-title compact">Последние публикации</div>
+            <div class="section-title compact">{{ __('Последние публикации') }}</div>
             @if($latestOpportunities->isEmpty())
-                <p class="empty-note">Публикаций пока нет.</p>
+                <p class="empty-note">{{ __('Публикаций пока нет.') }}</p>
             @else
                 @foreach($latestOpportunities as $opportunity)
                     @php($type = $typeMeta[$opportunity->type] ?? ['label' => $opportunity->type])
                     <div class="list-item">
                         <span class="date">{{ $opportunity->created_at?->format('d.m.Y') }}</span>
                         <span class="name">{{ $opportunity->title }}</span>
-                        <p><span class="tag">{{ $type['label'] }}</span> · {{ $opportunity->author?->full_name ? 'Опубликовала: ' . $opportunity->author->full_name : 'Автор не указан' }}</p>
+                        <p><span class="tag">{{ $type['label'] }}</span> · {{ $opportunity->author?->full_name ? __('Опубликовала: :name', ['name' => $opportunity->author->full_name]) : __('Автор не указан') }}</p>
                     </div>
                 @endforeach
             @endif
         </td>
     </tr></table>
 
-    <p class="footer-note">Сформировано автоматически из текущих данных платформы · {{ $generatedAt }}</p>
+    <p class="footer-note">{{ __('Сформировано автоматически из текущих данных платформы') }} · {{ $generatedAt }}</p>
 </body>
 </html>

@@ -39,7 +39,7 @@ class ProjectController extends Controller
             $this->syncTranslations($project, $request->validated('translations', []));
         });
 
-        return redirect()->route('admin.projects.index')->with('success', 'Проект добавлен.');
+        return redirect()->route('admin.projects.index')->with('success', __('Проект добавлен.'));
     }
 
     public function edit(Project $project): View
@@ -61,14 +61,14 @@ class ProjectController extends Controller
             $this->syncTranslations($project, $request->validated('translations', []));
         });
 
-        return redirect()->route('admin.projects.index')->with('success', 'Проект сохранён.');
+        return redirect()->route('admin.projects.index')->with('success', __('Проект сохранён.'));
     }
 
     public function destroy(Project $project): RedirectResponse
     {
         $project->delete();
 
-        return redirect()->route('admin.projects.index')->with('success', 'Проект удалён.');
+        return redirect()->route('admin.projects.index')->with('success', __('Проект удалён.'));
     }
 
     public function move(Request $request, Project $project): RedirectResponse

@@ -35,7 +35,8 @@ class NotifyOpportunity implements ShouldQueue
         $pageUrl = url('/app/account/opportunities');
         $token   = config('nutgram.token');
 
-        $recipients = BotUser::approved()
+        // Публикации участниц видят только подписчицы Community и Private, поэтому и рассылка идёт только им.
+        $recipients = BotUser::members()
             ->where('id', '!=', $opportunity->bot_user_id)
             ->get(['telegram_id', 'locale']);
 

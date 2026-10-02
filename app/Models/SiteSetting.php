@@ -25,6 +25,11 @@ class SiteSetting extends Model
 
     public const AI_ASSISTANT_KNOWLEDGE_KEY = 'ai_assistant_knowledge';
 
+    public const SUBSCRIPTION_PRICES_KEY = 'subscription_prices';
+
+    /** Самая большая цена подписки, которую принимает админка (в рублях): защита от лишнего нуля. */
+    public const SUBSCRIPTION_PRICE_MAX = 1_000_000;
+
     public const LANDING_THEMES = [
         'miro'     => 'Miro',
         'fortun'   => 'Fortun',
@@ -123,6 +128,41 @@ class SiteSetting extends Model
         );
 
         Cache::forget(self::ACCOUNT_THEME_KEY);
+    }
+
+    /**
+     * Цены подписки, заданные в админке, в целых рублях: ['community' => 600, 'private' => 20000]. Чего здесь нет,
+     * берётся из config/subscription.php (см. Plan::price()). Читается на каждой странице тарифов, поэтому кешируется.
+     *
+     * @return array<string, int>
+     */
+    public static function subscriptionPrices(): array
+    {
+        return Cache::rememberForever(self::SUBSCRIPTION_PRICES_KEY, function (): array {
+            $stored = self::settingValue(self::SUBSCRIPTION_PRICES_KEY);
+            $prices = [];
+
+            foreach (['community', 'private'] as $plan) {
+                $price = $stored[$plan] ?? null;
+
+                if (is_int($price) && $price >= 1 && $price <= self::SUBSCRIPTION_PRICE_MAX) {
+                    $prices[$plan] = $price;
+                }
+            }
+
+            return $prices;
+        });
+    }
+
+    /** @param array{community: int, private: int} $prices */
+    public static function setSubscriptionPrices(array $prices): void
+    {
+        self::updateOrCreate(['key' => self::SUBSCRIPTION_PRICES_KEY], ['value' => [
+            'community' => (int) $prices['community'],
+            'private' => (int) $prices['private'],
+        ]]);
+
+        Cache::forget(self::SUBSCRIPTION_PRICES_KEY);
     }
 
     /** @return array{base_url: string, model: string, timeout: int, api_key_configured: bool} */

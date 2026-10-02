@@ -22,7 +22,7 @@ class SecurityTest extends TestCase
 
     public function test_expired_session_is_rejected(): void
     {
-        $user = BotUser::factory()->approved()->create();
+        $user = BotUser::factory()->community()->create();
 
         $this->withSession([
             'account_telegram_id' => $user->telegram_id,
@@ -35,7 +35,7 @@ class SecurityTest extends TestCase
 
     public function test_valid_session_is_accepted(): void
     {
-        $user = BotUser::factory()->approved()->create();
+        $user = BotUser::factory()->community()->create();
 
         $this->withSession([
             'account_telegram_id' => $user->telegram_id,
@@ -47,7 +47,7 @@ class SecurityTest extends TestCase
 
     public function test_session_without_expiry_key_is_rejected(): void
     {
-        $user = BotUser::factory()->approved()->create();
+        $user = BotUser::factory()->community()->create();
 
         // Only telegram_id, no _account_expires — old-style sessions must be invalidated
         $this->withSession(['account_telegram_id' => $user->telegram_id])
@@ -61,8 +61,8 @@ class SecurityTest extends TestCase
 
     public function test_user_cannot_access_cabinet_with_another_users_id(): void
     {
-        $userA = BotUser::factory()->approved()->create();
-        $userB = BotUser::factory()->approved()->create();
+        $userA = BotUser::factory()->community()->create();
+        $userB = BotUser::factory()->community()->create();
 
         // Session belongs to A — cabinet loads A's data, not B's
         $response = $this->withSession([
@@ -80,7 +80,7 @@ class SecurityTest extends TestCase
 
     public function test_revoked_user_session_is_rejected(): void
     {
-        $user = BotUser::factory()->approved()->create();
+        $user = BotUser::factory()->community()->create();
 
         // Revoke access mid-session
         $user->update(['status' => BotUser::STATUS_REJECTED]);
@@ -100,8 +100,8 @@ class SecurityTest extends TestCase
 
     public function test_token_cannot_be_used_for_different_user(): void
     {
-        $userA = BotUser::factory()->approved()->create();
-        $userB = BotUser::factory()->approved()->create();
+        $userA = BotUser::factory()->community()->create();
+        $userB = BotUser::factory()->community()->create();
 
         $token = LoginToken::generateFor((int) $userA->telegram_id);
 
@@ -116,7 +116,7 @@ class SecurityTest extends TestCase
 
     public function test_expired_token_cannot_authenticate(): void
     {
-        $user  = BotUser::factory()->approved()->create();
+        $user  = BotUser::factory()->community()->create();
         $token = LoginToken::generateFor((int) $user->telegram_id);
         $token->update(['expires_at' => now()->subDay()]);
 
@@ -127,8 +127,8 @@ class SecurityTest extends TestCase
 
     public function test_each_user_gets_own_session(): void
     {
-        $userA = BotUser::factory()->approved()->create();
-        $userB = BotUser::factory()->approved()->create();
+        $userA = BotUser::factory()->community()->create();
+        $userB = BotUser::factory()->community()->create();
 
         $tokenA = LoginToken::generateFor((int) $userA->telegram_id);
         $tokenB = LoginToken::generateFor((int) $userB->telegram_id);

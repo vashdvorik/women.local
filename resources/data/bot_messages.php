@@ -44,6 +44,7 @@ return [
         'broadcast' => ['title' => 'Рассылка о новых публикациях', 'hint' => 'Уведомление всем одобренным участницам, когда в кабинете появляется новая публикация.'],
         'site' => ['title' => 'После действий на сайте', 'hint' => 'Сообщения в бот, которые отправляет сайт.'],
         'menu' => ['title' => 'Меню и команды', 'hint' => 'Кнопки главного меню и описания команд в меню Telegram.'],
+        'subscription' => ['title' => 'Подписка', 'hint' => 'Сообщения о тарифе: подписка включена, напоминания об окончании, закрытые функции. Тарифы: Open (бесплатно), Community и Private (платные, на год).'],
     ],
 
     'messages' => [
@@ -144,9 +145,9 @@ return [
             'kind' => 'text',
             'vars' => ['name' => 'Имя участницы', 'site_url' => 'Адрес сайта платформы'],
             'text' => [
-                'ru' => "Спасибо, {name}!\n\nЗаявка отправлена на рассмотрение. После одобрения вы получите доступ к кабинету, каталогу участниц, рекомендациям и возможностям платформы.\n\nЕсли есть вопрос, напишите команде проекта: @lesnichenkoP\n\nСайт платформы:\n{site_url}",
-                'en' => "Thank you, {name}!\n\nYour application has been submitted for review. Once approved, you will get access to your account, the members directory, recommendations and platform opportunities.\n\nIf you have a question, write to the project team: @lesnichenkoP\n\nPlatform website:\n{site_url}",
-                'ro' => "Vă mulțumim, {name}!\n\nCererea a fost trimisă spre examinare. După aprobare, veți primi acces la cabinet, la catalogul membrelor, la recomandări și la oportunitățile platformei.\n\nDacă aveți o întrebare, scrieți echipei proiectului: @lesnichenkoP\n\nSite-ul platformei:\n{site_url}",
+                'ru' => "Спасибо, {name}!\n\nЗаявка отправлена на рассмотрение. После одобрения вы получите доступ к личному кабинету. Каталог участниц, поиск контактов и другие возможности сообщества входят в платную подписку.\n\nЕсли есть вопрос, напишите команде проекта: @lesnichenkoP\n\nСайт платформы:\n{site_url}",
+                'en' => "Thank you, {name}!\n\nYour application has been submitted for review. Once approved, you will get access to your account. The members directory, contact search and other community opportunities are part of the paid subscription.\n\nIf you have a question, write to the project team: @lesnichenkoP\n\nPlatform website:\n{site_url}",
+                'ro' => "Vă mulțumim, {name}!\n\nCererea a fost trimisă spre examinare. După aprobare, veți primi acces la cabinetul personal. Catalogul membrelor, căutarea de contacte și celelalte oportunități ale comunității fac parte din abonamentul plătit.\n\nDacă aveți o întrebare, scrieți echipei proiectului: @lesnichenkoP\n\nSite-ul platformei:\n{site_url}",
             ],
         ],
 
@@ -184,9 +185,9 @@ return [
             'kind' => 'text',
             'vars' => ['name' => 'Имя участницы'],
             'text' => [
-                'ru' => "🎉 {name}, ваша заявка одобрена.\n\nДобро пожаловать в Women Entrepreneurs Platform of the Two Banks. Теперь вам доступен личный кабинет, каталог участниц, поиск контактов, рекомендации и публикация возможностей.\n\nЗаполните профиль подробнее, чтобы другие участницы лучше понимали ваш бизнес, запросы и возможные форматы сотрудничества.",
-                'en' => "🎉 {name}, your application has been approved.\n\nWelcome to Women Entrepreneurs Platform of the Two Banks. You now have access to your account, the members directory, contact search, recommendations and publishing opportunities.\n\nFill in your profile in more detail so that other members better understand your business, requests and possible forms of cooperation.",
-                'ro' => "🎉 {name}, cererea dvs. a fost aprobată.\n\nBine ați venit la Women Entrepreneurs Platform of the Two Banks. Acum aveți acces la cabinetul personal, catalogul membrelor, căutarea de contacte, recomandări și publicarea de oportunități.\n\nCompletați profilul mai detaliat, pentru ca celelalte membre să înțeleagă mai bine afacerea, solicitările și formatele posibile de colaborare.",
+                'ru' => "🎉 {name}, ваша заявка одобрена.\n\nДобро пожаловать в Women Entrepreneurs Platform of the Two Banks. Вам открыт личный кабинет с уровнем доступа Open: материалы и информация с сайта платформы.\n\nКаталог участниц, поиск контактов, ИИ-помощник и публикации возможностей входят в подписку WOMEN’S HUB COMMUNITY. Оформить её можно в разделе «Подписка» личного кабинета.\n\nЗаполните профиль подробнее, чтобы вас лучше понимали другие участницы.",
+                'en' => "🎉 {name}, your application has been approved.\n\nWelcome to Women Entrepreneurs Platform of the Two Banks. Your account is open at the Open access level: materials and information from the platform website.\n\nThe members directory, contact search, the AI assistant and publishing opportunities are part of the WOMEN’S HUB COMMUNITY subscription. You can subscribe in the “Subscription” section of your account.\n\nFill in your profile in more detail so that other members understand you better.",
+                'ro' => "🎉 {name}, cererea dvs. a fost aprobată.\n\nBine ați venit la Women Entrepreneurs Platform of the Two Banks. Cabinetul dvs. este deschis la nivelul de acces Open: materiale și informații de pe site-ul platformei.\n\nCatalogul membrelor, căutarea de contacte, asistentul AI și publicarea de oportunități fac parte din abonamentul WOMEN’S HUB COMMUNITY. Vă puteți abona în secțiunea „Abonament” din cabinetul personal.\n\nCompletați profilul mai detaliat, pentru ca celelalte membre să vă înțeleagă mai bine.",
             ],
         ],
         'moderation_approved_guide_prompt' => [
@@ -287,9 +288,9 @@ return [
             'kind' => 'text',
             'vars' => [],
             'text' => [
-                'ru' => "Как начать работу с Women Entrepreneurs Platform of the Two Banks?\n\n1. Откройте личный кабинет\nИспользуйте кнопку входа или ссылку из этого бота.\n\n2. Заполните профиль\nРасскажите, что вы представляете, что ищете и чем можете быть полезны другим участницам.\n\n3. Ищите контакты и возможности\nПлатформа помогает находить предпринимательниц, запросы, предложения, события и полезные материалы.\n\n4. Оставайтесь на связи\nTelegram будет присылать важные обновления, приглашения и публикации сообщества.",
-                'en' => "How to get started with Women Entrepreneurs Platform of the Two Banks?\n\n1. Open your account\nUse the login button or the link from this bot.\n\n2. Fill in your profile\nTell us what you represent, what you are looking for and how you can be useful to other members.\n\n3. Look for contacts and opportunities\nThe platform helps you find entrepreneurs, requests, offers, events and useful materials.\n\n4. Stay in touch\nTelegram will send you important updates, invitations and community publications.",
-                'ro' => "Cum începeți să lucrați cu Women Entrepreneurs Platform of the Two Banks?\n\n1. Deschideți cabinetul personal\nFolosiți butonul de autentificare sau linkul din acest bot.\n\n2. Completați profilul\nPovestiți pe cine reprezentați, ce căutați și cu ce puteți fi utilă altor membre.\n\n3. Căutați contacte și oportunități\nPlatforma vă ajută să găsiți antreprenoare, solicitări, oferte, evenimente și materiale utile.\n\n4. Rămâneți în legătură\nTelegram vă va trimite actualizări importante, invitații și publicații ale comunității.",
+                'ru' => "Как начать работу с Women Entrepreneurs Platform of the Two Banks?\n\n1. Откройте личный кабинет\nИспользуйте кнопку входа или ссылку из этого бота.\n\n2. Заполните профиль\nРасскажите, что вы представляете, что ищете и чем можете быть полезны другим участницам.\n\n3. Ищите контакты и возможности\nС подпиской WOMEN’S HUB COMMUNITY платформа помогает находить предпринимательниц, запросы, предложения, события и полезные материалы.\n\n4. Оставайтесь на связи\nTelegram будет присылать важные обновления, приглашения и публикации сообщества.",
+                'en' => "How to get started with Women Entrepreneurs Platform of the Two Banks?\n\n1. Open your account\nUse the login button or the link from this bot.\n\n2. Fill in your profile\nTell us what you represent, what you are looking for and how you can be useful to other members.\n\n3. Look for contacts and opportunities\nWith a WOMEN’S HUB COMMUNITY subscription, the platform helps you find entrepreneurs, requests, offers, events and useful materials.\n\n4. Stay in touch\nTelegram will send you important updates, invitations and community publications.",
+                'ro' => "Cum începeți să lucrați cu Women Entrepreneurs Platform of the Two Banks?\n\n1. Deschideți cabinetul personal\nFolosiți butonul de autentificare sau linkul din acest bot.\n\n2. Completați profilul\nPovestiți pe cine reprezentați, ce căutați și cu ce puteți fi utilă altor membre.\n\n3. Căutați contacte și oportunități\nCu abonamentul WOMEN’S HUB COMMUNITY, platforma vă ajută să găsiți antreprenoare, solicitări, oferte, evenimente și materiale utile.\n\n4. Rămâneți în legătură\nTelegram vă va trimite actualizări importante, invitații și publicații ale comunității.",
             ],
         ],
 
@@ -517,5 +518,68 @@ return [
             'vars' => [],
             'text' => ['ru' => 'Войти в личный кабинет', 'en' => 'Open your account', 'ro' => 'Intră în cabinetul personal'],
         ],
+
+        // ---------------------------------------------------------------- Подписка
+        'plan_required' => [
+            'group' => 'subscription',
+            'title' => 'Функция только для подписчиц',
+            'when' => 'Участница с тарифом Open (бесплатным) нажала «Найти контакты» в боте.',
+            'kind' => 'text',
+            'vars' => ['url' => 'Ссылка на страницу «Подписка» в кабинете'],
+            'text' => [
+                'ru' => "🔒 Поиск контактов доступен в подписке <b>WOMEN’S HUB COMMUNITY</b> и выше.\n\nСейчас у вас открытый доступ (Open). Оформить подписку можно в личном кабинете:\n{url}",
+                'en' => "🔒 Contact search is available with a <b>WOMEN’S HUB COMMUNITY</b> subscription or higher.\n\nYou currently have open access (Open). You can subscribe in your account:\n{url}",
+                'ro' => "🔒 Căutarea de contacte este disponibilă cu abonamentul <b>WOMEN’S HUB COMMUNITY</b> sau superior.\n\nAcum aveți acces deschis (Open). Vă puteți abona în cabinetul personal:\n{url}",
+            ],
+        ],
+        'subscription_activated' => [
+            'group' => 'subscription',
+            'title' => 'Подписка включена',
+            'when' => 'Оплата подтверждена банком или администратор выдал тариф вручную.',
+            'kind' => 'text',
+            'vars' => [
+                'plan' => 'Название тарифа',
+                'until' => 'Дата окончания (дд.мм.гггг)',
+                'url' => 'Ссылка на страницу «Подписка» в кабинете',
+            ],
+            'text' => [
+                'ru' => "🎉 Подписка <b>{plan}</b> включена до {until}.\n\nТеперь вам доступно всё, что входит в тариф: каталог участниц, поиск контактов, ИИ-помощник и публикации возможностей.\n\nУправлять подпиской можно здесь:\n{url}",
+                'en' => "🎉 Your <b>{plan}</b> subscription is active until {until}.\n\nYou now have everything included in the plan: the members directory, contact search, the AI assistant and publishing opportunities.\n\nYou can manage your subscription here:\n{url}",
+                'ro' => "🎉 Abonamentul <b>{plan}</b> este activ până la {until}.\n\nAcum aveți tot ce include pachetul: catalogul membrelor, căutarea de contacte, asistentul AI și publicarea de oportunități.\n\nÎți poți gestiona abonamentul aici:\n{url}",
+            ],
+        ],
+        'subscription_reminder' => [
+            'group' => 'subscription',
+            'title' => 'Подписка скоро закончится',
+            'when' => 'За 14 и за 3 дня до окончания подписки (раз в сутки проверяет команда subscriptions:notify).',
+            'kind' => 'text',
+            'vars' => [
+                'plan' => 'Название тарифа',
+                'until' => 'Дата окончания (дд.мм.гггг)',
+                'days' => 'Сколько дней осталось (число)',
+                'url' => 'Ссылка на страницу «Подписка» в кабинете',
+            ],
+            'text' => [
+                'ru' => "⏳ Подписка <b>{plan}</b> заканчивается {until} (осталось дней: {days}).\n\nЧтобы не потерять доступ к сообществу, продлите её:\n{url}",
+                'en' => "⏳ Your <b>{plan}</b> subscription ends on {until} ({days} days left).\n\nRenew it to keep your access to the community:\n{url}",
+                'ro' => "⏳ Abonamentul <b>{plan}</b> se încheie la {until} (mai sunt {days} zile).\n\nReînnoiți-l pentru a păstra accesul la comunitate:\n{url}",
+            ],
+        ],
+        'subscription_expired' => [
+            'group' => 'subscription',
+            'title' => 'Подписка закончилась',
+            'when' => 'Срок подписки истёк: доступ вернулся на уровень Open.',
+            'kind' => 'text',
+            'vars' => [
+                'plan' => 'Название тарифа, который закончился',
+                'url' => 'Ссылка на страницу «Подписка» в кабинете',
+            ],
+            'text' => [
+                'ru' => "Подписка <b>{plan}</b> закончилась. Доступ вернулся на открытый уровень Open.\n\nВаш профиль сохранён. Продлить подписку можно в любой момент:\n{url}",
+                'en' => "Your <b>{plan}</b> subscription has ended. Your access is back to the open level (Open).\n\nYour profile is saved. You can renew at any time:\n{url}",
+                'ro' => "Abonamentul <b>{plan}</b> s-a încheiat. Accesul a revenit la nivelul deschis (Open).\n\nProfilul dvs. este păstrat. Puteți reînnoi oricând:\n{url}",
+            ],
+        ],
+
     ],
 ];

@@ -1,6 +1,7 @@
 import Alpine from 'alpinejs';
 import { uploadImage, flashError } from './uploader';
 import { openCropper } from './cropper';
+import { t } from './i18n';
 
 /**
  * Редактор фотоальбома. Вкладки устроены иначе: первая — «Фото», потому что
@@ -58,7 +59,7 @@ Alpine.data('albumEditor', (initial, cancelUrl) => ({
         this.submitting = true;
     },
     cancel() {
-        if (this.dirty && ! window.confirm('Есть несохранённые изменения. Покинуть страницу?')) return;
+        if (this.dirty && ! window.confirm(t('Есть несохранённые изменения. Покинуть страницу?'))) return;
         this.submitting = true;
         window.location.href = this.cancelUrl;
     },
@@ -109,7 +110,7 @@ Alpine.data('albumEditor', (initial, cancelUrl) => ({
         try {
             this.cover = await uploadImage(file, 'album', initial.uploadUrl, crop);
         } catch (e) {
-            flashError('Не удалось загрузить изображение.');
+            flashError(t('Не удалось загрузить изображение.'));
         } finally {
             this.coverUploading = false;
         }
@@ -134,7 +135,7 @@ Alpine.data('albumEditor', (initial, cancelUrl) => ({
             if (block.type === 'image') block.data.path = path;
             else block.data.images[cell] = path;
         } catch (e) {
-            flashError('Не удалось загрузить изображение.');
+            flashError(t('Не удалось загрузить изображение.'));
         } finally {
             block._busy = false;
         }

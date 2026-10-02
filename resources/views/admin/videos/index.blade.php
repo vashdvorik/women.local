@@ -1,12 +1,12 @@
-<x-layouts.admin title="Видео">
+<x-layouts.admin :title="__('Видео')">
     <x-slot:actions>
-        <a href="{{ route('admin.videos.create') }}" class="btn-primary">Добавить видео</a>
+        <a href="{{ route('admin.videos.create') }}" class="btn-primary">{{ __('Добавить видео') }}</a>
     </x-slot:actions>
 
     @if($videos->isEmpty())
         <div class="card text-center">
-            <p class="text-reading text-ink-muted">Видео пока нет.</p>
-            <a href="{{ route('admin.videos.create') }}" class="btn-primary mt-4">Добавить видео</a>
+            <p class="text-reading text-ink-muted">{{ __('Видео пока нет.') }}</p>
+            <a href="{{ route('admin.videos.create') }}" class="btn-primary mt-4">{{ __('Добавить видео') }}</a>
         </div>
     @else
         <div class="overflow-x-auto">
@@ -14,9 +14,9 @@
                 <thead>
                     <tr>
                         <th class="w-28"></th>
-                        <th>Название</th>
-                        <th class="w-40">Дата события</th>
-                        <th class="w-32">Порядок</th>
+                        <th>{{ __('Название') }}</th>
+                        <th class="w-40">{{ __('Дата события') }}</th>
+                        <th class="w-32">{{ __('Порядок') }}</th>
                         <th class="w-40"></th>
                     </tr>
                 </thead>
@@ -37,13 +37,13 @@
                                 <div class="flex gap-1">
                                     <form method="POST" action="{{ route('admin.videos.move', $video) }}">
                                         @csrf<input type="hidden" name="direction" value="up">
-                                        <button class="btn-icon" @disabled($loop->first) title="Вверх" aria-label="Вверх">
+                                        <button class="btn-icon" @disabled($loop->first) title="{{ __('Вверх') }}" aria-label="{{ __('Вверх') }}">
                                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 12V4M4 8l4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                         </button>
                                     </form>
                                     <form method="POST" action="{{ route('admin.videos.move', $video) }}">
                                         @csrf<input type="hidden" name="direction" value="down">
-                                        <button class="btn-icon" @disabled($loop->last) title="Вниз" aria-label="Вниз">
+                                        <button class="btn-icon" @disabled($loop->last) title="{{ __('Вниз') }}" aria-label="{{ __('Вниз') }}">
                                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 4v8M4 8l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                         </button>
                                     </form>
@@ -51,9 +51,9 @@
                             </td>
                             <td>
                                 <div class="flex items-center justify-end gap-2">
-                                    <a href="{{ route('admin.videos.edit', $video) }}" class="btn-quiet">Изменить</a>
+                                    <a href="{{ route('admin.videos.edit', $video) }}" class="btn-quiet">{{ __('Изменить') }}</a>
                                     <x-admin.delete-button :action="route('admin.videos.destroy', $video)"
-                                        :subject="$video->rawTranslation('ru')?->title ?: $video->youtube_id" noun="видео" />
+                                        :subject="$video->rawTranslation('ru')?->title ?: $video->youtube_id" :noun="__('видео')" />
                                 </div>
                             </td>
                         </tr>

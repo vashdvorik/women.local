@@ -28,6 +28,8 @@ final class AdminCamp
         'admin.profiles.*',
         'admin.member-posts.*',
         'admin.statistics.*',
+        'admin.subscriptions.*',
+        'admin.payments.*',
     ];
 
     public static function current(?Request $request = null): string
@@ -39,6 +41,6 @@ final class AdminCamp
 
     public static function label(string $camp): string
     {
-        return $camp === self::CABINETS ? 'Кабинеты участниц' : 'Внешний сайт';
+        return $camp === self::CABINETS ? __('Кабинеты участниц') : __('Внешний сайт');
     }
 }

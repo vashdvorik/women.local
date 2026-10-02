@@ -43,7 +43,7 @@ class AiAssistantService
     {
         $tokens = $this->tokens($message.' '.$user->description.' '.$user->expectation);
 
-        return BotUser::approved()
+        return BotUser::members()
             ->whereKeyNot($user->getKey())
             ->orderBy('full_name')
             ->limit(500)

@@ -42,9 +42,9 @@ trait PublishesArticle
         }
 
         return redirect()->route($editRoute, $article)->with('success', match ($intent) {
-            'publish' => "{$noun} опубликована.",
-            'unpublish' => "{$noun} снята с публикации.",
-            default => $created ? 'Черновик сохранён.' : 'Изменения сохранены.',
+            'publish' => __(':noun опубликована.', ['noun' => $noun]),
+            'unpublish' => __(':noun снята с публикации.', ['noun' => $noun]),
+            default => $created ? __('Черновик сохранён.') : __('Изменения сохранены.'),
         });
     }
 }

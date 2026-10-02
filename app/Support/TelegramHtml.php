@@ -39,7 +39,7 @@ final class TelegramHtml
 
         foreach ($tokens as $token) {
             if ($token === '<') {
-                $errors[] = 'Символ «<» допустим только в начале тега. Если он нужен как обычный знак, напишите &lt;. Проверьте также, что у тегов есть закрывающая скобка «>».';
+                $errors[] = __('Символ «<» допустим только в начале тега. Если он нужен как обычный знак, напишите &lt;. Проверьте также, что у тегов есть закрывающая скобка «>».');
                 $out .= '&lt;';
             } elseif ($token === '>') {
                 $out .= '&gt;';
@@ -49,7 +49,7 @@ final class TelegramHtml
                 $name = substr($token, 1, -1);
 
                 if ($name[0] !== '#' && ! in_array(strtolower($name), self::ENTITIES, true)) {
-                    $errors[] = "Сущность {$token} Telegram не понимает. Напишите символ прямо в тексте (допустимы только &lt; &gt; &amp; &quot;).";
+                    $errors[] = __('Сущность :entity Telegram не понимает. Напишите символ прямо в тексте (допустимы только &lt; &gt; &amp; &quot;).', ['entity' => $token]);
                 }
 
                 $out .= $token;
@@ -62,7 +62,7 @@ final class TelegramHtml
         }
 
         foreach ($stack as $open) {
-            $errors[] = "Тег <{$open}> не закрыт: добавьте </{$open}>.";
+            $errors[] = __('Тег <:tag> не закрыт: добавьте </:tag>.', ['tag' => $open]);
         }
 
         return [$out, array_values(array_unique($errors))];
@@ -85,14 +85,14 @@ final class TelegramHtml
         $name = strtolower($name);
 
         if (! in_array($name, self::TAGS, true)) {
-            $errors[] = "Тег <{$name}> не поддерживается. Разрешены: ".implode(', ', array_map(fn (string $t): string => "<{$t}>", self::TAGS)).'.';
+            $errors[] = __('Тег <:tag> не поддерживается. Разрешены: :list.', ['tag' => $name, 'list' => implode(', ', array_map(fn (string $t): string => "<{$t}>", self::TAGS))]);
 
             return;
         }
 
         if ($closing !== '') {
             if (end($stack) !== $name) {
-                $errors[] = "Тег </{$name}> закрыт не там: теги должны закрываться в обратном порядке (<b><i>…</i></b>).";
+                $errors[] = __('Тег </:tag> закрыт не там: теги должны закрываться в обратном порядке (<b><i>…</i></b>).', ['tag' => $name]);
 
                 return;
             }
@@ -106,10 +106,10 @@ final class TelegramHtml
 
         if ($name === 'a') {
             if (! preg_match('/^href\s*=\s*(["\'])(https?:\/\/|tg:\/\/|mailto:)[^"\'<>\s]+\1$/i', $attributes)) {
-                $errors[] = 'У ссылки должен быть адрес вида <a href="https://…">текст</a> (допустимы http, https, tg и mailto), и больше никаких параметров.';
+                $errors[] = __('У ссылки должен быть адрес вида <a href="https://…">текст</a> (допустимы http, https, tg и mailto), и больше никаких параметров.');
             }
         } elseif ($attributes !== '') {
-            $errors[] = "У тега <{$name}> не должно быть параметров.";
+            $errors[] = __('У тега <:tag> не должно быть параметров.', ['tag' => $name]);
         }
 
         $stack[] = $name;

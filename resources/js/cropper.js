@@ -1,5 +1,6 @@
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.css';
+import { t } from './i18n';
 
 /**
  * Инструмент кадрирования. Открывает модальное окно с изображением и рамкой,
@@ -26,7 +27,7 @@ export function openCropper(file, ratio) {
 
         const heading = document.createElement('p');
         heading.className = 'text-ui-strong font-semibold text-ink';
-        heading.textContent = 'Обрежьте изображение';
+        heading.textContent = t('Обрежьте изображение');
 
         const stage = document.createElement('div');
         stage.className = 'bg-surface-sunken rounded-sm overflow-hidden';
@@ -41,7 +42,7 @@ export function openCropper(file, ratio) {
 
         const hint = document.createElement('p');
         hint.className = 'text-caption text-ink-muted';
-        hint.textContent = 'Перетащите рамку, потяните за углы, колесо мыши — масштаб.';
+        hint.textContent = t('Перетащите рамку, потяните за углы, колесо мыши — масштаб.');
 
         const actions = document.createElement('div');
         actions.className = 'flex justify-end gap-3 pt-1';
@@ -49,12 +50,12 @@ export function openCropper(file, ratio) {
         const cancelBtn = document.createElement('button');
         cancelBtn.type = 'button';
         cancelBtn.className = 'btn-quiet';
-        cancelBtn.textContent = 'Отмена';
+        cancelBtn.textContent = t('Отмена');
 
         const applyBtn = document.createElement('button');
         applyBtn.type = 'button';
         applyBtn.className = 'btn-primary';
-        applyBtn.textContent = 'Применить';
+        applyBtn.textContent = t('Применить');
 
         actions.append(cancelBtn, applyBtn);
         modal.append(heading, stage, hint, actions);

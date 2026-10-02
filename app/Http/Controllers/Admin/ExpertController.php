@@ -44,7 +44,7 @@ class ExpertController extends Controller
             $this->syncFlatTranslations($expert, $request->validated('translations', []), self::TEXT_FIELDS, ['tags']);
         });
 
-        return redirect()->route('admin.experts.index')->with('success', 'Эксперт добавлен.');
+        return redirect()->route('admin.experts.index')->with('success', __('Эксперт добавлен.'));
     }
 
     public function edit(Expert $expert): View
@@ -66,14 +66,14 @@ class ExpertController extends Controller
             $this->syncFlatTranslations($expert, $request->validated('translations', []), self::TEXT_FIELDS, ['tags']);
         });
 
-        return redirect()->route('admin.experts.index')->with('success', 'Эксперт сохранён.');
+        return redirect()->route('admin.experts.index')->with('success', __('Эксперт сохранён.'));
     }
 
     public function destroy(Expert $expert): RedirectResponse
     {
         $expert->delete();
 
-        return redirect()->route('admin.experts.index')->with('success', 'Эксперт удалён.');
+        return redirect()->route('admin.experts.index')->with('success', __('Эксперт удалён.'));
     }
 
     public function move(Request $request, Expert $expert): RedirectResponse

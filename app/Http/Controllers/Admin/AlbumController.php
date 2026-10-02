@@ -37,7 +37,7 @@ class AlbumController extends Controller
         $album = $saver->handle(null, $request->validated(), $intent);
 
         return redirect()->route('admin.albums.edit', $album)->with('success',
-            $album->status === \App\Enums\PublishStatus::Draft ? 'Черновик сохранён.' : 'Фотоальбом опубликован.');
+            $album->status === \App\Enums\PublishStatus::Draft ? __('Черновик сохранён.') : __('Фотоальбом опубликован.'));
     }
 
     public function edit(Album $album): View
@@ -56,9 +56,9 @@ class AlbumController extends Controller
         $album = $saver->handle($album, $request->validated(), $intent);
 
         return redirect()->route('admin.albums.edit', $album)->with('success', match ($intent) {
-            'publish' => 'Фотоальбом опубликован.',
-            'unpublish' => 'Фотоальбом снят с публикации.',
-            default => 'Изменения сохранены.',
+            'publish' => __('Фотоальбом опубликован.'),
+            'unpublish' => __('Фотоальбом снят с публикации.'),
+            default => __('Изменения сохранены.'),
         });
     }
 
@@ -66,6 +66,6 @@ class AlbumController extends Controller
     {
         $album->delete();
 
-        return redirect()->route('admin.albums.index')->with('success', 'Фотоальбом удалён.');
+        return redirect()->route('admin.albums.index')->with('success', __('Фотоальбом удалён.'));
     }
 }

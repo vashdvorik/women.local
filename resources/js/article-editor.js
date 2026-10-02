@@ -1,6 +1,7 @@
 import Alpine from 'alpinejs';
 import { uploadImage, uploadFile, flashError } from './uploader';
 import { openCropper } from './cropper';
+import { t, decimalSeparator } from './i18n';
 
 /**
  * Редактор новости и возможности. Все три языка — в одной форме и уходят одним
@@ -124,7 +125,7 @@ function blockEditor(initial) {
                 const path = await uploadImage(file, slot, initial.uploadUrl, crop);
                 apply(path);
             } catch (e) {
-                flashError('Не удалось загрузить изображение.');
+                flashError(t('Не удалось загрузить изображение.'));
             } finally {
                 if (setBusy) setBusy(false);
             }
@@ -149,11 +150,11 @@ function blockEditor(initial) {
 
             const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
             if (!isPdf) {
-                flashError('Нужен файл в формате PDF.');
+                flashError(t('Нужен файл в формате PDF.'));
                 return;
             }
             if (file.size > this.fileMaxMb * 1024 * 1024) {
-                flashError(`Файл слишком большой: допустимо до ${this.fileMaxMb} МБ.`);
+                flashError(t('Файл слишком большой: допустимо до :size МБ.', { size: this.fileMaxMb }));
                 return;
             }
 
@@ -163,7 +164,7 @@ function blockEditor(initial) {
             } catch (e) {
                 flashError(e.message && e.message !== 'upload failed'
                     ? e.message
-                    : `Не удалось загрузить файл. Проверьте, что это PDF не больше ${this.fileMaxMb} МБ.`);
+                    : t('Не удалось загрузить файл. Проверьте, что это PDF не больше :size МБ.', { size: this.fileMaxMb }));
             } finally {
                 setBusy(false);
             }
@@ -184,8 +185,8 @@ function blockEditor(initial) {
         },
         fileSize(bytes) {
             if (!bytes) return '';
-            if (bytes < 1024 * 1024) return Math.max(1, Math.round(bytes / 1024)) + ' КБ';
-            return (bytes / (1024 * 1024)).toFixed(1).replace('.', ',') + ' МБ';
+            if (bytes < 1024 * 1024) return Math.max(1, Math.round(bytes / 1024)) + ' ' + t('КБ');
+            return (bytes / (1024 * 1024)).toFixed(1).replace('.', decimalSeparator()) + ' ' + t('МБ');
         },
     };
 }
@@ -265,7 +266,7 @@ Alpine.data('articleEditor', (initial, cancelUrl) => ({
     },
 
     cancel() {
-        if (this.dirty && ! window.confirm('Есть несохранённые изменения. Покинуть страницу?')) {
+        if (this.dirty && ! window.confirm(t('Есть несохранённые изменения. Покинуть страницу?'))) {
             return;
         }
         this.submitting = true; // подавить предупреждение beforeunload

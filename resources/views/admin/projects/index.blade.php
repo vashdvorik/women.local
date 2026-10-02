@@ -1,12 +1,12 @@
-<x-layouts.admin title="Проекты">
+<x-layouts.admin :title="__('Проекты')">
     <x-slot:actions>
-        <a href="{{ route('admin.projects.create') }}" class="btn-primary">Добавить проект</a>
+        <a href="{{ route('admin.projects.create') }}" class="btn-primary">{{ __('Добавить проект') }}</a>
     </x-slot:actions>
 
     @if($projects->isEmpty())
         <div class="card text-center">
-            <p class="text-reading text-ink-muted">Проектов пока нет. Страница «Проекты» покажет только шапку.</p>
-            <a href="{{ route('admin.projects.create') }}" class="btn-primary mt-4">Добавить проект</a>
+            <p class="text-reading text-ink-muted">{{ __('Проектов пока нет. Страница «Проекты» покажет только шапку.') }}</p>
+            <a href="{{ route('admin.projects.create') }}" class="btn-primary mt-4">{{ __('Добавить проект') }}</a>
         </div>
     @else
         <div class="overflow-x-auto">
@@ -14,11 +14,11 @@
                 <thead>
                     <tr>
                         <th class="w-24"></th>
-                        <th>Название</th>
-                        <th class="w-40">Категория</th>
-                        <th class="w-28">Языки</th>
-                        <th class="w-24">На сайте</th>
-                        <th class="w-28">Порядок</th>
+                        <th>{{ __('Название') }}</th>
+                        <th class="w-40">{{ __('Категория') }}</th>
+                        <th class="w-28">{{ __('Языки') }}</th>
+                        <th class="w-24">{{ __('На сайте') }}</th>
+                        <th class="w-28">{{ __('Порядок') }}</th>
                         <th class="w-40"></th>
                     </tr>
                 </thead>
@@ -36,7 +36,7 @@
                             </td>
                             <td>
                                 <a href="{{ route('admin.projects.edit', $project) }}" class="table-link">
-                                    {{ $project->rawTranslation('ru')?->title ?: 'Без названия' }}
+                                    {{ $project->rawTranslation('ru')?->title ?: __('Без названия') }}
                                 </a>
                                 @if($project->url)
                                     <a href="{{ $project->url }}" target="_blank" rel="noopener noreferrer"
@@ -56,13 +56,13 @@
                                 <div class="flex gap-1">
                                     <form method="POST" action="{{ route('admin.projects.move', $project) }}">
                                         @csrf<input type="hidden" name="direction" value="up">
-                                        <button class="btn-icon" @disabled($loop->first) title="Вверх" aria-label="Вверх">
+                                        <button class="btn-icon" @disabled($loop->first) title="{{ __('Вверх') }}" aria-label="{{ __('Вверх') }}">
                                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 12V4M4 8l4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                         </button>
                                     </form>
                                     <form method="POST" action="{{ route('admin.projects.move', $project) }}">
                                         @csrf<input type="hidden" name="direction" value="down">
-                                        <button class="btn-icon" @disabled($loop->last) title="Вниз" aria-label="Вниз">
+                                        <button class="btn-icon" @disabled($loop->last) title="{{ __('Вниз') }}" aria-label="{{ __('Вниз') }}">
                                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 4v8M4 8l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                         </button>
                                     </form>
@@ -70,9 +70,9 @@
                             </td>
                             <td>
                                 <div class="flex items-center justify-end gap-2">
-                                    <a href="{{ route('admin.projects.edit', $project) }}" class="btn-quiet">Изменить</a>
+                                    <a href="{{ route('admin.projects.edit', $project) }}" class="btn-quiet">{{ __('Изменить') }}</a>
                                     <x-admin.delete-button :action="route('admin.projects.destroy', $project)"
-                                        :subject="$project->rawTranslation('ru')?->title ?: 'проект'" noun="проект" />
+                                        :subject="$project->rawTranslation('ru')?->title ?: __('проект')" :noun="__('проект')" />
                                 </div>
                             </td>
                         </tr>

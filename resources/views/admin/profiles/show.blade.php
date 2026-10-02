@@ -1,7 +1,7 @@
-<x-layouts.admin :title="$profile->full_name ?: 'Профиль участницы'">
+<x-layouts.admin :title="$profile->full_name ?: __('Профиль участницы')">
     <x-slot:actions>
-        <a href="{{ route('admin.profiles.index') }}" class="btn-secondary">К списку</a>
-        <a href="{{ route('admin.profiles.edit', $profile) }}" class="btn-secondary">Изменить</a>
+        <a href="{{ route('admin.profiles.index') }}" class="btn-secondary">{{ __('К списку') }}</a>
+        <a href="{{ route('admin.profiles.edit', $profile) }}" class="btn-secondary">{{ __('Изменить') }}</a>
     </x-slot:actions>
 
     <div class="form-column space-y-6">
@@ -18,7 +18,7 @@
 
                 <div class="min-w-0 flex-1 space-y-2">
                     <div class="flex flex-wrap items-center gap-3">
-                        <h2 class="text-section font-semibold">{{ $profile->full_name ?: 'Без имени' }}</h2>
+                        <h2 class="text-section font-semibold">{{ $profile->full_name ?: __('Без имени') }}</h2>
                         <x-admin.profile-status-badge :status="$profile->status" />
                     </div>
 
@@ -39,11 +39,11 @@
                             <dd>{{ $profile->telegram_id }}</dd>
                         </div>
                         <div class="flex gap-2">
-                            <dt class="text-ink-muted">Заявка:</dt>
+                            <dt class="text-ink-muted">{{ __('Заявка:') }}</dt>
                             <dd>{{ $profile->created_at?->format('d.m.Y H:i') }}</dd>
                         </div>
                         <div class="flex gap-2">
-                            <dt class="text-ink-muted">Одобрена:</dt>
+                            <dt class="text-ink-muted">{{ __('Одобрена:') }}</dt>
                             <dd>{{ $profile->approved_at?->format('d.m.Y H:i') ?? '—' }}</dd>
                         </div>
                     </dl>
@@ -53,11 +53,11 @@
 
         <div class="card space-y-5">
             <div>
-                <h3 class="form-section-title">Что представляет</h3>
+                <h3 class="form-section-title">{{ __('Что представляет') }}</h3>
                 <p class="text-reading whitespace-pre-line">{{ $profile->description ?: '—' }}</p>
             </div>
             <div>
-                <h3 class="form-section-title">Что ищет и чем может быть полезна</h3>
+                <h3 class="form-section-title">{{ __('Что ищет и чем может быть полезна') }}</h3>
                 <p class="text-reading whitespace-pre-line">{{ $profile->expectation ?: '—' }}</p>
             </div>
         </div>
@@ -66,26 +66,26 @@
             @unless($profile->isApproved())
                 <x-admin.confirm-button
                     :action="route('admin.profiles.approve', $profile)"
-                    label="Одобрить"
+                    :label="__('Одобрить')"
                     trigger="btn-primary"
-                    title="Одобрить профиль?"
-                    message="Участница получит уведомление в боте и доступ к личному кабинету." />
+                    :title="__('Одобрить профиль?')"
+                    :message="__('Участница получит уведомление в боте и доступ к личному кабинету.')" />
             @endunless
             @unless($profile->isRejected())
                 <x-admin.confirm-button
                     :action="route('admin.profiles.reject', $profile)"
-                    label="Отклонить"
+                    :label="__('Отклонить')"
                     trigger="btn-danger"
-                    title="Отклонить профиль?"
+                    :title="__('Отклонить профиль?')"
                     :message="$profile->isApproved()
-                        ? 'Доступ к платформе будет закрыт, участница получит уведомление в боте.'
-                        : 'Участница получит уведомление об отказе в боте.'"
+                        ? __('Доступ к платформе будет закрыт, участница получит уведомление в боте.')
+                        : __('Участница получит уведомление об отказе в боте.')"
                     :danger="true" />
             @endunless
             <x-admin.delete-button
                 :action="route('admin.profiles.destroy', $profile)"
-                :subject="$profile->full_name ?: 'Без имени'"
-                noun="профиль" />
+                :subject="$profile->full_name ?: __('Без имени')"
+                :noun="__('профиль')" />
         </div>
     </div>
 </x-layouts.admin>

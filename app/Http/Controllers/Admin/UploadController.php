@@ -29,7 +29,7 @@ class UploadController extends Controller
             'crop.width' => ['required_with:crop', 'numeric', 'min:1'],
             'crop.height' => ['required_with:crop', 'numeric', 'min:1'],
         ], [], [
-            'image' => 'изображение',
+            'image' => __('изображение'),
         ]);
 
         $path = $action->handle(
@@ -56,12 +56,12 @@ class UploadController extends Controller
         $validated = $request->validate([
             'file' => ['bail', 'required', 'file', 'mimetypes:application/pdf', 'max:'.StoreUploadedFile::MAX_KB],
         ], [
-            'file.required' => 'Выберите PDF-файл.',
-            'file.uploaded' => "Файл не загрузился: он больше, чем разрешено настройками сервера. Допустимо до {$maxMb} МБ.",
-            'file.mimetypes' => 'Нужен файл в формате PDF.',
-            'file.max' => "Файл слишком большой: допустимо до {$maxMb} МБ.",
+            'file.required' => __('Выберите PDF-файл.'),
+            'file.uploaded' => __('Файл не загрузился: он больше, чем разрешено настройками сервера. Допустимо до :size МБ.', ['size' => $maxMb]),
+            'file.mimetypes' => __('Нужен файл в формате PDF.'),
+            'file.max' => __('Файл слишком большой: допустимо до :size МБ.', ['size' => $maxMb]),
         ], [
-            'file' => 'файл',
+            'file' => __('файл'),
         ]);
 
         $stored = $action->handle($validated['file']);

@@ -39,13 +39,13 @@ class SettingController extends Controller
             'image_max_side' => ['required', 'integer', 'between:'.ImageSettings::MAX_SIDE_MIN.','.ImageSettings::MAX_SIDE_MAX],
             'image_quality' => ['required', 'integer', 'between:'.ImageSettings::QUALITY_MIN.','.ImageSettings::QUALITY_MAX],
         ], [], [
-            'image_max_side' => 'максимальная длинная сторона',
-            'image_quality' => 'качество',
+            'image_max_side' => __('максимальная длинная сторона'),
+            'image_quality' => __('качество'),
         ]);
 
         SiteSetting::write('image_max_side', (int) $validated['image_max_side']);
         SiteSetting::write('image_quality', (int) $validated['image_quality']);
 
-        return redirect()->route('admin.settings.edit')->with('success', 'Настройки сохранены.');
+        return redirect()->route('admin.settings.edit')->with('success', __('Настройки сохранены.'));
     }
 }

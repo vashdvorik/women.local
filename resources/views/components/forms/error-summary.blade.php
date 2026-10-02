@@ -1,4 +1,4 @@
-@props(['title' => 'Исправьте ошибки в форме.'])
+@props(['title' => __('Исправьте ошибки в форме.')])
 
 @if($errors->any())
     <div class="error-summary" role="alert">

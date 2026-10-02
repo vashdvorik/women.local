@@ -59,7 +59,7 @@ class AiSettingController extends Controller
         ]);
 
         return redirect()->route('admin.cabinets.settings', ['tab' => 'ai'])
-            ->with('success', 'Настройки ИИ сохранены.');
+            ->with('success', __('Настройки ИИ сохранены.'));
     }
 
     /** Пробный запрос к провайдеру по значениям формы; ничего не сохраняет. */

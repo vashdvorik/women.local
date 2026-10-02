@@ -7,12 +7,14 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Account\ProfileUpdateRequest;
 use App\Jobs\ComputeUserEmbedding;
+use App\Enums\Plan;
 use App\Models\BotUser;
 use App\Models\LoginToken;
 use App\Services\EmbeddingService;
 use App\Services\AiAssistantService;
 use App\Services\MatchingService;
 use App\Support\BotMessages;
+use App\Support\OpenFeed;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -99,6 +101,17 @@ class AccountController extends Controller
 
     public function index(): View
     {
+        /** @var BotUser $user */
+        $user = view()->shared('accountUser');
+
+        // Тариф Open видит на главной только то, что есть на публичном сайте, и предложение подписаться.
+        if (! $user->hasPlan(Plan::Community)) {
+            return view('account.subscription.open-home', [
+                'user' => $user,
+                'feed' => OpenFeed::build(app()->getLocale()),
+            ]);
+        }
+
         return $this->themedView('index');
     }
 
@@ -139,7 +152,7 @@ class AccountController extends Controller
         /** @var BotUser $accountUser */
         $accountUser = view()->shared('accountUser');
 
-        $people = BotUser::approved()
+        $people = BotUser::members()
             ->where('telegram_id', '!=', $accountUser->telegram_id)
             ->orderBy('full_name')
             ->get(['id', 'full_name', 'telegram_username', 'description', 'expectation', 'avatar_path']);
@@ -149,7 +162,8 @@ class AccountController extends Controller
 
     public function showPerson(BotUser $botUser): View
     {
-        abort_if($botUser->status !== BotUser::STATUS_APPROVED, 404);
+        // В каталоге видны только участницы с действующим тарифом Community или Private: остальных открыть нельзя.
+        abort_unless(BotUser::members()->whereKey($botUser->getKey())->exists(), 404);
 
         return $this->themedView('person', ['person' => $botUser]);
     }

@@ -17,8 +17,11 @@ use Illuminate\Validation\ValidationException;
  */
 class BotMessageController extends Controller
 {
-    /** Названия языков для вкладок. */
-    public const LOCALE_LABELS = ['ru' => 'Русский', 'en' => 'English', 'ro' => 'Română'];
+    /** Языки Telegram, на которых бот отвечает участницам (это не язык интерфейса админки). */
+    private function labels(): array
+    {
+        return ['ru' => __('Русский'), 'en' => 'English', 'ro' => __('Română')];
+    }
 
     public function edit(Request $request): View
     {
@@ -43,7 +46,7 @@ class BotMessageController extends Controller
 
         return view('admin.cabinets.bot-messages', [
             'locale' => $locale,
-            'localeLabels' => self::LOCALE_LABELS,
+            'localeLabels' => $this->labels(),
             'groups' => array_filter($groups, fn (array $group): bool => $group['messages'] !== []),
             'total' => count($registry['messages']),
         ]);
@@ -88,7 +91,7 @@ class BotMessageController extends Controller
         }
 
         foreach ($this->triggerConflicts($locale, $texts) as $key => $other) {
-            $errors["messages.{$key}"] ??= '«'.BotMessages::definition($key)['title']."»: такая подпись уже у кнопки «{$other}». Подписи кнопок меню должны различаться: по ним бот узнаёт, какую кнопку нажали.";
+            $errors["messages.{$key}"] ??= __('«:title»: такая подпись уже у кнопки «:other». Подписи кнопок меню должны различаться: по ним бот узнаёт, какую кнопку нажали.', ['title' => __(BotMessages::definition($key)['title']), 'other' => $other]);
         }
 
         if ($errors !== []) {
@@ -108,8 +111,8 @@ class BotMessageController extends Controller
         }
 
         $message = $changed === 0
-            ? 'Изменений нет: тексты остались прежними.'
-            : "Сообщения сохранены ({$this->label($locale)}). Изменено: {$changed}. Бот уже отвечает по-новому.";
+            ? __('Изменений нет: тексты остались прежними.')
+            : __('Сообщения сохранены (:language). Изменено: :count. Бот уже отвечает по-новому.', ['language' => $this->label($locale), 'count' => $changed]);
 
         if ($commandsChanged) {
             $message .= ' '.$this->syncCommands($commands);
@@ -128,7 +131,7 @@ class BotMessageController extends Controller
 
     private function label(string $locale): string
     {
-        return self::LOCALE_LABELS[$locale];
+        return $this->labels()[$locale];
     }
 
     /**
@@ -174,7 +177,7 @@ class BotMessageController extends Controller
     private function syncCommands(BotCommandSync $commands): string
     {
         if (! $commands->isConfigured()) {
-            return 'Меню команд в Telegram не обновлено: не задан TELEGRAM_TOKEN.';
+            return __('Меню команд в Telegram не обновлено: не задан TELEGRAM_TOKEN.');
         }
 
         try {
@@ -182,9 +185,9 @@ class BotMessageController extends Controller
         } catch (\Throwable $e) {
             report($e);
 
-            return 'Тексты сохранены, но обновить меню команд в Telegram не удалось. Повторите: php artisan bot:sync-commands.';
+            return __('Тексты сохранены, но обновить меню команд в Telegram не удалось. Повторите: php artisan bot:sync-commands.');
         }
 
-        return 'Меню команд в Telegram обновлено.';
+        return __('Меню команд в Telegram обновлено.');
     }
 }

@@ -16,6 +16,14 @@ class AdminCampTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Эти проверки смотрят на тексты админки, а она по умолчанию русская (язык по cookie админки — AdminLanguageTest).
+        app()->setLocale('ru');
+    }
+
     /** Пункты меню, которые есть только у лагеря «Внешний сайт». */
     private const SITE_ONLY = ['Все публикации', 'Все новости', 'Все эксперты', 'Все проекты', 'Все фотоальбомы', 'Подписчики', 'Теги', 'Настройки сайта'];
 

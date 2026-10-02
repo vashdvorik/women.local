@@ -34,7 +34,7 @@ class ResolveSlug
 
             if ($normalized === '') {
                 throw ValidationException::withMessages([
-                    'slug' => 'Адрес страницы не может состоять из одних недопустимых символов.',
+                    'slug' => __('Адрес страницы не может состоять из одних недопустимых символов.'),
                 ]);
             }
 
@@ -80,7 +80,7 @@ class ResolveSlug
 
         if (! $allowSuffix) {
             throw ValidationException::withMessages([
-                'slug' => 'Этот адрес уже занят другим материалом.',
+                'slug' => __('Этот адрес уже занят другим материалом.'),
             ]);
         }
 

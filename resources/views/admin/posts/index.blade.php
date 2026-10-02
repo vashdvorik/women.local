@@ -1,19 +1,19 @@
-<x-layouts.admin title="Публикации">
+<x-layouts.admin :title="__('Публикации')">
     <x-slot:actions>
-        <a href="{{ route('admin.posts.create') }}" class="btn-primary">Добавить публикацию</a>
+        <a href="{{ route('admin.posts.create') }}" class="btn-primary">{{ __('Добавить публикацию') }}</a>
     </x-slot:actions>
 
     <div class="space-y-4">
         <form method="GET" class="flex gap-2 max-w-sm">
-            <input type="search" name="q" value="{{ $search }}" placeholder="Поиск по заголовку"
+            <input type="search" name="q" value="{{ $search }}" placeholder="{{ __('Поиск по заголовку') }}"
                    class="field-input">
-            <button type="submit" class="btn-secondary">Найти</button>
+            <button type="submit" class="btn-secondary">{{ __('Найти') }}</button>
         </form>
 
         @if($posts->isEmpty())
             <div class="card text-center">
-                <p class="text-reading text-ink-muted">Публикаций пока нет.</p>
-                <a href="{{ route('admin.posts.create') }}" class="btn-primary mt-4">Добавить публикацию</a>
+                <p class="text-reading text-ink-muted">{{ __('Публикаций пока нет.') }}</p>
+                <a href="{{ route('admin.posts.create') }}" class="btn-primary mt-4">{{ __('Добавить публикацию') }}</a>
             </div>
         @else
             <div class="overflow-x-auto">
@@ -21,10 +21,10 @@
                     <thead>
                         <tr>
                             <th class="w-24"></th>
-                            <th><x-admin.sort-link column="title" :label="'Заголовок'" /></th>
-                            <th class="w-36">Тег</th>
-                            <th class="w-36"><x-admin.sort-link column="status" :label="'Статус'" /></th>
-                            <th class="w-44"><x-admin.sort-link column="published_at" :label="'Опубликовано'" /></th>
+                            <th><x-admin.sort-link column="title" :label="__('Заголовок')" /></th>
+                            <th class="w-36">{{ __('Тег') }}</th>
+                            <th class="w-36"><x-admin.sort-link column="status" :label="__('Статус')" /></th>
+                            <th class="w-44"><x-admin.sort-link column="published_at" :label="__('Опубликовано')" /></th>
                             <th class="w-40"></th>
                         </tr>
                     </thead>
@@ -43,7 +43,7 @@
                                 </td>
                                 <td>
                                     <a href="{{ route('admin.posts.edit', $post) }}" class="table-link">
-                                        {{ $t?->title ?: 'Без заголовка' }}
+                                        {{ $t?->title ?: __('Без заголовка') }}
                                     </a>
                                 </td>
                                 <td>
@@ -59,11 +59,11 @@
                                 </td>
                                 <td>
                                     <div class="flex items-center justify-end gap-2">
-                                        <a href="{{ route('admin.posts.edit', $post) }}" class="btn-quiet">Изменить</a>
+                                        <a href="{{ route('admin.posts.edit', $post) }}" class="btn-quiet">{{ __('Изменить') }}</a>
                                         <x-admin.delete-button
                                             :action="route('admin.posts.destroy', $post)"
-                                            :subject="$t?->title ?: 'Без заголовка'"
-                                            noun="публикацию" />
+                                            :subject="$t?->title ?: __('Без заголовка')"
+                                            :noun="__('публикацию')" />
                                     </div>
                                 </td>
                             </tr>

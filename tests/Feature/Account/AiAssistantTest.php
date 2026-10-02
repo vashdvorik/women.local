@@ -16,8 +16,8 @@ class AiAssistantTest extends TestCase
 
     public function test_assistant_uses_safe_catalog_data_and_returns_a_valid_member_link(): void
     {
-        $user = BotUser::factory()->approved()->create(['description' => 'I need marketing support.']);
-        $member = BotUser::factory()->approved()->create([
+        $user = BotUser::factory()->community()->create(['description' => 'I need marketing support.']);
+        $member = BotUser::factory()->community()->create([
             'full_name' => 'Anna Expert',
             'description' => 'Marketing strategy',
             'expectation' => 'I can offer a consultation. Contact @private_name or +373 60000000.',

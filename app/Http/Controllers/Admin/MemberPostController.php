@@ -60,20 +60,20 @@ class MemberPostController extends Controller
             NotifyOpportunity::dispatch($post);
         }
 
-        return back()->with('success', 'Публикация одобрена. Участницы получат уведомление в Telegram.');
+        return back()->with('success', __('Публикация одобрена. Участницы получат уведомление в Telegram.'));
     }
 
     public function reject(Opportunity $post): RedirectResponse
     {
         $post->update(['status' => Opportunity::STATUS_REJECTED, 'moderated_at' => now()]);
 
-        return back()->with('success', 'Публикация отклонена и скрыта от других участниц.');
+        return back()->with('success', __('Публикация отклонена и скрыта от других участниц.'));
     }
 
     public function destroy(Opportunity $post): RedirectResponse
     {
         $post->delete();
 
-        return redirect()->route('admin.member-posts.index')->with('success', 'Публикация удалена.');
+        return redirect()->route('admin.member-posts.index')->with('success', __('Публикация удалена.'));
     }
 }

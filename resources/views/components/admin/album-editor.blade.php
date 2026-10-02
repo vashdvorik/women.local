@@ -22,40 +22,40 @@
     @endforeach
 
     <header class="admin-header">
-        <button type="button" @click="menu = !menu" class="btn-icon lg:hidden shrink-0" aria-label="Меню">
+        <button type="button" @click="menu = !menu" class="btn-icon lg:hidden shrink-0" aria-label="{{ __('Меню') }}">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5h14M3 10h14M3 15h14" stroke-linecap="round"/></svg>
         </button>
         <h1 class="text-page font-semibold truncate min-w-0 hidden sm:block"
-            x-text="fields.ru.title || @js($saved ? 'Фотоальбом' : 'Новый фотоальбом')"></h1>
+            x-text="fields.ru.title || @js($saved ? __('Фотоальбом') : __('Новый фотоальбом'))"></h1>
         <div class="ml-auto flex items-center gap-2 overflow-x-auto no-scrollbar">
-            <button type="button" class="btn-quiet shrink-0" @click="cancel()">Отмена</button>
+            <button type="button" class="btn-quiet shrink-0" @click="cancel()">{{ __('Отмена') }}</button>
 
             @if($previewUrl)
-                <a href="{{ $previewUrl }}" target="_blank" rel="noopener" class="btn-secondary shrink-0 hidden md:inline-flex">Предпросмотр</a>
+                <a href="{{ $previewUrl }}" target="_blank" rel="noopener" class="btn-secondary shrink-0 hidden md:inline-flex">{{ __('Предпросмотр') }}</a>
             @else
-                <span class="btn-secondary shrink-0 hidden md:inline-flex opacity-50 cursor-default">Предпросмотр</span>
+                <span class="btn-secondary shrink-0 hidden md:inline-flex opacity-50 cursor-default">{{ __('Предпросмотр') }}</span>
             @endif
 
             @if($isPublished)
-                <button type="submit" class="btn-secondary shrink-0" @click="submit('unpublish')">Снять с публикации</button>
-                <button type="submit" class="btn-primary shrink-0" @click="submit('save')">Сохранить изменения</button>
+                <button type="submit" class="btn-secondary shrink-0" @click="submit('unpublish')">{{ __('Снять с публикации') }}</button>
+                <button type="submit" class="btn-primary shrink-0" @click="submit('save')">{{ __('Сохранить изменения') }}</button>
             @elseif($saved)
-                <button type="submit" class="btn-secondary shrink-0" @click="submit('save')">Сохранить</button>
-                <button type="submit" class="btn-primary shrink-0" @click="submit('publish')">Опубликовать</button>
+                <button type="submit" class="btn-secondary shrink-0" @click="submit('save')">{{ __('Сохранить') }}</button>
+                <button type="submit" class="btn-primary shrink-0" @click="submit('publish')">{{ __('Опубликовать') }}</button>
             @else
                 {{-- Новый альбом публикуется по умолчанию; «черновик» — явный выбор. --}}
-                <button type="submit" class="btn-secondary shrink-0" @click="submit('unpublish')">Сохранить черновик</button>
-                <button type="submit" class="btn-primary shrink-0" @click="submit('publish')">Опубликовать</button>
+                <button type="submit" class="btn-secondary shrink-0" @click="submit('unpublish')">{{ __('Сохранить черновик') }}</button>
+                <button type="submit" class="btn-primary shrink-0" @click="submit('publish')">{{ __('Опубликовать') }}</button>
             @endif
         </div>
     </header>
 
     <div class="tabs px-8 sticky top-header z-20">
-        <button type="button" class="tab" :class="{ 'tab--active': activeTab === 'photos' }" @click="activeTab = 'photos'">Фото</button>
-        @foreach(['ru' => 'Русский', 'ro' => 'Română', 'en' => 'English'] as $code => $name)
+        <button type="button" class="tab" :class="{ 'tab--active': activeTab === 'photos' }" @click="activeTab = 'photos'">{{ __('Фото') }}</button>
+        @foreach(['ru' => __('Русский'), 'ro' => __('Română'), 'en' => 'English'] as $code => $name)
             <button type="button" class="tab" :class="{ 'tab--active': activeTab === '{{ $code }}' }" @click="activeTab = '{{ $code }}'">{{ $name }}</button>
         @endforeach
-        <button type="button" class="tab" :class="{ 'tab--active': activeTab === 'settings' }" @click="activeTab = 'settings'">Настройки</button>
+        <button type="button" class="tab" :class="{ 'tab--active': activeTab === 'settings' }" @click="activeTab = 'settings'">{{ __('Настройки') }}</button>
     </div>
 
     <div class="px-8 py-8">
@@ -64,17 +64,17 @@
 
             <div x-show="activeTab === 'photos'" class="space-y-6">
                 <div class="space-y-1">
-                    <span class="field-label">Обложка</span>
-                    <p class="field-hint">Если не загрузить обложку, на сайте будет использована первая фотография.</p>
+                    <span class="field-label">{{ __('Обложка') }}</span>
+                    <p class="field-hint">{{ __('Если не загрузить обложку, на сайте будет использована первая фотография.') }}</p>
                     <div class="image-cell max-w-md" :class="{ 'image-cell--filled': cover }" style="aspect-ratio: {{ \App\Support\AspectRatio::css('album') }}">
                         <template x-if="cover"><img :src="'/uploads/' + cover" alt="" class="w-full h-full object-cover"></template>
                         <label x-show="!cover && !coverUploading" class="absolute inset-0 flex items-center justify-center cursor-pointer text-caption text-ink-muted">
-                            Загрузить обложку
+                            {{ __('Загрузить обложку') }}
                             <input type="file" accept="image/jpeg,image/png,image/webp" class="sr-only" @change="uploadCover($event)">
                         </label>
-                        <div x-show="coverUploading" class="absolute inset-0 flex items-center justify-center bg-surface/70 text-caption text-ink-muted">Обработка…</div>
+                        <div x-show="coverUploading" class="absolute inset-0 flex items-center justify-center bg-surface/70 text-caption text-ink-muted">{{ __('Обработка…') }}</div>
                         <div class="image-cell__actions" x-show="cover">
-                            <button type="button" class="image-cell__action" @click="cover = ''" title="Удалить">
+                            <button type="button" class="image-cell__action" @click="cover = ''" title="{{ __('Удалить') }}">
                                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l8 8M12 4l-8 8" stroke-linecap="round"/></svg>
                             </button>
                         </div>
@@ -84,18 +84,18 @@
                 <div class="space-y-4">
                     <template x-for="(block, i) in blocks" :key="block.uid">
                         <div class="block-card" :id="'ablock-' + block.uid">
-                            <p class="block-card__type" x-text="{ image: 'Изображение', gallery_2: 'Галерея из 2', gallery_3: 'Галерея из 3', gallery_4: 'Галерея из 4' }[block.type]"></p>
+                            <p class="block-card__type" x-text="@js(['image' => __('Изображение'), 'gallery_2' => __('Галерея из 2'), 'gallery_3' => __('Галерея из 3'), 'gallery_4' => __('Галерея из 4')])[block.type]"></p>
                             <div class="block-card__tools">
-                                <button type="button" class="btn-icon" :disabled="i === 0" @click="move(i, -1)" title="Вверх">
+                                <button type="button" class="btn-icon" :disabled="i === 0" @click="move(i, -1)" title="{{ __('Вверх') }}">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 12V4M4 8l4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 </button>
-                                <button type="button" class="btn-icon" :disabled="i === blocks.length - 1" @click="move(i, 1)" title="Вниз">
+                                <button type="button" class="btn-icon" :disabled="i === blocks.length - 1" @click="move(i, 1)" title="{{ __('Вниз') }}">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 4v8M4 8l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 </button>
-                                <button type="button" class="btn-icon" @click="duplicate(i)" title="Дублировать">
+                                <button type="button" class="btn-icon" @click="duplicate(i)" title="{{ __('Дублировать') }}">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="8" height="8" rx="1"/><path d="M3 11V3h8" stroke-linecap="round"/></svg>
                                 </button>
-                                <button type="button" class="btn-icon" @click="remove(i)" title="Удалить">
+                                <button type="button" class="btn-icon" @click="remove(i)" title="{{ __('Удалить') }}">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4h10M6 4V3h4v1M5 4l1 9h4l1-9" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 </button>
                             </div>
@@ -105,12 +105,12 @@
                                         <div class="image-cell" :class="{ 'image-cell--filled': block.data.path }" style="aspect-ratio: {{ \App\Support\AspectRatio::css('album') }}">
                                             <template x-if="block.data.path"><img :src="'/uploads/' + block.data.path" alt="" class="w-full h-full object-cover"></template>
                                             <label x-show="!block.data.path && !block._busy" class="absolute inset-0 flex items-center justify-center cursor-pointer text-caption text-ink-muted">
-                                                Загрузить
+                                                {{ __('Загрузить') }}
                                                 <input type="file" accept="image/jpeg,image/png,image/webp" class="sr-only" @change="uploadBlock($event, i, null)">
                                             </label>
-                                            <div x-show="block._busy" class="absolute inset-0 flex items-center justify-center bg-surface/70 text-caption text-ink-muted">Обработка…</div>
+                                            <div x-show="block._busy" class="absolute inset-0 flex items-center justify-center bg-surface/70 text-caption text-ink-muted">{{ __('Обработка…') }}</div>
                                             <div class="image-cell__actions" x-show="block.data.path">
-                                                <button type="button" class="image-cell__action" @click="block.data.path = null" title="Удалить">
+                                                <button type="button" class="image-cell__action" @click="block.data.path = null" title="{{ __('Удалить') }}">
                                                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l8 8M12 4l-8 8" stroke-linecap="round"/></svg>
                                                 </button>
                                             </div>
@@ -127,11 +127,11 @@
                                             <div class="image-cell" :class="{ 'image-cell--filled': img }" :style="`aspect-ratio: ${block.type === 'gallery_4' ? '3 / 4' : '4 / 3'}`">
                                                 <template x-if="img"><img :src="'/uploads/' + img" alt="" class="w-full h-full object-cover"></template>
                                                 <label x-show="!img && !block._busy" class="absolute inset-0 flex items-center justify-center cursor-pointer text-caption text-ink-muted">
-                                                    Загрузить
+                                                    {{ __('Загрузить') }}
                                                     <input type="file" accept="image/jpeg,image/png,image/webp" class="sr-only" @change="uploadBlock($event, i, cell)">
                                                 </label>
                                                 <div class="image-cell__actions" x-show="img">
-                                                    <button type="button" class="image-cell__action" @click="block.data.images[cell] = null" title="Удалить">
+                                                    <button type="button" class="image-cell__action" @click="block.data.images[cell] = null" title="{{ __('Удалить') }}">
                                                         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l8 8M12 4l-8 8" stroke-linecap="round"/></svg>
                                                     </button>
                                                 </div>
@@ -144,11 +144,11 @@
                     </template>
 
                     <div class="flex flex-wrap gap-2 pt-2">
-                        <span class="text-caption text-ink-muted self-center mr-1">Добавить блок:</span>
-                        <button type="button" class="btn-secondary" @click="addBlock('image')">Изображение</button>
-                        <button type="button" class="btn-secondary" @click="addBlock('gallery_2')">Галерея 2</button>
-                        <button type="button" class="btn-secondary" @click="addBlock('gallery_3')">Галерея 3</button>
-                        <button type="button" class="btn-secondary" @click="addBlock('gallery_4')">Галерея 4</button>
+                        <span class="text-caption text-ink-muted self-center mr-1">{{ __('Добавить блок:') }}</span>
+                        <button type="button" class="btn-secondary" @click="addBlock('image')">{{ __('Изображение') }}</button>
+                        <button type="button" class="btn-secondary" @click="addBlock('gallery_2')">{{ __('Галерея 2') }}</button>
+                        <button type="button" class="btn-secondary" @click="addBlock('gallery_3')">{{ __('Галерея 3') }}</button>
+                        <button type="button" class="btn-secondary" @click="addBlock('gallery_4')">{{ __('Галерея 4') }}</button>
                     </div>
                 </div>
             </div>
@@ -156,14 +156,14 @@
             @foreach(['ru', 'ro', 'en'] as $l)
                 <div x-show="activeTab === '{{ $l }}'" class="space-y-4">
                     <div class="space-y-1">
-                        <label class="field-label">Заголовок</label>
+                        <label class="field-label">{{ __('Заголовок') }}</label>
                         <input type="text" x-model="fields.{{ $l }}.title" class="field-input">
                     </div>
                     <div class="space-y-1">
-                        <label class="field-label">Описание</label>
+                        <label class="field-label">{{ __('Описание') }}</label>
                         <textarea rows="3" x-model="fields.{{ $l }}.excerpt" class="field-input"></textarea>
                         @if($l !== 'ru')
-                            <p class="field-hint">Русский текст: <span x-text="fields.ru.excerpt || '—'"></span></p>
+                            <p class="field-hint">{{ __('Русский текст:') }} <span x-text="fields.ru.excerpt || '—'"></span></p>
                         @endif
                     </div>
                 </div>
@@ -171,12 +171,12 @@
 
             <div x-show="activeTab === 'settings'" class="space-y-4">
                 <div class="space-y-1">
-                    <label class="field-label">Адрес страницы</label>
+                    <label class="field-label">{{ __('Адрес страницы') }}</label>
                     <input type="text" x-model="slug" class="field-input">
-                    <p class="field-hint">Формируется из русского заголовка, если не заполнить.</p>
+                    <p class="field-hint">{{ __('Формируется из русского заголовка, если не заполнить.') }}</p>
                 </div>
                 <div class="space-y-1">
-                    <label class="field-label">Дата публикации</label>
+                    <label class="field-label">{{ __('Дата публикации') }}</label>
                     <input type="datetime-local" x-model="publishedAt" :max="new Date().toISOString().slice(0,16)" class="field-input">
                 </div>
             </div>

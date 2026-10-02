@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AdminLocale;
 use App\Http\Middleware\EnsureAdminEmail;
+use App\Http\Middleware\RequirePlan;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -22,10 +23,18 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin.email'  => EnsureAdminEmail::class,
             'admin.locale' => AdminLocale::class,
+            'plan'         => RequirePlan::class,
         ]);
 
+        // Вебхук Telegram, оповещение банка (ResultURL) и возврат участницы из банка (SuccessURL / FailURL) приходят
+        // с чужого сайта и без нашего CSRF-токена. Подлинность оповещения проверяет ResultHandler по подписи банка,
+        // а страницы возврата ничего не меняют: статус берётся из базы и проверяется запросом GetState.
         $middleware->validateCsrfTokens(except: [
             'telegram/webhook',
+            'payment/result',
+            'app/account/subscription/success',
+            'app/account/subscription/fail',
+            'dev/fake-bank',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
@@ -37,6 +46,9 @@ return Application::configure(basePath: dirname(__DIR__))
             $isAdmin = $request->user()?->email === config('admin.email');
 
             if ($e->getStatusCode() === 404 && $isAdmin && $request->is('admin', 'admin/*')) {
+                // Ошибка случилась до middleware маршрута (маршрут не найден), поэтому язык админки выставляем здесь.
+                app()->setLocale(AdminLocale::resolve($request));
+
                 return response()->view('admin.errors.404', [], 404);
             }
         });

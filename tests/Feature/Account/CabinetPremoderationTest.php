@@ -30,7 +30,7 @@ class CabinetPremoderationTest extends TestCase
     public function test_new_post_is_created_pending_and_does_not_notify_anyone(): void
     {
         Queue::fake();
-        $author = BotUser::factory()->approved()->create();
+        $author = BotUser::factory()->community()->create();
 
         $this->actingAsParticipant($author)
             ->post(route('account.opportunities.store'), [
@@ -48,8 +48,8 @@ class CabinetPremoderationTest extends TestCase
 
     public function test_pending_post_is_visible_to_its_author_with_a_moderation_note_only(): void
     {
-        $author = BotUser::factory()->approved()->create();
-        $other = BotUser::factory()->approved()->create();
+        $author = BotUser::factory()->community()->create();
+        $other = BotUser::factory()->community()->create();
 
         Opportunity::create([
             'bot_user_id' => $author->id, 'type' => 'project', 'status' => 'pending',
@@ -76,8 +76,8 @@ class CabinetPremoderationTest extends TestCase
 
     public function test_rejected_post_is_marked_for_the_author_and_hidden_from_others(): void
     {
-        $author = BotUser::factory()->approved()->create();
-        $other = BotUser::factory()->approved()->create();
+        $author = BotUser::factory()->community()->create();
+        $other = BotUser::factory()->community()->create();
 
         Opportunity::create([
             'bot_user_id' => $author->id, 'type' => 'meeting', 'status' => 'rejected',

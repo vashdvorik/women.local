@@ -36,8 +36,8 @@ class ProjectRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'translations.ru.title' => 'название по-русски',
-            'url' => 'ссылка на сайт проекта',
+            'translations.ru.title' => __('название по-русски'),
+            'url' => __('ссылка на сайт проекта'),
         ];
     }
 

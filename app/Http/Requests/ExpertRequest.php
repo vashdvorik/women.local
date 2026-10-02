@@ -42,8 +42,8 @@ class ExpertRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'translations.ru.name' => 'имя по-русски',
-            'tone' => 'цвет карточки',
+            'translations.ru.name' => __('имя по-русски'),
+            'tone' => __('цвет карточки'),
         ];
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 /** @var SergiX44\Nutgram\Nutgram $bot */
 
+use App\Enums\Plan;
 use App\Models\BotUser;
 use App\Support\BotMessages;
 use App\Telegram\BotReplies;
@@ -74,7 +75,10 @@ $bot->fallback(function (Nutgram $bot) {
 
         // Кнопки меню узнаются по подписи на любом языке, в том числе прежней: клавиатура на телефоне обновляется не сразу.
         match (true) {
-            BotMessages::matches('menu_matches_button', $text) => SearchConversation::begin($bot),
+            // Поиск контактов — только по подписке Community и выше; Open получает ссылку на оплату.
+            BotMessages::matches('menu_matches_button', $text) => $user->hasPlan(Plan::Community)
+                ? SearchConversation::begin($bot)
+                : $bot->sendMessage(BotMessages::text('plan_required', $locale, ['url' => route('account.subscription')]), parse_mode: 'HTML'),
             BotMessages::matches('menu_chat_button', $text)    => $bot->sendMessage(BotMessages::text('menu_chat_stub', $locale), parse_mode: 'HTML'),
             default                                            => null,
         };

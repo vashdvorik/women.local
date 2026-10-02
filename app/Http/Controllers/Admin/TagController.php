@@ -35,7 +35,7 @@ class TagController extends Controller
             $this->syncNames($tag, $request->validated('names'));
         });
 
-        return redirect()->route('admin.tags.index')->with('success', 'Тег создан.');
+        return redirect()->route('admin.tags.index')->with('success', __('Тег создан.'));
     }
 
     public function edit(Tag $tag): View
@@ -52,7 +52,7 @@ class TagController extends Controller
             $this->syncNames($tag, $request->validated('names'));
         });
 
-        return redirect()->route('admin.tags.index')->with('success', 'Тег сохранён.');
+        return redirect()->route('admin.tags.index')->with('success', __('Тег сохранён.'));
     }
 
     public function destroy(Tag $tag): RedirectResponse
@@ -60,7 +60,7 @@ class TagController extends Controller
         // Удаление тега не удаляет публикации и возможности — tag_id обнуляется через nullOnDelete.
         $tag->delete();
 
-        return redirect()->route('admin.tags.index')->with('success', 'Тег удалён.');
+        return redirect()->route('admin.tags.index')->with('success', __('Тег удалён.'));
     }
 
     private function syncNames(Tag $tag, array $names): void

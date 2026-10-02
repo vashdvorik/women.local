@@ -1,18 +1,18 @@
-<x-layouts.admin title="Возможности">
+<x-layouts.admin :title="__('Возможности')">
     <x-slot:actions>
-        <a href="{{ route('admin.opportunities.create') }}" class="btn-primary">Добавить возможность</a>
+        <a href="{{ route('admin.opportunities.create') }}" class="btn-primary">{{ __('Добавить возможность') }}</a>
     </x-slot:actions>
 
     <div class="space-y-4">
         <form method="GET" class="flex gap-2 max-w-sm">
-            <input type="search" name="q" value="{{ $search }}" placeholder="Поиск по заголовку" class="field-input">
-            <button type="submit" class="btn-secondary">Найти</button>
+            <input type="search" name="q" value="{{ $search }}" placeholder="{{ __('Поиск по заголовку') }}" class="field-input">
+            <button type="submit" class="btn-secondary">{{ __('Найти') }}</button>
         </form>
 
         @if($opportunities->isEmpty())
             <div class="card text-center">
-                <p class="text-reading text-ink-muted">Возможностей пока нет.</p>
-                <a href="{{ route('admin.opportunities.create') }}" class="btn-primary mt-4">Добавить возможность</a>
+                <p class="text-reading text-ink-muted">{{ __('Возможностей пока нет.') }}</p>
+                <a href="{{ route('admin.opportunities.create') }}" class="btn-primary mt-4">{{ __('Добавить возможность') }}</a>
             </div>
         @else
             <div class="overflow-x-auto">
@@ -20,10 +20,10 @@
                     <thead>
                         <tr>
                             <th class="w-24"></th>
-                            <th><x-admin.sort-link column="title" label="Заголовок" /></th>
-                            <th class="w-36">Тег</th>
-                            <th class="w-32"><x-admin.sort-link column="deadline_at" label="Подать до" /></th>
-                            <th class="w-36"><x-admin.sort-link column="status" label="Статус" /></th>
+                            <th><x-admin.sort-link column="title" :label="__('Заголовок')" /></th>
+                            <th class="w-36">{{ __('Тег') }}</th>
+                            <th class="w-32"><x-admin.sort-link column="deadline_at" :label="__('Подать до')" /></th>
+                            <th class="w-36"><x-admin.sort-link column="status" :label="__('Статус')" /></th>
                             <th class="w-40"></th>
                         </tr>
                     </thead>
@@ -42,7 +42,7 @@
                                 </td>
                                 <td>
                                     <a href="{{ route('admin.opportunities.edit', $opportunity) }}" class="table-link">
-                                        {{ $t?->title ?: 'Без заголовка' }}
+                                        {{ $t?->title ?: __('Без заголовка') }}
                                     </a>
                                 </td>
                                 <td>
@@ -56,11 +56,11 @@
                                 <td><x-admin.status-badge :status="$opportunity->status" /></td>
                                 <td>
                                     <div class="flex items-center justify-end gap-2">
-                                        <a href="{{ route('admin.opportunities.edit', $opportunity) }}" class="btn-quiet">Изменить</a>
+                                        <a href="{{ route('admin.opportunities.edit', $opportunity) }}" class="btn-quiet">{{ __('Изменить') }}</a>
                                         <x-admin.delete-button
                                             :action="route('admin.opportunities.destroy', $opportunity)"
-                                            :subject="$t?->title ?: 'Без заголовка'"
-                                            noun="возможность" />
+                                            :subject="$t?->title ?: __('Без заголовка')"
+                                            :noun="__('возможность')" />
                                     </div>
                                 </td>
                             </tr>

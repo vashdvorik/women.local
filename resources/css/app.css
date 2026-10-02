@@ -156,6 +156,17 @@
     .camp-switch__tab:hover { @apply text-ink; }
     .camp-switch__tab--active { @apply bg-surface text-ink font-semibold border-hairline; }
 
+    /* Переключатель языка интерфейса: RU | EN */
+    .lang-switch {
+        @apply inline-flex items-center gap-0.5 p-0.5 rounded-sm bg-surface-sunken border border-hairline;
+    }
+    .lang-switch__item {
+        @apply inline-flex items-center justify-center h-7 min-w-9 px-2 rounded-sm border border-transparent
+               text-micro font-semibold text-ink-muted transition-colors;
+    }
+    .lang-switch__item:hover { @apply text-ink; }
+    .lang-switch__item--active { @apply bg-surface text-ink border-hairline; }
+
     /* ---------- Карточки и таблицы ---------- */
 
     .card       { @apply bg-surface border border-hairline rounded-md p-6; }

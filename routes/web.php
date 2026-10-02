@@ -3,8 +3,11 @@
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\DevAccountLoginController;
 use App\Http\Controllers\Account\OpportunityController;
+use App\Http\Controllers\Account\SubscriptionController;
 use App\Http\Controllers\Account\TmaAuthController;
 use App\Http\Controllers\Admin;
+use App\Http\Controllers\Dev\FakeBankController;
+use App\Http\Controllers\Payments\WebPaymentController;
 use App\Http\Controllers\PublicSite;
 use App\Http\Middleware\RequireAccountAuth;
 use App\Models\LoginToken;
@@ -143,6 +146,18 @@ Route::get('/go/{code}', function (string $code) {
     return redirect()->route('account.auth', ['token' => $token->token]);
 })->middleware('throttle:20,1')->where('code', '[0-9a-f]{8}')->name('account.go');
 
+// Web-платёж Агропромбанка: ResultURL, который банк вызывает сам (GET или POST), без сессии и CSRF-токена.
+// Этот адрес и страницы возврата /app/account/subscription/success|fail регистрируются в банке (docs/SUBSCRIPTIONS.md).
+Route::match(['GET', 'POST'], '/payment/result', [WebPaymentController::class, 'result'])
+    ->middleware('throttle:120,1')
+    ->name('payment.result');
+
+// «Банк» для разработки: страница оплаты вместо epay.apb.online. Только при APP_ENV=local (и driver=fake); тесты подключают эти маршруты сами.
+if (app()->environment('local')) {
+    Route::match(['GET', 'POST'], '/dev/fake-bank', [FakeBankController::class, 'start'])->name('dev.fakebank.start');
+    Route::post('/dev/fake-bank/complete', [FakeBankController::class, 'complete'])->name('dev.fakebank.complete');
+}
+
 // Account: protected cabinet
 Route::middleware(RequireAccountAuth::class)
     ->prefix('app/account')
@@ -153,14 +168,28 @@ Route::middleware(RequireAccountAuth::class)
         Route::get('/profile/edit', [AccountController::class, 'profileEdit'])->name('profile.edit');
         Route::post('/profile', [AccountController::class, 'updateProfile'])->name('profile.update');
         Route::delete('/profile', [AccountController::class, 'deleteProfile'])->name('profile.delete');
-        Route::get('/matches', [AccountController::class, 'matches'])->name('matches');
-        Route::get('/people', [AccountController::class, 'people'])->name('people');
-        Route::get('/people/{botUser}', [AccountController::class, 'showPerson'])->name('people.show');
-        Route::get('/search', [AccountController::class, 'search'])->name('search');
         Route::get('/knowledge', [AccountController::class, 'knowledge'])->name('knowledge');
-        Route::post('/assistant/messages', [AccountController::class, 'assistantMessage'])->middleware('throttle:20,1')->name('assistant.message');
-        Route::post('/assistant/profile-update', [AccountController::class, 'assistantProfileUpdate'])->middleware('throttle:10,1')->name('assistant.profile-update');
-        Route::resource('opportunities', OpportunityController::class)->only(['index', 'create', 'store', 'destroy']);
+
+        // Подписка: тарифы, вкладка Private, оплата. Доступно на любом тарифе, в том числе на Open.
+        Route::get('/subscription', [SubscriptionController::class, 'show'])->name('subscription');
+        Route::get('/private', [SubscriptionController::class, 'private'])->name('private');
+        Route::post('/subscription/checkout', [SubscriptionController::class, 'checkout'])->middleware('throttle:8,1')->name('subscription.checkout');
+        // SuccessURL и FailURL банка: он возвращает участницу сюда запросом GET или POST (CSRF-исключение — в bootstrap/app.php).
+        Route::match(['GET', 'POST'], '/subscription/success', [SubscriptionController::class, 'result'])->name('subscription.success');
+        Route::match(['GET', 'POST'], '/subscription/fail', [SubscriptionController::class, 'result'])->name('subscription.fail');
+
+        // Закрыто для тарифа Open: видимость других участниц, подбор и поиск контактов, ИИ-помощник и публикации
+        // возможностей входят в Community и Private. Остальным RequirePlan отвечает переходом на «Подписку».
+        Route::middleware('plan:community')->group(function (): void {
+            Route::get('/matches', [AccountController::class, 'matches'])->name('matches');
+            Route::get('/people', [AccountController::class, 'people'])->name('people');
+            Route::get('/people/{botUser}', [AccountController::class, 'showPerson'])->name('people.show');
+            Route::get('/search', [AccountController::class, 'search'])->name('search');
+            Route::post('/assistant/messages', [AccountController::class, 'assistantMessage'])->middleware('throttle:20,1')->name('assistant.message');
+            Route::post('/assistant/profile-update', [AccountController::class, 'assistantProfileUpdate'])->middleware('throttle:10,1')->name('assistant.profile-update');
+            Route::resource('opportunities', OpportunityController::class)->only(['index', 'create', 'store', 'destroy']);
+        });
+
         Route::post('/logout', [AccountController::class, 'logout'])->name('logout');
     });
 
@@ -273,6 +302,18 @@ Route::middleware(['admin.locale', 'auth', 'admin.email'])
         Route::put('cabinets/settings/ai', [Admin\AiSettingController::class, 'update'])->name('cabinets.settings.ai.update');
         Route::post('cabinets/settings/ai/test/{provider}', [Admin\AiSettingController::class, 'test'])->name('cabinets.settings.ai.test');
 
+        // Кабинеты участниц: «Подписки» (кто на каком тарифе, ручная выдача) и «Платежи» (счета Web-платежа банка).
+        Route::get('subscriptions', [Admin\SubscriptionController::class, 'index'])->name('subscriptions.index');
+        Route::get('subscriptions/{profile}', [Admin\SubscriptionController::class, 'edit'])->name('subscriptions.edit');
+        Route::put('subscriptions/prices', [Admin\SubscriptionController::class, 'updatePrices'])->name('subscriptions.prices');
+        Route::post('subscriptions/{profile}/gift', [Admin\SubscriptionController::class, 'gift'])->name('subscriptions.gift');
+        Route::post('subscriptions/{profile}/grant', [Admin\SubscriptionController::class, 'grant'])->name('subscriptions.grant');
+        Route::post('subscriptions/{profile}/revoke', [Admin\SubscriptionController::class, 'revoke'])->name('subscriptions.revoke');
+        Route::get('payments', [Admin\PaymentController::class, 'index'])->name('payments.index');
+        Route::get('payments/{payment}', [Admin\PaymentController::class, 'show'])->name('payments.show');
+        Route::post('payments/{payment}/recheck', [Admin\PaymentController::class, 'recheck'])->name('payments.recheck');
+        Route::post('payments/{payment}/confirm', [Admin\PaymentController::class, 'confirm'])->name('payments.confirm');
+
         // Кабинеты участниц: «Сообщения бота» — все тексты, которые бот и сайт отправляют участницам в Telegram.
         Route::get('cabinets/bot-messages', [Admin\BotMessageController::class, 'edit'])->name('cabinets.bot-messages');
         Route::put('cabinets/bot-messages', [Admin\BotMessageController::class, 'update'])->name('cabinets.bot-messages.update');
@@ -282,5 +323,10 @@ Route::middleware(['admin.locale', 'auth', 'admin.email'])
     });
 
 Route::middleware('admin.locale')->group(function () {
+    // Переключатель RU | EN: работает и на странице входа, поэтому вне группы с проверкой почты.
+    Route::get('admin/language/{locale}', [Admin\LanguageController::class, 'update'])
+        ->middleware('throttle:60,1')
+        ->name('admin.language');
+
     require __DIR__.'/auth.php';
 });

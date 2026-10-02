@@ -5,7 +5,7 @@
 @endphp
 
 @if($value === \App\Enums\PublishStatus::Published)
-    <span class="badge badge--published">Опубликовано</span>
+    <span class="badge badge--published">{{ __('Опубликовано') }}</span>
 @else
-    <span class="badge badge--draft">Черновик</span>
+    <span class="badge badge--draft">{{ __('Черновик') }}</span>
 @endif

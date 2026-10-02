@@ -130,6 +130,16 @@ Web middleware подключает `SetLocale` глобально для web-г
 | Новая возможность | `account/opportunities/create.blade.php` | Создание `project`, `meeting` или `event` |
 | Знания | `account/knowledge.blade.php` | Текущий статический экран/заготовка раздела |
 
+**Тарифы.** Кабинет делится на три уровня: Open (бесплатно), Community (600 руб. ПМР/год), Private (20 000 руб. ПМР/год) — подробно в [SUBSCRIPTIONS.md](SUBSCRIPTIONS.md). У Open открыты «Главная» (материалы публичного сайта, `OpenFeed`), «Обучение», «Профиль», «Подписка»; «Рекомендации», «Поиск контактов», «Профили платформы», «Возможности» и ИИ-помощник входят в Community и закрыты middleware `plan:community` (`RequirePlan`). Пункты «Подписка» и «Private» добавляет всем четырём темам `App\Support\CabinetNav::extend`.
+
+| URL | Имя | Назначение |
+|---|---|---|
+| `GET /app/account/subscription` | `account.subscription` | Три тарифа, текущий тариф, история платежей, кнопки оплаты и продления |
+| `GET /app/account/private` | `account.private` | Вкладка Private (видна при действующем Community/Private) |
+| `POST /app/account/subscription/checkout` | `account.subscription.checkout` | Создаёт счёт и отдаёт форму на платёжный сайт банка (throttle `8,1`) |
+| `GET/POST /app/account/subscription/success`, `/fail` | `account.subscription.success/fail` | SuccessURL / FailURL банка; итог берут из нашей базы, не из адреса |
+| `GET/POST /payment/result` | `payment.result` | ResultURL банка; без сессии и CSRF, отвечает `OK`/`ERROR` |
+
 Общий layout кабинета — `resources/views/account/layout.blade.php`. Он содержит sidebar, языковой переключатель, logout, Telegram WebApp initialization и скрывает logout внутри Telegram Mini App.
 
 ## 4. Лендинг
@@ -235,7 +245,7 @@ Callback-и:
 
 Собственная админка на `/admin`, перенесённая из проекта education3 (`D:\OSPanel\home\education3`, его `AGENTS.md` и `DESIGN.md` — контракт и дизайн-система). Blade + Alpine.js + Tailwind 3.4, сборка Vite; готовые ассеты лежат в `public/build` и коммитятся (на хостинге нет Node). Filament удалён.
 
-**Доступ.** Ролей нет: пускается ровно одна почта из `ADMIN_EMAIL` (`config/admin.php`), проверку делает `EnsureAdminEmail` на всей группе роутов, одного `auth` мало. Вход — `/login`, перебор пароля режется в трёх слоях (`LoginRequest`: почта+IP 5/мин, почта 20/15 мин; `throttle:login` 30/мин по IP). Админка всегда по-русски (`AdminLocale`), независимо от языка сайта.
+**Доступ.** Ролей нет: пускается ровно одна почта из `ADMIN_EMAIL` (`config/admin.php`), проверку делает `EnsureAdminEmail` на всей группе роутов, одного `auth` мало. Вход — `/login`, перебор пароля режется в трёх слоях (`LoginRequest`: почта+IP 5/мин, почта 20/15 мин; `throttle:login` 30/мин по IP). Язык админки — русский или английский, переключатель **RU | EN** стоит в левом меню и на странице входа; подробности — «Язык админки» ниже. От языка сайта он не зависит.
 
 Админка разделена на **два лагеря**, чтобы администратор не путал управление публичным сайтом и управление кабинетами. Переключатель — вверху левого меню; под ним показывается меню только текущего лагеря, а в шапке каждой страницы стоит подпись лагеря. Число на вкладке «Кабинеты участниц» — сколько профилей и постов ждут решения (видно из любого раздела сайта). Лагерь определяется по имени маршрута (`App\Support\AdminCamp`): `admin.cabinets.*`, `admin.profiles.*`, `admin.member-posts.*`, `admin.statistics.*` — «Кабинеты участниц», всё остальное — «Внешний сайт». **Новый раздел админки нужно сразу отнести к одному из двух лагерей** (имя маршрута и пункт в `components/admin/sidebar.blade.php`).
 
@@ -262,8 +272,19 @@ Callback-и:
 | Профили участниц | `/admin/profiles` | Модерация `BotUser` (бывший Filament `BotUserResource`): вкладки статусов, поиск, одобрить/отклонить с уведомлением в Telegram, правка текстов, массовое удаление |
 | Посты участниц | `/admin/member-posts` | Премодерация постов из кабинета (`Opportunity`): одобренный виден всем и уходит рассылкой, ожидающий и отклонённый виден только автору |
 | Статистика | `/admin/statistics` | Отчёт по заявкам, готовности профилей и публикациям (`ImpactReport`), PDF-выгрузка |
+| Подписки | `/admin/subscriptions` | Цена подписки на год (ключ `subscription_prices` в `site_settings`, поверх `config/subscription.php`); тарифы участниц: фильтры Open / Community / Private / скоро заканчиваются, «Подарить на год» (молча, без сообщения участнице), выдать тариф на другой срок или до даты, снять тариф, история |
+| Платежи | `/admin/payments` | Счета Web-платежа: статусы, поиск, «Проверить в банке» (GetState), «Подтвердить вручную»; счётчик проблемных счетов в меню |
 | Сообщения бота | `/admin/cabinets/bot-messages` | Все тексты бота на ru / en / ro: вкладка на язык, поле на сообщение, подсказки переменных, проверка Telegram-HTML, «Вернуть исходный» (см. «Тексты бота» в разделе 5) |
 | Настройки кабинетов | `/admin/cabinets/settings` | Вкладки: тема кабинета, ИИ-провайдеры (ключи шифруются, проверка подключения), база знаний ассистента |
+
+**Язык админки (RU | EN).** Выбор хранится в cookie `admin_lang` на год (ставит `LanguageController` по ссылке `/admin/language/{ru|en}`, она работает и без входа); по умолчанию русский. `AdminLocale` на каждом запросе админки и формы входа выставляет язык приложения; страница 404 админки делает то же сама (`bootstrap/app.php`). Язык интерфейса — не язык материалов: вкладки ru / ro / en в формах новостей, публикаций, экспертов и т. д. по-прежнему правят содержимое сайта на трёх языках, а язык Telegram-бота определяет Telegram участницы.
+
+- Весь текст интерфейса пишется как `__('Русский текст')` (в Blade и PHP) или `t('Русский текст')` (в скриптах `resources/js`). **Русский текст — это ключ**, поэтому на русском отдельного файла нет. Английские переводы: `lang/en.json` (интерфейс), `lang/en/adminjs.php` (скрипты; словарь кладёт в страницу layout, только когда язык не русский), `lang/en/validation.php` и `auth.php` (сообщения проверки форм и входа).
+- Подстановки — `:имя` (`__('Профили: :count.', ['count' => $n])`); предложение с разметкой — целиком одним ключом через `{!! __('… <b>…</b> …') !!}`, не кусками.
+- Названия из реестра сообщений бота (`resources/data/bot_messages.php`), палитры карточек (`CardTone`) и тем кабинета выводятся через `__($значение)`, поэтому их ключи тоже лежат в `lang/en.json`.
+- Не переводятся: записи в журнал, исключения для разработчиков, тексты бота (у них свои ru / en / ro), содержимое материалов.
+- Новый текст в админке без перевода не пройдёт: `AdminTranslationsSourceTest` ищет «голый» русский текст в шаблонах, контроллерах, формах-запросах и скриптах, требует английский перевод для каждого ключа и не даёт оставить в `lang/en.json` неиспользуемые ключи; `AdminLanguageTest` открывает все страницы админки по-английски и ловит запросы непереведённых ключей.
+- Выгрузка «Статистика → Скачать PDF» делается на языке интерфейса в момент нажатия.
 
 **Переводы** — как в education3: таблицы `*_translations`, трейт `HasTranslations`; русский обязателен, румынский и английский по желанию, при пустом поле сайт подставляет русский. Публичные страницы по-прежнему выводят все три языка сразу в `data-lang`-спанах.
 
@@ -283,6 +304,7 @@ User (администратор)
 
 BotUser
 ├── 1:N LoginToken по telegram_id
+├── 1:N Subscription (история тарифов) и 1:N Payment (счета банка)
 ├── 1:N Opportunity через bot_user_id
 └── embedding JSON для AI-поиска/матчинга
 
@@ -301,7 +323,12 @@ SiteSetting
 - `status`: `pending`, `approved`, `rejected`;
 - `approved_at`, `avatar_path`;
 - `embedding`, `embedding_updated_at`;
-- `region` присутствует в migration, но сейчас не входит в fillable/UI/основные запросы.
+- `region` присутствует в migration, но сейчас не входит в fillable/UI/основные запросы;
+- `plan` (`open`/`community`/`private`), `plan_ends_at`, `plan_notified_stage` — текущий тариф. **Не входят в `$fillable`**: участница не может выдать себе тариф через форму. Действующий тариф считает `BotUser::currentPlan()` по дате окончания, а не по `plan`.
+
+`payments` — счета Web-платежа (остаются в базе, даже если участница удалила профиль: `bot_user_id` обнуляется, `telegram_id` сохраняется — это нужно для возвратов): `invoice_id` (уникальный, ≤ 20 символов), `plan`, `months`, `amount` в копейках, `currency`, `is_test`, `driver` (`bank`/`fake`), `expires_at`, `status` (`pending`/`verifying`/`paid`/`failed`/`cancelled`/`expired`), `bank_state`, `rrn`, `last_digits`, `payload` (ответы банка, расхождения), `paid_at`, `checked_at`.
+
+`subscriptions` — история периодов тарифа: `plan`, `starts_at`, `ends_at`, `source` (`payment`/`admin`), ссылка на `payments`, примечание.
 
 `login_tokens`:
 
@@ -411,7 +438,9 @@ opportunities/create
 - `RequireAccountAuth` на каждом защищённом запросе заново проверяет наличие пользователя и его статус; отзыв доступа должен продолжать работать в уже открытой сессии.
 - Не использовать `id` как идентификатор Telegram-сессии: сессия и `LoginToken` привязаны к `telegram_id`.
 - Magic-link и TMA-auth должны сохранять session regeneration и CSRF/throttle-поведение.
-- В каталог, AI-матчинг и Telegram-уведомления попадают только approved-участницы.
+- В каталог, AI-матчинг, поиск в боте и Telegram-уведомления о возможностях попадают только approved-участницы **с действующим Community или Private** (`BotUser::members()`); любой новый запрос «показать участниц» строится от этого scope.
+- Тариф определяется по дате (`BotUser::currentPlan()`), поля `plan*` не входят в `$fillable` и меняются только через `SubscriptionService`; новый закрытый раздел кабинета вешается на `plan:community`.
+- Тариф включается только после того, как банк сам подтвердил оплату запросом `GetState` и сумма, валюта, признак теста и номер счёта сошлись со счётом (`PaymentReconciler`); оповещение на ResultURL само по себе тариф не включает. Имитатор банка не должен работать при `APP_ENV=production`.
 - Удалять возможность может только её автор; удаление профиля должно чистить сессию и каскадно удалять публикации.
 - Любое изменение `description`/`expectation` должно учитывать очередь эмбеддинга и кэш матчей.
 - Webhook Telegram должен оставаться исключённым из CSRF, а auth endpoint — защищённым throttle.
@@ -434,7 +463,10 @@ app/Http/
 
 app/Models/                 User, BotUser, LoginToken, Opportunity (посты кабинета), SiteSetting,
                             Post, SiteOpportunity, Album, Video, Project, Tag, Expert, Event, Subscriber (+ *Translation)
-app/Services/               MatchingService, EmbeddingService
+app/Services/               MatchingService, EmbeddingService, Subscriptions/ (тарифы, напоминания),
+                            Payments/WebPayment/ (протокол банка, сверка платежей)
+app/Enums/                  Plan (Open / Community / Private)
+app/Console/Commands/       payments:reconcile, subscriptions:notify, bot:sync-commands, participants:thumbnails
 app/Jobs/                   ComputeUserEmbedding, NotifyOpportunity
 app/Telegram/               keyboard and conversations
 app/Actions/, app/Support/    сохранение материалов, картинки, блоки, переводы (из education3)

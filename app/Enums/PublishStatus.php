@@ -10,8 +10,8 @@ enum PublishStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::Draft => 'Черновик',
-            self::Published => 'Опубликовано',
+            self::Draft => __('Черновик'),
+            self::Published => __('Опубликовано'),
         };
     }
 }
