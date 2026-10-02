@@ -57,7 +57,7 @@ class TagController extends Controller
 
     public function destroy(Tag $tag): RedirectResponse
     {
-        // Удаление тега не удаляет новости и возможности — tag_id обнуляется через nullOnDelete.
+        // Удаление тега не удаляет публикации и возможности — tag_id обнуляется через nullOnDelete.
         $tag->delete();
 
         return redirect()->route('admin.tags.index')->with('success', 'Тег удалён.');

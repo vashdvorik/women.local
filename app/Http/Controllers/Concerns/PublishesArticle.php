@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Общий хвост `store()` и `update()` новости и возможности.
+ * Общий хвост `store()` и `update()` публикации и возможности.
  *
  * Черновик к этому моменту уже записан (SaveArticle — в транзакции), поэтому
  * ошибка публикации ничего не теряет: меняется только статус, а введённое
@@ -23,7 +23,7 @@ trait PublishesArticle
         Request $request,
         PublishArticle $publisher,
         string $editRoute,
-        string $noun,   // «Новость» / «Возможность» — женский род
+        string $noun,   // «Публикация» / «Возможность» — женский род
         bool $created,
     ): RedirectResponse {
         $intent = $request->string('intent', 'save')->toString();

@@ -1,10 +1,8 @@
-{{-- Форма подписки на новости (в подвале сайта). Сообщения — на трёх языках в самой вёрстке;
-     контроллер только ставит признак успеха или ошибки (см. SubscribeController). --}}
+{{-- Форма подписки на новости: колонка меню в подвале сайта (miro-footer). Сообщения — на трёх языках
+     в самой вёрстке; контроллер только ставит признак успеха или ошибки (см. SubscribeController). --}}
 <div class="miro-subscribe" id="subscribe">
-    <div class="miro-subscribe__copy">
-        <h4><span data-lang="ru">Новости платформы</span><span data-lang="en">Platform news</span><span data-lang="ro">Noutățile platformei</span></h4>
-        <p><span data-lang="ru">Раз в месяц — события, возможности и истории участниц.</span><span data-lang="en">Once a month: events, opportunities and members’ stories.</span><span data-lang="ro">O dată pe lună: evenimente, oportunități și povești ale participantelor.</span></p>
-    </div>
+    <h4><span data-lang="ru">Новости платформы</span><span data-lang="en">Platform news</span><span data-lang="ro">Noutățile platformei</span></h4>
+    <p class="miro-subscribe__text"><span data-lang="ru">Раз в месяц — события, возможности и истории участниц.</span><span data-lang="en">Once a month: events, opportunities and members’ stories.</span><span data-lang="ro">O dată pe lună: evenimente, oportunități și povești ale participantelor.</span></p>
 
     @if(session('subscribed'))
         <p class="miro-subscribe__notice" role="status"><span data-lang="ru">Спасибо! Вы подписаны на новости.</span><span data-lang="en">Thank you! You are subscribed.</span><span data-lang="ro">Mulțumim! Te-ai abonat.</span></p>

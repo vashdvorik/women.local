@@ -12,6 +12,7 @@ use App\Models\LoginToken;
 use App\Services\EmbeddingService;
 use App\Services\AiAssistantService;
 use App\Services\MatchingService;
+use App\Support\BotMessages;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -44,16 +45,19 @@ class AccountController extends Controller
             return redirect()->route('account.login')->with('sent', true);
         }
 
-        $token     = LoginToken::generateFor((int) $user->telegram_id);
-        $url       = url('/go/' . substr($token->token, 0, 8));
-        $firstName = explode(' ', (string) $user->full_name)[0];
+        $token = LoginToken::generateFor((int) $user->telegram_id);
+        $url   = url('/go/' . substr($token->token, 0, 8));
+
+        // Язык Telegram участницы, а если он ещё не известен — язык, на котором открыт сайт.
+        $locale = BotMessages::locale($user->locale ?? app()->getLocale());
 
         Http::post('https://api.telegram.org/bot' . config('nutgram.token') . '/sendMessage', [
             'chat_id'      => $user->telegram_id,
-            'text'         => __('account.telegram_messages.login_link', ['name' => $firstName]),
+            'text'         => BotMessages::text('login_site_message', $locale, ['name' => BotMessages::firstName($user->full_name)]),
+            'parse_mode'   => 'HTML',
             'reply_markup' => json_encode([
                 'inline_keyboard' => [[
-                    ['text' => __('account.telegram_messages.login_button'), 'url' => $url],
+                    ['text' => BotMessages::text('login_site_button', $locale), 'url' => $url],
                 ]],
             ]),
         ]);
@@ -229,13 +233,16 @@ class AccountController extends Controller
         /** @var BotUser $user */
         $user = view()->shared('accountUser');
 
+        $locale = BotMessages::locale($user->locale ?? app()->getLocale());
+
         Http::post('https://api.telegram.org/bot' . config('nutgram.token') . '/sendMessage', [
             'chat_id'      => $user->telegram_id,
-            'text'         => __('account.telegram_messages.profile_deleted'),
+            'text'         => BotMessages::text('site_profile_deleted', $locale),
+            'parse_mode'   => 'HTML',
             'reply_markup' => json_encode([
                 'remove_keyboard' => true,
                 'inline_keyboard' => [[
-                    ['text' => __('account.telegram_messages.restart_button'), 'callback_data' => 'restart'],
+                    ['text' => BotMessages::text('site_profile_deleted_button', $locale), 'callback_data' => 'restart'],
                 ]],
             ]),
         ]);

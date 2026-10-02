@@ -4,13 +4,16 @@ namespace App\Models;
 
 use App\Models\Concerns\HasTranslations;
 use App\Support\CardTone;
+use App\Support\Locales;
+use App\Support\TranslationStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Карточка новости: страница /events («Новости» в меню сайта), превью на главной и раздел «Новости»
- * в админке. Плоская модель: обложка, цвет, дата начала, ссылка, порядок и переводимые тексты
- * (EventTranslation). Историческое имя модели — Event.
+ * Новость: карточка на странице /events («Новости» в меню сайта) и в превью на главной, а также своя
+ * страница /events/{slug}. Карточка: обложка, цвет, дата начала, ссылка, порядок и переводимые тексты
+ * (EventTranslation). Страница: текст из блоков на каждом языке (EventTranslation::content), тот же
+ * формат, что у публикаций. Раздел «Новости» в админке. Историческое имя модели — Event.
  */
 class Event extends Model
 {
@@ -20,6 +23,7 @@ class Event extends Model
     private const DATE_FORMATS = ['ru' => 'D MMMM', 'ro' => 'D MMMM', 'en' => 'MMMM D'];
 
     protected $fillable = [
+        'slug',
         'image_path',
         'tone',
         'starts_at',
@@ -54,6 +58,37 @@ class Event extends Model
     public function toneKey(): string
     {
         return CardTone::normalize($this->tone);
+    }
+
+    /** Стиль плашки типа («Конференция») в цвет карточки; синий — приглушённый, чтобы читалась подпись. */
+    public function tagStyle(): string
+    {
+        $tone = $this->toneKey();
+
+        return $tone === 'blue'
+            ? 'background:var(--miro-surface-featured);color:var(--miro-blue)'
+            : 'background:var(--miro-'.$tone.');color:var(--miro-primary)';
+    }
+
+    /** Есть ли у новости текст страницы (на русском: он главный, остальные языки подставляют его). */
+    public function hasBody(): bool
+    {
+        return TranslationStatus::hasContent($this->rawTranslation(Locales::PRIMARY)?->content ?? []);
+    }
+
+    /**
+     * Куда ведёт «Подробнее» на карточке: на собственную страницу новости, если у неё есть текст,
+     * иначе по внешней ссылке (в новой вкладке). null — вести некуда, кнопки нет.
+     *
+     * @return array{href: string, external: bool}|null
+     */
+    public function cardLink(): ?array
+    {
+        if (filled($this->slug) && $this->hasBody()) {
+            return ['href' => route('events.show', ['event' => $this->slug]), 'external' => false];
+        }
+
+        return filled($this->url) ? ['href' => $this->url, 'external' => true] : null;
     }
 
     /**

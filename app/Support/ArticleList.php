@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
- * Список новостей и возможностей: поиск по русскому заголовку, сортировка по
+ * Список публикаций и возможностей: поиск по русскому заголовку, сортировка по
  * колонкам, пагинация (AGENTS.md §15).
  */
 class ArticleList

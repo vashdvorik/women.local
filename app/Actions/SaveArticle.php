@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
- * Сохранение новости или возможности. Никаких проверок публикации — черновик
+ * Сохранение публикации или возможности. Никаких проверок публикации — черновик
  * сохраняется в любом состоянии (AGENTS.md §11).
  *
  * Несколько записей подряд (материал + три перевода) — только в транзакции
@@ -142,6 +142,9 @@ class SaveArticle
                 return true;
             }
             if ($block['type'] === 'heading' && filled($block['data']['text'] ?? null)) {
+                return true;
+            }
+            if ($block['type'] === 'file' && filled($block['data']['title'] ?? null)) {
                 return true;
             }
         }

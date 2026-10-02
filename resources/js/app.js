@@ -10,6 +10,7 @@ import './video-cover';
 import './image-field';
 import './sidebar';
 import './ai-settings';
+import './bot-messages';
 
 window.Alpine = Alpine;
 Alpine.start();

@@ -1,6 +1,6 @@
-{{-- Блоки материала (текст, заголовок, HTML-код, картинка, галереи). Структура общая для всех
-     языков, поэтому список блоков выводится отдельно для каждого языка в своей обёртке data-lang.
-     $blocks — массив блоков одного языка. --}}
+{{-- Блоки материала (текст, заголовок, HTML-код, файл PDF, картинка, галереи). Структура общая для
+     всех языков, поэтому список блоков выводится отдельно для каждого языка в своей обёртке data-lang.
+     $blocks — массив блоков одного языка, $lang — этот язык (для подписей вроде кнопки «Скачать»). --}}
 <div class="miro-prose">
     @foreach($blocks as $block)
         @php $data = $block['data'] ?? []; @endphp
@@ -14,6 +14,24 @@
             @case('embed')
                 {{-- Блок «HTML-код» выводится как есть: осознанное исключение, редактор один и доверенный. --}}
                 <div class="miro-prose__embed">{!! $data['html'] ?? '' !!}</div>
+                @break
+
+            @case('file')
+                {{-- «Файл (PDF)»: каталог или брошюра. Если файла нет на диске, блок не выводится. --}}
+                @php $file = \App\Support\FileBlock::info($data, $lang ?? 'ru'); @endphp
+                @if($file)
+                    <div class="miro-prose__file">
+                        <span class="miro-prose__file-icon" aria-hidden="true">PDF</span>
+                        <div class="miro-prose__file-body">
+                            <div class="miro-prose__file-title">{{ $file['title'] }}</div>
+                            @if($file['size'])
+                                <div class="miro-prose__file-meta">PDF · {{ $file['size'] }}</div>
+                            @endif
+                        </div>
+                        <a class="miro-prose__file-button" href="{{ $file['url'] }}" download="{{ $file['download'] }}"
+                           aria-label="{{ $file['button'] }}: {{ $file['title'] }}">{{ $file['button'] }}</a>
+                    </div>
+                @endif
                 @break
 
             @case('heading')

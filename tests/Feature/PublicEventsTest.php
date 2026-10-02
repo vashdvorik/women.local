@@ -51,7 +51,8 @@ class PublicEventsTest extends TestCase
             ->assertDontSee('Скрытое событие')
             ->assertSee('Don’t miss the next opportunity');
 
-        $this->assertSame(2, substr_count($response->getContent(), 'class="miro-event-card"'));
+        // Карточки: у той, что со ссылкой, к классу добавлено «--linked» (курсор-рука, реакция на наведение).
+        $this->assertSame(2, substr_count($response->getContent(), '<article class="miro-event-card'));
         // «Подробнее» есть только у карточки со ссылкой.
         $this->assertSame(1, substr_count($response->getContent(), 'class="miro-event-card__link"'));
         $this->assertSame(1, substr_count($response->getContent(), 'id="miro-nav"'));

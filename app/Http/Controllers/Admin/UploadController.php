@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\StoreUploadedFile;
 use App\Actions\StoreUploadedImage;
 use App\Http\Controllers\Controller;
 use App\Support\AspectRatio;
@@ -41,5 +42,30 @@ class UploadController extends Controller
             'path' => $path,
             'url' => '/uploads/'.$path,
         ]);
+    }
+
+    /**
+     * PDF для блока «Файл (PDF)»: каталог, брошюра. Загружается сразу при выборе файла, как
+     * и картинка. Формат проверяется по содержимому файла, а не по расширению в имени:
+     * переименованный в .pdf чужой файл не пройдёт.
+     */
+    public function storeFile(Request $request, StoreUploadedFile $action): JsonResponse
+    {
+        $maxMb = StoreUploadedFile::MAX_KB / 1024;
+
+        $validated = $request->validate([
+            'file' => ['bail', 'required', 'file', 'mimetypes:application/pdf', 'max:'.StoreUploadedFile::MAX_KB],
+        ], [
+            'file.required' => 'Выберите PDF-файл.',
+            'file.uploaded' => "Файл не загрузился: он больше, чем разрешено настройками сервера. Допустимо до {$maxMb} МБ.",
+            'file.mimetypes' => 'Нужен файл в формате PDF.',
+            'file.max' => "Файл слишком большой: допустимо до {$maxMb} МБ.",
+        ], [
+            'file' => 'файл',
+        ]);
+
+        $stored = $action->handle($validated['file']);
+
+        return response()->json($stored + ['url' => '/uploads/'.$stored['path']]);
     }
 }

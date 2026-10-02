@@ -4,7 +4,7 @@
     'action',
     'method' => 'POST',
     'article',
-    'noun' => 'новость',
+    'noun' => 'публикация',
 ])
 
 @php
@@ -37,7 +37,7 @@
         </button>
 
         <h1 class="text-page font-semibold truncate min-w-0 hidden sm:block">
-            <span x-text="titleForHeader || @js($saved ? ($noun === 'новость' ? 'Новость' : 'Возможность') : ($noun === 'новость' ? 'Новая новость' : 'Новая возможность'))"></span>
+            <span x-text="titleForHeader || @js($saved ? ($noun === 'публикация' ? 'Публикация' : 'Возможность') : ($noun === 'публикация' ? 'Новая публикация' : 'Новая возможность'))"></span>
         </h1>
 
         <div class="ml-auto flex items-center gap-2 overflow-x-auto no-scrollbar">
@@ -166,7 +166,7 @@
                         <p class="field-error">{{ $message }}</p>
                     @else
                         <p class="field-hint">
-                            Теги общие для новостей и возможностей —
+                            Теги общие для публикаций и возможностей —
                             <a href="{{ route('admin.tags.index') }}" class="text-accent" target="_blank" rel="noopener">управлять</a>.
                         </p>
                     @enderror

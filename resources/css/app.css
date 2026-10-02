@@ -128,10 +128,10 @@
     }
     /* Иконки наследуют цвет пункта (muted / ink при наведении / accent на активном). */
 
-    /* Сворачивание группы: max-height подобран под самую длинную группу (4 пункта). */
+    /* Сворачивание группы: max-height подобран под самую длинную группу («Медиатека», 6 пунктов). */
     .nav-collapsible {
         overflow: hidden;
-        max-height: 10rem;
+        max-height: 14rem;
         transition: max-height 220ms ease;
     }
     .nav-collapsible--closed { max-height: 0; }
@@ -236,6 +236,22 @@
         @apply inline-flex items-center justify-center w-7 h-7 rounded-sm text-white;
         background: #00000099;
     }
+
+    /* ---------- Блок «Файл (PDF)» ---------- */
+
+    .file-cell {
+        @apply flex flex-wrap items-center gap-3 rounded-sm bg-surface-sunken
+               border border-dashed border-hairline p-3;
+    }
+    .file-cell--filled { @apply border-solid; }
+    .file-cell__icon {
+        @apply inline-flex items-center justify-center flex-none w-10 h-12 rounded-sm
+               bg-surface border border-hairline text-micro font-semibold text-accent;
+    }
+    .file-cell__body { @apply flex-1 min-w-0; }
+    .file-cell__name { @apply block truncate text-ui-strong text-accent hover:underline; }
+    .file-cell__meta { @apply block text-caption text-ink-muted; }
+    .file-cell__actions { @apply flex items-center gap-2; }
 
     /* ---------- Уведомление ---------- */
 

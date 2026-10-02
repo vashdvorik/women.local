@@ -1,13 +1,13 @@
 <x-layouts.admin title="Инфопанель">
     @php
         $add = [
-            ['route' => 'admin.posts.create', 'label' => 'публикацию'],
-            ['route' => 'admin.opportunities.create', 'label' => 'возможность'],
             ['route' => 'admin.events.create', 'label' => 'новость'],
-            ['route' => 'admin.experts.create', 'label' => 'эксперта'],
             ['route' => 'admin.projects.create', 'label' => 'проект'],
+            ['route' => 'admin.opportunities.create', 'label' => 'возможность'],
+            ['route' => 'admin.experts.create', 'label' => 'эксперта'],
             ['route' => 'admin.albums.create', 'label' => 'фотоальбом'],
             ['route' => 'admin.videos.create', 'label' => 'видео'],
+            ['route' => 'admin.posts.create', 'label' => 'публикацию'],
         ];
     @endphp
 
@@ -53,12 +53,17 @@
             <ol class="space-y-3 text-reading text-ink-muted list-decimal pl-5 marker:text-ink-faint marker:font-semibold">
                 <li>
                     Админка разделена на два лагеря, переключатель — вверху меню.
-                    <b class="text-ink">«Внешний сайт»</b> — всё, что видят посетители: новости, публикации, эксперты и так далее (этот раздел).
+                    <b class="text-ink">«Внешний сайт»</b> — всё, что видят посетители: новости, проекты, возможности, эксперты, медиатека (этот раздел).
                     <b class="text-ink">«Кабинеты участниц»</b> — профили и посты участниц, статистика и настройки кабинета.
                 </li>
                 <li>
-                    Разделы сайта — в меню слева. У публикаций, возможностей, проектов и медиа два пункта:
+                    Разделы сайта — в меню слева. У большинства разделов два пункта:
                     <b class="text-ink">«Все …»</b> — список уже добавленного, <b class="text-ink">«Добавить …»</b> — форма новой записи.
+                </li>
+                <li>
+                    <b class="text-ink">«Медиатека»</b> объединяет фотоальбомы, видео и публикации. Публикации — страницы
+                    с каталогами и брошюрами, которые выпустила организация; на сайте они находятся в разделе
+                    «Медиатека → Публикации».
                 </li>
                 <li>
                     Чтобы изменить запись, откройте список и нажмите <b class="text-ink">«Изменить»</b> в её строке.

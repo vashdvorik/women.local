@@ -79,6 +79,12 @@ trait HasTranslations
                 if ($translated !== '') {
                     $data['text'] = $counterpart['data']['text'];
                 }
+            } elseif (($block['type'] ?? null) === 'file') {
+                // Файл общий для всех языков, название — переводимый текст.
+                $translated = trim($counterpart['data']['title'] ?? '');
+                if ($translated !== '') {
+                    $data['title'] = $counterpart['data']['title'];
+                }
             }
 
             return ['uid' => $block['uid'], 'type' => $block['type'], 'data' => $data];

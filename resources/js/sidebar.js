@@ -4,7 +4,7 @@ import Alpine from 'alpinejs';
  * Сворачивание групп бокового меню. Состояние каждой группы запоминается
  * в localStorage; группа с активной страницей всегда раскрыта.
  */
-const GROUPS = ['news', 'opportunities', 'events', 'experts', 'projects', 'media'];
+const GROUPS = ['events', 'projects', 'opportunities', 'experts', 'media'];
 const KEY = 'admin.sidebar.groups';
 
 Alpine.data('sidebarNav', (activeGroup = null) => ({

@@ -60,8 +60,12 @@
                 <x-admin.nav-icon name="chart" /><span>Статистика</span>
             </a>
 
+            <a href="{{ route('admin.cabinets.bot-messages') }}"
+               class="nav-link mt-2 @if(request()->routeIs('admin.cabinets.bot-messages*')) nav-link--active @endif">
+                <x-admin.nav-icon name="inbox" /><span>Сообщения бота</span>
+            </a>
             <a href="{{ route('admin.cabinets.settings') }}"
-               class="nav-link mt-2 @if(request()->routeIs('admin.cabinets.settings*')) nav-link--active @endif">
+               class="nav-link @if(request()->routeIs('admin.cabinets.settings*')) nav-link--active @endif">
                 <x-admin.nav-icon name="sliders" /><span>Настройки кабинетов</span>
             </a>
         @else

@@ -74,17 +74,36 @@ class TranslationStatus
         return $expected > 0 && $filled >= $expected ? self::DONE : self::PARTIAL;
     }
 
+    /** Есть ли среди блоков хоть один с содержимым: текст, картинка, файл, код. */
+    public static function hasContent(array $blocks): bool
+    {
+        return collect($blocks)->contains(fn ($b) => is_array($b) && self::blockHasContent($b));
+    }
+
+    /** Есть ли среди блоков хоть один с текстом (текст, заголовок, название файла). */
+    public static function hasText(array $blocks): bool
+    {
+        return collect($blocks)->contains(fn ($b) => is_array($b) && self::blockHasText($b));
+    }
+
     private static function blockHasText(array $block): bool
     {
         return match ($block['type'] ?? null) {
             'text' => filled(trim(strip_tags($block['data']['html'] ?? ''))),
             'heading' => filled($block['data']['text'] ?? null),
+            // Название файла переводится, сам файл — нет.
+            'file' => filled($block['data']['title'] ?? null),
             default => false,
         };
     }
 
     private static function blockHasContent(array $block): bool
     {
+        // Название без файла — не содержимое: на странице такой блок ничего не покажет.
+        if (($block['type'] ?? null) === 'file') {
+            return filled($block['data']['path'] ?? null);
+        }
+
         if (self::blockHasText($block)) {
             return true;
         }

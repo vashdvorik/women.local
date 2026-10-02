@@ -21,6 +21,7 @@ Route::get('/members', function () {
 Route::get('/experts', PublicSite\ExpertsController::class)->name('experts');
 
 Route::get('/events', PublicSite\EventsController::class)->name('events');
+Route::get('/events/{event:slug}', [PublicSite\EventsController::class, 'show'])->name('events.show');
 
 Route::get('/about', function () {
     return PublicThemeView::render('about');
@@ -55,14 +56,6 @@ Route::get('/about/regulations', fn () => $publicSection([
     'intro' => ['ru' => 'Здесь будет опубликовано положение о работе платформы, правилах участия и взаимодействии внутри сообщества.', 'en' => 'This page will contain the platform regulations, participation rules and community guidelines.', 'ro' => 'Aici va fi publicat regulamentul platformei, regulile de participare și principiile comunității.'],
     'placeholder' => true,
 ]))->name('about.regulations');
-
-Route::get('/about/reports', fn () => $publicSection([
-    'pageKey' => 'reports',
-    'eyebrow' => ['ru' => 'О нас', 'en' => 'About us', 'ro' => 'Despre noi'],
-    'title' => ['ru' => 'Отчёты', 'en' => 'Reports', 'ro' => 'Rapoarte'],
-    'intro' => ['ru' => 'Раздел с отчётами, результатами программ и материалами о развитии сообщества.', 'en' => 'A section for reports, programme results and materials about the community’s development.', 'ro' => 'O secțiune pentru rapoarte, rezultatele programelor și materiale despre dezvoltarea comunității.'],
-    'placeholder' => true,
-]))->name('about.reports');
 
 Route::get('/members/participants', fn () => redirect()->route('members'))->name('members.participants');
 Route::get('/members/experts', fn () => redirect()->route('experts'))->name('members.experts');
@@ -130,9 +123,14 @@ Route::get('/app/account/auth', [AccountController::class, 'auth'])->middleware(
 Route::get('/app/account/login', [AccountController::class, 'login'])->name('account.login');
 Route::post('/app/account/tma-auth', [TmaAuthController::class, 'auth'])->middleware('throttle:20,1')->name('account.tma-auth');
 
-// Local-only account shortcut for visual development. It is unavailable outside APP_ENV=local.
-Route::get('/dev/account-login', [DevAccountLoginController::class, 'index'])->name('dev.account.login');
-Route::post('/dev/account-login', [DevAccountLoginController::class, 'login'])->name('dev.account.login.submit');
+// Local-only account shortcut for visual development: one click logs in as any approved participant.
+// The routes exist only when APP_ENV=local, so on a production server (or one whose .env was copied
+// from .env.example by mistake and later fixed) there is nothing to reach. The controller checks the
+// environment too, as a second lock.
+if (app()->environment('local')) {
+    Route::get('/dev/account-login', [DevAccountLoginController::class, 'index'])->name('dev.account.login');
+    Route::post('/dev/account-login', [DevAccountLoginController::class, 'login'])->name('dev.account.login.submit');
+}
 
 // Short-link redirect: /go/{code} — hides the full token from Telegram dialog
 Route::get('/go/{code}', function (string $code) {
@@ -275,7 +273,12 @@ Route::middleware(['admin.locale', 'auth', 'admin.email'])
         Route::put('cabinets/settings/ai', [Admin\AiSettingController::class, 'update'])->name('cabinets.settings.ai.update');
         Route::post('cabinets/settings/ai/test/{provider}', [Admin\AiSettingController::class, 'test'])->name('cabinets.settings.ai.test');
 
+        // Кабинеты участниц: «Сообщения бота» — все тексты, которые бот и сайт отправляют участницам в Telegram.
+        Route::get('cabinets/bot-messages', [Admin\BotMessageController::class, 'edit'])->name('cabinets.bot-messages');
+        Route::put('cabinets/bot-messages', [Admin\BotMessageController::class, 'update'])->name('cabinets.bot-messages.update');
+
         Route::post('uploads', [Admin\UploadController::class, 'store'])->name('uploads.store');
+        Route::post('uploads/file', [Admin\UploadController::class, 'storeFile'])->name('uploads.file');
     });
 
 Route::middleware('admin.locale')->group(function () {

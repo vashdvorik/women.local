@@ -76,12 +76,13 @@ class Opportunity extends Model
         return $this->status === self::STATUS_REJECTED;
     }
 
-    public function typeLabel(): string
+    /** Название типа; без языка — на языке текущего запроса, с языком — на нём (рассылка бота идёт на языке получательницы). */
+    public function typeLabel(?string $locale = null): string
     {
         return match ($this->type) {
-            'project' => __('account.types.project'),
-            'meeting' => __('account.types.meeting'),
-            'event' => __('account.types.event'),
+            'project' => __('account.types.project', [], $locale),
+            'meeting' => __('account.types.meeting', [], $locale),
+            'event' => __('account.types.event', [], $locale),
             default => $this->type,
         };
     }

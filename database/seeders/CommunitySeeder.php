@@ -11,6 +11,15 @@ class CommunitySeeder extends Seeder
 {
     public function run(): void
     {
+        // Демо-данные для разработки: на боевом сервере настоящим участницам фиктивные профили
+        // не нужны, а одобренные профили дают вход в кабинет и попадают в подбор и поиск.
+        // Даже прямой запуск (--class=CommunitySeeder) там ничего не создаёт.
+        if (app()->isProduction()) {
+            $this->command?->error('Тестовые участницы на боевом сервере не создаются (APP_ENV=production): это демо-данные для разработки.');
+
+            return;
+        }
+
         $users = [
             [
                 'telegram_id'       => 200000001,

@@ -10,8 +10,10 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Переносит 12 экспертов из бывшего массива страницы «Эксперты» в БД. Идемпотентен:
- * если эксперты уже есть (заведены в админке), ничего не трогает.
+ * Переносит 11 экспертов из бывшего массива страницы «Эксперты» в БД. Идемпотентен:
+ * если эксперты уже есть (заведены в админке), ничего не трогает, кроме одного случая —
+ * фото, файл которого пропал с диска, возвращается из исходника темы (сопоставление по
+ * русскому имени).
  */
 class ExpertSeeder extends Seeder
 {
@@ -19,14 +21,18 @@ class ExpertSeeder extends Seeder
 
     public function run(): void
     {
+        /** @var list<array<string, mixed>> $profiles */
+        $profiles = require database_path('seeders/data/experts.php');
+
         if (Expert::query()->exists()) {
-            $this->command?->info('Эксперты уже есть — импорт пропущен.');
+            $restored = $this->restoreMissingPhotos($profiles);
+
+            $this->command?->info($restored > 0
+                ? "Эксперты уже есть. Восстановлено фото: {$restored}."
+                : 'Эксперты уже есть — импорт пропущен.');
 
             return;
         }
-
-        /** @var list<array<string, mixed>> $profiles */
-        $profiles = require database_path('seeders/data/experts.php');
 
         DB::transaction(function () use ($profiles) {
             foreach ($profiles as $index => $profile) {
@@ -56,5 +62,25 @@ class ExpertSeeder extends Seeder
         });
 
         $this->command?->info(count($profiles).' экспертов импортировано.');
+    }
+
+    /** @param  list<array<string, mixed>>  $profiles */
+    private function restoreMissingPhotos(array $profiles): int
+    {
+        $restored = 0;
+
+        foreach ($profiles as $profile) {
+            $expert = Expert::query()
+                ->whereHas('translations', fn ($q) => $q
+                    ->where('locale', 'ru')
+                    ->where('name', $profile['name']['ru'] ?? ''))
+                ->first();
+
+            if ($expert && $this->restoreThemeImage($expert, 'photo_path', $profile['photo'] ?? null, 'expert')) {
+                $restored++;
+            }
+        }
+
+        return $restored;
     }
 }

@@ -61,16 +61,21 @@
                 </div>
                 <div class="miro-events-grid">
                     @foreach($events as $event)
-                        <article class="miro-event-card">
+                        @php $link = $event->cardLink(); @endphp
+                        <article class="miro-event-card{{ $link ? ' miro-event-card--linked' : '' }}">
                             <div class="miro-event-card__visual" style="background:var(--miro-{{ $event->toneKey() }});">
                                 @if($event->imageUrl())<img src="{{ $event->imageUrl() }}" alt="{{ $event->field('title', 'en') }}" loading="lazy">@endif
                                 <div class="miro-event-card__type">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->field('type', $locale) }}</span>@endforeach</div>
                             </div>
                             <div class="miro-event-card__body">
                                 <div class="miro-event-card__date">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->dateLabel($locale) }}</span>@endforeach</div>
-                                <h3>@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->field('title', $locale) }}</span>@endforeach</h3>
+                                <h3>
+                                    @if($link)<a href="{{ $link['href'] }}"@if($link['external']) target="_blank" rel="noopener"@endif class="miro-event-card__title-link">@endif
+                                    @foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->field('title', $locale) }}</span>@endforeach
+                                    @if($link)</a>@endif
+                                </h3>
                                 <p>@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->field('description', $locale) }}</span>@endforeach</p>
-                                @if($event->url)<a href="{{ $event->url }}" target="_blank" rel="noopener" class="miro-event-card__link"><span data-lang="ru">Подробнее&nbsp;→</span><span data-lang="en">Read more&nbsp;→</span><span data-lang="ro">Află mai multe&nbsp;→</span></a>@endif
+                                @if($link)@include('themes.public.miro.partials.card-more', ['external' => $link['external']])@endif
                             </div>
                         </article>
                     @endforeach

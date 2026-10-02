@@ -40,6 +40,10 @@
                                 <a href="{{ route('admin.events.edit', $event) }}" class="table-link">
                                     {{ $ru?->title ?: 'Без названия' }}
                                 </a>
+                                @if($event->hasBody() && filled($event->slug))
+                                    <a href="{{ route('events.show', ['event' => $event->slug]) }}" target="_blank" rel="noopener"
+                                       class="block text-caption text-ink-muted hover:underline">Страница на сайте ↗</a>
+                                @endif
                             </td>
                             <td class="text-ink-muted">{{ $ru?->type ?: '—' }}</td>
                             <td class="text-ink-muted">{{ $event->dateLabel('ru') ?: '—' }}</td>

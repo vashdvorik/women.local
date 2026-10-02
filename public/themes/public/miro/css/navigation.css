@@ -615,25 +615,95 @@ body.miro-landing-page .miro-nav__dropdown-menu a span { color: #F8E8DF !importa
     }
 }
 
-/* ---------- Подписка на новости (подвал) ---------- */
-.miro-subscribe { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 460px); gap: 32px; align-items: center; padding: 32px 0; border-top: 1px solid rgba(255,255,255,.12); }
-.miro-subscribe__copy h4 { margin: 0 0 6px; font-size: 18px; font-weight: 500; }
-.miro-subscribe__copy p { margin: 0; color: #E9DCD5; font-size: 14px; }
-.miro-subscribe__row { display: flex; gap: 12px; align-items: flex-end; }
-.miro-subscribe__field { display: grid; flex: 1; gap: 6px; }
-.miro-subscribe__label { color: #E9DCD5; font-size: 12px; }
-.miro-subscribe input[type="email"] { width: 100%; height: 48px; padding: 0 18px; border: 1px solid rgba(255,255,255,.28); border-radius: 9999px; background: rgba(255,255,255,.08); color: #fff; font: inherit; }
+/* ---------- Светлые кнопки на тёмных блоках ----------
+   Кнопка «pink» задана здесь одна для всех страниц: у части страниц (например, «События») в их
+   собственном CSS её не было, и кнопка превращалась в текст без фона. Правило выше красит весь текст
+   внутри тёмных блоков (CTA, подвал) светлым, в том числе надпись на кнопке со светлой заливкой:
+   получалась светлая надпись на светлой кнопке. Поэтому у светлых кнопок тёмный текст задан явно. */
+.miro-button--pink,
+.miro-button--accent,
+.miro-public-cta .miro-button { background: var(--miro-pink); color: var(--miro-primary); }
+.miro-button--pink:hover,
+.miro-button--accent:hover,
+.miro-public-cta .miro-button:hover { background: var(--miro-coral); }
+.miro-page .miro-button.miro-button--pink,
+.miro-page .miro-button.miro-button--pink span,
+.miro-page .miro-button.miro-button--accent,
+.miro-page .miro-button.miro-button--accent span,
+.miro-page .miro-public-cta .miro-button,
+.miro-page .miro-public-cta .miro-button span { color: var(--miro-primary); }
+
+/* ---------- Подвал: бренд, два столбца меню и подписка в одном ряду ----------
+   Раскладка задана здесь, а не в странице: у каждой страницы свой CSS с копией подвала, а этот файл
+   подключается последним на всех страницах темы. */
+.miro-footer__top { grid-template-columns: minmax(0, 1.25fr) minmax(0, .8fr) minmax(0, 1.2fr) minmax(0, 1.45fr); gap: 32px 40px; align-items: start; }
+/* Контакты: телефон не рвётся по пробелам. Почта — одно длинное слово: если не помещается после подписи,
+   уходит на новую строку целиком, а на совсем узкой колонке ломается, но не вылезает за неё. */
+.miro-footer a[href^="tel:"] { white-space: nowrap; }
+.miro-footer a[href^="mailto:"] { display: inline-block; overflow-wrap: anywhere; }
+@media (max-width: 1023px) {
+    .miro-footer__top { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 24px; }
+    .miro-footer__brand, .miro-subscribe { grid-column: 1 / -1; }
+    .miro-subscribe { max-width: 460px; }
+}
+@media (max-width: 479px) {
+    .miro-footer__top { gap: 28px 16px; }
+    /* В половине экрана телефона почта не помещается: колонка «Контакты» (третья в ряду) занимает всю ширину. */
+    .miro-footer__top > :nth-child(3) { grid-column: 1 / -1; }
+}
+
+/* ---------- Подписка на новости: колонка меню подвала ---------- */
+.miro-subscribe { display: block; padding: 0; border: 0; }
+.miro-subscribe h4 { margin: 0 0 8px; }
+.miro-subscribe__text { margin: 0 0 14px; font-size: 14px; line-height: 1.5; }
+.miro-subscribe__row { display: flex; flex-wrap: wrap; gap: 8px; }
+.miro-subscribe__field { position: relative; display: block; flex: 1 1 160px; min-width: 0; }
+/* Подпись поля остаётся для экранных дикторов; на виду её заменяют заголовок колонки и образец адреса. */
+.miro-subscribe__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.miro-subscribe input[type="email"] { width: 100%; height: 44px; padding: 0 16px; border: 1px solid rgba(255,255,255,.28); border-radius: 9999px; background: rgba(255,255,255,.08); color: #fff; font: inherit; font-size: 14px; }
 .miro-subscribe input[type="email"]::placeholder { color: rgba(255,255,255,.5); }
 .miro-subscribe input[type="email"]:focus { outline: 2px solid var(--miro-orange); outline-offset: 2px; }
-.miro-subscribe .miro-button { display: inline-flex; align-items: center; justify-content: center; height: 48px; padding: 0 26px; border: 0; border-radius: 9999px; background: var(--miro-pink); color: var(--miro-primary); font: inherit; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background-color .2s ease; }
+.miro-subscribe .miro-button { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; height: 44px; padding: 0 20px; border: 0; border-radius: 9999px; background: var(--miro-pink); color: var(--miro-primary); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background-color .2s ease; }
 .miro-subscribe .miro-button:hover { background: var(--miro-orange); }
-.miro-subscribe__consent { display: flex; gap: 8px; align-items: flex-start; margin-top: 12px; color: #E9DCD5; font-size: 12px; line-height: 1.4; cursor: pointer; }
-.miro-subscribe__consent input { margin-top: 2px; accent-color: var(--miro-orange); }
+/* Общее правило подвала красит весь текст светлым, а кнопка здесь светлая: без этого надпись на ней не видна. */
+.miro-footer .miro-subscribe .miro-button span { color: var(--miro-primary); }
+.miro-subscribe__consent { display: flex; gap: 8px; align-items: flex-start; margin-top: 10px; font-size: 12px; line-height: 1.4; cursor: pointer; }
+.miro-subscribe__consent input { flex: none; margin-top: 2px; accent-color: var(--miro-orange); }
 .miro-subscribe__notice, .miro-subscribe__error { margin: 0; font-size: 14px; }
 .miro-subscribe__notice { color: var(--miro-orange); }
 .miro-subscribe__error { margin-top: 10px; color: #FFB4A8; }
+/* Общее правило подвала красит весь текст светлым и глушило цвет ошибки: без него она не выделялась. */
+.miro-footer .miro-subscribe .miro-subscribe__error, .miro-footer .miro-subscribe .miro-subscribe__error span { color: #FFB4A8; }
 .miro-subscribe__trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-@media (max-width: 767px) {
-    .miro-subscribe { grid-template-columns: 1fr; gap: 20px; padding: 24px 0; }
-    .miro-subscribe__row { flex-direction: column; align-items: stretch; }
+
+/* ---------- Карточки новостей и материалов: кликабельна вся карточка ----------
+   Обычная схема для карточек: ссылка стоит в заголовке, а её ::after растягивается на всю карточку. Клик работает
+   по фото, тексту и пустому месту, а не только по «Подробнее». Ссылка при этом одна: экранные дикторы читают
+   название новости, а клавиша Tab останавливается на карточке один раз. */
+.miro-event-card { position: relative; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.miro-event-card__title-link { color: inherit; text-decoration: none; }
+.miro-event-card__title-link::after { content: ""; position: absolute; z-index: 3; inset: 0; }
+.miro-event-card--linked { cursor: pointer; }
+
+/* Отклик на наведение: карточка приподнимается, фото чуть приближается, название подчёркивается, стрелка сдвигается. */
+.miro-event-card__visual { overflow: hidden; }
+.miro-event-card__visual img,
+.miro-event-card > img { transition: transform .5s ease; }
+.miro-event-card--linked:hover { border-color: var(--miro-hairline-strong); box-shadow: var(--miro-shadow); transform: translateY(-3px); }
+.miro-event-card--linked:hover .miro-event-card__visual img,
+.miro-event-card--linked:hover > img { transform: scale(1.04); }
+.miro-event-card__title-link { transition: color .2s ease; }
+.miro-event-card--linked:hover .miro-event-card__title-link { color: var(--miro-accent-deep); }
+.miro-event-card__link { gap: 8px; }
+.miro-event-card__arrow { display: inline-block; transition: transform .2s ease; }
+.miro-event-card--linked:hover .miro-event-card__arrow { transform: translateX(4px); }
+#events .miro-event-card--linked:hover .miro-event-card__link { border-color: var(--miro-accent-deep); background: #fffaf6; }
+
+/* С клавиатуры: рамка вокруг всей карточки, а не вокруг слов заголовка. */
+@supports selector(:has(*)) {
+    .miro-event-card__title-link:focus-visible { outline: none; }
+    .miro-event-card--linked:has(.miro-event-card__title-link:focus-visible) { outline: 3px solid var(--miro-accent); outline-offset: 3px; }
 }
+
+/* Пункты меню, ведущие на другие сайты (Gala 2026 и др.): стрелка ↗ справа. */
+.miro-nav__dropdown-menu .miro-nav__external { margin-left: 14px; font-size: 13px; opacity: .6; }

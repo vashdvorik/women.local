@@ -6,6 +6,7 @@ namespace App\Jobs;
 
 use App\Models\BotUser;
 use App\Models\Opportunity;
+use App\Support\BotMessages;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -14,6 +15,10 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Рассылка одобренным участницам о новой публикации. Текст и подпись кнопки — из resources/data/bot_messages.php
+ * (раздел «Рассылка о новых публикациях»); каждая получательница читает их на своём языке.
+ */
 class NotifyOpportunity implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -27,59 +32,66 @@ class NotifyOpportunity implements ShouldQueue
     {
         $opportunity = $this->opportunity->load('author');
 
-        $emoji = $opportunity->typeEmoji();
-        $label = $opportunity->typeLabel();
-        $title = htmlspecialchars($opportunity->title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-        $body = mb_strlen($opportunity->body) > 300
-            ? mb_substr($opportunity->body, 0, 300) . '...'
-            : $opportunity->body;
-        $body = htmlspecialchars($body, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-        $authorName = htmlspecialchars(
-            $opportunity->author?->full_name ?? 'Участница',
-            ENT_QUOTES | ENT_SUBSTITUTE,
-            'UTF-8'
-        );
-
-        $text = "🔔 <b>Новая публикация на платформе</b>\n\n"
-            . "{$emoji} <b>{$label}:</b> {$title}\n\n"
-            . "{$body}";
-
-        if ($opportunity->event_date) {
-            $text .= "\n\n📅 " . $opportunity->event_date->format('d.m.Y');
-        }
-
-        if ($opportunity->location) {
-            $text .= "\n📍 " . htmlspecialchars($opportunity->location, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-        }
-
-        $text .= "\n\n👤 Опубликовала: " . $authorName;
-
         $pageUrl = url('/app/account/opportunities');
         $token   = config('nutgram.token');
 
         $recipients = BotUser::approved()
             ->where('id', '!=', $opportunity->bot_user_id)
-            ->pluck('telegram_id');
+            ->get(['telegram_id', 'locale']);
 
-        foreach ($recipients as $telegramId) {
+        // Текст собирается один раз на язык, а не на каждую получательницу.
+        $texts = [];
+
+        foreach ($recipients as $recipient) {
+            $locale = $recipient->messageLocale();
+            $texts[$locale] ??= $this->message($opportunity, $locale);
+
             try {
                 Http::post("https://api.telegram.org/bot{$token}/sendMessage", [
-                    'chat_id'    => $telegramId,
-                    'text'       => $text,
+                    'chat_id'    => $recipient->telegram_id,
+                    'text'       => $texts[$locale],
                     'parse_mode' => 'HTML',
                     'reply_markup' => json_encode([
                         'inline_keyboard' => [[
-                            ['text' => 'Посмотреть в кабинете', 'url' => $pageUrl],
+                            ['text' => BotMessages::text('broadcast_opportunity_button', $locale), 'url' => $pageUrl],
                         ]],
                     ]),
                 ]);
             } catch (\Throwable $e) {
-                Log::warning("NotifyOpportunity: failed to notify {$telegramId}", [
+                Log::warning("NotifyOpportunity: failed to notify {$recipient->telegram_id}", [
                     'error' => $e->getMessage(),
                 ]);
             }
 
             usleep(50_000);
         }
+    }
+
+    private function message(Opportunity $opportunity, string $locale): string
+    {
+        $body = mb_strlen($opportunity->body) > 300
+            ? mb_substr($opportunity->body, 0, 300) . '...'
+            : $opportunity->body;
+
+        // Дата и место — строки, собранные здесь, а не введённые пользователем: в шаблоне это «raw»-переменная,
+        // поэтому значение места экранируется тут.
+        $details = '';
+
+        if ($opportunity->event_date) {
+            $details .= "\n\n📅 " . $opportunity->event_date->format('d.m.Y');
+        }
+
+        if ($opportunity->location) {
+            $details .= "\n📍 " . BotMessages::escape($opportunity->location);
+        }
+
+        return BotMessages::text('broadcast_opportunity', $locale, [
+            'emoji'   => $opportunity->typeEmoji(),
+            'type'    => $opportunity->typeLabel($locale),
+            'title'   => $opportunity->title,
+            'body'    => $body,
+            'details' => $details,
+            'author'  => $opportunity->author?->full_name ?? BotMessages::text('broadcast_opportunity_author', $locale),
+        ]);
     }
 }

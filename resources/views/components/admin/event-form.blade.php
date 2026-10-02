@@ -1,12 +1,15 @@
-@props(['event', 'action', 'method'])
+@props(['event', 'editor', 'action', 'method'])
 
 @php
     $langs = ['ru' => 'по-русски', 'ro' => 'по-румынски', 'en' => 'по-английски'];
 @endphp
 
-<form method="POST" action="{{ $action }}" class="form-column space-y-6">
+<form method="POST" action="{{ $action }}" class="form-column space-y-6" x-data="eventEditor(@js($editor))">
     @csrf
     @if($method !== 'POST') @method($method) @endif
+    @foreach(array_keys($langs) as $l)
+        <input type="hidden" name="translations[{{ $l }}][content]" :value="serialized.{{ $l }}">
+    @endforeach
 
     <x-forms.error-summary />
 
@@ -33,9 +36,21 @@
         </x-forms.field>
     </div>
 
-    <x-forms.field name="url" type="url" label="Ссылка «Подробнее»"
+    <x-forms.field name="url" type="url" label="Ссылка на сайт организации"
                    :value="$event->url ?? ''" placeholder="https://…"
-                   hint="Полный адрес страницы новости. Откроется в новой вкладке." />
+                   hint="Необязательно. Если у новости нет своего текста, «Подробнее» ведёт сюда (в новой вкладке); если текст есть, ссылка показывается в конце страницы." />
+
+    <x-forms.field name="slug" label="Адрес страницы новости"
+                   :value="$event->slug ?? ''" placeholder="belyj-shum-vstrecha-kreativa"
+                   hint="Нижний регистр, дефисы вместо пробелов. Формируется из русского названия, если не заполнить." />
+
+    @if($event->exists && filled($event->slug))
+        <p class="field-hint">
+            Страница на сайте:
+            <a href="{{ route('events.show', ['event' => $event->slug]) }}" target="_blank" rel="noopener" class="table-link">/events/{{ $event->slug }}</a>
+            @unless($event->hasBody()) (карточка ведёт на неё, когда появится текст) @endunless
+        </p>
+    @endif
 
     @foreach($langs as $code => $label)
         <section class="border-t border-hairline pt-5">
@@ -59,6 +74,16 @@
                     <textarea id="ev_description_{{ $code }}" name="translations[{{ $code }}][description]" rows="4"
                               class="field-input @error('translations.'.$code.'.description') field-input--invalid @enderror">{{ old('translations.'.$code.'.description', $event->rawTranslation($code)?->description) }}</textarea>
                     @error('translations.'.$code.'.description')<p class="field-error">{{ $message }}</p>@enderror
+                </div>
+
+                <div class="space-y-2 pt-2">
+                    <p class="field-label">Текст страницы новости {{ $label }}</p>
+                    @if($code === 'ru')
+                        <p class="field-hint">Добавьте текст и фото, и у новости появится своя страница на сайте. Пока блоков нет, «Подробнее» ведёт по ссылке выше.</p>
+                    @else
+                        <p class="field-hint">Блоки и фото общие для всех языков, переводится только текст. Если оставить пусто, покажется русский.</p>
+                    @endif
+                    <x-admin.block-editor :locale="$code" />
                 </div>
             </div>
         </section>

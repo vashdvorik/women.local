@@ -315,3 +315,6 @@
         transition-duration: .01ms !important;
     }
 }
+
+/* Пункты меню, ведущие на другие сайты (Gala 2026 и др.): стрелка ↗ справа. */
+.miro-nav__dropdown-menu .miro-nav__external { margin-left: 14px; font-size: 13px; opacity: .6; }

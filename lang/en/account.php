@@ -212,11 +212,4 @@ return [
         'contact_url_url' => 'Enter a valid link, for example https://t.me/username.',
         'contact_url_max' => 'The link must not be longer than 500 characters.',
     ],
-
-    'telegram_messages' => [
-        'login_button' => '🔐 Open account →',
-        'login_link' => "Hello, :name! Press the button below to open your Women Entrepreneurs Platform of the Two Banks account.\n\n⏱ The link is valid for 24 hours.",
-        'profile_deleted' => "✅ Your profile has been deleted.\n\nIf you want to join Women Entrepreneurs Platform of the Two Banks again, open @WomenComBot and send /start.",
-        'restart_button' => '↩️ Apply again',
-    ],
 ];

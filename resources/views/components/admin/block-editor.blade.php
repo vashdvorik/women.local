@@ -6,7 +6,7 @@
     <template x-for="(block, i) in blocks.{{ $locale }}" :key="block.uid">
         <div class="block-card" :id="'block-' + block.uid">
             <p class="block-card__type" x-text="{
-                text: 'Текст', heading: 'Заголовок', embed: 'HTML-код', image: 'Изображение',
+                text: 'Текст', heading: 'Заголовок', embed: 'HTML-код', file: 'Файл (PDF)', image: 'Изображение',
                 gallery_2: 'Галерея из 2', gallery_3: 'Галерея из 3', gallery_4: 'Галерея из 4'
             }[block.type]"></p>
 
@@ -145,6 +145,57 @@
                     </div>
                 </template>
 
+                {{-- ФАЙЛ (PDF): каталог, брошюра. Сам файл общий для всех языков (как картинка),
+                     название на странице — на каждой вкладке своё. --}}
+                <template x-if="block.type === 'file'">
+                    <div class="space-y-3 max-w-xl">
+                        <div class="file-cell" :class="{ 'file-cell--filled': block.data.path }">
+                            <span class="file-cell__icon" aria-hidden="true">PDF</span>
+
+                            <div class="file-cell__body">
+                                <template x-if="block.data.path && !block._busy">
+                                    <div>
+                                        <a :href="'/uploads/' + block.data.path" target="_blank" rel="noopener"
+                                           class="file-cell__name" title="Открыть файл в новой вкладке"
+                                           x-text="block.data.name || 'Открыть файл'"></a>
+                                        <span class="file-cell__meta" x-text="fileSize(block.data.size)"></span>
+                                    </div>
+                                </template>
+                                <span x-show="!block.data.path && !block._busy" class="text-caption text-ink-muted">Файл не выбран</span>
+                                <span x-show="block._busy" class="text-caption text-ink-muted">Загрузка…</span>
+                            </div>
+
+                            <div class="file-cell__actions">
+                                <label class="btn-secondary cursor-pointer focus-within:ring-2 focus-within:ring-accent">
+                                    <span x-text="block.data.path ? 'Заменить' : 'Загрузить PDF'"></span>
+                                    <input type="file" accept="application/pdf,.pdf" class="sr-only"
+                                           @change="uploadPdf($event, i, (b) => block._busy = b)">
+                                </label>
+                                <button type="button" class="btn-quiet" x-show="block.data.path && !block._busy"
+                                        @click="setBlockFile(i, null)">Убрать</button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="field-label">Название на странице</label>
+                            <input type="text" class="field-input field-input--content" maxlength="191"
+                                   placeholder="Например: Каталог участниц 2026" x-model="block.data.title">
+                            @unless($isPrimary)
+                                <div class="field-hint">
+                                    <span class="text-ink-faint">Русский:</span>
+                                    <span x-text="(blocks.ru[i] && blocks.ru[i].data.title) || '—'"></span>
+                                    · если оставить пустым, покажется русское название
+                                </div>
+                            @endunless
+                        </div>
+
+                        <p class="field-hint">
+                            PDF до {{ \App\Actions\StoreUploadedFile::MAX_KB / 1024 }} МБ. Файл один на все языки;
+                            посетитель увидит название, размер и кнопку «Скачать».
+                        </p>
+                    </div>
+                </template>
+
                 {{-- ЗАГОЛОВОК --}}
                 <template x-if="block.type === 'heading'">
                     <div class="flex gap-2 items-start">
@@ -229,6 +280,7 @@
         <button type="button" class="btn-secondary" @click="addBlock('text')">Текст</button>
         <button type="button" class="btn-secondary" @click="addBlock('heading')">Заголовок</button>
         <button type="button" class="btn-secondary" @click="addBlock('embed')">HTML-код</button>
+        <button type="button" class="btn-secondary" @click="addBlock('file')">Файл (PDF)</button>
         <button type="button" class="btn-secondary" @click="addBlock('image')">Изображение</button>
         <button type="button" class="btn-secondary" @click="addBlock('gallery_2')">Галерея 2</button>
         <button type="button" class="btn-secondary" @click="addBlock('gallery_3')">Галерея 3</button>

@@ -33,6 +33,34 @@ export async function uploadImage(file, slot, uploadUrl, crop = null) {
     return (await res.json()).path;
 }
 
+/**
+ * Загрузка PDF для блока «Файл (PDF)»: сразу при выборе файла, отдельным запросом.
+ * Возвращает { path, name, size }. Если сервер отклонил файл, бросает ошибку с его
+ * пояснением (формат, размер) — его же и показываем редактору.
+ */
+export async function uploadFile(file, uploadUrl) {
+    const body = new FormData();
+    body.append('file', file);
+
+    const res = await fetch(uploadUrl, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+            Accept: 'application/json',
+        },
+        body,
+    });
+
+    // Тело может быть не JSON (например, страница ошибки веб-сервера при слишком большом файле).
+    const json = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+        throw new Error(json?.errors?.file?.[0] || 'upload failed');
+    }
+
+    return json;
+}
+
 export function flashError(text) {
     window.dispatchEvent(new CustomEvent('flash', { detail: { type: 'error', text } }));
 }

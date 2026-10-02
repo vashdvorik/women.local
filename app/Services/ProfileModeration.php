@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\BotUser;
+use App\Support\BotMessages;
 use App\Telegram\TelegramKeyboards;
 use Illuminate\Support\Facades\Log;
 use Nutgram\Laravel\Facades\Telegram;
@@ -18,6 +19,9 @@ use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardRemove;
  *
  * Сбой Telegram не откатывает решение модератора: статус уже сохранён, а
  * неудачная отправка пишется в лог.
+ *
+ * Тексты уведомлений — в resources/data/bot_messages.php (раздел «Решение по заявке»), на языке
+ * участницы (BotUser::messageLocale()).
  */
 class ProfileModeration
 {
@@ -42,21 +46,23 @@ class ProfileModeration
 
     private function sendApproval(BotUser $profile): void
     {
-        $firstName = explode(' ', (string) $profile->full_name)[0];
+        $locale = $profile->messageLocale();
 
         $inlineKeyboard = InlineKeyboardMarkup::make()
-            ->addRow(InlineKeyboardButton::make('С чего начать? →', callback_data: 'start_guide'));
+            ->addRow(InlineKeyboardButton::make(BotMessages::text('moderation_approved_guide_button', $locale), callback_data: 'start_guide'));
 
         try {
             Telegram::sendMessage(
                 chat_id: $profile->telegram_id,
-                text: "🎉 {$firstName}, ваша заявка одобрена.\n\nДобро пожаловать в Women Entrepreneurs Platform of the Two Banks. Теперь вам доступен личный кабинет, каталог участниц, поиск контактов, рекомендации и публикация возможностей.\n\nЗаполните профиль подробнее, чтобы другие участницы лучше понимали ваш бизнес, запросы и возможные форматы сотрудничества.",
-                reply_markup: TelegramKeyboards::mainMenu(),
+                text: BotMessages::text('moderation_approved', $locale, ['name' => BotMessages::firstName($profile->full_name)]),
+                parse_mode: 'HTML',
+                reply_markup: TelegramKeyboards::mainMenu($locale),
             );
 
             Telegram::sendMessage(
                 chat_id: $profile->telegram_id,
-                text: 'С чего начать?',
+                text: BotMessages::text('moderation_approved_guide_prompt', $locale),
+                parse_mode: 'HTML',
                 reply_markup: $inlineKeyboard,
             );
         } catch (\Throwable $e) {
@@ -69,12 +75,11 @@ class ProfileModeration
 
     private function sendRejection(BotUser $profile): void
     {
-        $firstName = explode(' ', (string) $profile->full_name)[0];
-
         try {
             Telegram::sendMessage(
                 chat_id: $profile->telegram_id,
-                text: "{$firstName}, спасибо за интерес к Women Entrepreneurs Platform of the Two Banks.\n\nСейчас ваша заявка не была одобрена. Если хотите уточнить детали или задать вопрос команде проекта, напишите: @lesnichenkoP",
+                text: BotMessages::text('moderation_rejected', $profile->messageLocale(), ['name' => BotMessages::firstName($profile->full_name)]),
+                parse_mode: 'HTML',
             );
         } catch (\Throwable $e) {
             Log::error('Telegram: не удалось отправить сообщение об отклонении профиля участницы', [
@@ -89,7 +94,8 @@ class ProfileModeration
         try {
             Telegram::sendMessage(
                 chat_id: $profile->telegram_id,
-                text: "Доступ к Women Entrepreneurs Platform of the Two Banks закрыт.\n\nЕсли у вас есть вопросы по участию, напишите команде проекта: @lesnichenkoP",
+                text: BotMessages::text('moderation_access_revoked', $profile->messageLocale()),
+                parse_mode: 'HTML',
                 reply_markup: ReplyKeyboardRemove::make(remove_keyboard: true),
             );
         } catch (\Throwable $e) {

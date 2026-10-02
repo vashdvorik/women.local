@@ -14,8 +14,8 @@
                     <a href="{{ route('about.priorities') }}" role="menuitem"><span data-lang="ru">Приоритеты</span><span data-lang="en">Priorities</span><span data-lang="ro">Priorități</span></a>
                     <a href="{{ route('about.leadership') }}" role="menuitem"><span data-lang="ru">Руководство</span><span data-lang="en">Leadership</span><span data-lang="ro">Conducere</span></a>
                     <a href="{{ route('about.regulations') }}" role="menuitem"><span data-lang="ru">Положение</span><span data-lang="en">Regulations</span><span data-lang="ro">Regulament</span></a>
-                    <a href="{{ route('about.reports') }}" role="menuitem"><span data-lang="ru">Отчёты</span><span data-lang="en">Reports</span><span data-lang="ro">Rapoarte</span></a>
                     <a href="{{ route('partners') }}" role="menuitem"><span data-lang="ru">Партнёры</span><span data-lang="en">Partners</span><span data-lang="ro">Parteneri</span></a>
+                    <a href="{{ route('members.join') }}" role="menuitem"><span data-lang="ru">Как стать членом</span><span data-lang="en">How to become a member</span><span data-lang="ro">Cum să devii membră</span></a>
                 </div>
             </div>
             <div class="miro-nav__dropdown" data-nav-dropdown>
@@ -30,7 +30,17 @@
                 </div>
             </div>
             <a href="{{ route('events') }}"><span data-lang="ru">Новости</span><span data-lang="en">News</span><span data-lang="ro">Știri</span></a>
-            <a href="{{ route('gala') }}"><span data-lang="ru">Gala</span><span data-lang="en">Gala</span><span data-lang="ro">Gala</span></a>
+            <div class="miro-nav__dropdown" data-nav-dropdown>
+                <button type="button" class="miro-nav__dropdown-trigger" aria-expanded="false" aria-controls="miro-gala-menu">
+                    <span data-lang="ru">Gala</span><span data-lang="en">Gala</span><span data-lang="ro">Gala</span>
+                </button>
+                {{-- Отдельные сайты по годам: адреса в config/site.php. --}}
+                <div class="miro-nav__dropdown-menu" id="miro-gala-menu" role="menu">
+                    @foreach(config('site.gala') as $year => $galaUrl)
+                        <a href="{{ $galaUrl }}" target="_blank" rel="noopener" role="menuitem">Gala {{ $year }}<span class="miro-nav__external" aria-hidden="true">↗</span></a>
+                    @endforeach
+                </div>
+            </div>
             <a href="{{ route('projects') }}"><span data-lang="ru">Проекты</span><span data-lang="en">Projects</span><span data-lang="ro">Proiecte</span></a>
             <a href="{{ route('opportunities') }}"><span data-lang="ru">Возможности</span><span data-lang="en">Opportunities</span><span data-lang="ro">Oportunități</span></a>
             <div class="miro-nav__dropdown" data-nav-dropdown>

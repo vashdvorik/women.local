@@ -41,7 +41,7 @@ class PostController extends Controller
     {
         $post = $saver->handle(Post::class, null, $request->validated());
 
-        return $this->finishArticle($post, $request, $publisher, 'admin.posts.edit', 'Новость', created: true);
+        return $this->finishArticle($post, $request, $publisher, 'admin.posts.edit', 'Публикация', created: true);
     }
 
     public function edit(Post $post): View
@@ -58,7 +58,7 @@ class PostController extends Controller
     {
         $post = $saver->handle(Post::class, $post, $request->validated());
 
-        return $this->finishArticle($post, $request, $publisher, 'admin.posts.edit', 'Новость', created: false);
+        return $this->finishArticle($post, $request, $publisher, 'admin.posts.edit', 'Публикация', created: false);
     }
 
     public function destroy(Post $post): RedirectResponse
@@ -67,6 +67,6 @@ class PostController extends Controller
 
         return redirect()
             ->route('admin.posts.index')
-            ->with('success', 'Новость удалена.');
+            ->with('success', 'Публикация удалена.');
     }
 }

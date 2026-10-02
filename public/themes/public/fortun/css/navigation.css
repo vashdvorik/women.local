@@ -20,3 +20,6 @@
         .miro-nav.is-open .miro-nav__dropdown-menu::before { display: none; }
         .miro-nav.is-open .miro-nav__dropdown-menu a, .miro-nav.is-open .miro-nav__dropdown-menu .miro-nav__dropdown-item { padding: 11px 12px; border-bottom: 0; }
     }
+
+/* Пункты меню, ведущие на другие сайты (Gala 2026 и др.): стрелка ↗ справа. */
+.miro-nav__dropdown-menu .miro-nav__external { margin-left: 14px; font-size: 13px; opacity: .6; }

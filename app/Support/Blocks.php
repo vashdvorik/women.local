@@ -21,11 +21,12 @@ class Blocks
     public const IMAGE_KINDS = ['image', 'gallery_2', 'gallery_3', 'gallery_4'];
 
     /**
-     * Полный набор для новостей и возможностей. `embed` — произвольный HTML,
+     * Полный набор для публикаций и возможностей. `embed` — произвольный HTML,
      * который выводится на сайте без обработки (AGENTS.md §5.5); структурный,
-     * то есть одинаковый для всех языков.
+     * то есть одинаковый для всех языков. `file` — PDF для скачивания (каталог,
+     * брошюра): сам файл общий для всех языков, переводится только название.
      */
-    public const ARTICLE_KINDS = ['text', 'heading', 'embed', 'image', 'gallery_2', 'gallery_3', 'gallery_4'];
+    public const ARTICLE_KINDS = ['text', 'heading', 'embed', 'file', 'image', 'gallery_2', 'gallery_3', 'gallery_4'];
 
     /** Альбом — это фотографии, а не статья: только блоки с изображениями. */
     public const ALBUM_KINDS = ['image', 'gallery_2', 'gallery_3', 'gallery_4'];
@@ -110,6 +111,9 @@ class Blocks
             } elseif ($block['type'] === 'heading') {
                 $data['text'] = is_string($incomingData['text'] ?? null) ? trim($incomingData['text']) : '';
                 // Уровень заголовка — часть структуры, берётся из русской версии.
+            } elseif ($block['type'] === 'file') {
+                $data['title'] = self::fileTitle($incomingData['title'] ?? null);
+                // Сам файл (путь, имя, размер) — часть структуры, из русской версии.
             }
 
             return [
@@ -144,6 +148,19 @@ class Blocks
             return ['path' => self::normalizePath($data['path'] ?? null)];
         }
 
+        // «Файл (PDF)»: путь к файлу, название на странице, а также имя и размер
+        // исходного файла — они нужны только редактору, чтобы показать, что загружено.
+        if ($type === 'file') {
+            $path = self::normalizeFilePath($data['path'] ?? null);
+
+            return [
+                'path' => $path,
+                'title' => self::fileTitle($data['title'] ?? null),
+                'name' => $path === null ? null : self::fileName($data['name'] ?? null),
+                'size' => $path === null ? null : self::fileSize($data['size'] ?? null),
+            ];
+        }
+
         // Галереи: фиксированное число ячеек, пути по позициям.
         $cells = self::cells($type);
         $images = array_values((array) ($data['images'] ?? []));
@@ -167,6 +184,50 @@ class Blocks
      */
     public static function normalizePath(mixed $value): ?string
     {
+        return self::normalizeUploadPath($value, 'webp');
+    }
+
+    /**
+     * То же для PDF-файла блока «Файл (PDF)»: безопасный `.pdf` под `uploads/`
+     * (загрузчик кладёт их в `files/ГГГГ/ММ/`). Картинка `.webp` файлом не считается,
+     * а PDF — картинкой, поэтому подменить один вид другим через JSON не получится.
+     */
+    public static function normalizeFilePath(mixed $value): ?string
+    {
+        return self::normalizeUploadPath($value, 'pdf');
+    }
+
+    /** Название файла на странице: одна строка, без лишних пробелов, не длиннее поля БД. */
+    public static function fileTitle(mixed $value): string
+    {
+        if (! is_string($value)) {
+            return '';
+        }
+
+        return mb_substr(trim(preg_replace('/\s+/u', ' ', $value) ?? ''), 0, 191);
+    }
+
+    /** Имя исходного файла для редактора: только последний сегмент, без управляющих символов. */
+    public static function fileName(mixed $value): ?string
+    {
+        if (! is_string($value)) {
+            return null;
+        }
+
+        $name = basename(str_replace('\\', '/', $value));
+        $name = trim(preg_replace('/[\x00-\x1F\x7F]/u', '', $name) ?? '');
+
+        return $name === '' ? null : mb_substr($name, 0, 191);
+    }
+
+    /** Размер файла в байтах; нечисловое и отрицательное — «неизвестно». */
+    public static function fileSize(mixed $value): ?int
+    {
+        return is_numeric($value) && $value >= 0 ? (int) $value : null;
+    }
+
+    private static function normalizeUploadPath(mixed $value, string $extension): ?string
+    {
         if (! is_string($value) || $value === '') {
             return null;
         }
@@ -177,9 +238,9 @@ class Blocks
         $value = preg_replace('#^(uploads/)+#', '', $value);
 
         // 1–4 сегмента; каждый начинается с буквы/цифры (значит, сегмент не может
-        // быть `.` или `..`), внутри — буквы, цифры, `._-`; расширение .webp.
+        // быть `.` или `..`), внутри — буквы, цифры, `._-`; расширение задано.
         $segment = '[A-Za-z0-9][A-Za-z0-9._-]*';
 
-        return preg_match("#^{$segment}(/{$segment}){0,3}\\.webp$#", $value) ? $value : null;
+        return preg_match("#^{$segment}(/{$segment}){0,3}\\.{$extension}$#", $value) ? $value : null;
     }
 }

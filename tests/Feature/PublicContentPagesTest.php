@@ -13,6 +13,7 @@ use App\Models\Subscriber;
 use App\Models\Tag;
 use App\Models\Video;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 /**
@@ -97,6 +98,98 @@ class PublicContentPagesTest extends TestCase
 
         // Английская версия: переведённый текст, а заголовок блока берётся из русской.
         $this->assertStringContainsString('data-lang="en"', $response->getContent());
+    }
+
+    private function makeCatalogue(string $slug, array $ruData, array $enData = []): Post
+    {
+        $content = fn (array $data) => [['uid' => 'f', 'type' => 'file', 'data' => $data]];
+
+        return $this->makePost(['slug' => $slug], array_filter([
+            'ru' => ['title' => 'Каталог', 'excerpt' => 'Кратко', 'content' => $content($ruData)],
+            'en' => $enData ? ['title' => 'Catalogue', 'content' => $content($enData)] : null,
+        ]));
+    }
+
+    public function test_publication_page_shows_the_pdf_download_card_in_every_language(): void
+    {
+        Storage::fake('uploads');
+        Storage::disk('uploads')->put('files/2026/09/abcdefgh12345678.pdf', str_repeat('a', 2_500_000));
+
+        $post = $this->makeCatalogue(
+            'katalog',
+            ['path' => 'files/2026/09/abcdefgh12345678.pdf', 'title' => 'Каталог участниц 2026', 'size' => 1],
+            ['title' => 'Members catalogue 2026'],
+        );
+
+        $response = $this->get(route('media.publications.show', $post));
+
+        $response->assertOk()
+            ->assertSee('Каталог участниц 2026')
+            ->assertSee('Members catalogue 2026')
+            ->assertSee('href="/uploads/files/2026/09/abcdefgh12345678.pdf"', false)
+            ->assertSee('>Скачать</a>', false)
+            ->assertSee('>Download</a>', false)
+            ->assertSee('>Descarcă</a>', false)
+            // Размер — с диска, а не из данных блока (там записана единица), и по языку.
+            ->assertSee('PDF · 2,4 МБ')
+            ->assertSee('PDF · 2.4 MB');
+
+        // Браузер сохранит файл под понятным именем, а не под случайным именем с диска.
+        $this->assertMatchesRegularExpression('#download="[a-z0-9-]+\.pdf"#', $response->getContent());
+    }
+
+    public function test_pdf_card_is_not_shown_when_the_file_is_missing_from_the_disk(): void
+    {
+        Storage::fake('uploads'); // файла на диске нет: папку uploads не хранят в git
+
+        $post = $this->makeCatalogue('katalog', ['path' => 'files/2026/09/abcdefgh12345678.pdf', 'title' => 'Каталог участниц 2026']);
+
+        $this->get(route('media.publications.show', $post))
+            ->assertOk()
+            ->assertDontSee('Каталог участниц 2026')
+            ->assertDontSee('abcdefgh12345678.pdf', false);
+    }
+
+    public function test_pdf_card_is_not_shown_for_a_block_without_a_file(): void
+    {
+        $post = $this->makeCatalogue('katalog', ['path' => null, 'title' => 'Каталог без файла']);
+
+        $this->get(route('media.publications.show', $post))
+            ->assertOk()
+            ->assertDontSee('Каталог без файла');
+    }
+
+    public function test_pdf_card_without_a_title_uses_the_file_name_then_a_default(): void
+    {
+        Storage::fake('uploads');
+        Storage::disk('uploads')->put('files/2026/09/abcdefgh12345678.pdf', 'pdf');
+
+        $named = $this->makeCatalogue('s-imenem', ['path' => 'files/2026/09/abcdefgh12345678.pdf', 'title' => '', 'name' => 'brochure-2026.pdf']);
+        // Название — имя файла без «.pdf».
+        $this->get(route('media.publications.show', $named))->assertOk()
+            ->assertSee('>brochure-2026</div>', false)
+            ->assertDontSee('>brochure-2026.pdf</div>', false);
+
+        $bare = $this->makeCatalogue('bez-imeni', ['path' => 'files/2026/09/abcdefgh12345678.pdf', 'title' => '']);
+        $this->get(route('media.publications.show', $bare))->assertOk()
+            ->assertSee('>Документ</div>', false)
+            ->assertSee('>Document</div>', false);
+    }
+
+    public function test_pdf_block_also_works_on_an_opportunity_page(): void
+    {
+        Storage::fake('uploads');
+        Storage::disk('uploads')->put('files/2026/09/abcdefgh12345678.pdf', 'pdf');
+
+        $opportunity = SiteOpportunity::create(['slug' => 'grant', 'status' => 'published', 'published_at' => now()->subDay()]);
+        $opportunity->translations()->create(['locale' => 'ru', 'title' => 'Грант', 'excerpt' => 'Приём заявок', 'content' => [
+            ['uid' => 'f', 'type' => 'file', 'data' => ['path' => 'files/2026/09/abcdefgh12345678.pdf', 'title' => 'Положение о гранте']],
+        ]]);
+
+        $this->get(route('opportunities.show', $opportunity))
+            ->assertOk()
+            ->assertSee('Положение о гранте')
+            ->assertSee('/uploads/files/2026/09/abcdefgh12345678.pdf', false);
     }
 
     public function test_draft_and_future_publications_are_hidden_from_guests_but_previewable_by_the_admin(): void

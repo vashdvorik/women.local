@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Support\AspectRatio;
 use App\Support\Blocks;
 use App\Support\Contrast;
+use App\Support\FileBlock;
 use App\Support\TranslationStatus;
 use App\Support\YouTube;
 use PHPUnit\Framework\TestCase;
@@ -102,6 +103,109 @@ class SupportTest extends TestCase
         ], Blocks::ARTICLE_KINDS);
 
         $this->assertSame('2026/09/cccccccccccc.webp', $canonical[0]['data']['path']);
+    }
+
+    public function test_file_path_accepts_only_a_safe_pdf_under_uploads(): void
+    {
+        $this->assertSame('files/2026/09/abcdefgh12345678.pdf', Blocks::normalizeFilePath('files/2026/09/abcdefgh12345678.pdf'));
+        $this->assertSame('files/2026/09/abcdefgh12345678.pdf', Blocks::normalizeFilePath('/uploads/files/2026/09/abcdefgh12345678.pdf'));
+        $this->assertSame('files/2026/09/abcdefgh12345678.pdf', Blocks::normalizeFilePath('https://evil.example/uploads/files/2026/09/abcdefgh12345678.pdf'));
+
+        $this->assertNull(Blocks::normalizeFilePath('../secret.pdf'));
+        $this->assertNull(Blocks::normalizeFilePath('files/../../secret.pdf'));
+        $this->assertNull(Blocks::normalizeFilePath('files/2026/09/run.php'));
+        $this->assertNull(Blocks::normalizeFilePath('files/2026/09/photo.webp'));
+        $this->assertNull(Blocks::normalizeFilePath('a/b/c/d/e.pdf')); // слишком глубоко
+        $this->assertNull(Blocks::normalizeFilePath(''));
+        $this->assertNull(Blocks::normalizeFilePath(null));
+
+        // Виды не подменяют друг друга: PDF — не картинка, картинка — не файл.
+        $this->assertNull(Blocks::normalizePath('files/2026/09/abcdefgh12345678.pdf'));
+    }
+
+    public function test_file_block_canonical_form(): void
+    {
+        $canonical = Blocks::canonical([
+            ['uid' => 'f', 'type' => 'file', 'data' => [
+                'path' => 'files/2026/09/abcdefgh12345678.pdf',
+                'title' => "  Каталог \n  2026  ",
+                'name' => "../..\\каталог\x07.pdf",
+                'size' => '2500000',
+            ]],
+            ['uid' => 'g', 'type' => 'file', 'data' => ['path' => 'nope.txt', 'title' => 'Без файла', 'name' => 'x.pdf', 'size' => 5]],
+            ['uid' => 'h', 'type' => 'file', 'data' => ['path' => 'files/2026/09/abcdefgh12345678.pdf', 'size' => -1]],
+        ], Blocks::ARTICLE_KINDS);
+
+        $this->assertSame([
+            'path' => 'files/2026/09/abcdefgh12345678.pdf',
+            'title' => 'Каталог 2026',
+            'name' => 'каталог.pdf',
+            'size' => 2500000,
+        ], $canonical[0]['data']);
+
+        // Без корректного файла имя и размер тоже не сохраняются; название остаётся.
+        $this->assertSame(['path' => null, 'title' => 'Без файла', 'name' => null, 'size' => null], $canonical[1]['data']);
+
+        // Неизвестный размер — null, а не «0» или отрицательное число.
+        $this->assertNull($canonical[2]['data']['size']);
+        $this->assertSame('', $canonical[2]['data']['title']);
+
+        // Альбому файлы не нужны: там только картинки.
+        $this->assertSame([], Blocks::canonical([['uid' => 'f', 'type' => 'file', 'data' => []]], Blocks::ALBUM_KINDS));
+    }
+
+    public function test_file_block_merge_takes_the_title_from_the_translation_and_the_file_from_primary(): void
+    {
+        $primary = Blocks::canonical([
+            ['uid' => 'f', 'type' => 'file', 'data' => ['path' => 'files/2026/09/abcdefgh12345678.pdf', 'title' => 'Каталог', 'name' => 'k.pdf', 'size' => 10]],
+        ], Blocks::ARTICLE_KINDS);
+
+        $merged = Blocks::mergeTranslation($primary, [
+            ['uid' => 'f', 'type' => 'file', 'data' => ['path' => 'files/evil.pdf', 'title' => ' Catalog ', 'name' => 'evil.pdf', 'size' => 999]],
+        ]);
+
+        $this->assertSame([
+            'path' => 'files/2026/09/abcdefgh12345678.pdf',
+            'title' => 'Catalog',
+            'name' => 'k.pdf',
+            'size' => 10,
+        ], $merged[0]['data']);
+
+        // Нет присланного перевода — название пустое (на сайте подставится русское).
+        $this->assertSame('', Blocks::mergeTranslation($primary, [])[0]['data']['title']);
+    }
+
+    public function test_translation_status_counts_the_file_title_as_text_and_the_file_as_content(): void
+    {
+        $file = fn (?string $path, string $title) => ['uid' => 'f', 'type' => 'file', 'data' => ['path' => $path, 'title' => $title]];
+
+        // Русская вкладка: файл — содержимое, а название без файла — нет.
+        $withFile = ['title' => 'Т', 'excerpt' => 'О', 'content' => [$file('files/2026/09/a.pdf', '')]];
+        $titleOnly = ['title' => 'Т', 'excerpt' => 'О', 'content' => [$file(null, 'Каталог')]];
+
+        $this->assertSame(TranslationStatus::DONE, TranslationStatus::primary($withFile));
+        $this->assertSame(TranslationStatus::EMPTY, TranslationStatus::primary($titleOnly));
+
+        // Перевод: название файла — переводимый текст, его нехватка даёт «частично».
+        $ru = ['title' => 'Т', 'excerpt' => 'О', 'content' => [$file('files/2026/09/a.pdf', 'Каталог')]];
+
+        $this->assertSame(TranslationStatus::PARTIAL, TranslationStatus::secondary($ru, [
+            'title' => 'T', 'excerpt' => 'O', 'content' => [$file('files/2026/09/a.pdf', '')],
+        ]));
+        $this->assertSame(TranslationStatus::DONE, TranslationStatus::secondary($ru, [
+            'title' => 'T', 'excerpt' => 'O', 'content' => [$file('files/2026/09/a.pdf', 'Catalog')],
+        ]));
+    }
+
+    public function test_pdf_size_label_is_short_and_follows_the_language(): void
+    {
+        $this->assertNull(FileBlock::sizeLabel(0));
+        $this->assertSame('1 КБ', FileBlock::sizeLabel(10));
+        $this->assertSame('340 КБ', FileBlock::sizeLabel(340 * 1024));
+        $this->assertSame('2,4 МБ', FileBlock::sizeLabel(2_500_000));
+        $this->assertSame('2.4 MB', FileBlock::sizeLabel(2_500_000, 'en'));
+        $this->assertSame('2,4 MB', FileBlock::sizeLabel(2_500_000, 'ro'));
+        $this->assertSame('340 KB', FileBlock::sizeLabel(340 * 1024, 'en'));
     }
 
     public function test_translation_status_distinguishes_partial_from_empty(): void

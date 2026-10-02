@@ -14,7 +14,7 @@
                 <thead>
                     <tr>
                         <th>Название</th>
-                        <th class="w-24">Новостей</th>
+                        <th class="w-28">Публикаций</th>
                         <th class="w-32">Возможностей</th>
                         <th class="w-40"></th>
                     </tr>

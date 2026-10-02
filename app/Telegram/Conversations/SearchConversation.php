@@ -7,11 +7,16 @@ namespace App\Telegram\Conversations;
 use App\Models\BotUser;
 use App\Services\EmbeddingService;
 use App\Services\MatchingService;
+use App\Support\BotMessages;
+use App\Telegram\TelegramLocale;
 use SergiX44\Nutgram\Conversations\Conversation;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
+/**
+ * Поиск контактов с помощью ИИ. Все тексты — из resources/data/bot_messages.php (раздел «Поиск контактов»).
+ */
 class SearchConversation extends Conversation
 {
     /**
@@ -21,16 +26,7 @@ class SearchConversation extends Conversation
 
     public function start(Nutgram $bot): void
     {
-        $bot->sendMessage(
-            "🔍 <b>Поиск контактов</b>\n\n"
-            . "Опишите, кого или какую экспертизу вы ищете. AI поможет сориентироваться в профилях участниц и предложит близкие варианты.\n\n"
-            . "<i>Например:\n"
-            . "· ищу партнёрку для экспорта\n"
-            . "· нужен эксперт по маркетингу\n"
-            . "· хочу найти поставщиков упаковки\n"
-            . "· ищу ментора по финансам</i>",
-            parse_mode: 'HTML',
-        );
+        $this->say($bot, 'search_intro');
 
         $this->next('handleQuery');
     }
@@ -46,18 +42,18 @@ class SearchConversation extends Conversation
         $query = trim((string) ($bot->message()?->text ?? ''));
 
         if ($query === '') {
-            $bot->sendMessage('Пожалуйста, напишите текстом, кого или какую поддержку вы ищете.');
+            $this->say($bot, 'search_query_required');
             $this->next('handleQuery');
             return;
         }
 
-        $bot->sendMessage('⏳ Ищу подходящие профили...');
+        $this->say($bot, 'search_in_progress');
 
         $telegramId  = $bot->userId();
         $currentUser = BotUser::where('telegram_id', $telegramId)->first();
 
         if (! $currentUser) {
-            $bot->sendMessage('⚠️ Профиль не найден. Откройте @WomenComBot и отправьте /start, чтобы подать заявку.');
+            $this->say($bot, 'search_profile_missing');
             $this->end();
             return;
         }
@@ -72,12 +68,7 @@ class SearchConversation extends Conversation
             $matches = $matcher->searchByQuery($vector, $currentUser, 3);
 
             if ($matches->isEmpty()) {
-                $escapedQuery = htmlspecialchars($query, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-                $bot->sendMessage(
-                    "По запросу «{$escapedQuery}» пока нет близких результатов.\n\n"
-                    . "Попробуйте переформулировать: укажите сферу, задачу, тип контакта или формат сотрудничества.",
-                    parse_mode: 'HTML',
-                );
+                $this->say($bot, 'search_no_results', ['query' => $query]);
                 $this->end();
                 return;
             }
@@ -99,7 +90,7 @@ class SearchConversation extends Conversation
             }
         } catch (\Throwable $e) {
             logger()->warning('Bot AI search failed', ['error' => $e->getMessage()]);
-            $bot->sendMessage('⚠️ Поиск сейчас недоступен. Попробуйте ещё раз позже.');
+            $this->say($bot, 'search_unavailable');
             $this->end();
         }
     }
@@ -122,24 +113,22 @@ class SearchConversation extends Conversation
 
     private function sendResult(Nutgram $bot, array $result, int $pos, int $total): void
     {
-        $pct  = (int) round($result['score'] * 100);
-        $name = htmlspecialchars((string) $result['name'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
-        $desc = $result['description']
-            ? htmlspecialchars(mb_substr($result['description'], 0, 250), ENT_QUOTES | ENT_HTML5, 'UTF-8')
-            : null;
-        $exp = $result['expectation']
-            ? htmlspecialchars(mb_substr($result['expectation'], 0, 150), ENT_QUOTES | ENT_HTML5, 'UTF-8')
-            : null;
+        $locale = TelegramLocale::for($bot);
 
-        $text  = "👤 <b>{$name}</b>";
-        $text .= "\nСовпадение по профилю: <b>{$pct}%</b>";
+        $text = BotMessages::text('search_result', $locale, [
+            'name'    => (string) $result['name'],
+            'percent' => (int) round($result['score'] * 100),
+        ]);
 
-        if ($desc) {
-            $text .= "\n\n{$desc}";
+        // Описание и «что ищет» — данные участницы, а не наши слова: обрезаются и экранируются, оформление — из файла текстов.
+        if ($result['description']) {
+            $text .= "\n\n" . BotMessages::escape(mb_substr($result['description'], 0, 250));
         }
 
-        if ($exp) {
-            $text .= "\n\n🔎 <b>Ищет или предлагает:</b> {$exp}";
+        if ($result['expectation']) {
+            $text .= "\n\n" . BotMessages::text('search_result_expectation', $locale, [
+                'text' => mb_substr($result['expectation'], 0, 150),
+            ]);
         }
 
         $keyboard = InlineKeyboardMarkup::make();
@@ -147,22 +136,27 @@ class SearchConversation extends Conversation
         if ($result['username']) {
             $keyboard->addRow(
                 InlineKeyboardButton::make(
-                    "Написать @{$result['username']}",
+                    BotMessages::text('search_write_button', $locale, ['username' => $result['username']]),
                     url: "https://t.me/{$result['username']}"
                 )
             );
         }
 
         if ($pos === 1 && $total > 1) {
-            $more = $total - 1;
             $keyboard->addRow(
                 InlineKeyboardButton::make(
-                    "Показать ещё {$more} →",
+                    BotMessages::text('search_more_button', $locale, ['count' => $total - 1]),
                     callback_data: 'search:more'
                 )
             );
         }
 
         $bot->sendMessage($text, parse_mode: 'HTML', reply_markup: $keyboard);
+    }
+
+    /** Сообщение из файла текстов на языке Telegram участницы. */
+    private function say(Nutgram $bot, string $key, array $vars = []): void
+    {
+        $bot->sendMessage(BotMessages::text($key, TelegramLocale::for($bot), $vars), parse_mode: 'HTML');
     }
 }

@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace App\Telegram;
 
+use App\Support\BotMessages;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\KeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\ReplyKeyboardMarkup;
 
 class TelegramKeyboards
 {
-    public const BTN_CABINET = '📋 Войти в кабинет';
-    public const BTN_MATCHES = '🔎 Найти контакты';
-    public const BTN_CHAT    = '💬 Чат сообщества';
-
-    public static function mainMenu(): ReplyKeyboardMarkup
+    /**
+     * Главное меню одобренной участницы. Подписи берутся из resources/data/bot_messages.php (правятся в админке);
+     * нажатие узнаётся через BotMessages::matches(), а не по сравнению с константой.
+     */
+    public static function mainMenu(string $locale = BotMessages::DEFAULT_LOCALE): ReplyKeyboardMarkup
     {
         return ReplyKeyboardMarkup::make(resize_keyboard: true)
             ->addRow(
-                KeyboardButton::make(self::BTN_MATCHES),
-                KeyboardButton::make(self::BTN_CHAT),
+                KeyboardButton::make(BotMessages::text('menu_matches_button', $locale)),
+                KeyboardButton::make(BotMessages::text('menu_chat_button', $locale)),
             );
     }
 }

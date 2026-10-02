@@ -1,6 +1,6 @@
-<x-layouts.admin title="Новости">
+<x-layouts.admin title="Публикации">
     <x-slot:actions>
-        <a href="{{ route('admin.posts.create') }}" class="btn-primary">Добавить новость</a>
+        <a href="{{ route('admin.posts.create') }}" class="btn-primary">Добавить публикацию</a>
     </x-slot:actions>
 
     <div class="space-y-4">
@@ -12,8 +12,8 @@
 
         @if($posts->isEmpty())
             <div class="card text-center">
-                <p class="text-reading text-ink-muted">Новостей пока нет.</p>
-                <a href="{{ route('admin.posts.create') }}" class="btn-primary mt-4">Добавить новость</a>
+                <p class="text-reading text-ink-muted">Публикаций пока нет.</p>
+                <a href="{{ route('admin.posts.create') }}" class="btn-primary mt-4">Добавить публикацию</a>
             </div>
         @else
             <div class="overflow-x-auto">
@@ -63,7 +63,7 @@
                                         <x-admin.delete-button
                                             :action="route('admin.posts.destroy', $post)"
                                             :subject="$t?->title ?: 'Без заголовка'"
-                                            noun="новость" />
+                                            noun="публикацию" />
                                     </div>
                                 </td>
                             </tr>

@@ -92,6 +92,54 @@ class AdminCampTest extends TestCase
         $this->assertDoesNotMatchRegularExpression('/camp-switch__tab--active[^>]*>\s*<span>Внешний сайт<\/span>/', $cabinets);
     }
 
+    public function test_publications_live_inside_the_media_library_group_like_on_the_public_site(): void
+    {
+        $content = $this->actingAsAdmin()->get(route('admin.dashboard'))->assertOk()->getContent();
+
+        // Отдельной группы «Публикации» нет: они внутри «Медиатеки» рядом с фото и видео.
+        $this->assertStringNotContainsString('<span>Публикации</span>', $content);
+        $this->assertStringNotContainsString('<span>Медиа</span>', $content);
+
+        $media = strpos($content, '<span>Медиатека</span>');
+        $albums = strpos($content, '<span>Все фотоальбомы</span>');
+        $videos = strpos($content, '<span>Все видео</span>');
+        $posts = strpos($content, '<span>Все публикации</span>');
+        $tags = strpos($content, '<span>Теги</span>');
+
+        $this->assertNotFalse($media);
+        $this->assertTrue($media < $albums && $albums < $videos && $videos < $posts && $posts < $tags,
+            'Порядок меню: Медиатека → фотоальбомы → видео → публикации → теги');
+    }
+
+    public function test_site_menu_starts_with_news_projects_and_opportunities(): void
+    {
+        $content = $this->actingAsAdmin()->get(route('admin.dashboard'))->assertOk()->getContent();
+
+        $news = strpos($content, '<span>Новости</span>');
+        $projects = strpos($content, '<span>Проекты</span>');
+        $opportunities = strpos($content, '<span>Возможности</span>');
+        $experts = strpos($content, '<span>Эксперты</span>');
+
+        $this->assertTrue($news < $projects && $projects < $opportunities && $opportunities < $experts);
+    }
+
+    public function test_publications_pages_open_the_media_library_group_and_use_publication_wording(): void
+    {
+        $this->actingAsAdmin()->get(route('admin.posts.index'))
+            ->assertOk()
+            ->assertSee('Публикаций пока нет.')
+            ->assertSee('Добавить публикацию')
+            // Открытая страница публикаций раскрывает группу «Медиатека».
+            ->assertSee("sidebarNav('media')", false)
+            // «Новость» в подписях самой страницы — только у раздела «Новости» в меню.
+            ->assertDontSee('Новостей пока нет');
+
+        $this->actingAsAdmin()->get(route('admin.posts.create'))
+            ->assertOk()
+            ->assertSee('Новая публикация')
+            ->assertDontSee('Новая новость');
+    }
+
     public function test_page_header_names_the_camp(): void
     {
         $this->actingAsAdmin()->get(route('admin.events.index'))

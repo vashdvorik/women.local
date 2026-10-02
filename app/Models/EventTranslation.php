@@ -14,7 +14,13 @@ class EventTranslation extends Model
         'date_label',
         'title',
         'description',
+        'content',
     ];
+
+    protected function casts(): array
+    {
+        return ['content' => 'array'];
+    }
 
     public function event(): BelongsTo
     {

@@ -1,64 +1,101 @@
 ﻿============================================================
-  ЗАПУСК: INSPIRE Community
-  Обновлено: июль 2026
+  DEPLOY: Women Hub (womenhub.innovation.md)
 ============================================================
 
-СТЕК: Laravel 12 + собственная админка (Blade, Alpine.js, Tailwind; перенесена из education3) + Nutgram (Telegram) + Gemini AI
+Хостинг: cPanel. PHP 8.3 = /usr/local/bin/ea-php83. Проект: ~/public_html/womenhub.innovation.md
+Команды на сервере выполняются из папки проекта:
+
+  cd ~/public_html/womenhub.innovation.md
 
 
 ------------------------------------------------------------
-1. ТРЕБОВАНИЯ
+1. ПЕРЕД ПУШЕМ (на своём компьютере)
 ------------------------------------------------------------
 
-PHP 8.2+ (pdo_mysql, mbstring, openssl, tokenizer, xml, ctype, json, bcmath, fileinfo, curl, gd)
-MySQL 8.0+
-Composer 2.x
-Node.js 18+ — только на машине разработчика: собранные ассеты админки лежат в public/build и коммитятся,
-на хостинге Node не нужен.
-Gemini API ключ (aistudio.google.com)
-Telegram Bot Token (@BotFather)
+  npm run verify        # сборка + тесты + проверка страниц, всё должно быть зелёным
+  git add -A
+  git commit -m "..."
+  git push
+
+  - Менялись стили или скрипты админки: сначала npm run build, public/build коммитится
+    (Node на сервере нет).
+  - .env и public/uploads в git не попадают, так и должно быть.
 
 
 ------------------------------------------------------------
-2. БЫСТРЫЙ ЗАПУСК (локально)
+2. ПЕРВАЯ УСТАНОВКА
 ------------------------------------------------------------
 
+  Заранее, в cPanel:
+  - база MySQL и пользователь;
+  - PHP 8.3 с расширениями pdo_mysql, mbstring, openssl, tokenizer, xml, ctype, json, bcmath,
+    fileinfo, curl, gd;
+  - корень домена = папка public/ внутри проекта;
+  - upload_max_filesize и post_max_size не меньше 25M (PDF в публикациях).
+
+  git clone <репозиторий> .
   cp .env.example .env
-  # → заполнить DB_DATABASE, DB_USERNAME, DB_PASSWORD
-  # → заполнить TELEGRAM_TOKEN, GEMINI_API_KEY
+  nano .env             # заполнить по разделу 5
 
-  composer install
-  php artisan key:generate
-  php artisan migrate
-  php artisan storage:link
-  npm install && npm run build   # только для разработки: пересобрать ассеты админки
+  /usr/local/bin/ea-php83 composer.phar install --no-dev --optimize-autoloader
+  /usr/local/bin/ea-php83 artisan key:generate --force
+  /usr/local/bin/ea-php83 artisan migrate --force
+  /usr/local/bin/ea-php83 artisan db:seed --force
+  /usr/local/bin/ea-php83 artisan storage:link
+  /usr/local/bin/ea-php83 artisan optimize:clear
+  /usr/local/bin/ea-php83 artisan nutgram:hook:set https://womenhub.innovation.md/telegram/webhook
+  /usr/local/bin/ea-php83 artisan bot:sync-commands      # меню команд бота (ru, en, ro)
 
-  # Админка (/admin): пускается ровно одна почта из ADMIN_EMAIL.
-  # В .env задать ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD (пароль не короче 12 символов), затем:
-  php artisan db:seed --class=AdminUserSeeder
-  # Если пользователь с этой почтой уже есть, сидер только обновит пароль, когда он изменился.
+  Cron (cPanel, каждую минуту): очередь, в ней эмбеддинги и рассылки.
 
-  # Начальный контент сайта: 12 экспертов и 9 новостей, перенесённые из старых Blade-массивов.
-  # Фото прогоняются через WebP-конвейер админки в public/uploads. Безопасно запускать повторно.
-  php artisan db:seed --class=ContentSeeder
-
-  # Запустить всё одной командой (serve + queue + vite + логи):
-  composer dev
+  * * * * * /usr/local/bin/ea-php83 /home/tirastyl/public_html/womenhub.innovation.md/artisan queue:work database --stop-when-empty --tries=3 >> /dev/null 2>&1
 
 
 ------------------------------------------------------------
-3. ПРОДАКШЕН (.env)
+3. ОБНОВЛЕНИЕ
+------------------------------------------------------------
+
+  git pull
+  /usr/local/bin/ea-php83 composer.phar install --no-dev --optimize-autoloader
+  /usr/local/bin/ea-php83 artisan migrate --force
+  /usr/local/bin/ea-php83 artisan optimize:clear
+
+  Нужен недостающий начальный контент (эксперты, новости, темы):
+  /usr/local/bin/ea-php83 artisan db:seed --force
+  Безопасно: ничего не дублирует и не затирает.
+
+
+------------------------------------------------------------
+4. ПЕРЕЗАПИСЬ БД С НУЛЯ
+------------------------------------------------------------
+
+  СТИРАЕТ ВСЁ: участниц из Telegram-бота, подписчиков, посты, ключи ИИ из админки.
+
+  mysqldump -u ПОЛЬЗОВАТЕЛЬ -p БАЗА > backup.sql      # сначала дамп
+  git pull
+  /usr/local/bin/ea-php83 composer.phar install --no-dev --optimize-autoloader
+  /usr/local/bin/ea-php83 artisan migrate:fresh --seed --force
+  /usr/local/bin/ea-php83 artisan optimize:clear
+
+  Появится: админ из .env, 11 экспертов и 9 новостей с фото, темы сайта и кабинета.
+  Не появится (так задумано): тестовые участницы, демо-тексты новостей, dev-вход, настройки и ключи ИИ.
+
+  Не подошёл ADMIN_PASSWORD: контент всё равно загрузится, а команда закончится ошибкой.
+  Исправьте .env и выполните:
+
+  /usr/local/bin/ea-php83 artisan db:seed --class=AdminUserSeeder --force
+
+
+------------------------------------------------------------
+5. .env НА ПРОДЕ
 ------------------------------------------------------------
 
   APP_NAME="Women Community"
-  APP_ENV=production
-  APP_DEBUG=false
-  APP_URL=https://ваш-домен.com
-
+  APP_ENV=production                 # ОБЯЗАТЕЛЬНО: при local включится dev-вход и тестовые участницы
+  APP_DEBUG=false                    # ОБЯЗАТЕЛЬНО
+  APP_URL=https://womenhub.innovation.md
   APP_LOCALE=ru
   APP_FALLBACK_LOCALE=ru
-
-  LOG_CHANNEL=stack
   LOG_STACK=daily
   LOG_LEVEL=warning
 
@@ -70,100 +107,51 @@ Telegram Bot Token (@BotFather)
   DB_PASSWORD=...
 
   SESSION_DRIVER=database
-  SESSION_DOMAIN=ваш-домен.com
-
+  SESSION_DOMAIN=womenhub.innovation.md
   QUEUE_CONNECTION=database
   CACHE_STORE=database
 
-  TELEGRAM_TOKEN=...
-  TELEGRAM_COMMUNITY_URL=https://ваш-домен.com
-
+  ADMIN_NAME=...
+  ADMIN_EMAIL=...                    # в админку пускает только эта почта
+  ADMIN_PASSWORD=...                 # свой, случайный, не короче 12 символов; без change_me, password,
+                                     # demo, admin, qwerty, 123456, example: такой пароль отклоняется
+  TELEGRAM_TOKEN=...                 # настоящий: с заглушкой из .env.example вебхук отвечает 500
+  TELEGRAM_COMMUNITY_URL=https://t.me/...    # ссылка на Telegram-сообщество: кнопки «Открыть Telegram» и
+                                     # «Сообщество». НЕ адрес сайта. Без этой строки они ведут на inspair.community
   GEMINI_API_KEY=...
 
 
 ------------------------------------------------------------
-4. ПРОДАКШЕН: первый деплой (shared hosting / cPanel)
+6. ПРОВЕРКА ПОСЛЕ ДЕПЛОЯ
 ------------------------------------------------------------
 
-  # composer.phar уже в проекте (из git), vendor/ НЕ в гите.
-  # Все команды — через /usr/local/bin/php
+  https://womenhub.innovation.md/.env и /composer.json — 404 или 403.
+      Открываются: корень домена указан на папку проекта, а не на public/, исправьте в cPanel.
+  https://womenhub.innovation.md/dev/account-login — 404
+  Главная, /experts, /events открываются, фото на месте; /login пускает только ADMIN_EMAIL
 
-  /usr/local/bin/php composer.phar install --no-dev --optimize-autoloader
-
-  php artisan key:generate
-  php artisan migrate --force
-  php artisan storage:link
-  php artisan optimize:clear
-
-  # Админ-панель (/admin): ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD в .env, затем
-  php artisan db:seed --class=AdminUserSeeder
-
-  # Начальный контент публичного сайта (эксперты, новости); повторный запуск ничего не дублирует
-  php artisan db:seed --class=ContentSeeder
-
-  # Telegram webhook (указать свой домен)
-  php artisan nutgram:hook:set https://womenhub.innovation.md/telegram/webhook
-
-  # AI-эмбеддинги (после появления пользователей)
-  php artisan ai:recompute-embeddings
+  /usr/local/bin/ea-php83 artisan nutgram:hook:info      # вебхук установлен
+  /usr/local/bin/ea-php83 artisan tinker --execute="echo App\Models\User::count().' '.App\Models\BotUser::count();"
+      # после чистой установки: 1 0 (только админ, участниц нет)
 
 
 ------------------------------------------------------------
-5. CRON (shared hosting)
+7. НЕ ЗАБЫТЬ
 ------------------------------------------------------------
 
-  * * * * * /usr/local/bin/php /home/tirastyl/public_html/womenhub.innovation.md/artisan schedule:run >> /dev/null 2>&1
-  * * * * * /usr/local/bin/php /home/tirastyl/public_html/womenhub.innovation.md/artisan queue:work database --stop-when-empty --tries=3 >> /dev/null 2>&1
-
-
-------------------------------------------------------------
-6. ОБНОВЛЕНИЕ
-------------------------------------------------------------
-
-  git pull
-  composer install --no-dev --optimize-autoloader
-  php artisan migrate --force
-  php artisan optimize:clear
-
-  # Ассеты админки (public/build) приходят в git готовыми. Менялись стили или скрипты админки —
-  # соберите их локально (npm run build) и закоммитьте public/build.
-  # Загруженные в админке картинки лежат в public/uploads/ГГГГ/ММ и в git не попадают:
-  # каталог должен быть доступен веб-серверу на запись и попадать в резервные копии.
-
-
-------------------------------------------------------------
-7. ТЕСТОВЫЕ ДАННЫЕ (dev)
-------------------------------------------------------------
-
-  php artisan db:seed --class=BotUserSeeder      # 10 участников
-  php artisan db:seed --class=CommunitySeeder     # 15 участников
-  php artisan ai:recompute-embeddings             # пересчёт AI
-
-
-------------------------------------------------------------
-8. МАРШРУТЫ
-------------------------------------------------------------
-
-  /                         — лендинг
-  /admin                    — админка (вход /login, только ADMIN_EMAIL)
-  /media/publications       — публикации (из админки)
-  /media/photos, /media/videos, /projects, /opportunities, /events, /experts — материалы из админки
-  /app/account/login        — вход по Telegram username
-  /app/account/             — личный кабинет
-  /app/account/profile      — просмотр профиля
-  /app/account/profile/edit — редактирование
-  /app/account/matches      — AI-матчи
-  /app/account/search       — AI-поиск
-  /app/account/people       — все участники
-
-
-------------------------------------------------------------
-9. ПРОВЕРКА ПОСЛЕ ДЕПЛОЯ
-------------------------------------------------------------
-
-  php artisan about
-  php artisan nutgram:hook:info
-  php artisan tinker --execute="echo DB::table('jobs')->count() . ' pending';"
-  php artisan tinker --execute="echo \App\Models\BotUser::whereNotNull('embedding')->count() . ' with embeddings';"
+  - key:generate только при первой установке: повторный сбросит сессии и сделает нечитаемыми
+    ключи ИИ, внесённые в админке.
+  - vendor/ лежит в git вместе с dev-пакетами: после каждого git pull запускайте
+    composer install --no-dev.
+  - public/uploads не в git: доступен серверу на запись и входит в резервные копии
+    (фото и PDF, загруженные в админке, восстановить нельзя).
+  - Ключи API в сидерах и git не хранятся: вносите в админке («Кабинеты участниц → Настройки»).
+  - Тексты бота лежат в resources/data/bot_messages.php, правки администратора — в базе
+    («Кабинеты участниц → Сообщения бота»): git pull их не затирает, а перезапись БД с нуля (п. 4)
+    вернёт исходные тексты из файла. Английский и румынский тексты — черновой перевод: вычитать.
+    Если правили описания команд не из админки: artisan bot:sync-commands.
+  - artisan ai:recompute-embeddings — когда появятся участницы и внесены ключи ИИ.
+  - Страницы новостей: текст и фото вносятся в админке (Новости → Изменить → «Текст страницы новости»).
+    Демо-текст на боевом сервере не создаётся. Пока текста нет, «Подробнее» на карточке ведёт по внешней ссылке.
 
 ============================================================

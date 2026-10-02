@@ -8,7 +8,7 @@ use App\Support\PublicCards;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
-/** «Медиатека → Публикации»: новости и статьи, введённые в админке (блочный редактор). */
+/** «Медиатека → Публикации»: каталоги, брошюры и другие материалы организации, введённые в админке (блочный редактор). */
 class PublicationsController extends ContentPageController
 {
     public function index(): View
@@ -22,9 +22,9 @@ class PublicationsController extends ContentPageController
             'eyebrow' => $this->tri('Медиатека', 'Media library', 'Mediatecă'),
             'title' => $this->tri('Публикации', 'Publications', 'Publicații'),
             'intro' => $this->tri(
-                'Публикации, статьи и материалы платформы.',
-                'Platform publications, articles and materials.',
-                'Publicațiile, articolele și materialele platformei.'
+                'Каталоги, брошюры и другие материалы, которые опубликовала организация.',
+                'Catalogues, brochures and other materials published by the organisation.',
+                'Cataloage, broșuri și alte materiale publicate de organizație.'
             ),
         ], $posts->getCollection()->map(fn (Post $post) => PublicCards::post($post))->all(), $posts);
     }

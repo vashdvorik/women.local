@@ -406,16 +406,6 @@
                             <p><span data-lang="ru">Объединяет академический опыт, образование и международный консалтинг.</span><span data-lang="en">Combines academic experience, education and international consulting.</span><span data-lang="ro">Combină experiența academică, educația și consultanța internațională.</span></p>
                         </div>
                     </article>
-                    <article class="miro-member-card">
-                        <img src="{{ asset('themes/public/' . ($publicTheme ?? 'fortun') . '/images/experts/expert-zinaida.png') }}" alt="Zinaida Emelyanova" loading="lazy">
-                        <div>
-                            <h4><span data-lang="ru">Зинаида Емельянова</span><span data-lang="en">Zinaida Emelyanova</span><span data-lang="ro">Zinaida Emelyanova</span></h4>
-                            <p class="miro-member-card__role"><span data-lang="ru">Директор Агентства инноваций и развития</span><span data-lang="en">Director of the Agency for Innovation and Development</span><span data-lang="ro">Directoarea Agenției pentru Inovații și Dezvoltare</span></p>
-                            <p class="miro-member-card__specialization"><span data-lang="ru">Инновации и развитие проектов</span><span data-lang="en">Innovation &amp; project development</span><span data-lang="ro">Inovații și dezvoltarea proiectelor</span></p>
-                            <div class="miro-member-card__tags"><span class="miro-profile-tag miro-profile-tag--coral"><span data-lang="ru">Инновации</span><span data-lang="en">Innovation</span><span data-lang="ro">Inovație</span></span><span class="miro-profile-tag miro-profile-tag--rose"><span data-lang="ru">Развитие</span><span data-lang="en">Development</span><span data-lang="ro">Dezvoltare</span></span><span class="miro-profile-tag miro-profile-tag--blue"><span data-lang="ru">Возможности</span><span data-lang="en">Opportunities</span><span data-lang="ro">Oportunități</span></span></div>
-                            <p><span data-lang="ru">Развивает инновационные проекты и поддерживает предпринимательские инициативы.</span><span data-lang="en">Develops innovation projects and supports entrepreneurial initiatives.</span><span data-lang="ro">Dezvoltă proiecte inovatoare și susține inițiative antreprenoriale.</span></p>
-                        </div>
-                    </article>
                 </div>
                 <div class="miro-grid-2 miro-members__legacy">
                     <article class="miro-member-card">

@@ -51,21 +51,6 @@ return [
             'tone' => 'orange',
         ],
         [
-            'photo' => 'experts/expert-zinaida.png',
-            'name' => ['ru' => 'Зинаида Емельянова', 'en' => 'Zinaida Emelyanova', 'ro' => 'Zinaida Emelyanova'],
-            'role' => ['ru' => 'Директор Агентства инноваций и развития', 'en' => 'Director of the Agency for Innovation and Development', 'ro' => 'Directoarea Agenției pentru Inovații și Dezvoltare'],
-            'specialization' => ['ru' => 'Инновации и развитие проектов', 'en' => 'Innovation & project development', 'ro' => 'Inovații și dezvoltarea proiectelor'],
-            'tags' => [
-                ['ru' => 'Инновации', 'en' => 'Innovation', 'ro' => 'Inovație'],
-                ['ru' => 'Развитие', 'en' => 'Development', 'ro' => 'Dezvoltare'],
-                ['ru' => 'Возможности', 'en' => 'Opportunities', 'ro' => 'Oportunități'],
-            ],
-            'description' => ['ru' => 'Развивает инновационные проекты и поддерживает предпринимательские инициативы.', 'en' => 'Develops innovation projects and supports entrepreneurial initiatives.', 'ro' => 'Dezvoltă proiecte inovatoare și susține inițiative antreprenoriale.'],
-            'looking_for' => ['ru' => 'Инновационные проекты и новые связи', 'en' => 'Innovative projects and new connections', 'ro' => 'Proiecte inovatoare și conexiuni noi'],
-            'can_offer' => ['ru' => 'Ориентир в экосистеме развития и инноваций', 'en' => 'Guidance in the innovation and development ecosystem', 'ro' => 'Orientare în ecosistemul de inovații și dezvoltare'],
-            'tone' => 'rose',
-        ],
-        [
             'photo' => 'experts/expert-mariana.png',
             'name' => ['ru' => 'Мариана Руфа', 'en' => 'Mariana Rufa', 'ro' => 'Mariana Rufa'],
             'role' => ['ru' => 'Исполнительный директор Европейской бизнес-ассоциации в Молдове (EBA)', 'en' => 'Executive Director of the European Business Association of Moldova (EBA)', 'ro' => 'Directoarea executivă a European Business Association of Moldova (EBA)'],

@@ -212,11 +212,4 @@ return [
         'contact_url_url' => 'Introduceți un link valid, de exemplu https://t.me/username.',
         'contact_url_max' => 'Linkul nu trebuie să depășească 500 de caractere.',
     ],
-
-    'telegram_messages' => [
-        'login_button' => '🔐 Intră în cabinet →',
-        'login_link' => "Bună ziua, :name! Apăsați butonul de mai jos pentru a intra în cabinetul Women Entrepreneurs Platform of the Two Banks.\n\n⏱ Linkul este valabil 24 de ore.",
-        'profile_deleted' => "✅ Profilul dvs. a fost șters.\n\nDacă doriți să vă alăturați din nou Women Entrepreneurs Platform of the Two Banks, deschideți @WomenComBot și trimiteți /start.",
-        'restart_button' => '↩️ Aplică din nou',
-    ],
 ];

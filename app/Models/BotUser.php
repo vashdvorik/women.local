@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Support\BotMessages;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +20,7 @@ class BotUser extends Model
     protected $fillable = [
         'telegram_id',
         'telegram_username',
+        'locale',
         'avatar_path',
         'first_name',
         'full_name',
@@ -60,6 +62,27 @@ class BotUser extends Model
     public function isApproved(): bool
     {
         return $this->status === self::STATUS_APPROVED;
+    }
+
+    /** Язык сообщений бота этой участнице: ru / en / ro, по умолчанию русский. */
+    public function messageLocale(): string
+    {
+        return BotMessages::locale($this->locale);
+    }
+
+    /** Запоминает язык Telegram участницы, когда она пишет боту, чтобы решения и рассылки шли на нём. */
+    public function rememberLocale(?string $languageCode): void
+    {
+        // Язык не пришёл (у Telegram он необязателен): то, что запомнено раньше, не трогаем.
+        if (! filled($languageCode)) {
+            return;
+        }
+
+        $locale = BotMessages::locale($languageCode);
+
+        if ($this->locale !== $locale) {
+            $this->update(['locale' => $locale]);
+        }
     }
 
     public function isRejected(): bool

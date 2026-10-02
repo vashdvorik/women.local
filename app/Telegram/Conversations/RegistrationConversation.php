@@ -6,6 +6,8 @@ namespace App\Telegram\Conversations;
 
 use App\Jobs\ComputeUserEmbedding;
 use App\Models\BotUser;
+use App\Support\BotMessages;
+use App\Telegram\TelegramLocale;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use SergiX44\Nutgram\Conversations\Conversation;
@@ -13,6 +15,9 @@ use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardButton;
 use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
+/**
+ * Анкета новой участницы. Все тексты — из resources/data/bot_messages.php (раздел «Заявка на участие»).
+ */
 class RegistrationConversation extends Conversation
 {
     protected ?string $fullName = null;
@@ -21,11 +26,8 @@ class RegistrationConversation extends Conversation
 
     public function start(Nutgram $bot): void
     {
-        $bot->sendMessage(
-            text: "Здравствуйте! 👋\n\nЭто заявка на участие в Women Entrepreneurs Platform of the Two Banks — цифровом пространстве для женщин-предпринимательниц, где можно представить бизнес, учиться, находить контакты и узнавать о возможностях.\n\nЯ задам несколько коротких вопросов. Это займёт 2-3 минуты.\n\nГотовы начать?",
-            reply_markup: InlineKeyboardMarkup::make()
-                ->addRow(InlineKeyboardButton::make('Да, начать', callback_data: 'reg:yes')),
-        );
+        $this->say($bot, 'registration_welcome', keyboard: InlineKeyboardMarkup::make()
+            ->addRow(InlineKeyboardButton::make($this->label($bot, 'registration_start_button'), callback_data: 'reg:yes')));
 
         $this->next('waitForConfirmation');
     }
@@ -35,7 +37,7 @@ class RegistrationConversation extends Conversation
         if ($bot->callbackQuery()?->data === 'reg:yes') {
             $bot->answerCallbackQuery();
 
-            $bot->sendMessage('Как вас зовут? Укажите имя и фамилию.');
+            $this->say($bot, 'registration_ask_name');
             $this->next('handleName');
 
             return;
@@ -49,7 +51,7 @@ class RegistrationConversation extends Conversation
         $text = $bot->message()?->text;
 
         if (empty($text)) {
-            $bot->sendMessage('Пожалуйста, отправьте имя и фамилию текстом.');
+            $this->say($bot, 'registration_name_required');
             $this->next('handleName');
 
             return;
@@ -57,9 +59,7 @@ class RegistrationConversation extends Conversation
 
         $this->fullName = $text;
 
-        $bot->sendMessage(
-            text: "Что вы представляете?\n\nРасскажите о бизнесе, сфере, продуктах, услугах, опыте или идее. Можно добавить ссылку.",
-        );
+        $this->say($bot, 'registration_ask_description');
 
         $this->next('handleDescription');
     }
@@ -69,7 +69,7 @@ class RegistrationConversation extends Conversation
         $text = $bot->message()?->text;
 
         if (empty($text)) {
-            $bot->sendMessage('Пожалуйста, опишите ваш бизнес, опыт или идею текстом.');
+            $this->say($bot, 'registration_description_required');
             $this->next('handleDescription');
 
             return;
@@ -77,11 +77,8 @@ class RegistrationConversation extends Conversation
 
         $this->description = $text;
 
-        $bot->sendMessage(
-            text: "Что вы ищете на платформе и чем можете быть полезны другим участницам?\n\nНапример: партнёры, клиенты, поставщики, знания, менторство, новые рынки, услуги или опыт.",
-            reply_markup: InlineKeyboardMarkup::make()
-                ->addRow(InlineKeyboardButton::make('Пропустить', callback_data: 'reg:skip')),
-        );
+        $this->say($bot, 'registration_ask_expectation', keyboard: InlineKeyboardMarkup::make()
+            ->addRow(InlineKeyboardButton::make($this->label($bot, 'registration_skip_button'), callback_data: 'reg:skip')));
 
         $this->next('handleExpectation');
     }
@@ -111,6 +108,7 @@ class RegistrationConversation extends Conversation
         $botUser = BotUser::create([
             'telegram_id'       => $telegramUser->id,
             'telegram_username' => $telegramUser->username,
+            'locale'            => TelegramLocale::for($bot),
             'first_name'        => $telegramUser->first_name,
             'full_name'         => $this->fullName,
             'description'       => $this->description,
@@ -122,13 +120,28 @@ class RegistrationConversation extends Conversation
 
         ComputeUserEmbedding::dispatch($botUser);
 
-        $firstName = explode(' ', (string) $this->fullName)[0];
-
-        $bot->sendMessage(
-            "Спасибо, {$firstName}!\n\nЗаявка отправлена на рассмотрение. После одобрения вы получите доступ к кабинету, каталогу участниц, рекомендациям и возможностям платформы.\n\nЕсли есть вопрос, напишите команде проекта: @lesnichenkoP\n\nСайт платформы:\n" . config('nutgram.community_url', config('app.url')),
-        );
+        $this->say($bot, 'registration_done', [
+            'name'     => BotMessages::firstName($this->fullName),
+            'site_url' => config('nutgram.community_url', config('app.url')),
+        ]);
 
         $this->end();
+    }
+
+    /** Сообщение из файла текстов на языке Telegram участницы. */
+    private function say(Nutgram $bot, string $key, array $vars = [], ?InlineKeyboardMarkup $keyboard = null): void
+    {
+        $bot->sendMessage(
+            text: BotMessages::text($key, TelegramLocale::for($bot), $vars),
+            parse_mode: 'HTML',
+            reply_markup: $keyboard,
+        );
+    }
+
+    /** Подпись кнопки на языке Telegram участницы. */
+    private function label(Nutgram $bot, string $key): string
+    {
+        return BotMessages::text($key, TelegramLocale::for($bot));
     }
 
     private function downloadAvatar(Nutgram $bot, BotUser $botUser): void

@@ -7,7 +7,7 @@ use App\Models\Tag;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Данные для Alpine-редактора новости/возможности. Собираются здесь, чтобы
+ * Данные для Alpine-редактора публикации/возможности. Собираются здесь, чтобы
  * контроллер оставался тонким.
  */
 class ArticleEditorData
@@ -54,6 +54,8 @@ class ArticleEditorData
             'blocks' => $blocks,
             'kinds' => Blocks::ARTICLE_KINDS,
             'uploadUrl' => route('admin.uploads.store'),
+            'uploadFileUrl' => route('admin.uploads.file'),
+            'fileMaxMb' => \App\Actions\StoreUploadedFile::MAX_KB / 1024,
             'ratios' => \App\Support\AspectRatio::SLOTS,
             'tags' => self::tags(),
         ];

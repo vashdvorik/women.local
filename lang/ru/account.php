@@ -212,11 +212,4 @@ return [
         'contact_url_url' => 'Введите корректную ссылку, например https://t.me/username.',
         'contact_url_max' => 'Ссылка не должна быть длиннее 500 символов.',
     ],
-
-    'telegram_messages' => [
-        'login_button' => '🔐 Войти в кабинет →',
-        'login_link' => "Здравствуйте, :name! Нажмите кнопку ниже, чтобы войти в личный кабинет Women Entrepreneurs Platform of the Two Banks.\n\n⏱ Ссылка действует 24 часа.",
-        'profile_deleted' => "✅ Ваш профиль удалён.\n\nЕсли вы захотите снова присоединиться к Women Entrepreneurs Platform of the Two Banks, откройте @WomenComBot и отправьте /start.",
-        'restart_button' => '↩️ Подать заявку снова',
-    ],
 ];

@@ -28,6 +28,9 @@
     @include('themes.public.miro.partials.miro-header', ['miroCurrentPage' => null])
 
     <main class="miro-public-page">
+        {{-- У страницы материала (новость, публикация, возможность) большой шапки нет: название стоит над
+             текстом, а кружки-украшения шапки переехали в блок с текстом (см. ниже). --}}
+        @unless($compactHero ?? false)
         <section class="miro-public-hero">
             <div class="miro-container miro-public-hero__inner">
                 <div class="miro-public-hero__copy">
@@ -40,9 +43,13 @@
                 <div class="miro-public-hero__accent" aria-hidden="true"><span></span><span></span><span></span></div>
             </div>
         </section>
+        @endunless
 
-        <section class="miro-public-content">
+        <section class="miro-public-content @if($compactHero ?? false) miro-public-content--article @endif">
             <div class="miro-container">
+                @if($compactHero ?? false)
+                    <div class="miro-public-hero__accent" aria-hidden="true"><span></span><span></span><span></span></div>
+                @endif
                 @yield('content')
             </div>
         </section>
