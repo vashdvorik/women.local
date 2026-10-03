@@ -66,6 +66,22 @@
   /usr/local/bin/ea-php83 artisan migrate --force
   /usr/local/bin/ea-php83 artisan optimize:clear
 
+  Папка vendor/ в git НЕ хранится (она в .gitignore): после каждого git pull composer install
+  обязателен, иначе сайт отвечает ошибкой 500. composer.lock в git есть, поэтому на сервер встают
+  ровно те версии пакетов, что проверены на вашем компьютере.
+
+  ОДИН РАЗ, при переходе с git-версии vendor/ (первое обновление после того, как vendor убрали из git):
+  git pull удалит vendor/ с сервера, а ЕСЛИ composer когда-либо менял там файлы, git откажется тянуть
+  изменения. Поэтому порядок такой (сайт при этом недоступен пару минут):
+
+  git checkout -- vendor                 # вернуть vendor/ к состоянию git, убрать локальные правки composer
+  git pull                               # vendor/ исчезнет
+  /usr/local/bin/ea-php83 composer.phar install --no-dev --optimize-autoloader
+  /usr/local/bin/ea-php83 artisan optimize:clear
+
+  Если composer install не может скачать пакеты (нет доступа к packagist.org с хостинга),
+  не делайте git pull: сначала выясните это у хостинга.
+
   Нужен недостающий начальный контент (эксперты, новости, темы):
   /usr/local/bin/ea-php83 artisan db:seed --force
   Безопасно: ничего не дублирует и не затирает.
@@ -170,8 +186,8 @@
 
   - key:generate только при первой установке: повторный сбросит сессии и сделает нечитаемыми
     ключи ИИ, внесённые в админке.
-  - vendor/ лежит в git вместе с dev-пакетами: после каждого git pull запускайте
-    composer install --no-dev.
+  - vendor/ в git нет: после каждого git pull запускайте composer install --no-dev (раздел 3).
+    Разовый переход со старой схемы, где vendor/ лежал в git, описан там же.
   - public/uploads не в git: доступен серверу на запись и входит в резервные копии
     (фото и PDF, загруженные в админке, восстановить нельзя).
   - Ключи API в сидерах и git не хранятся: вносите в админке («Кабинеты участниц → Настройки»).
