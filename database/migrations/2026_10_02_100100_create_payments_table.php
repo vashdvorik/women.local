@@ -19,6 +19,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
+            // Внешние ключи работают только между таблицами InnoDB; на некоторых хостингах по умолчанию MyISAM.
+            $table->engine('InnoDB');
             $table->id();
             $table->foreignId('bot_user_id')->nullable()->constrained('bot_users')->nullOnDelete();
             $table->unsignedBigInteger('telegram_id')->index();

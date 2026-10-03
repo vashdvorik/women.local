@@ -13,6 +13,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('subscriptions', function (Blueprint $table) {
+            // Внешние ключи работают только между таблицами InnoDB; на некоторых хостингах по умолчанию MyISAM.
+            $table->engine('InnoDB');
             $table->id();
             $table->foreignId('bot_user_id')->constrained('bot_users')->cascadeOnDelete();
             $table->string('plan', 20);
