@@ -190,6 +190,15 @@
     Разовый переход со старой схемы, где vendor/ лежал в git, описан там же.
   - public/uploads не в git: доступен серверу на запись и входит в резервные копии
     (фото и PDF, загруженные в админке, восстановить нельзя).
+  - Фото есть на диске, а на сайте не открываются (пустая карточка с подписью вместо картинки):
+    это права. Каталог нового месяца (public/uploads/ГГГГ/ММ) и файлы в нём должны быть доступны
+    веб-серверу. Код теперь создаёт их правильно (0755 и 0644), но каталоги и файлы, созданные ДО этой
+    правки, а также восстановленные из копии или залитые по FTP, надо исправить один раз:
+
+      find public/uploads -type d -exec chmod 755 {} \;
+      find public/uploads -type f -exec chmod 644 {} \;
+
+    Если после сидера или восстановления фото снова не видны, выполните эти две команды ещё раз.
   - Ключи API в сидерах и git не хранятся: вносите в админке («Кабинеты участниц → Настройки»).
   - Тексты бота лежат в resources/data/bot_messages.php, правки администратора — в базе
     («Кабинеты участниц → Сообщения бота»): git pull их не затирает, а перезапись БД с нуля (п. 4)
@@ -223,7 +232,9 @@
     cp ваш-сохранённый.env .env                     # тот же APP_KEY, НЕ выполнять key:generate
     /usr/local/bin/ea-php83 composer.phar install --no-dev --optimize-autoloader
     mysql -u ПОЛЬЗОВАТЕЛЬ -p БАЗА < backup.sql        # база
-    # вернуть public/uploads и storage/app/public из копии
+    # вернуть public/uploads и storage/app/public из копии, затем исправить права (раздел 7):
+    find public/uploads -type d -exec chmod 755 {} \;
+    find public/uploads -type f -exec chmod 644 {} \;
     /usr/local/bin/ea-php83 artisan migrate --force   # на случай, если копия старее кода
     /usr/local/bin/ea-php83 artisan storage:link
     /usr/local/bin/ea-php83 artisan optimize:clear

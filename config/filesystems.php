@@ -40,10 +40,20 @@ return [
 
         // Изображения пишутся напрямую в public/uploads/ГГГГ/ММ/ — без storage:link.
         // На shared hosting симлинк часто запрещён или не отдаётся веб-сервером.
+        //
+        // 'visibility' => 'public' обязателен. Без него Laravel создаёт каталоги ГГГГ/ММ с правами 0700: на
+        // Linux-хостинге веб-сервер работает под другим пользователем, чем PHP, не может в них войти, и файл
+        // есть на диске, а картинка не открывается. Каталог нового месяца создаётся заново каждый месяц.
+        // На Windows (разработка) права не действуют, поэтому ошибка там не видна (см. UploadsPermissionsTest).
         'uploads' => [
             'driver' => 'local',
             'root'   => public_path('uploads'),
             'url'    => '/uploads',
+            'visibility' => 'public',
+            'permissions' => [
+                'file' => ['public' => 0644, 'private' => 0644],
+                'dir'  => ['public' => 0755, 'private' => 0755],
+            ],
             'throw'  => true,
         ],
 
