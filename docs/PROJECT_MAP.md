@@ -130,7 +130,7 @@ Web middleware подключает `SetLocale` глобально для web-г
 | Новая возможность | `account/opportunities/create.blade.php` | Создание `project`, `meeting` или `event` |
 | Знания | `account/knowledge.blade.php` | Текущий статический экран/заготовка раздела |
 
-**Тарифы.** Кабинет делится на три уровня: Open (бесплатно), Community (600 руб. ПМР/год), Private (20 000 руб. ПМР/год) — подробно в [SUBSCRIPTIONS.md](SUBSCRIPTIONS.md). У Open открыты «Главная» (материалы публичного сайта, `OpenFeed`), «Обучение», «Профиль», «Подписка»; «Рекомендации», «Поиск контактов», «Профили платформы», «Возможности» и ИИ-помощник входят в Community и закрыты middleware `plan:community` (`RequirePlan`). Пункты «Подписка» и «Private» добавляет всем четырём темам `App\Support\CabinetNav::extend`.
+**Тарифы.** Кабинет делится на три уровня: Open (бесплатно), Community (600 руб./год), Private (20 000 руб./год) — подробно в [SUBSCRIPTIONS.md](SUBSCRIPTIONS.md). У Open открыты «Главная» (материалы публичного сайта, `OpenFeed`), «Обучение», «Профиль», «Подписка»; «Рекомендации», «Поиск контактов», «Профили платформы», «Возможности» и ИИ-помощник входят в Community и закрыты middleware `plan:community` (`RequirePlan`). Пункты «Подписка» и «Private» добавляет всем четырём темам `App\Support\CabinetNav::extend`.
 
 | URL | Имя | Назначение |
 |---|---|---|

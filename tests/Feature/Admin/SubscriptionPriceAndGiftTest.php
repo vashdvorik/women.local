@@ -56,7 +56,7 @@ class SubscriptionPriceAndGiftTest extends TestCase
         $this->assertSame(750, Plan::Community->price());
         $this->assertSame(75000, Plan::Community->priceKopecks());
         $this->assertSame(25000, Plan::Private->price());
-        $this->assertSame("750\u{00A0}руб.\u{00A0}ПМР", Plan::Community->priceLabel('ru'));
+        $this->assertSame("750\u{00A0}руб.", Plan::Community->priceLabel('ru'));
 
         // Участница видит новые цены на странице тарифов и во вкладке Private, форма админки — тоже.
         $user = BotUser::factory()->community()->create();

@@ -52,9 +52,9 @@ class PlanAndServiceTest extends TestCase
 
     public function test_price_labels_and_titles_follow_the_language(): void
     {
-        $this->assertSame("600\u{00A0}руб.\u{00A0}ПМР", Plan::Community->priceLabel('ru'));
-        $this->assertSame("20\u{00A0}000\u{00A0}руб.\u{00A0}ПМР", Plan::Private->priceLabel('ru'));
-        $this->assertSame("600\u{00A0}PMR\u{00A0}rub.", Plan::Community->priceLabel('en'));
+        $this->assertSame("600\u{00A0}руб.", Plan::Community->priceLabel('ru'));
+        $this->assertSame("20\u{00A0}000\u{00A0}руб.", Plan::Private->priceLabel('ru'));
+        $this->assertSame("600\u{00A0}rub.", Plan::Community->priceLabel('en'));
         $this->assertSame('Бесплатно', Plan::Open->priceLabel('ru'));
         $this->assertSame('Free', Plan::Open->priceLabel('en'));
         $this->assertSame('WOMEN’S HUB COMMUNITY', Plan::Community->title('ru'));

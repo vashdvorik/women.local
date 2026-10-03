@@ -2,7 +2,7 @@
 
 return [
 
-    'currency' => 'ruble PMR',
+    'currency' => 'rub.',
     'free' => 'Gratuit',
     'per_year' => 'pe an',
 

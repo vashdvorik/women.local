@@ -7,7 +7,7 @@ namespace App\Services\Payments\WebPayment;
 use App\Enums\Plan;
 use App\Models\BotUser;
 use App\Models\Payment;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 
@@ -20,6 +20,9 @@ use InvalidArgumentException;
  */
 final class Checkout
 {
+    /** Сколько раз пробуем взять другой номер счёта, если выпавший уже занят. */
+    private const INVOICE_ATTEMPTS = 5;
+
     public function __construct(private readonly Gateway $gateway) {}
 
     /**
@@ -55,28 +58,31 @@ final class Checkout
             return $existing;
         }
 
-        return DB::transaction(function () use ($user, $plan): Payment {
-            $isTest = (bool) config('webpayment.is_test');
+        $isTest = (bool) config('webpayment.is_test');
 
-            $payment = Payment::create([
-                'bot_user_id' => $user->id,
-                'telegram_id' => $user->telegram_id,
-                'plan' => $plan->value,
-                'months' => $plan->months(),
-                'amount' => $plan->priceKopecks(),
-                'currency' => (string) config('webpayment.currency_code'),
-                // Временный номер: настоящий строится из id строки и должен быть уникален в банке за всё время.
-                'invoice_id' => 'tmp'.Str::lower(Str::random(12)),
-                'status' => Payment::STATUS_PENDING,
-                'is_test' => $isTest,
-                'driver' => $this->gateway->driver(),
-                'expires_at' => now()->addMinutes((int) config('webpayment.lifetime', 30)),
-            ]);
-
-            $payment->update(['invoice_id' => $this->invoiceId($payment->id, $isTest)]);
-
-            return $payment;
-        });
+        // Номер случайный, поэтому совпадение с уже занятым возможно (хоть и крайне маловероятно): уникальный индекс
+        // базы его не пропустит, и мы просто берём другой.
+        for ($attempt = 1; ; $attempt++) {
+            try {
+                return Payment::create([
+                    'bot_user_id' => $user->id,
+                    'telegram_id' => $user->telegram_id,
+                    'plan' => $plan->value,
+                    'months' => $plan->months(),
+                    'amount' => $plan->priceKopecks(),
+                    'currency' => (string) config('webpayment.currency_code'),
+                    'invoice_id' => $this->invoiceId($isTest),
+                    'status' => Payment::STATUS_PENDING,
+                    'is_test' => $isTest,
+                    'driver' => $this->gateway->driver(),
+                    'expires_at' => now()->addMinutes((int) config('webpayment.lifetime', 30)),
+                ]);
+            } catch (UniqueConstraintViolationException $e) {
+                if ($attempt >= self::INVOICE_ATTEMPTS) {
+                    throw $e;
+                }
+            }
+        }
     }
 
     /**
@@ -120,13 +126,22 @@ final class Checkout
      */
     public function description(Payment $payment): string
     {
-        return 'Womens Hub '.$payment->planEnum()->shortTitle().' membership '.$payment->invoice_id;
+        // Telegram ID плательщицы виден в выписке банка: если база потеряется (авария, откат к старой копии), по выписке
+        // можно будет понять, кому из участниц вернуть тариф. Двоеточия нет: оно разделяет поля строки подписи.
+        return 'Womens Hub '.$payment->planEnum()->shortTitle().' membership '.$payment->invoice_id.' tg'.$payment->telegram_id;
     }
 
-    /** Номер счёта: до 20 символов, например WH00000012 или WHT00000012 для тестового. */
-    public function invoiceId(int $paymentId, bool $isTest): string
+    /**
+     * Номер счёта (nivid): до 20 символов, например WH261002K4M9QZ, а для тестового — WHT261002K4M9QZ
+     * (приставка, [T], дата ггммдд и 6 случайных символов).
+     *
+     * Банк требует, чтобы номер был уникален за всё время работы торговца. Поэтому он не строится из номера строки
+     * в базе: после восстановления старой копии или пересоздания базы счётчик строк откатился бы назад и выдал
+     * номера, которые банк уже видел. Дата и случайная часть от базы не зависят.
+     */
+    public function invoiceId(bool $isTest): string
     {
-        return (string) config('subscription.invoice_prefix', 'WH').($isTest ? 'T' : '').str_pad((string) $paymentId, 8, '0', STR_PAD_LEFT);
+        return (string) config('subscription.invoice_prefix', 'WH').($isTest ? 'T' : '').now()->format('ymd').Str::upper(Str::random(6));
     }
 
     /** @throws PaymentsUnavailable */

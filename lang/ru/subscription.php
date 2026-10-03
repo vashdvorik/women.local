@@ -2,7 +2,7 @@
 
 return [
 
-    'currency' => 'руб. ПМР',
+    'currency' => 'руб.',
     'free' => 'Бесплатно',
     'per_year' => 'в год',
 

@@ -60,7 +60,7 @@ class PaymentFlowTest extends TestCase
         $this->assertTrue($payment->is_test, 'пока WEBPAYMENT_TEST не выключен, платежи тестовые');
         $this->assertSame('fake', $payment->driver);
         $this->assertSame($user->id, $payment->bot_user_id);
-        $this->assertMatchesRegularExpression('/^WHT\d{8}$/', $payment->invoice_id);
+        $this->assertMatchesRegularExpression('/^WHT\d{6}[0-9A-Z]{6}$/', $payment->invoice_id);
         $this->assertLessThanOrEqual(20, strlen($payment->invoice_id), 'банк принимает номер счёта до 20 символов');
 
         // Форма для банка: названия полей и подпись — как в разделе 3 документа.
@@ -79,7 +79,7 @@ class PaymentFlowTest extends TestCase
             $this->assertStringContainsString('name="'.$name.'" value="'.$value.'"', $html, $name);
         }
 
-        $desc = 'Womens Hub Community membership '.$payment->invoice_id;
+        $desc = 'Womens Hub Community membership '.$payment->invoice_id.' tg'.$user->telegram_id;
         $this->assertStringContainsString('name="Desc" value="'.$desc.'"', $html);
         $this->assertStringContainsString(
             'name="SignatureValue" value="'.md5('000123:'.$payment->invoice_id.':1:60000:000:'.$desc.':local-fake-merchant-pass').'"',
@@ -193,7 +193,7 @@ class PaymentFlowTest extends TestCase
 
         $this->assertStringContainsString('action="https://epay.apb.online/PaymentStart"', $html);
         $this->assertStringContainsString('name="IsTest" value="0"', $html);
-        $this->assertMatchesRegularExpression('/^WH\d{8}$/', $payment->invoice_id, 'боевой счёт без буквы T');
+        $this->assertMatchesRegularExpression('/^WH\d{6}[0-9A-Z]{6}$/', $payment->invoice_id, 'боевой счёт без буквы T');
         $this->assertSame('bank', $payment->driver);
         $this->assertFalse($payment->is_test);
         $this->assertStringNotContainsString('prod-secret', $html);
@@ -608,5 +608,86 @@ class PaymentFlowTest extends TestCase
         $this->assertSame(1, Payment::count());
         $this->assertSame(0, \App\Models\Subscription::count(), 'периоды подписки удаляются вместе с профилем');
         $this->assertSame($payment->telegram_id, $payment->fresh()->telegram_id);
+    }
+
+    // ---------------------------------------------------------------- номера счетов и восстановление из копии
+
+    public function test_invoice_numbers_do_not_come_from_the_database_row_counter(): void
+    {
+        $user = $this->community();
+        $first = $this->checkoutFor($user, Plan::Community);
+        $first->update(['status' => Payment::STATUS_EXPIRED]);
+
+        $second = $this->checkoutFor($user, Plan::Community);
+
+        $this->assertNotSame($first->invoice_id, $second->invoice_id);
+        $this->assertStringNotContainsString(str_pad((string) $first->id, 8, '0', STR_PAD_LEFT), $first->invoice_id);
+        $this->assertStringStartsWith('WHT'.now()->format('ymd'), $first->invoice_id, 'приставка, T тестового и сегодняшняя дата');
+    }
+
+    public function test_restoring_an_old_backup_does_not_repeat_invoice_numbers_the_bank_has_already_seen(): void
+    {
+        $user = $this->community();
+        $before = [];
+
+        // До аварии: счета создавались и уходили в банк.
+        for ($i = 0; $i < 5; $i++) {
+            $payment = $this->checkoutFor($user, Plan::Community);
+            $before[] = $payment->invoice_id;
+            $payment->update(['status' => Payment::STATUS_EXPIRED]);
+        }
+
+        // Восстановление копии базы: таблица платежей откатилась в пустое состояние, счётчик строк начался с единицы.
+        Payment::query()->delete();
+        \Illuminate\Support\Facades\DB::statement("DELETE FROM sqlite_sequence WHERE name = 'payments'");
+
+        $after = [];
+        for ($i = 0; $i < 5; $i++) {
+            $payment = $this->checkoutFor($user, Plan::Community);
+            $after[] = $payment->invoice_id;
+            $payment->update(['status' => Payment::STATUS_EXPIRED]);
+        }
+
+        $this->assertSame(1, Payment::query()->orderBy('id')->value('id'), 'счётчик строк действительно начался заново');
+        $this->assertSame([], array_intersect($before, $after), 'новые номера не повторяют те, что банк уже видел');
+    }
+
+    public function test_a_taken_invoice_number_is_replaced_by_another_one(): void
+    {
+        $user = $this->community();
+        $taken = 'WHT'.now()->format('ymd').'AAAAAA';
+        Payment::create([
+            'telegram_id' => 1, 'plan' => 'community', 'months' => 12, 'amount' => 60000, 'currency' => '000',
+            'invoice_id' => $taken, 'status' => Payment::STATUS_PAID, 'is_test' => true, 'driver' => 'fake', 'expires_at' => now(),
+        ]);
+
+        // Случайная часть дважды выпала такой же, как у уже занятого номера, и только с третьего раза — другая.
+        \Illuminate\Support\Str::createRandomStringsUsingSequence(['aaaaaa', 'aaaaaa', 'bbbbbb']);
+
+        try {
+            $payment = $this->checkoutFor($user, Plan::Community);
+        } finally {
+            \Illuminate\Support\Str::createRandomStringsNormally();
+        }
+
+        $this->assertSame('WHT'.now()->format('ymd').'BBBBBB', $payment->invoice_id);
+        $this->assertSame(2, Payment::count());
+    }
+
+    public function test_giving_up_after_five_taken_numbers_raises_the_database_error_instead_of_looping(): void
+    {
+        $user = $this->community();
+        Payment::create([
+            'telegram_id' => 1, 'plan' => 'community', 'months' => 12, 'amount' => 60000, 'currency' => '000',
+            'invoice_id' => 'WHT'.now()->format('ymd').'AAAAAA', 'status' => Payment::STATUS_PAID, 'is_test' => true, 'driver' => 'fake', 'expires_at' => now(),
+        ]);
+        \Illuminate\Support\Str::createRandomStringsUsing(fn (): string => 'aaaaaa');
+
+        try {
+            $this->expectException(\Illuminate\Database\UniqueConstraintViolationException::class);
+            $this->checkoutFor($user, Plan::Community);
+        } finally {
+            \Illuminate\Support\Str::createRandomStringsNormally();
+        }
     }
 }

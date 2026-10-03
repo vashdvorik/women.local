@@ -2,7 +2,7 @@
 
 return [
 
-    'currency' => 'PMR rub.',
+    'currency' => 'rub.',
     'free' => 'Free',
     'per_year' => 'per year',
 

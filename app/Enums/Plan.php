@@ -6,7 +6,7 @@ use App\Models\SiteSetting;
 
 /**
  * Тариф кабинета участницы. Тарифы вложены друг в друга: Private включает всё из Community, а Community — всё из Open.
- * Срок берётся из config/subscription.php, цена (в целых рублях ПМР) — из админки, а если её там не задавали, оттуда же.
+ * Срок берётся из config/subscription.php, цена (в целых рублях) — из админки, а если её там не задавали, оттуда же.
  */
 enum Plan: string
 {
@@ -72,14 +72,14 @@ enum Plan: string
         return ucfirst($this->value);
     }
 
-    /** Цена словами для интерфейса: «600 руб. ПМР» или «Бесплатно». */
+    /** Цена словами для интерфейса: «600 руб.» или «Бесплатно». */
     public function priceLabel(?string $locale = null): string
     {
         if (! $this->isPaid()) {
             return __('subscription.free', [], $locale);
         }
 
-        // Неразрывные пробелы: «600 руб. ПМР» не рвётся на две строки.
+        // Неразрывные пробелы: «600 руб.» не рвётся на две строки.
         return number_format($this->price(), 0, ',', "\u{00A0}")."\u{00A0}".str_replace(' ', "\u{00A0}", __('subscription.currency', [], $locale));
     }
 
