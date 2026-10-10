@@ -4,8 +4,10 @@ return [
     // The Telegram BOT api token
     'token' => env('TELEGRAM_TOKEN'),
 
-    // URL сайта сообщества (используется в сообщении после регистрации)
-    'community_url' => env('TELEGRAM_COMMUNITY_URL', 'https://inspair.community'),
+    // Ссылка на Telegram-сообщество: на неё ведут кнопки «Открыть Telegram» и «Сообщество» на публичном сайте.
+    // Это НЕ адрес сайта: адрес сайта в сообщениях бота ({site_url}) берётся из APP_URL. Пока в .env не задан
+    // TELEGRAM_COMMUNITY_URL, кнопки ведут в бота платформы.
+    'community_url' => env('TELEGRAM_COMMUNITY_URL', 'https://t.me/WomenComBot'),
 
     // if the webhook mode must validate the incoming IP range is from a telegram server
     'safe_mode' => env('APP_ENV', 'local') === 'production',

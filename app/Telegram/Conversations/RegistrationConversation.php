@@ -122,7 +122,7 @@ class RegistrationConversation extends Conversation
 
         $this->say($bot, 'registration_done', [
             'name'     => BotMessages::firstName($this->fullName),
-            'site_url' => config('nutgram.community_url', config('app.url')),
+            'site_url' => config('app.url'),
         ]);
 
         $this->end();

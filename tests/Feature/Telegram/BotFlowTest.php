@@ -111,6 +111,32 @@ class BotFlowTest extends TestCase
         }
     }
 
+    public function test_the_site_address_in_the_thank_you_message_is_the_site_not_the_telegram_community_link(): void
+    {
+        // Раньше {site_url} брался из TELEGRAM_COMMUNITY_URL, и участницам уходил чужой адрес по умолчанию.
+        config(['app.url' => 'https://womenhub.example', 'nutgram.community_url' => 'https://t.me/some_community']);
+
+        $bot = $this->bot('ru');
+        $texts = [];
+
+        foreach ([
+            fn (Nutgram $b) => $b->hearText('/start'),
+            fn (Nutgram $b) => $b->hearCallbackQueryData('reg:yes'),
+            fn (Nutgram $b) => $b->hearText('Ольга Иванова'),
+            fn (Nutgram $b) => $b->hearText('Кондитерская'),
+            fn (Nutgram $b) => $b->hearCallbackQueryData('reg:skip'),
+        ] as $step) {
+            $step($bot)->reply();
+            array_push($texts, ...array_column($this->sent($bot, null), 'text'));
+        }
+
+        $done = end($texts);
+
+        $this->assertStringContainsString('https://womenhub.example', $done);
+        $this->assertStringNotContainsString('some_community', $done);
+        $this->assertStringNotContainsString('inspair', $done);
+    }
+
     public function test_the_registration_dialog_runs_in_her_language_and_remembers_it(): void
     {
         $bot = $this->bot('ro');
@@ -133,7 +159,7 @@ class BotFlowTest extends TestCase
             BotMessages::default('registration_ask_name', 'ro'),
             BotMessages::default('registration_ask_description', 'ro'),
             BotMessages::default('registration_ask_expectation', 'ro'),
-            BotMessages::text('registration_done', 'ro', ['name' => 'Maria', 'site_url' => config('nutgram.community_url')]),
+            BotMessages::text('registration_done', 'ro', ['name' => 'Maria', 'site_url' => config('app.url')]),
         ], $texts);
 
         // Язык запомнен в профиле: по нему потом идут решение модератора и рассылки.
