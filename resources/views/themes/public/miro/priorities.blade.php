@@ -21,7 +21,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title['ru'] }} — Women Entrepreneurs Platform</title>
+    <title>{{ $title['ru'] }} — Women's hub</title>
     <meta name="description" content="{{ $intro['ru'] }}">
     <link rel="icon" type="image/png" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/favicon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
                     <div class="miro-story__body">
                         <span class="miro-tag" style="width: fit-content; background: var(--miro-pink); color: var(--miro-primary);">Member story</span>
                         <blockquote><span data-lang="ru">«Нужный контакт оказался не где-то далеко — он уже был внутри сообщества.»</span><span data-lang="en">“The right connection was not far away — it was already inside the community.”</span><span data-lang="ro">„Conexiunea potrivită nu era departe — era deja în comunitate.”</span></blockquote>
-                        <p>Women Entrepreneurs Platform member</p>
+                        <p>Women's hub member</p>
                     </div>
                 </div>
             </div>

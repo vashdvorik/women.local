@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'brand' => 'Platform for Women Entrepreneurs',
+    'brand' => 'Women\'s hub',
     'cabinet' => 'Account',
     'language' => 'Language',
     'open_menu' => 'Open menu',

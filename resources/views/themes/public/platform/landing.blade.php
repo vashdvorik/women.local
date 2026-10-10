@@ -37,7 +37,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Women Entrepreneurs Platform</title>
+    <title>Women's hub</title>
     <meta name="description" content="Digital platform for women entrepreneurs: learning, networking, mentoring, events and business opportunities.">
     <meta name="theme-color" content="#4A1D96">
     <link rel="icon" type="image/png" href="{{ asset('themes/public/' . ($publicTheme ?? 'platform') . '/images/brand/favicon.png') }}">
@@ -50,10 +50,9 @@
     <header class="sticky top-0 z-50 bg-white/95 shadow-sm backdrop-blur">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
             <a href="#" class="flex items-center gap-3">
-                <img src="{{ asset('themes/public/' . ($publicTheme ?? 'platform') . '/images/brand/favicon.png') }}" alt="Women Entrepreneurs Platform" class="h-12 w-12 object-contain">
+                <img src="{{ asset('themes/public/' . ($publicTheme ?? 'platform') . '/images/brand/favicon.png') }}" alt="Women's hub" class="h-12 w-12 object-contain">
                 <div>
                     <p class="text-sm font-black uppercase leading-tight tracking-tighter text-purple-custom">Women<br>Entrepreneurs<br>Platform</p>
-                    <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-gray-400">of the Two Banks</p>
                 </div>
             </a>
 
@@ -120,7 +119,7 @@
         <section class="hero-gradient overflow-hidden border-b border-gray-100">
             <div class="mx-auto flex max-w-7xl flex-col items-center px-4 py-16 lg:flex-row">
                 <div class="mb-12 text-center lg:mb-0 lg:w-1/2 lg:pr-16 lg:text-left">
-                    <p class="mb-4 text-sm font-black uppercase tracking-[0.28em] text-teal-custom">Women Entrepreneurs Platform</p>
+                    <p class="mb-4 text-sm font-black uppercase tracking-[0.28em] text-teal-custom">Women's hub</p>
                     <h1 class="mb-6 text-5xl font-black leading-[1.06] text-purple-custom lg:text-6xl">
                         <span data-lang="ru">Онлайн-платформа для женщин</span>
                         <span data-lang="en">Online platform for women entrepreneurs</span>
@@ -390,7 +389,7 @@
             </div>
 
             <div class="flex flex-col items-center justify-between border-t border-purple-800 pt-12 text-[10px] font-black uppercase tracking-widest text-purple-300 md:flex-row">
-                <p>© {{ date('Y') }} Women Entrepreneurs Platform</p>
+                <p>© {{ date('Y') }} Women's hub</p>
                 <a href="{{ route('account.login') }}" class="mt-6 hover:text-white md:mt-0">
                     <span data-lang="ru">Вход в кабинет</span><span data-lang="en">Account login</span><span data-lang="ro">Intrare în cabinet</span>
                 </a>

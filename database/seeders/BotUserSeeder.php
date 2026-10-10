@@ -138,6 +138,6 @@ class BotUserSeeder extends Seeder
             }
         }
 
-        $this->command->info('Создано/обновлено ' . count($users) . ' профилей участниц Women Entrepreneurs Platform of the Two Banks.');
+        $this->command->info('Создано/обновлено ' . count($users) . ' профилей участниц Women\'s hub.');
     }
 }

@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Women Entrepreneurs Platform</title>
+    <title>Women's hub</title>
     <meta name="description" content="Пространство для женщин-предпринимательниц: обучение, контакты, AI-рекомендации и возможности роста.">
     <link rel="icon" type="image/png" href="{{ asset('themes/public/' . ($publicTheme ?? 'fortun') . '/images/brand/favicon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,7 +26,7 @@
     <nav class="miro-nav" id="miro-nav">
         <div class="miro-container miro-nav__inner">
             <a href="#top" class="miro-brand">
-                <img src="{{ asset('themes/public/' . ($publicTheme ?? 'fortun') . '/images/brand/logo.webp') }}" alt="Women Entrepreneurs Platform" class="miro-brand__logo">
+                <img src="{{ asset('themes/public/' . ($publicTheme ?? 'fortun') . '/images/brand/logo.webp') }}" alt="Women's hub" class="miro-brand__logo">
                 <span>Women</span>
             </a>
             <div class="miro-nav__links" id="miro-nav-links">
@@ -170,26 +170,26 @@
                 <div class="fortun-director-note__copy">
                     <div class="fortun-director-note__meta">
                         <span class="fortun-director-note__eyebrow"><span data-lang="ru">Обращение руководителя</span><span data-lang="en">A message from the head</span><span data-lang="ro">Mesajul conducătoarei</span></span>
-                        <p><strong>Елена Синика</strong><span data-lang="ru"> · Руководитель Платформы женщин-предпринимателей</span><span data-lang="en"> · Head of the Women Entrepreneurs Platform</span><span data-lang="ro"> · Conducătoarea Platformei Femeilor Antreprenoare</span></p>
+                        <p><strong>Елена Синика</strong><span data-lang="ru"> · Руководитель Платформы женщин-предпринимателей</span><span data-lang="en"> · Head of Women's hub</span><span data-lang="ro"> · Conducătoarea Platformei Femeilor Antreprenoare</span></p>
                     </div>
                     
                     <div data-lang="ru">
                         <p>Уважаемые коллеги и партнёры!</p>
-                        <p>Платформа женщин-предпринимателей — это пространство поддержки и развития для женщин, создающих и развивающих собственный бизнес. Здесь женщины-предпринимательницы находят профессиональное сообщество, практические знания, экспертную поддержку и возможности для обмена опытом, необходимые для устойчивого роста и реализации бизнес-идей.</p>
+                        <p>Women's hub — это пространство поддержки и развития для женщин, создающих и развивающих собственный бизнес. Здесь женщины-предпринимательницы находят профессиональное сообщество, практические знания, экспертную поддержку и возможности для обмена опытом, необходимые для устойчивого роста и реализации бизнес-идей.</p>
                         <p>Наша цель — укреплять женское предпринимательство, развивать лидерские и управленческие компетенции, способствовать финансовой самостоятельности женщин и созданию конкурентоспособных бизнесов. Мы объединяем женщин-предпринимательниц, помогая им действовать сообща и усиливать голос женского бизнес-сообщества через обучающие программы, консультации, тематические мероприятия и конференции.</p>
-                        <p>Если вы ищете новые возможности для развития бизнеса и профессионального роста, мы будем рады видеть вас в сообществе Платформы женщин-предпринимателей.</p>
+                        <p>Если вы ищете новые возможности для развития бизнеса и профессионального роста, мы будем рады видеть вас в сообществе Women's hub.</p>
                     </div>
                     <div data-lang="en">
                         <p>Dear colleagues and partners!</p>
-                        <p>The Women Entrepreneurs Platform is a space of support and development for women who create and grow their own businesses. Here, women entrepreneurs find a professional community, practical knowledge, expert support and opportunities to exchange experience — everything needed for sustainable growth and the implementation of business ideas.</p>
+                        <p>Women's hub is a space of support and development for women who create and grow their own businesses. Here, women entrepreneurs find a professional community, practical knowledge, expert support and opportunities to exchange experience — everything needed for sustainable growth and the implementation of business ideas.</p>
                         <p>Our goal is to strengthen women’s entrepreneurship, develop leadership and management skills, support women’s financial independence and help create competitive businesses. We bring women entrepreneurs together, helping them act collectively and amplify the voice of the women’s business community through educational programmes, consultations, thematic events and conferences.</p>
-                        <p>If you are looking for new opportunities for business development and professional growth, we will be glad to welcome you to the Women Entrepreneurs Platform community.</p>
+                        <p>If you are looking for new opportunities for business development and professional growth, we will be glad to welcome you to the Women's hub community.</p>
                     </div>
                     <div data-lang="ro">
                         <p>Dragi colegi și parteneri!</p>
-                        <p>Platforma Femeilor Antreprenoare este un spațiu de sprijin și dezvoltare pentru femeile care creează și își dezvoltă propria afacere. Aici, femeile antreprenoare găsesc o comunitate profesională, cunoștințe practice, sprijin din partea experților și oportunități de schimb de experiență — tot ce este necesar pentru o creștere durabilă și realizarea ideilor de afaceri.</p>
+                        <p>Women's hub este un spațiu de sprijin și dezvoltare pentru femeile care creează și își dezvoltă propria afacere. Aici, femeile antreprenoare găsesc o comunitate profesională, cunoștințe practice, sprijin din partea experților și oportunități de schimb de experiență — tot ce este necesar pentru o creștere durabilă și realizarea ideilor de afaceri.</p>
                         <p>Scopul nostru este să consolidăm antreprenoriatul feminin, să dezvoltăm competențele de leadership și management, să contribuim la independența financiară a femeilor și la crearea unor afaceri competitive. Reunim femeile antreprenoare, ajutându-le să acționeze împreună și să consolideze vocea comunității de business feminin prin programe educaționale, consultații, evenimente tematice și conferințe.</p>
-                        <p>Dacă sunteți în căutarea unor noi oportunități pentru dezvoltarea afacerii și creșterea profesională, ne vom bucura să vă avem în comunitatea Platformei Femeilor Antreprenoare.</p>
+                        <p>Dacă sunteți în căutarea unor noi oportunități pentru dezvoltarea afacerii și creșterea profesională, ne vom bucura să vă avem în comunitatea Women's hub.</p>
                     </div>
                 </div>
                 <figure class="fortun-director-note__portrait">
@@ -489,7 +489,7 @@
                     <div class="miro-story__body">
                         <span class="miro-tag" style="width: fit-content; background: var(--fortun-pink); color: var(--fortun-primary);">Member story</span>
                         <blockquote><span data-lang="ru">«Нужный контакт оказался не где-то далеко — он уже был внутри сообщества.»</span><span data-lang="en">“The right connection was not far away — it was already inside the community.”</span><span data-lang="ro">„Conexiunea potrivită nu era departe — era deja în comunitate.”</span></blockquote>
-                        <p>Women Entrepreneurs Platform member</p>
+                        <p>Women's hub member</p>
                     </div>
                 </div>
             </div>
@@ -515,7 +515,7 @@
         <div class="miro-container">
             <div class="miro-footer__top">
                 <div class="miro-footer__brand">
-                    <a href="#top" class="miro-brand"><span class="miro-brand__mark">W</span><span>Women Entrepreneurs Platform</span></a>
+                    <a href="#top" class="miro-brand"><span class="miro-brand__mark">W</span><span>Women's hub</span></a>
                     <p><span data-lang="ru">Цифровое пространство для женщин-предпринимательниц из двух берегов.</span><span data-lang="en">A digital space for women entrepreneurs from both banks.</span><span data-lang="ro">Un spațiu digital pentru femeile antreprenoare de pe ambele maluri.</span></p>
                 </div>
                 <div><h4><span data-lang="ru">Платформа</span><span data-lang="en">Platform</span><span data-lang="ro">Platformă</span></h4><ul><li><a href="#about">About</a></li><li><a href="#features">AI matching</a></li><li><a href="{{ route('members') }}">Members</a></li></ul></div>
@@ -523,7 +523,7 @@
                 <div><h4><span data-lang="ru">Контакты</span><span data-lang="en">Contact</span><span data-lang="ro">Contact</span></h4><ul><li><a href="{{ $botUrl }}" target="_blank" rel="noopener">@WomenComBot</a></li><li><a href="{{ $managerUrl }}" target="_blank" rel="noopener">Project team</a></li><li><a href="{{ $communityUrl }}" target="_blank" rel="noopener">Community</a></li></ul></div>
                 <div><h4><span data-lang="ru">Вход</span><span data-lang="en">Access</span><span data-lang="ro">Acces</span></h4><ul><li><a href="{{ route('account.login') }}"><span data-lang="ru">Кабинет участницы</span><span data-lang="en">Participant cabinet</span><span data-lang="ro">Cabinetul membrei</span></a></li><li><a href="{{ $botUrl }}" target="_blank" rel="noopener">Telegram</a></li></ul></div>
             </div>
-            <div class="miro-footer__bottom"><span>© {{ date('Y') }} Women Entrepreneurs Platform</span><span><span data-lang="ru">Сделано для роста через связи</span><span data-lang="en">Made for growth through connection</span><span data-lang="ro">Creat pentru creștere prin conexiuni</span></span></div>
+            <div class="miro-footer__bottom"><span>© {{ date('Y') }} Women's hub</span><span><span data-lang="ru">Сделано для роста через связи</span><span data-lang="en">Made for growth through connection</span><span data-lang="ro">Creat pentru creștere prin conexiuni</span></span></div>
         </div>
     </footer>
     @endif

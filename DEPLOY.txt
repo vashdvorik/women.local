@@ -116,7 +116,7 @@
 5. .env НА ПРОДЕ
 ------------------------------------------------------------
 
-  APP_NAME="Women Community"
+  APP_NAME="Women's hub"                   # название в заголовках вкладок админки и кабинета
   APP_ENV=production                 # ОБЯЗАТЕЛЬНО: при local включится dev-вход и тестовые участницы
   APP_DEBUG=false                    # ОБЯЗАТЕЛЬНО
   APP_URL=https://womenhub.innovation.md

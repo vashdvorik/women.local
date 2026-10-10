@@ -42,8 +42,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Women Entrepreneurs Platform — Partners</title>
-    <meta name="description" content="Партнёры Women Entrepreneurs Platform — организации и сообщества, которые поддерживают развитие женского предпринимательства.">
+    <title>Women's hub — Partners</title>
+    <meta name="description" content="Партнёры Women's hub — организации и сообщества, которые поддерживают развитие женского предпринимательства.">
     <link rel="icon" type="image/png" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/favicon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

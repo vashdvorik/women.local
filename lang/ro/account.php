@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'brand' => 'Platformă pentru Femei Antreprenoare',
+    'brand' => 'Women\'s hub',
     'cabinet' => 'Cabinet',
     'language' => 'Limbă',
     'open_menu' => 'Deschide meniul',

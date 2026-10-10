@@ -14,7 +14,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $heroTitle['ru'] }} — Women Entrepreneurs Platform</title>
+    <title>{{ $heroTitle['ru'] }} — Women's hub</title>
     <meta name="description" content="{{ $heroIntro['ru'] ?? $heroTitle['ru'] }}">
     <link rel="icon" type="image/png" href="{{ asset('themes/public/'.$theme.'/images/brand/favicon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -2,7 +2,7 @@
     <div class="miro-container">
         <div class="miro-footer__top">
             <div class="miro-footer__brand">
-                <a href="{{ url('/') }}" class="miro-brand" aria-label="Women Entrepreneurs Platform"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'fortun') . '/images/brand/logo.webp') }}" alt="Women Entrepreneurs Platform" class="miro-brand__logo"></a>
+                <a href="{{ url('/') }}" class="miro-brand" aria-label="Women's hub"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'fortun') . '/images/brand/logo.webp') }}" alt="Women's hub" class="miro-brand__logo"></a>
                 <p><span data-lang="ru">Цифровое пространство для женщин-предпринимательниц из двух берегов.</span><span data-lang="en">A digital space for women entrepreneurs from both banks.</span><span data-lang="ro">Un spațiu digital pentru femeile antreprenoare de pe ambele maluri.</span></p>
             </div>
             <div>
@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="miro-footer__bottom">
-            <span>© {{ date('Y') }} Women Entrepreneurs Platform</span>
+            <span>© {{ date('Y') }} Women's hub</span>
             <span><span data-lang="ru">Сделано для роста через связи</span><span data-lang="en">Made for growth through connection</span><span data-lang="ro">Creat pentru creștere prin conexiuni</span></span>
         </div>
     </div>

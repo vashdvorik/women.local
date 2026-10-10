@@ -57,9 +57,9 @@ return [
             'kind' => 'text',
             'vars' => [],
             'text' => [
-                'ru' => "Здравствуйте! 👋\n\nЭто заявка на участие в Women Entrepreneurs Platform of the Two Banks — цифровом пространстве для женщин-предпринимательниц, где можно представить бизнес, учиться, находить контакты и узнавать о возможностях.\n\nЯ задам несколько коротких вопросов. Это займёт 2-3 минуты.\n\nГотовы начать?",
-                'en' => "Hello! 👋\n\nThis is an application to join Women Entrepreneurs Platform of the Two Banks — a digital space for women entrepreneurs where you can present your business, learn, find contacts and discover opportunities.\n\nI will ask a few short questions. It takes 2-3 minutes.\n\nReady to start?",
-                'ro' => "Bună ziua! 👋\n\nAceasta este cererea de aderare la Women Entrepreneurs Platform of the Two Banks — un spațiu digital pentru femeile antreprenor, unde puteți să vă prezentați afacerea, să învățați, să găsiți contacte și să aflați despre oportunități.\n\nVoi pune câteva întrebări scurte. Va dura 2-3 minute.\n\nSunteți gata să începeți?",
+                'ru' => "Здравствуйте! 👋\n\nЭто заявка на участие в Women's hub — цифровом пространстве для женщин-предпринимательниц, где можно представить бизнес, учиться, находить контакты и узнавать о возможностях.\n\nЯ задам несколько коротких вопросов. Это займёт 2-3 минуты.\n\nГотовы начать?",
+                'en' => "Hello! 👋\n\nThis is an application to join Women's hub — a digital space for women entrepreneurs where you can present your business, learn, find contacts and discover opportunities.\n\nI will ask a few short questions. It takes 2-3 minutes.\n\nReady to start?",
+                'ro' => "Bună ziua! 👋\n\nAceasta este cererea de aderare la Women's hub — un spațiu digital pentru femeile antreprenor, unde puteți să vă prezentați afacerea, să învățați, să găsiți contacte și să aflați despre oportunități.\n\nVoi pune câteva întrebări scurte. Va dura 2-3 minute.\n\nSunteți gata să începeți?",
             ],
         ],
         'registration_start_button' => [
@@ -185,9 +185,9 @@ return [
             'kind' => 'text',
             'vars' => ['name' => 'Имя участницы'],
             'text' => [
-                'ru' => "🎉 {name}, ваша заявка одобрена.\n\nДобро пожаловать в Women Entrepreneurs Platform of the Two Banks. Вам открыт личный кабинет с уровнем доступа Open: материалы и информация с сайта платформы.\n\nКаталог участниц, поиск контактов, ИИ-помощник и публикации возможностей входят в подписку WOMEN’S HUB COMMUNITY. Оформить её можно в разделе «Подписка» личного кабинета.\n\nЗаполните профиль подробнее, чтобы вас лучше понимали другие участницы.",
-                'en' => "🎉 {name}, your application has been approved.\n\nWelcome to Women Entrepreneurs Platform of the Two Banks. Your account is open at the Open access level: materials and information from the platform website.\n\nThe members directory, contact search, the AI assistant and publishing opportunities are part of the WOMEN’S HUB COMMUNITY subscription. You can subscribe in the “Subscription” section of your account.\n\nFill in your profile in more detail so that other members understand you better.",
-                'ro' => "🎉 {name}, cererea dvs. a fost aprobată.\n\nBine ați venit la Women Entrepreneurs Platform of the Two Banks. Cabinetul dvs. este deschis la nivelul de acces Open: materiale și informații de pe site-ul platformei.\n\nCatalogul membrelor, căutarea de contacte, asistentul AI și publicarea de oportunități fac parte din abonamentul WOMEN’S HUB COMMUNITY. Vă puteți abona în secțiunea „Abonament” din cabinetul personal.\n\nCompletați profilul mai detaliat, pentru ca celelalte membre să vă înțeleagă mai bine.",
+                'ru' => "🎉 {name}, ваша заявка одобрена.\n\nДобро пожаловать в Women's hub. Вам открыт личный кабинет с уровнем доступа Open: материалы и информация с сайта платформы.\n\nКаталог участниц, поиск контактов, ИИ-помощник и публикации возможностей входят в подписку WOMEN’S HUB COMMUNITY. Оформить её можно в разделе «Подписка» личного кабинета.\n\nЗаполните профиль подробнее, чтобы вас лучше понимали другие участницы.",
+                'en' => "🎉 {name}, your application has been approved.\n\nWelcome to Women's hub. Your account is open at the Open access level: materials and information from the platform website.\n\nThe members directory, contact search, the AI assistant and publishing opportunities are part of the WOMEN’S HUB COMMUNITY subscription. You can subscribe in the “Subscription” section of your account.\n\nFill in your profile in more detail so that other members understand you better.",
+                'ro' => "🎉 {name}, cererea dvs. a fost aprobată.\n\nBine ați venit la Women's hub. Cabinetul dvs. este deschis la nivelul de acces Open: materiale și informații de pe site-ul platformei.\n\nCatalogul membrelor, căutarea de contacte, asistentul AI și publicarea de oportunități fac parte din abonamentul WOMEN’S HUB COMMUNITY. Vă puteți abona în secțiunea „Abonament” din cabinetul personal.\n\nCompletați profilul mai detaliat, pentru ca celelalte membre să vă înțeleagă mai bine.",
             ],
         ],
         'moderation_approved_guide_prompt' => [
@@ -213,9 +213,9 @@ return [
             'kind' => 'text',
             'vars' => ['name' => 'Имя участницы'],
             'text' => [
-                'ru' => "{name}, спасибо за интерес к Women Entrepreneurs Platform of the Two Banks.\n\nСейчас ваша заявка не была одобрена. Если хотите уточнить детали или задать вопрос команде проекта, напишите: @lesnichenkoP",
-                'en' => "{name}, thank you for your interest in Women Entrepreneurs Platform of the Two Banks.\n\nAt the moment your application has not been approved. If you would like to clarify the details or ask the project team a question, write to: @lesnichenkoP",
-                'ro' => "{name}, vă mulțumim pentru interesul față de Women Entrepreneurs Platform of the Two Banks.\n\nÎn acest moment cererea dvs. nu a fost aprobată. Dacă doriți să aflați detalii sau să puneți o întrebare echipei proiectului, scrieți la: @lesnichenkoP",
+                'ru' => "{name}, спасибо за интерес к Women's hub.\n\nСейчас ваша заявка не была одобрена. Если хотите уточнить детали или задать вопрос команде проекта, напишите: @lesnichenkoP",
+                'en' => "{name}, thank you for your interest in Women's hub.\n\nAt the moment your application has not been approved. If you would like to clarify the details or ask the project team a question, write to: @lesnichenkoP",
+                'ro' => "{name}, vă mulțumim pentru interesul față de Women's hub.\n\nÎn acest moment cererea dvs. nu a fost aprobată. Dacă doriți să aflați detalii sau să puneți o întrebare echipei proiectului, scrieți la: @lesnichenkoP",
             ],
         ],
         'moderation_access_revoked' => [
@@ -225,9 +225,9 @@ return [
             'kind' => 'text',
             'vars' => [],
             'text' => [
-                'ru' => "Доступ к Women Entrepreneurs Platform of the Two Banks закрыт.\n\nЕсли у вас есть вопросы по участию, напишите команде проекта: @lesnichenkoP",
-                'en' => "Access to Women Entrepreneurs Platform of the Two Banks has been closed.\n\nIf you have questions about participation, write to the project team: @lesnichenkoP",
-                'ro' => "Accesul la Women Entrepreneurs Platform of the Two Banks a fost închis.\n\nDacă aveți întrebări despre participare, scrieți echipei proiectului: @lesnichenkoP",
+                'ru' => "Доступ к Women's hub закрыт.\n\nЕсли у вас есть вопросы по участию, напишите команде проекта: @lesnichenkoP",
+                'en' => "Access to Women's hub has been closed.\n\nIf you have questions about participation, write to the project team: @lesnichenkoP",
+                'ro' => "Accesul la Women's hub a fost închis.\n\nDacă aveți întrebări despre participare, scrieți echipei proiectului: @lesnichenkoP",
             ],
         ],
 
@@ -240,9 +240,9 @@ return [
             'vars' => ['name' => 'Имя участницы', 'url' => 'Ссылка для входа (действует 24 часа)'],
             'required' => ['url'],
             'text' => [
-                'ru' => "Здравствуйте, {name}! Перейдите по ссылке ниже, чтобы открыть личный кабинет Women Entrepreneurs Platform of the Two Banks.\n\n🔐 {url}\n\n⏱ Ссылка действует 24 часа.",
-                'en' => "Hello, {name}! Follow the link below to open your Women Entrepreneurs Platform of the Two Banks account.\n\n🔐 {url}\n\n⏱ The link is valid for 24 hours.",
-                'ro' => "Bună ziua, {name}! Accesați linkul de mai jos pentru a intra în cabinetul Women Entrepreneurs Platform of the Two Banks.\n\n🔐 {url}\n\n⏱ Linkul este valabil 24 de ore.",
+                'ru' => "Здравствуйте, {name}! Перейдите по ссылке ниже, чтобы открыть личный кабинет Women's hub.\n\n🔐 {url}\n\n⏱ Ссылка действует 24 часа.",
+                'en' => "Hello, {name}! Follow the link below to open your Women's hub account.\n\n🔐 {url}\n\n⏱ The link is valid for 24 hours.",
+                'ro' => "Bună ziua, {name}! Accesați linkul de mai jos pentru a intra în cabinetul Women's hub.\n\n🔐 {url}\n\n⏱ Linkul este valabil 24 de ore.",
             ],
         ],
         'login_not_approved' => [
@@ -265,9 +265,9 @@ return [
             'kind' => 'text',
             'vars' => ['name' => 'Имя участницы'],
             'text' => [
-                'ru' => "Здравствуйте, {name}! Нажмите кнопку ниже, чтобы войти в личный кабинет Women Entrepreneurs Platform of the Two Banks.\n\n⏱ Ссылка действует 24 часа.",
-                'en' => "Hello, {name}! Press the button below to open your Women Entrepreneurs Platform of the Two Banks account.\n\n⏱ The link is valid for 24 hours.",
-                'ro' => "Bună ziua, {name}! Apăsați butonul de mai jos pentru a intra în cabinetul Women Entrepreneurs Platform of the Two Banks.\n\n⏱ Linkul este valabil 24 de ore.",
+                'ru' => "Здравствуйте, {name}! Нажмите кнопку ниже, чтобы войти в личный кабинет Women's hub.\n\n⏱ Ссылка действует 24 часа.",
+                'en' => "Hello, {name}! Press the button below to open your Women's hub account.\n\n⏱ The link is valid for 24 hours.",
+                'ro' => "Bună ziua, {name}! Apăsați butonul de mai jos pentru a intra în cabinetul Women's hub.\n\n⏱ Linkul este valabil 24 de ore.",
             ],
         ],
         'login_site_button' => [
@@ -288,9 +288,9 @@ return [
             'kind' => 'text',
             'vars' => [],
             'text' => [
-                'ru' => "Как начать работу с Women Entrepreneurs Platform of the Two Banks?\n\n1. Откройте личный кабинет\nИспользуйте кнопку входа или ссылку из этого бота.\n\n2. Заполните профиль\nРасскажите, что вы представляете, что ищете и чем можете быть полезны другим участницам.\n\n3. Ищите контакты и возможности\nС подпиской WOMEN’S HUB COMMUNITY платформа помогает находить предпринимательниц, запросы, предложения, события и полезные материалы.\n\n4. Оставайтесь на связи\nTelegram будет присылать важные обновления, приглашения и публикации сообщества.",
-                'en' => "How to get started with Women Entrepreneurs Platform of the Two Banks?\n\n1. Open your account\nUse the login button or the link from this bot.\n\n2. Fill in your profile\nTell us what you represent, what you are looking for and how you can be useful to other members.\n\n3. Look for contacts and opportunities\nWith a WOMEN’S HUB COMMUNITY subscription, the platform helps you find entrepreneurs, requests, offers, events and useful materials.\n\n4. Stay in touch\nTelegram will send you important updates, invitations and community publications.",
-                'ro' => "Cum începeți să lucrați cu Women Entrepreneurs Platform of the Two Banks?\n\n1. Deschideți cabinetul personal\nFolosiți butonul de autentificare sau linkul din acest bot.\n\n2. Completați profilul\nPovestiți pe cine reprezentați, ce căutați și cu ce puteți fi utilă altor membre.\n\n3. Căutați contacte și oportunități\nCu abonamentul WOMEN’S HUB COMMUNITY, platforma vă ajută să găsiți antreprenoare, solicitări, oferte, evenimente și materiale utile.\n\n4. Rămâneți în legătură\nTelegram vă va trimite actualizări importante, invitații și publicații ale comunității.",
+                'ru' => "Как начать работу с Women's hub?\n\n1. Откройте личный кабинет\nИспользуйте кнопку входа или ссылку из этого бота.\n\n2. Заполните профиль\nРасскажите, что вы представляете, что ищете и чем можете быть полезны другим участницам.\n\n3. Ищите контакты и возможности\nС подпиской WOMEN’S HUB COMMUNITY платформа помогает находить предпринимательниц, запросы, предложения, события и полезные материалы.\n\n4. Оставайтесь на связи\nTelegram будет присылать важные обновления, приглашения и публикации сообщества.",
+                'en' => "How to get started with Women's hub?\n\n1. Open your account\nUse the login button or the link from this bot.\n\n2. Fill in your profile\nTell us what you represent, what you are looking for and how you can be useful to other members.\n\n3. Look for contacts and opportunities\nWith a WOMEN’S HUB COMMUNITY subscription, the platform helps you find entrepreneurs, requests, offers, events and useful materials.\n\n4. Stay in touch\nTelegram will send you important updates, invitations and community publications.",
+                'ro' => "Cum începeți să lucrați cu Women's hub?\n\n1. Deschideți cabinetul personal\nFolosiți butonul de autentificare sau linkul din acest bot.\n\n2. Completați profilul\nPovestiți pe cine reprezentați, ce căutați și cu ce puteți fi utilă altor membre.\n\n3. Căutați contacte și oportunități\nCu abonamentul WOMEN’S HUB COMMUNITY, platforma vă ajută să găsiți antreprenoare, solicitări, oferte, evenimente și materiale utile.\n\n4. Rămâneți în legătură\nTelegram vă va trimite actualizări importante, invitații și publicații ale comunității.",
             ],
         ],
 
@@ -457,9 +457,9 @@ return [
             'kind' => 'text',
             'vars' => [],
             'text' => [
-                'ru' => "✅ Ваш профиль удалён.\n\nЕсли вы захотите снова присоединиться к Women Entrepreneurs Platform of the Two Banks, откройте @WomenComBot и отправьте /start.",
-                'en' => "✅ Your profile has been deleted.\n\nIf you want to join Women Entrepreneurs Platform of the Two Banks again, open @WomenComBot and send /start.",
-                'ro' => "✅ Profilul dvs. a fost șters.\n\nDacă doriți să vă alăturați din nou Women Entrepreneurs Platform of the Two Banks, deschideți @WomenComBot și trimiteți /start.",
+                'ru' => "✅ Ваш профиль удалён.\n\nЕсли вы захотите снова присоединиться к Women's hub, откройте @WomenComBot и отправьте /start.",
+                'en' => "✅ Your profile has been deleted.\n\nIf you want to join Women's hub again, open @WomenComBot and send /start.",
+                'ro' => "✅ Profilul dvs. a fost șters.\n\nDacă doriți să vă alăturați din nou Women's hub, deschideți @WomenComBot și trimiteți /start.",
             ],
         ],
         'site_profile_deleted_button' => [

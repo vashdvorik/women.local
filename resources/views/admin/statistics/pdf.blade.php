@@ -66,7 +66,7 @@
         <table><tr>
             <td style="width:60%; vertical-align:top;">
                 <p class="eyebrow on-dark">{{ __('Отчёт платформы') }}</p>
-                <h1 class="serif">{{ __('Платформа женщин предпринимателей') }}</h1>
+                <h1 class="serif">Women's hub</h1>
                 <p>{{ __('Живой срез по составу сообщества, готовности профилей и активности участниц.') }}</p>
             </td>
             <td style="width:40%; vertical-align:top; text-align:right;">

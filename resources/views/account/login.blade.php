@@ -160,7 +160,7 @@
     </div>
 
     <div id="tma-not-member" style="display:none" class="w-full max-w-sm text-center">
-        <img src="{{ $themeLogo }}" alt="Women Entrepreneurs Platform" class="mx-auto mb-4 h-16 w-auto max-w-[280px] object-contain">
+        <img src="{{ $themeLogo }}" alt="Women's hub" class="mx-auto mb-4 h-16 w-auto max-w-[280px] object-contain">
         <h1 class="account-login-heading mb-2 text-2xl font-bold">{{ __('account.brand') }}</h1>
         <div class="account-login-card rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
             <p class="account-login-heading mb-1 text-sm font-medium">{{ __('account.login.closed_title') }}</p>
@@ -170,7 +170,7 @@
 
     <div id="login-form-wrapper" class="w-full max-w-sm">
         <div class="mb-8 flex flex-col items-center text-center">
-            <img src="{{ $themeLogo }}" alt="Women Entrepreneurs Platform" class="mb-4 h-16 w-auto max-w-[280px] object-contain">
+            <img src="{{ $themeLogo }}" alt="Women's hub" class="mb-4 h-16 w-auto max-w-[280px] object-contain">
             <h1 class="account-login-heading text-2xl font-bold">{{ __('account.brand') }}</h1>
             <p class="account-login-subtitle mt-1 text-sm">{{ __('account.login.subtitle') }}</p>
         </div>

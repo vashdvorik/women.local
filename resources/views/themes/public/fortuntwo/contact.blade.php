@@ -8,8 +8,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Свяжитесь с командой Women Entrepreneurs Platform через Telegram и присоединяйтесь к сообществу.">
-    <title>Контакты — Women Entrepreneurs Platform</title>
+    <meta name="description" content="Свяжитесь с командой Women's hub через Telegram и присоединяйтесь к сообществу.">
+    <title>Контакты — Women's hub</title>
     <link rel="icon" type="image/png" href="{{ asset('themes/public/' . ($publicTheme ?? 'fortuntwo') . '/images/brand/favicon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

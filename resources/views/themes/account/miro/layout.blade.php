@@ -31,11 +31,10 @@
 
             <div class="flex shrink-0 items-center gap-3 px-5 pb-5 pt-6">
                 <span class="account-brand-mark flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white p-0.5 shadow-sm">
-                    <img src="{{ asset('themes/account/miro/images/brand/favicon.png') }}" alt="Women Entrepreneurs Platform" class="h-full w-full object-contain">
+                    <img src="{{ asset('themes/account/miro/images/brand/favicon.png') }}" alt="Women's hub" class="h-full w-full object-contain">
                 </span>
                 <div class="min-w-0 leading-none">
-                    <p class="truncate text-sm font-bold tracking-tight text-[#0f172a]">Women Entrepreneurs Platform</p>
-                    <p class="mt-0.5 text-[10px] font-medium uppercase tracking-widest text-gray-400">of the Two Banks</p>
+                    <p class="truncate text-sm font-bold tracking-tight text-[#0f172a]">Women's hub</p>
                 </div>
             </div>
 
