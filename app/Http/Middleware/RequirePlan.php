@@ -17,10 +17,21 @@ use Symfony\Component\HttpFoundation\Response;
  * внутри группы кабинета. Тариф проверяется на каждом запросе по сохранённой дате окончания, так что доступ
  * закрывается в ту же минуту, когда подписка закончилась.
  *
- * Страница получает редирект на «Подписку» с пояснением, запрос с JSON (ИИ-помощник) — 403 с ссылкой на оплату.
+ * Страница не уводит участницу в другой раздел: на месте раздела (меню кабинета остаётся, раздел подсвечен) показывается
+ * сообщение «Этот раздел входит в тариф … и выше» и кнопка «Купить подписку», которая ведёт на страницу «Подписка».
+ * Запрос с JSON (ИИ-помощник) получает 403 со ссылкой на оплату, запись (POST и т. п.) — редирект на «Подписку».
  */
 class RequirePlan
 {
+    /** Раздел кабинета → ключ его названия в меню (account.nav.* в lang/*). */
+    private const SECTIONS = [
+        'account.matches' => 'matches',
+        'account.search' => 'search',
+        'account.people' => 'people',
+        'account.people.show' => 'people',
+        'account.opportunities.*' => 'opportunities',
+    ];
+
     public function handle(Request $request, Closure $next, string $plan = 'community'): Response
     {
         $required = Plan::tryFrom($plan) ?? Plan::Community;
@@ -39,7 +50,26 @@ class RequirePlan
             ], 403);
         }
 
+        if ($request->isMethod('GET')) {
+            return response()->view('account.subscription.locked', [
+                'plan' => $required,
+                'section' => $this->sectionTitle($request),
+            ]);
+        }
+
         return redirect()->route('account.subscription')
             ->with('error', __('subscription.locked.notice', ['plan' => $required->title()]));
+    }
+
+    /** Название закрытого раздела так, как оно написано в меню кабинета; null, если раздел не из списка. */
+    private function sectionTitle(Request $request): ?string
+    {
+        foreach (self::SECTIONS as $route => $key) {
+            if ($request->routeIs($route)) {
+                return __('account.nav.'.$key);
+            }
+        }
+
+        return null;
     }
 }

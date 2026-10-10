@@ -10,8 +10,10 @@ use App\Support\BotMessages;
 use App\Telegram\BotReplies;
 use App\Telegram\Conversations\RegistrationConversation;
 use App\Telegram\Conversations\SearchConversation;
+use App\Telegram\TelegramKeyboards;
 use App\Telegram\TelegramLocale;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
 // Ни одного текста для участницы здесь нет: все они лежат в resources/data/bot_messages.php и правятся в админке
 // («Кабинеты участниц → Сообщения бота»). Описания команд в меню Telegram — оттуда же: php artisan bot:sync-commands.
@@ -25,9 +27,13 @@ $bot->onCallbackQueryData('restart', function (Nutgram $bot) {
 $bot->onCallbackQueryData('start_guide', function (Nutgram $bot) {
     $bot->answerCallbackQuery();
 
+    $locale = TelegramLocale::for($bot);
+    $cabinet = TelegramKeyboards::cabinetButton($locale);
+
     $bot->sendMessage(
-        BotMessages::text('guide_start', TelegramLocale::for($bot)),
+        BotMessages::text('guide_start', $locale),
         parse_mode: 'HTML',
+        reply_markup: $cabinet ? InlineKeyboardMarkup::make()->addRow($cabinet) : null,
     );
 });
 

@@ -192,11 +192,23 @@ return [
         ],
         'moderation_approved_guide_prompt' => [
             'group' => 'moderation',
-            'title' => 'Вопрос «С чего начать?»',
-            'when' => 'Второе сообщение сразу после «Заявка одобрена», с кнопкой ниже.',
+            'title' => 'Приглашение войти в кабинет',
+            'when' => 'Второе сообщение сразу после «Заявка одобрена»; под ним кнопки «Открыть кабинет» и «С чего начать?».',
             'kind' => 'text',
             'vars' => [],
-            'text' => ['ru' => 'С чего начать?', 'en' => 'Where to start?', 'ro' => 'De unde să începeți?'],
+            'text' => [
+                'ru' => 'Чтобы войти в личный кабинет, нажмите кнопку «Открыть кабинет» ниже. Если не знаете, с чего начать, нажмите «С чего начать?».',
+                'en' => 'To enter your account, tap “Open my account” below. Not sure where to start? Tap “Where to start?”.',
+                'ro' => 'Pentru a intra în cabinetul personal, apăsați „Deschide cabinetul” mai jos. Nu știți de unde să începeți? Apăsați „De unde să începeți?”.',
+            ],
+        ],
+        'cabinet_open_button' => [
+            'group' => 'moderation',
+            'title' => 'Кнопка «Открыть кабинет»',
+            'when' => 'Под сообщением «Приглашение войти в кабинет» и под памяткой «С чего начать»: открывает кабинет прямо в Telegram, без ссылки и пароля.',
+            'kind' => 'button',
+            'vars' => [],
+            'text' => ['ru' => 'Открыть кабинет', 'en' => 'Open my account', 'ro' => 'Deschide cabinetul'],
         ],
         'moderation_approved_guide_button' => [
             'group' => 'moderation',
@@ -288,9 +300,9 @@ return [
             'kind' => 'text',
             'vars' => [],
             'text' => [
-                'ru' => "Как начать работу с Women's hub?\n\n1. Откройте личный кабинет\nИспользуйте кнопку входа или ссылку из этого бота.\n\n2. Заполните профиль\nРасскажите, что вы представляете, что ищете и чем можете быть полезны другим участницам.\n\n3. Ищите контакты и возможности\nС подпиской WOMEN’S HUB COMMUNITY платформа помогает находить предпринимательниц, запросы, предложения, события и полезные материалы.\n\n4. Оставайтесь на связи\nTelegram будет присылать важные обновления, приглашения и публикации сообщества.",
-                'en' => "How to get started with Women's hub?\n\n1. Open your account\nUse the login button or the link from this bot.\n\n2. Fill in your profile\nTell us what you represent, what you are looking for and how you can be useful to other members.\n\n3. Look for contacts and opportunities\nWith a WOMEN’S HUB COMMUNITY subscription, the platform helps you find entrepreneurs, requests, offers, events and useful materials.\n\n4. Stay in touch\nTelegram will send you important updates, invitations and community publications.",
-                'ro' => "Cum începeți să lucrați cu Women's hub?\n\n1. Deschideți cabinetul personal\nFolosiți butonul de autentificare sau linkul din acest bot.\n\n2. Completați profilul\nPovestiți pe cine reprezentați, ce căutați și cu ce puteți fi utilă altor membre.\n\n3. Căutați contacte și oportunități\nCu abonamentul WOMEN’S HUB COMMUNITY, platforma vă ajută să găsiți antreprenoare, solicitări, oferte, evenimente și materiale utile.\n\n4. Rămâneți în legătură\nTelegram vă va trimite actualizări importante, invitații și publicații ale comunității.",
+                'ru' => "Как начать работу с Women's hub?\n\n1. Откройте личный кабинет\nНажмите кнопку «Открыть кабинет» под этим сообщением. Если кнопки нет, отправьте команду /login: бот пришлёт ссылку для входа.\n\n2. Заполните профиль\nРасскажите, что вы представляете, что ищете и чем можете быть полезны другим участницам.\n\n3. Ищите контакты и возможности\nС подпиской WOMEN’S HUB COMMUNITY платформа помогает находить предпринимательниц, запросы, предложения, события и полезные материалы.\n\n4. Оставайтесь на связи\nTelegram будет присылать важные обновления, приглашения и публикации сообщества.",
+                'en' => "How to get started with Women's hub?\n\n1. Open your account\nTap “Open my account” under this message. If there is no button, send /login and the bot will send you a sign-in link.\n\n2. Fill in your profile\nTell us what you represent, what you are looking for and how you can be useful to other members.\n\n3. Look for contacts and opportunities\nWith a WOMEN’S HUB COMMUNITY subscription, the platform helps you find entrepreneurs, requests, offers, events and useful materials.\n\n4. Stay in touch\nTelegram will send you important updates, invitations and community publications.",
+                'ro' => "Cum începeți să lucrați cu Women's hub?\n\n1. Deschideți cabinetul personal\nApăsați „Deschide cabinetul” sub acest mesaj. Dacă nu există butonul, trimiteți comanda /login: botul vă va trimite linkul de autentificare.\n\n2. Completați profilul\nPovestiți pe cine reprezentați, ce căutați și cu ce puteți fi utilă altor membre.\n\n3. Căutați contacte și oportunități\nCu abonamentul WOMEN’S HUB COMMUNITY, platforma vă ajută să găsiți antreprenoare, solicitări, oferte, evenimente și materiale utile.\n\n4. Rămâneți în legătură\nTelegram vă va trimite actualizări importante, invitații și publicații ale comunității.",
             ],
         ],
 

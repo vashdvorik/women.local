@@ -181,7 +181,7 @@ class SubscriptionAdminTest extends TestCase
         $this->actingAsAdmin()->post(route('admin.subscriptions.revoke', $user))->assertSessionHas('success');
 
         $this->assertSame(Plan::Open, $user->fresh()->currentPlan());
-        $this->asParticipant($user)->get(route('account.people'))->assertRedirect(route('account.subscription'));
+        $this->asParticipant($user)->get(route('account.people'))->assertOk()->assertSee('Купить подписку');
     }
 
     // ---------------------------------------------------------------- платежи

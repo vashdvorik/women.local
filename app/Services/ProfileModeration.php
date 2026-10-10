@@ -48,8 +48,14 @@ class ProfileModeration
     {
         $locale = $profile->messageLocale();
 
-        $inlineKeyboard = InlineKeyboardMarkup::make()
-            ->addRow(InlineKeyboardButton::make(BotMessages::text('moderation_approved_guide_button', $locale), callback_data: 'start_guide'));
+        // Сначала главное: «Открыть кабинет», ниже — подсказка «С чего начать?».
+        $inlineKeyboard = InlineKeyboardMarkup::make();
+
+        if ($cabinet = TelegramKeyboards::cabinetButton($locale)) {
+            $inlineKeyboard->addRow($cabinet);
+        }
+
+        $inlineKeyboard->addRow(InlineKeyboardButton::make(BotMessages::text('moderation_approved_guide_button', $locale), callback_data: 'start_guide'));
 
         try {
             Telegram::sendMessage(

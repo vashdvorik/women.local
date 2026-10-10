@@ -47,22 +47,66 @@ class AccessGateTest extends TestCase
         ];
     }
 
-    public function test_open_participant_is_sent_to_the_subscription_page_from_every_closed_section(): void
+    private const LOCKED_MESSAGE = 'Этот раздел входит в тариф WOMEN’S HUB COMMUNITY и выше. Оформите подписку, чтобы открыть его.';
+
+    public function test_open_participant_sees_the_locked_message_with_a_buy_button_in_every_closed_section(): void
     {
         $open = BotUser::factory()->approved()->create();
-        $other = BotUser::factory()->community()->create();
+        $other = BotUser::factory()->community()->create(['full_name' => 'Закрытая Участница']);
 
         foreach ($this->closedForOpen($other) as $name => [$method, $url]) {
-            $this->asParticipant($open)->call($method, $url)
-                ->assertRedirect(route('account.subscription'))
-                ->assertSessionHas('error');
+            $html = $this->asParticipant($open)->call($method, $url)
+                ->assertOk()   // не редирект: участница остаётся на странице раздела
+                ->assertSee(self::LOCKED_MESSAGE)
+                ->assertSee('Купить подписку')
+                ->getContent();
 
-            $this->assertTrue(true, $name);
+            // Кнопка ведёт на страницу «Подписка», а сам раздел не показывается.
+            $this->assertMatchesRegularExpression('~<a href="'.preg_quote(route('account.subscription'), '~').'"[^>]*>\s*Купить подписку\s*</a>~u', $html, $name);
+            $this->assertStringNotContainsString('Закрытая Участница', $html, "{$name}: чужой профиль не утёк");
         }
+    }
 
-        // Действия (запись) закрыты так же.
+    public function test_the_locked_page_is_titled_with_the_section_name_and_keeps_the_cabinet_menu(): void
+    {
+        $open = BotUser::factory()->approved()->create();
+
+        foreach ([
+            'account.matches' => 'Рекомендации',
+            'account.search' => 'Поиск контактов',
+            'account.people' => 'Профили платформы',
+            'account.opportunities.index' => 'Возможности',
+        ] as $route => $title) {
+            $html = $this->asParticipant($open)->get(route($route))->assertOk()->getContent();
+
+            $this->assertMatchesRegularExpression('~<h1 id="locked-title"[^>]*>\s*'.preg_quote($title, '~').'\s*</h1>~u', $html, $route);
+            $this->assertStringContainsString('href="'.route('account.subscription').'"', $html, 'меню кабинета на месте');
+            $this->assertStringContainsString('href="'.route('account.profile').'"', $html, 'меню кабинета на месте');
+        }
+    }
+
+    public function test_the_locked_message_follows_the_participants_language(): void
+    {
+        $open = BotUser::factory()->approved()->create();
+
+        $this->withSession(['locale' => 'en'])->asParticipant($open)->get(route('account.matches'))
+            ->assertOk()
+            ->assertSee('This section is part of the WOMEN’S HUB COMMUNITY plan and above. Subscribe to unlock it.')
+            ->assertSee('Buy a subscription')
+            ->assertSee('Recommendations');
+
+        $this->withSession(['locale' => 'ro'])->asParticipant($open)->get(route('account.matches'))
+            ->assertOk()
+            ->assertSee('Cumpără abonamentul');
+    }
+
+    public function test_actions_that_write_data_are_still_redirected_to_the_subscription_page(): void
+    {
+        $open = BotUser::factory()->approved()->create();
+
         $this->asParticipant($open)->post(route('account.opportunities.store'), ['type' => 'project', 'title' => 'Т', 'body' => 'Б'])
-            ->assertRedirect(route('account.subscription'));
+            ->assertRedirect(route('account.subscription'))
+            ->assertSessionHas('error');
         $this->assertSame(0, Opportunity::count());
     }
 
@@ -107,7 +151,7 @@ class AccessGateTest extends TestCase
 
         $this->travel(13)->months();
 
-        $this->asParticipant($user)->get(route('account.people'))->assertRedirect(route('account.subscription'));
+        $this->asParticipant($user)->get(route('account.people'))->assertOk()->assertSee(self::LOCKED_MESSAGE)->assertSee('Купить подписку');
         $this->asParticipant($user)->get(route('account.index'))->assertOk()->assertSee(__('subscription.open_home.upgrade_cta'));
     }
 

@@ -114,8 +114,7 @@ return [
         'notice' => 'Această secțiune face parte din pachetul :plan și din cele superioare. Abonați-vă pentru a o deschide.',
         'json' => 'Această funcție este disponibilă cu abonament.',
         'title' => 'Secțiune disponibilă cu abonament',
-        'text' => 'Catalogul membrelor, selecția de contacte, căutarea, asistentul AI și publicarea de oportunități fac parte din WOMEN’S HUB COMMUNITY.',
-        'cta' => 'Vezi pachetele',
+        'buy' => 'Cumpără abonamentul',
     ],
 
     'open_home' => [

@@ -756,8 +756,6 @@
     "Пишет участница, заявка которой отклонена или доступ закрыт.": "A participant whose application was rejected, or whose access was closed, writes.",
     "Заявка одобрена": "Application approved",
     "Администратор одобрил профиль участницы. Вместе с сообщением появляется главное меню.": "The administrator approved the participant's profile. The main menu appears together with the message.",
-    "Вопрос «С чего начать?»": "Question “Where to start?”",
-    "Второе сообщение сразу после «Заявка одобрена», с кнопкой ниже.": "The second message right after “Application approved”, with a button below.",
     "Кнопка «С чего начать?»": "“Where to start?” button",
     "Под вопросом «С чего начать?»; открывает памятку.": "Under the question “Where to start?”; opens the guide.",
     "Заявка отклонена": "Application rejected",
@@ -845,5 +843,9 @@
     "Синий": "Blue",
     "Оранжевый": "Orange",
     "Пудровый": "Powder pink",
-    "Классическая фиолетовая": "Classic purple"
+    "Классическая фиолетовая": "Classic purple",
+    "Приглашение войти в кабинет": "Invitation to open the account",
+    "Второе сообщение сразу после «Заявка одобрена»; под ним кнопки «Открыть кабинет» и «С чего начать?».": "The second message right after “Application approved”; under it are the “Open my account” and “Where to start?” buttons.",
+    "Кнопка «Открыть кабинет»": "Button “Open my account”",
+    "Под сообщением «Приглашение войти в кабинет» и под памяткой «С чего начать»: открывает кабинет прямо в Telegram, без ссылки и пароля.": "Under the “Invitation to open the account” message and under the “Where to start” guide: opens the account right inside Telegram, with no link or password."
 }

@@ -322,6 +322,63 @@ class BotFlowTest extends TestCase
         );
     }
 
+    public function test_approval_offers_a_one_tap_open_account_button_above_the_guide_button(): void
+    {
+        \Illuminate\Support\Facades\URL::forceRootUrl('https://womenhub.example');
+        \Illuminate\Support\Facades\URL::forceScheme('https');
+
+        app(ProfileModeration::class)->approve($this->participant('pending', 'ru'));
+
+        [, $prompt] = $this->sent(app(Nutgram::class));
+        $rows = $prompt['reply_markup']['inline_keyboard'];
+
+        $this->assertSame(BotMessages::default('cabinet_open_button', 'ru'), $rows[0][0]['text']);
+        $this->assertSame('https://womenhub.example/app/account/login', $rows[0][0]['web_app']['url'], 'мини-приложение: вход по подписи Telegram, без ссылки с токеном');
+        $this->assertSame('start_guide', $rows[1][0]['callback_data']);
+        $this->assertCount(2, $rows);
+        $this->assertStringContainsString('«Открыть кабинет»', $prompt['text'], 'в тексте названа та же кнопка');
+    }
+
+    public function test_without_https_the_open_account_button_is_left_out_but_the_approval_still_goes_out(): void
+    {
+        // Telegram принимает мини-приложение только по https; на локальной машине (http) иначе отклонил бы всё сообщение.
+        \Illuminate\Support\Facades\URL::forceRootUrl('http://localhost:8000');
+
+        app(ProfileModeration::class)->approve($this->participant('pending', 'ru'));
+
+        [$approved, $prompt] = $this->sent(app(Nutgram::class));
+
+        $this->assertNotEmpty($approved['text']);
+        $this->assertSame([['text' => BotMessages::default('moderation_approved_guide_button', 'ru'), 'callback_data' => 'start_guide']], $prompt['reply_markup']['inline_keyboard'][0] ? [$prompt['reply_markup']['inline_keyboard'][0][0]] : []);
+        $this->assertCount(1, $prompt['reply_markup']['inline_keyboard']);
+    }
+
+    public function test_the_start_guide_ends_with_the_open_account_button(): void
+    {
+        \Illuminate\Support\Facades\URL::forceRootUrl('https://womenhub.example');
+        \Illuminate\Support\Facades\URL::forceScheme('https');
+
+        $bot = $this->bot('en');
+        $bot->hearCallbackQueryData('start_guide')->reply();
+
+        $message = $this->sent($bot)[0];
+
+        $this->assertSame(BotMessages::default('guide_start', 'en'), $message['text']);
+        $this->assertSame('Open my account', $message['reply_markup']['inline_keyboard'][0][0]['text']);
+        $this->assertSame('https://womenhub.example/app/account/login', $message['reply_markup']['inline_keyboard'][0][0]['web_app']['url']);
+        $this->assertStringContainsString('Tap “Open my account” under this message', $message['text'], 'шаг 1 памятки называет эту кнопку');
+    }
+
+    public function test_the_guide_has_no_button_to_press_in_a_local_http_setup(): void
+    {
+        \Illuminate\Support\Facades\URL::forceRootUrl('http://localhost:8000');
+
+        $bot = $this->bot('en');
+        $bot->hearCallbackQueryData('start_guide')->reply();
+
+        $this->assertArrayNotHasKey('reply_markup', $this->sent($bot)[0]);
+    }
+
     public function test_rejection_and_revoking_access_use_their_own_texts(): void
     {
         $bot = app(Nutgram::class);

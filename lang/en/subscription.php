@@ -114,8 +114,7 @@ return [
         'notice' => 'This section is part of the :plan plan and above. Subscribe to unlock it.',
         'json' => 'This feature is available with a subscription.',
         'title' => 'This section is for subscribers',
-        'text' => 'The members directory, contact matching, search, the AI assistant and publishing opportunities are part of WOMEN’S HUB COMMUNITY.',
-        'cta' => 'See the plans',
+        'buy' => 'Buy a subscription',
     ],
 
     'open_home' => [
