@@ -1,6 +1,13 @@
 {{-- Блоки материала (текст, заголовок, HTML-код, файл PDF, картинка, галереи). Структура общая для
      всех языков, поэтому список блоков выводится отдельно для каждого языка в своей обёртке data-lang.
      $blocks — массив блоков одного языка, $lang — этот язык (для подписей вроде кнопки «Скачать»). --}}
+@php
+    // Куда ведёт фото по клику. Обычно на сам файл; в альбомах (fullPhotos) на полный размер без обрезки: плитка
+    // в полотне вырезана по пропорциям ряда, а в просмотре человек хочет видеть снимок целиком.
+    $photoHref = fn (string $path): string => ($fullPhotos ?? false) && preg_match('#^\d{4}/\d{2}/[a-z0-9]+\.webp$#', $path)
+        ? route('media.photos.full', ['path' => $path])
+        : '/uploads/'.$path;
+@endphp
 <div class="miro-prose">
     @foreach($blocks as $block)
         @php $data = $block['data'] ?? []; @endphp
@@ -45,7 +52,7 @@
             @case('image')
                 @if($data['path'] ?? null)
                     {{-- Фото открывается по клику (js/lightbox.js); без скриптов ссылка ведёт на сам файл. --}}
-                    <a class="miro-zoom" href="/uploads/{{ $data['path'] }}" data-lightbox><img class="miro-prose__image" src="/uploads/{{ $data['path'] }}" alt="" loading="lazy"></a>
+                    <a class="miro-zoom" href="{{ $photoHref($data['path']) }}" data-lightbox><img class="miro-prose__image" src="/uploads/{{ $data['path'] }}" alt="" loading="lazy"></a>
                 @endif
                 @break
 
@@ -64,7 +71,7 @@
                 @if($imgs)
                     <div class="miro-prose__gallery miro-prose__gallery--{{ $cols }} @if($portrait) is-portrait @endif">
                         @foreach($imgs as $img)
-                            <a class="miro-zoom" href="/uploads/{{ $img }}" data-lightbox><img src="/uploads/{{ $img }}" alt="" loading="lazy"></a>
+                            <a class="miro-zoom" href="{{ $photoHref($img) }}" data-lightbox><img src="/uploads/{{ $img }}" alt="" loading="lazy"></a>
                         @endforeach
                     </div>
                 @endif

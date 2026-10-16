@@ -9,6 +9,7 @@ use App\Support\AspectRatio;
 use App\Support\Blocks;
 use App\Support\CardTone;
 use App\Support\Locales;
+use App\Support\PublicCache;
 use Carbon\Carbon;
 use Database\Seeders\Concerns\ImportsThemeImages;
 use Illuminate\Database\Seeder;
@@ -134,6 +135,9 @@ class NewsArchiveSeeder extends Seeder
 
             SiteSetting::write(self::MARKER_KEY, ['keys' => array_values(array_unique($done))]);
         });
+
+        // Под DatabaseSeeder события моделей отключены, и кеш публичных страниц сам не сбросился бы.
+        PublicCache::flush();
 
         $this->command?->info("Новости из архива: добавлено {$created}, дополнено {$enriched}, восстановлено картинок {$restored}.");
     }

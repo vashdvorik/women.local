@@ -93,7 +93,8 @@
 
     /** Фото страницы в порядке чтения: только те, что сейчас видны (скрытые языковые копии не считаются). */
     function visibleItems(from) {
-        var scope = from.closest('.miro-article') || document;
+        // Листаются фото одной статьи или одного альбома на странице «Фото» ([data-lightbox-group]).
+        var scope = from.closest('.miro-article, [data-lightbox-group]') || document;
 
         return Array.prototype.filter.call(scope.querySelectorAll('a.miro-zoom[data-lightbox]'), function (a) {
             return a.getClientRects().length > 0;

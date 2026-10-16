@@ -109,6 +109,56 @@
 .miro-prose__gallery img { display: block; width: 100%; aspect-ratio: 4 / 3; border-radius: 16px; object-fit: cover; }
 .miro-prose__gallery.is-portrait img { aspect-ratio: 3 / 4; }
 
+/* ---------- Фотоальбомы: полотно из рядов фото ---------- */
+/* Страница «Фото»: альбомы один за другим, у каждого название со ссылкой и все фото рядами. Страница альбома: то же
+   полотно во всю ширину сетки без боковой колонки. Ряды лежат вплотную, с таким же зазором, как между плитками в ряду
+   (а не с интервалом абзацев текста). */
+.miro-wall { scroll-margin-top: 96px; }
+.miro-wall + .miro-wall { margin-top: 72px; }
+.miro-wall__title { margin: 0; color: var(--miro-ink-deep, #21140F); font-family: var(--miro-display-font, "Prata", Georgia, serif); font-size: clamp(28px, 3.4vw, 40px); font-weight: 400; line-height: 1.15; }
+.miro-wall__title a { color: inherit; }
+.miro-wall__title a:hover { color: var(--miro-blue, #74472F); }
+.miro-wall__count, .miro-article__count { margin: 8px 0 24px; color: var(--miro-blue, #74472F); font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.miro-article--wide .miro-article__title { margin-bottom: 0; }
+.miro-wall .miro-prose > * + *, .miro-article--wide .miro-prose > * + * { margin-top: 12px; }
+.miro-article__back--wall { margin-top: 40px; }
+.miro-wall.is-new { animation: miro-event-card-in .35s ease both; }
+@media (prefers-reduced-motion: reduce) { .miro-wall.is-new { animation: none; } }
+@media (max-width: 767px) {
+    /* Две колонки: третье фото ряда из трёх не остаётся один на один с пустым местом, а встаёт на всю ширину. */
+    .miro-wall .miro-prose__gallery--3 > :last-child:nth-child(odd),
+    .miro-article--wide .miro-prose__gallery--3 > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+    .miro-wall + .miro-wall { margin-top: 56px; }
+}
+
+/* ---------- Видео: кнопка на карточке и проигрыватель (js/video-player.js) ---------- */
+.miro-card-play { transition: transform .2s ease, background .2s ease, color .2s ease; }
+.miro-event-card--linked:hover .miro-card-play { transform: translate(-50%, -50%) scale(1.1); background: var(--miro-primary, #2A1913); color: #FFFDFC; }
+body.miro-player-open { overflow: hidden; }
+.miro-player { position: fixed; z-index: 1000; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(22, 14, 11, .94); opacity: 0; transition: opacity .2s ease; }
+.miro-player[hidden] { display: none; }
+.miro-player.is-open { opacity: 1; }
+/* Ширина окна не больше, чем позволяет высота экрана (кадр 16:9 плюс подпись), иначе на низком окне подпись уезжает за край. */
+.miro-player__box { width: min(1120px, 100%, calc((100vh - 150px) * 16 / 9)); }
+.miro-player__frame { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 20px; background: #000; box-shadow: 0 24px 64px rgba(0, 0, 0, .5); }
+.miro-player__iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.miro-player__caption { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin-top: 16px; }
+.miro-player__title { flex: 1 1 320px; margin: 0; color: #FFFDFC; font-family: var(--miro-display-font, "Prata", Georgia, serif); font-size: clamp(18px, 2vw, 24px); line-height: 1.3; }
+.miro-player__link { flex: none; color: rgba(255, 253, 252, .85); font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.miro-player__link:hover { color: #FFFDFC; }
+.miro-player__close { position: absolute; top: 20px; right: 20px; display: grid; width: 48px; height: 48px; place-items: center; padding: 0; border: 1px solid rgba(255, 253, 252, .28); border-radius: 50%; background: rgba(255, 253, 252, .12); color: #FFFDFC; cursor: pointer; transition: background .15s ease; }
+.miro-player__close:hover { background: rgba(255, 253, 252, .24); }
+.miro-player__close svg { width: 22px; height: 22px; }
+.miro-player__link:focus-visible, .miro-player__close:focus-visible { outline: 2px solid #FFFDFC; outline-offset: 3px; }
+@media (max-width: 767px) {
+    .miro-player { padding: 12px; }
+    .miro-player__frame { border-radius: 12px; }
+    .miro-player__close { top: 12px; right: 12px; width: 42px; height: 42px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .miro-player, .miro-player__close, .miro-card-play { transition: none; }
+}
+
 @media (max-width: 767px) {
     .miro-prose { font-size: 16px; }
     .miro-prose h2 { font-size: 26px; }

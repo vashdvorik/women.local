@@ -148,7 +148,7 @@ class SeedersTest extends TestCase
         $this->assertSame($this->eventsTotal(), $this->newsWithBody(), 'у новостей архива настоящий текст, у остальных вне боевого сервера демо-текст');
         $this->assertSame(28, BotUser::count());
         $this->assertSame(0, BotUser::where('status', '!=', BotUser::STATUS_APPROVED)->count());
-        $this->assertSame(7, SiteSetting::count()); // две темы, четыре настройки ИИ и список загруженных новостей архива
+        $this->assertSame(9, SiteSetting::count()); // две темы, четыре настройки ИИ и списки загруженных новостей, альбомов и видео
 
         $this->assertSame(['admin@example.test'], User::pluck('email')->all(), 'создаётся только администратор');
 
@@ -174,7 +174,7 @@ class SeedersTest extends TestCase
         $this->assertSame(11, Expert::count());
         $this->assertSame($this->eventsTotal(), Event::count());
         $this->assertSame($this->eventsTotal(), Event::whereNotNull('slug')->count(), 'адреса страниц новостей нужны и боевому сайту');
-        $this->assertSame(3, SiteSetting::count(), 'две темы и список загруженных новостей архива');
+        $this->assertSame(5, SiteSetting::count(), 'две темы и списки загруженных новостей, альбомов и видео');
         $this->assertSame('fortuntwo', SiteSetting::accountTheme());
 
         // Никаких демо-доступов и демо-текстов: ни тестовых участниц, ни пользователей с известным паролем,
@@ -341,7 +341,7 @@ class SeedersTest extends TestCase
 
         $this->assertSame(11, Expert::count());
         $this->assertSame($this->eventsTotal(), Event::count());
-        $this->assertSame(3, SiteSetting::count());
+        $this->assertSame(5, SiteSetting::count());
         $this->assertSame(0, User::count(), 'администратор с шаблонным паролем не создан');
         $this->assertSame(0, BotUser::count());
     }

@@ -97,6 +97,10 @@ Route::get('/projects', PublicSite\ProjectsController::class)->name('projects');
 Route::get('/opportunities', [PublicSite\OpportunitiesController::class, 'index'])->name('opportunities');
 Route::get('/opportunities/{opportunity}', [PublicSite\OpportunitiesController::class, 'show'])->name('opportunities.show');
 Route::get('/media/photos', [PublicSite\AlbumsController::class, 'index'])->name('media.photos');
+// Фото альбома в полном размере (просмотр по клику): путь плитки вида 2026/10/abc123def456.webp.
+Route::get('/media/photos/full/{path}', [PublicSite\AlbumPhotoController::class, 'full'])
+    ->where('path', '[0-9]{4}/[0-9]{2}/[a-z0-9]+\.webp')
+    ->name('media.photos.full');
 Route::get('/media/photos/{album}', [PublicSite\AlbumsController::class, 'show'])->name('media.photos.show');
 Route::get('/media/videos', PublicSite\VideosController::class)->name('media.videos');
 Route::get('/media/publications', [PublicSite\PublicationsController::class, 'index'])->name('media.publications');

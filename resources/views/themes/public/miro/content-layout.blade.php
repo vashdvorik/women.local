@@ -59,5 +59,9 @@
 
     {{-- Просмотр фото по клику: фото статей и альбомов (a.miro-zoom). --}}
     <script defer src="{{ asset('themes/public/'.$theme.'/js/lightbox.js') }}"></script>
+    {{-- Проигрыватель видео по клику (карточки a[data-video] на странице «Видео»). --}}
+    <script defer src="{{ asset('themes/public/'.$theme.'/js/video-player.js') }}"></script>
+    {{-- Кнопка «Смотреть ещё» (там, где есть [data-load-more], например на странице «Фото»). --}}
+    <script defer src="{{ asset('themes/public/'.$theme.'/js/load-more.js') }}"></script>
 </body>
 </html>

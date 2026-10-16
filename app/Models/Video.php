@@ -32,8 +32,12 @@ class Video extends Model
             : "https://i.ytimg.com/vi/{$this->youtube_id}/hqdefault.jpg";
     }
 
+    /**
+     * Адрес встроенного проигрывателя (js/video-player.js открывает его поверх страницы). Домен youtube-nocookie.com:
+     * YouTube не ставит посетителю свои cookie, пока тот не нажал «Смотреть». Без рекомендаций чужих роликов в конце.
+     */
     public function embedUrl(): string
     {
-        return "https://www.youtube.com/embed/{$this->youtube_id}";
+        return "https://www.youtube-nocookie.com/embed/{$this->youtube_id}?rel=0&modestbranding=1&playsinline=1";
     }
 }

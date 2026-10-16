@@ -16,6 +16,25 @@
      Фото открываются по клику (themes/public/miro/js/lightbox.js); без скриптов ссылка ведёт на сам файл.
      Меньше 1024 px: одна колонка, тип и дата под названием, ссылка «все новости» под текстом. --}}
 @section('content')
+    {{-- Фотоальбом (wide): никакой боковой колонки, полотно из рядов фото во всю ширину сетки, одно на все языки.
+         Под названием число фото, внизу ссылка на все альбомы. Фото открываются в полном размере. --}}
+    @if(! empty($article['wide']))
+    <article class="miro-article miro-article--wide" data-lightbox-group>
+        @if(! empty($article['draft']))
+            <p class="miro-article__draft">Черновик: эту страницу видит только администратор.</p>
+        @endif
+
+        <h1 class="miro-article__title">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ $article['title'][$l] }}</span>@endforeach</h1>
+
+        @if(! empty($article['meta']))
+            <p class="miro-article__count">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ $article['meta'][$l] }}</span>@endforeach</p>
+        @endif
+
+        @include('themes.public.miro.partials.blocks', ['blocks' => $article['blocks']['ru'] ?? [], 'lang' => 'ru', 'fullPhotos' => ! empty($article['full_photos'])])
+
+        <a href="{{ $article['back']['href'] }}" class="miro-article__back miro-article__back--wall">←&nbsp;@foreach($locales as $l)<span data-lang="{{ $l }}">{{ $article['back']['label'][$l] }}</span>@endforeach</a>
+    </article>
+    @else
     <article class="miro-article">
         @if(! empty($article['draft']))
             <p class="miro-article__draft">Черновик: эту страницу видит только администратор.</p>
@@ -52,4 +71,5 @@
             </aside>
         </div>
     </article>
+    @endif
 @endsection

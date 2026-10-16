@@ -238,12 +238,16 @@ class PublicContentPagesTest extends TestCase
         ]);
         $album->translations()->create(['locale' => 'ru', 'title' => 'Форум 2026', 'excerpt' => 'Как это было']);
 
+        // Список: не карточка с обложкой, а название со ссылкой, число фото и сами фото рядами.
         $this->get(route('media.photos'))
             ->assertOk()
             ->assertSee('Форум 2026')
             ->assertSee('2 фото')
             ->assertSee('2 photos')
-            ->assertSee('/uploads/2026/09/cover.webp', false);
+            ->assertSee('/uploads/2026/09/p1.webp', false)
+            ->assertSee('/uploads/2026/09/p2.webp', false)
+            ->assertDontSee('/uploads/2026/09/cover.webp', false)
+            ->assertSee(route('media.photos.show', $album), false);
 
         $this->get(route('media.photos.show', $album))
             ->assertOk()

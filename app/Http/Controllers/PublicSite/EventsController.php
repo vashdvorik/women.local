@@ -5,9 +5,10 @@ namespace App\Http\Controllers\PublicSite;
 use App\Models\Event;
 use App\Services\PublicThemeView;
 use App\Support\Locales;
-use App\Support\PublicCache;
 use App\Support\PublicCards;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 /**
@@ -16,11 +17,36 @@ use Illuminate\Http\Request;
  */
 class EventsController extends ContentPageController
 {
-    public function __invoke(): View
+    /** Сколько новостей в одной порции: три ряда по три карточки. Дальше кнопка «Смотреть ещё». */
+    public const PER_PAGE = 9;
+
+    /**
+     * Список новостей порциями. Полная страница: первая порция (или та, что названа в ?page=N, это запасной ход для
+     * браузера без скриптов) и кнопка «Смотреть ещё». С ?partial=1 (так просит js/load-more.js) отвечает JSON: готовые
+     * карточки следующей порции и адрес порции за ней.
+     */
+    public function __invoke(Request $request): View|JsonResponse|RedirectResponse
     {
-        return PublicThemeView::render('events', [
-            'events' => PublicCache::remember('events.list', fn () => Event::published()->ordered()->with('translations')->get()),
-        ]);
+        [$events, $paginator] = $this->cachedCards(
+            'events.list',
+            fn () => Event::published()->ordered()->with('translations'),
+            fn (Event $event) => $event,
+            self::PER_PAGE,
+        );
+
+        if ($request->boolean('partial')) {
+            return response()->json([
+                'html' => view('themes.public.miro.partials.event-cards', ['events' => $events])->render(),
+                'next' => $paginator->hasMorePages() ? $paginator->nextPageUrl() : null,
+            ]);
+        }
+
+        // Страницы за последней новостью нет: открываем список с начала.
+        if ($events === [] && $paginator->currentPage() > 1) {
+            return redirect()->route('events');
+        }
+
+        return PublicThemeView::render('events', ['events' => $events, 'paginator' => $paginator]);
     }
 
     public function show(Request $request, string $event): View

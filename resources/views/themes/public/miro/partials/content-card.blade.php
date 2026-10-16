@@ -24,7 +24,8 @@
             <div class="miro-event-card__date">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ $card['date'][$l] }}</span>@endforeach</div>
         @endif
         <h3>
-            @if($hasLink)<a href="{{ $card['href'] }}"@if($external) target="_blank" rel="noopener noreferrer"@endif class="miro-event-card__title-link">@endif
+            {{-- Видео (video): со скриптом (js/video-player.js) играет в проигрывателе поверх страницы, без скрипта это обычная ссылка на YouTube. --}}
+            @if($hasLink)<a href="{{ $card['href'] }}"@if($external) target="_blank" rel="noopener noreferrer"@endif @if(! empty($card['video'])) data-video="{{ $card['video'] }}" aria-haspopup="dialog" @endif class="miro-event-card__title-link">@endif
             @foreach($locales as $l)<span data-lang="{{ $l }}">{{ $card['title'][$l] }}</span>@endforeach
             @if($hasLink)</a>@endif
         </h3>

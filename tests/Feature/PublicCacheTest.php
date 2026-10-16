@@ -199,12 +199,13 @@ class PublicCacheTest extends TestCase
             $this->album("album-{$i}", "Альбом {$i}", ['published_at' => now()->subMinutes($i)]);
         }
 
+        // Альбомы идут порциями по четыре: 13 альбомов — четыре страницы, на каждой кнопка «Смотреть ещё» с адресом следующей.
         $tables = ['albums', 'album_translations'];
-        $this->get(route('media.photos'))->assertOk()->assertSee('Альбом 1<', false)->assertSee('1 / 2')->assertSee('page=2', false);
-        $this->get(route('media.photos', ['page' => 2]))->assertOk()->assertSee('Альбом 13<', false)->assertSee('2 / 2');
+        $this->get(route('media.photos'))->assertOk()->assertSee('Альбом 1<', false)->assertSee('Альбом 4<', false)->assertDontSee('Альбом 5<', false)->assertSee('page=2', false);
+        $this->get(route('media.photos', ['page' => 4]))->assertOk()->assertSee('Альбом 13<', false)->assertDontSee('data-load-more', false);
 
-        $this->assertSame([], $this->queriesTo($tables, fn () => $this->get(route('media.photos'))->assertOk()->assertSee('1 / 2')));
-        $this->assertSame([], $this->queriesTo($tables, fn () => $this->get(route('media.photos', ['page' => 2]))->assertOk()->assertSee('Альбом 13<', false)->assertSee('2 / 2')));
+        $this->assertSame([], $this->queriesTo($tables, fn () => $this->get(route('media.photos'))->assertOk()->assertSee('Альбом 4<', false)));
+        $this->assertSame([], $this->queriesTo($tables, fn () => $this->get(route('media.photos', ['page' => 4]))->assertOk()->assertSee('Альбом 13<', false)));
     }
 
     public function test_far_away_pages_do_not_fill_the_cache(): void
@@ -212,7 +213,7 @@ class PublicCacheTest extends TestCase
         $this->album('forum', 'Форум 2026');
 
         $page = PublicCache::MAX_CACHED_PAGE + 5;
-        $this->get(route('media.photos', ['page' => $page]))->assertOk();
+        $this->get(route('media.photos', ['page' => $page]))->assertRedirect(route('media.photos'));
 
         $this->assertNull(Cache::store(PublicCache::STORE)->get(md5(url('/')).".photos.list.page.{$page}"));
 

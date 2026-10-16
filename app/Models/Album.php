@@ -36,9 +36,16 @@ class Album extends Model
     /** Реальное количество фотографий, суммированное по всем блокам. */
     public function photoCount(): int
     {
+        return count($this->photoPaths());
+    }
+
+    /** Пути всех фото альбома по порядку: ряды-галереи (images) и одиночные картинки (path). @return list<string> */
+    public function photoPaths(): array
+    {
         return collect($this->blocks ?? [])
-            ->flatMap(fn (array $block) => $block['data']['images'] ?? [])
+            ->flatMap(fn (array $block) => $block['data']['images'] ?? [$block['data']['path'] ?? null])
             ->filter(fn ($path) => filled($path))
-            ->count();
+            ->values()
+            ->all();
     }
 }

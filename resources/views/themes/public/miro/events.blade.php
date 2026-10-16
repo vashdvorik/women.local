@@ -60,26 +60,16 @@
                     <p><span data-lang="ru">Воркшопы, нетворкинг, программы, объявления и партнёрские возможности для предпринимательниц.</span><span data-lang="en">Workshops, networking, programmes, announcements and partnership opportunities for women entrepreneurs.</span><span data-lang="ro">Workshopuri, networking, programe, anunțuri și oportunități de parteneriat pentru antreprenoare.</span></p>
                 </div>
                 <div class="miro-events-grid">
-                    @foreach($events as $event)
-                        @php $link = $event->cardLink(); @endphp
-                        <article class="miro-event-card{{ $link ? ' miro-event-card--linked' : '' }}">
-                            <div class="miro-event-card__visual" style="background:var(--miro-{{ $event->toneKey() }});">
-                                @if($event->imageUrl())<img src="{{ $event->imageUrl() }}" alt="{{ $event->field('title', 'en') }}" loading="lazy">@endif
-                                <div class="miro-event-card__type">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->field('type', $locale) }}</span>@endforeach</div>
-                            </div>
-                            <div class="miro-event-card__body">
-                                <div class="miro-event-card__date">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->dateLabel($locale) }}</span>@endforeach</div>
-                                <h3>
-                                    @if($link)<a href="{{ $link['href'] }}"@if($link['external']) target="_blank" rel="noopener"@endif class="miro-event-card__title-link">@endif
-                                    @foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->field('title', $locale) }}</span>@endforeach
-                                    @if($link)</a>@endif
-                                </h3>
-                                <p>@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->field('description', $locale) }}</span>@endforeach</p>
-                                @if($link)@include('themes.public.miro.partials.card-more', ['external' => $link['external']])@endif
-                            </div>
-                        </article>
-                    @endforeach
+                    @include('themes.public.miro.partials.event-cards', ['events' => $events, 'locales' => $locales])
                 </div>
+
+                {{-- «Смотреть ещё»: следующая порция новостей. Без скриптов это обычная ссылка на ?page=N, со скриптом
+                     (js/load-more.js) карточки подгружаются в сетку, не перезагружая страницу. --}}
+                @if(! empty($paginator) && $paginator->hasMorePages())
+                    <div class="miro-events-more" data-load-more data-target=".miro-events-grid">
+                        <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="miro-button miro-button--secondary"><span data-lang="ru">Смотреть ещё</span><span data-lang="en">Load more</span><span data-lang="ro">Vezi mai multe</span></a>
+                    </div>
+                @endif
 
                 <section class="miro-events-cta">
                     <h2><span data-lang="ru">Не пропускайте новые возможности</span><span data-lang="en">Don’t miss the next opportunity</span><span data-lang="ro">Nu rata următoarea oportunitate</span></h2>
@@ -109,6 +99,7 @@
     </footer>
     @endif
 
+    <script defer src="{{ asset('themes/public/'.($publicTheme ?? 'miro').'/js/load-more.js') }}"></script>
 </body>
 </html>
 

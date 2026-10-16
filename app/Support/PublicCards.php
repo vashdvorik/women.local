@@ -54,15 +54,9 @@ class PublicCards
     /** @return array<string, mixed> */
     public static function album(Album $album): array
     {
-        $count = $album->photoCount();
-
         return [
             'image' => $album->cover_path ? '/uploads/'.$album->cover_path : null,
-            'badge' => $count > 0 ? [
-                'ru' => $count.' фото', // «фото» не склоняется
-                'en' => $count.' '.($count === 1 ? 'photo' : 'photos'),
-                'ro' => $count.' '.($count === 1 ? 'fotografie' : 'fotografii'),
-            ] : null,
+            'badge' => self::photoLabel($album->photoCount()),
             'badge_style' => null,
             'date' => self::date($album->published_at),
             'title' => self::field($album, 'title'),
@@ -71,6 +65,33 @@ class PublicCards
             'external' => false,
             'play' => false,
         ];
+    }
+
+    /**
+     * Альбом для страницы «Фото»: не карточка, а название, число фото и сами ряды фотографий («полотно»).
+     * Дат у альбомов на сайте нет: их порядок задаётся датой публикации, но показывать её незачем.
+     *
+     * @return array{slug: string, title: array<string, string>, href: string, count: ?array<string, string>, blocks: list<array<string, mixed>>}
+     */
+    public static function albumWall(Album $album): array
+    {
+        return [
+            'slug' => $album->slug,
+            'title' => self::field($album, 'title'),
+            'href' => url('media/photos/'.$album->slug),
+            'count' => self::photoLabel($album->photoCount()),
+            'blocks' => array_values($album->blocks ?? []),
+        ];
+    }
+
+    /** «12 фото» на трёх языках; null, если фотографий нет. @return array{ru: string, en: string, ro: string}|null */
+    public static function photoLabel(int $count): ?array
+    {
+        return $count > 0 ? [
+            'ru' => $count.' фото', // «фото» не склоняется
+            'en' => $count.' '.($count === 1 ? 'photo' : 'photos'),
+            'ro' => $count.' '.($count === 1 ? 'fotografie' : 'fotografii'),
+        ] : null;
     }
 
     /** @return array<string, mixed> */
@@ -86,6 +107,8 @@ class PublicCards
             'href' => $video->youtube_url,
             'external' => true,
             'play' => true,
+            // Адрес встроенного проигрывателя: по клику видео играет поверх страницы, а ссылка на YouTube остаётся запасной.
+            'video' => $video->embedUrl(),
         ];
     }
 

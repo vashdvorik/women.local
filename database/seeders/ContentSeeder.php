@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Support\PublicCache;
 use Illuminate\Database\Seeder;
 
 /**
@@ -10,6 +11,7 @@ use Illuminate\Database\Seeder;
  *
  * Новости загружаются двумя сидерами: EventSeeder — карточки страницы «Новости», NewsArchiveSeeder — полные
  * новости организации (текст на трёх языках и фото). Второй дополняет первый, поэтому идёт после него.
+ * AlbumArchiveSeeder заводит фотоальбомы организации (страница «Фото»), VideoArchiveSeeder — видео (страница «Видео»).
  *
  *   php artisan db:seed --class=ContentSeeder
  */
@@ -21,6 +23,11 @@ class ContentSeeder extends Seeder
             ExpertSeeder::class,
             EventSeeder::class,
             NewsArchiveSeeder::class,
+            AlbumArchiveSeeder::class,
+            VideoArchiveSeeder::class,
         ]);
+
+        // Под DatabaseSeeder события моделей отключены: кеш публичных страниц сбрасываем явно.
+        PublicCache::flush();
     }
 }
