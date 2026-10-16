@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Models\BotUser;
 use App\Models\SiteSetting;
+use App\Services\AiAssistantService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
@@ -21,7 +23,9 @@ class CheckAssistantModel extends Command
 {
     protected $signature = 'ai:check-assistant
                             {--model= : Проверить другое имя модели (настройки не меняются)}
-                            {--tokens= : Лимит токенов пробного ответа (по умолчанию — «Максимум токенов» из настроек)}';
+                            {--tokens= : Лимит токенов пробного ответа (по умолчанию — «Максимум токенов» из настроек)}
+                            {--ask= : Задать ассистенту настоящий вопрос так, как это делает участница (настройки берутся сохранённые)}
+                            {--user= : Telegram ID участницы, от имени которой задаётся вопрос --ask (по умолчанию первая одобренная)}';
 
     protected $description = 'Показывает, какая модель реально отвечает ИИ-помощнику (настройки, список моделей провайдера, пробный запрос)';
 
@@ -51,7 +55,68 @@ class CheckAssistantModel extends Command
 
         $listed = $this->checkModelList($base, $key, $model);
 
-        return $this->probe($base, $key, $model, $tokens, $config, $listed);
+        $code = $this->probe($base, $key, $model, $tokens, $config, $listed);
+
+        if (filled($this->option('ask'))) {
+            $this->newLine();
+            $code = max($code, $this->askAssistant(trim((string) $this->option('ask'))));
+        }
+
+        return $code;
+    }
+
+    /** Настоящий вопрос ассистенту: тот же код, что отвечает в кабинете (подбор участниц, возможности, ответ в JSON). */
+    private function askAssistant(string $question): int
+    {
+        $user = filled($this->option('user'))
+            ? BotUser::query()->where('telegram_id', (int) $this->option('user'))->first()
+            : BotUser::approved()->orderBy('id')->first();
+
+        if ($user === null) {
+            $this->warn('Для вопроса --ask нет участницы: нужна хотя бы одна одобренная.');
+
+            return self::FAILURE;
+        }
+
+        $assistant = app(AiAssistantService::class);
+        $started = microtime(true);
+
+        $this->line('Настоящий вопрос:        «'.mb_substr($question, 0, 120).'» (от имени '.($user->full_name ?: 'участницы').')');
+
+        try {
+            $result = $assistant->respond($user, $question, [], 'ru');
+        } catch (Throwable $e) {
+            $this->error('Ассистент не смог ответить: '.$e->getMessage().'. Участница в кабинете увидит «помощник временно недоступен».');
+            $this->printCall($assistant->lastCall);
+
+            return self::FAILURE;
+        }
+
+        $this->line('Время ответа:            '.round(microtime(true) - $started, 2).' с (тайм-аут в настройках — '.SiteSetting::agentFeatureConfig()['timeout'].' с)');
+        $this->printCall($assistant->lastCall);
+        $this->line('Ответ ассистента:        «'.mb_substr($result['reply'], 0, 300).'»');
+        $this->line('Карточка рекомендации:   '.($result['recommendation'] ? 'есть' : 'нет'));
+
+        if (($assistant->lastCall['finish_reason'] ?? null) === 'length') {
+            $this->warn('Ответ оборван лимитом токенов: увеличьте «Максимум токенов» в настройках.');
+        }
+
+        return self::SUCCESS;
+    }
+
+    /** @param  array<string, mixed>  $call */
+    private function printCall(array $call): void
+    {
+        if ($call === []) {
+            return;
+        }
+
+        $usage = is_array($call['usage'] ?? null) ? $call['usage'] : [];
+        $reasoning = $usage['completion_tokens_details']['reasoning_tokens'] ?? null;
+
+        $this->line('Ответила модель:         '.($call['model'] ?? '—'));
+        $this->line('Токены:                  '.($usage['prompt_tokens'] ?? '?').' на входе, '.($usage['completion_tokens'] ?? '?').' на выходе'
+            .($reasoning !== null ? ", из них на рассуждения {$reasoning}" : '').'; причина остановки: '.($call['finish_reason'] ?? '—'));
     }
 
     /**

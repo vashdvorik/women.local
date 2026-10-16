@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Console;
 
+use App\Models\BotUser;
 use App\Models\SiteSetting;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
@@ -157,6 +158,65 @@ class CheckAssistantModelTest extends TestCase
             && $request['model'] === 'deepseek-flash' && $request['max_tokens'] === 4096);
 
         $this->assertSame('deepseek-v4-flash', SiteSetting::agentFeatureConfig()['model'], 'сохранённая модель не изменилась');
+    }
+
+    public function test_ask_runs_a_real_assistant_request_and_shows_time_tokens_and_the_reply(): void
+    {
+        $this->configureDeepSeek('deepseek-flash');
+        BotUser::factory()->community()->create(['full_name' => 'Анна Спрашивающая', 'telegram_id' => 5001]);
+        Http::fake([
+            'api.deepseek.com/models' => Http::response(['data' => [['id' => 'deepseek-flash']]]),
+            'api.deepseek.com/chat/completions' => Http::sequence()
+                ->push(['model' => 'deepseek-flash', 'choices' => [['finish_reason' => 'stop', 'message' => ['content' => 'ок']]], 'usage' => ['prompt_tokens' => 10, 'completion_tokens' => 5]])
+                ->push([
+                    'model' => 'deepseek-flash',
+                    'choices' => [['finish_reason' => 'stop', 'message' => ['content' => json_encode(['reply' => 'Подскажу, как подготовить профиль для экспорта.'], JSON_UNESCAPED_UNICODE)]]],
+                    'usage' => ['prompt_tokens' => 900, 'completion_tokens' => 420, 'completion_tokens_details' => ['reasoning_tokens' => 300]],
+                ]),
+        ]);
+
+        $code = Artisan::call('ai:check-assistant', ['--ask' => 'Как найти партнёра для экспорта?']);
+        $output = Artisan::output();
+
+        $this->assertSame(0, $code);
+        $this->assertStringContainsString('Настоящий вопрос:        «Как найти партнёра для экспорта?» (от имени Анна Спрашивающая)', $output);
+        $this->assertStringContainsString('Время ответа:', $output);
+        $this->assertStringContainsString('900 на входе, 420 на выходе, из них на рассуждения 300; причина остановки: stop', $output);
+        $this->assertStringContainsString('Ответ ассистента:        «Подскажу, как подготовить профиль для экспорта.»', $output);
+        $this->assertStringNotContainsString(self::SECRET, $output);
+    }
+
+    public function test_ask_reports_a_reply_lost_to_reasoning_as_the_participant_would_see_it(): void
+    {
+        $this->configureDeepSeek('deepseek-flash');
+        BotUser::factory()->community()->create();
+        Http::fake([
+            'api.deepseek.com/models' => Http::response(['data' => [['id' => 'deepseek-flash']]]),
+            'api.deepseek.com/chat/completions' => Http::response([
+                'model' => 'deepseek-flash',
+                'choices' => [['finish_reason' => 'length', 'message' => ['content' => '']]],
+                'usage' => ['prompt_tokens' => 900, 'completion_tokens' => 1024, 'completion_tokens_details' => ['reasoning_tokens' => 1024]],
+            ]),
+        ]);
+
+        $code = Artisan::call('ai:check-assistant', ['--ask' => 'Подбери партнёра']);
+        $output = Artisan::output();
+
+        $this->assertSame(1, $code);
+        $this->assertStringContainsString('Ассистент не смог ответить', $output);
+        $this->assertStringContainsString('помощник временно недоступен', $output);
+        $this->assertStringContainsString('из них на рассуждения 1024; причина остановки: length', $output);
+    }
+
+    public function test_ask_needs_at_least_one_approved_participant(): void
+    {
+        $this->configureDeepSeek('deepseek-flash');
+        Http::fake(['api.deepseek.com/*' => Http::response(['model' => 'deepseek-flash', 'choices' => [['message' => ['content' => 'ок']]]])]);
+
+        $code = Artisan::call('ai:check-assistant', ['--ask' => 'Привет']);
+
+        $this->assertSame(1, $code);
+        $this->assertStringContainsString('нужна хотя бы одна одобренная', Artisan::output());
     }
 
     public function test_it_works_for_open_router_too(): void

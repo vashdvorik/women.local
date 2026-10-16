@@ -15,6 +15,14 @@ use RuntimeException;
 class AiAssistantService
 {
     /**
+     * Что провайдер ответил на последний запрос: имя модели, расход токенов, причина остановки. Для проверки
+     * (artisan ai:check-assistant --ask=…); ключ и тексты сюда не попадают.
+     *
+     * @var array{model: mixed, usage: mixed, finish_reason: mixed}
+     */
+    public array $lastCall = [];
+
+    /**
      * @param list<array{role: string, content: string}> $history
      * @return array{reply: string, recommendation: array<string, string>|null, profile_proposal: array<string, string>|null}
      */
@@ -145,6 +153,12 @@ PROMPT;
             logger()->warning('AI assistant provider request failed', ['provider' => $provider, 'status' => $e->response?->status()]);
             throw new RuntimeException('AI assistant provider is unavailable.');
         }
+
+        $this->lastCall = [
+            'model' => $response->json('model'),
+            'usage' => $response->json('usage'),
+            'finish_reason' => $response->json('choices.0.finish_reason'),
+        ];
 
         $content = $response->json('choices.0.message.content');
         if (! is_string($content) || trim($content) === '') {
