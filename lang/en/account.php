@@ -91,10 +91,6 @@ return [
         'expectation_empty' => 'Add your needs, interests and possible collaboration formats.',
         'profile_tip_title' => 'A good profile works for you',
         'profile_tip_text' => 'Briefly share what you do, which problems you solve and what kind of connection you want to find. Your recommendations will be more relevant.',
-        'delete_title' => 'Delete profile',
-        'delete_text' => 'Your profile, data and account access will be deleted. This action cannot be undone.',
-        'delete_button' => 'Delete profile',
-        'delete_confirm' => 'Delete the profile and all related data permanently?',
     ],
 
     'profile_edit' => [

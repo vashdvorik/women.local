@@ -154,10 +154,10 @@ class PublicNewsPageTest extends TestCase
 
     public function test_news_page_opens_under_every_landing_theme(): void
     {
-        // Страницы из админки существуют только в теме miro; остальные темы получают её версию.
+        // Страницы из админки есть в теме miro; тема без такой страницы получает её версию (PublicThemeView).
         $this->news();
 
-        foreach (['fortun', 'fortuntwo', 'platform', 'miro'] as $theme) {
+        foreach (array_keys(\App\Models\SiteSetting::LANDING_THEMES) as $theme) {
             \App\Models\SiteSetting::setLandingTheme($theme);
 
             $this->get(route('events.show', ['event' => 'vstrecha']))->assertOk()->assertSee('Мы встретились.');

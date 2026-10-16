@@ -91,10 +91,6 @@ return [
         'expectation_empty' => 'Adăugați nevoi, interese și formate posibile de colaborare.',
         'profile_tip_title' => 'Un profil bun lucrează pentru dvs.',
         'profile_tip_text' => 'Spuneți pe scurt ce faceți, ce probleme rezolvați și ce tip de contact doriți să găsiți. Recomandările vor fi mai relevante.',
-        'delete_title' => 'Șterge profilul',
-        'delete_text' => 'Profilul, datele și accesul la cabinet vor fi șterse. Acțiunea nu poate fi anulată.',
-        'delete_button' => 'Șterge profilul',
-        'delete_confirm' => 'Ștergeți definitiv profilul și toate datele asociate?',
     ],
 
     'profile_edit' => [

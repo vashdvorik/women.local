@@ -29,14 +29,7 @@
         <aside x-cloak :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
                class="account-sidebar fixed inset-y-0 left-0 z-30 flex w-64 shrink-0 flex-col bg-white transition-transform duration-200 ease-out lg:static lg:translate-x-0 lg:z-auto">
 
-            <div class="flex shrink-0 items-center gap-3 px-5 pb-5 pt-6">
-                <span class="account-brand-mark flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white p-0.5 shadow-sm">
-                    <img src="{{ asset('themes/account/fortuntwo/images/brand/favicon.png') }}" alt="Women's hub" class="h-full w-full object-contain">
-                </span>
-                <div class="min-w-0 leading-none">
-                    <p class="truncate text-sm font-medium tracking-tight text-[#21140F]">Women's hub</p>
-                </div>
-            </div>
+            @include('account.partials.brand-logo')
 
             <div class="account-user-card mx-3 mb-4 shrink-0 rounded-2xl p-4">
                 <div class="flex items-center gap-3">
@@ -77,7 +70,7 @@
                         ['route' => 'account.knowledge', 'label' => __('account.nav.knowledge'), 'path' => 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253'],
                         ['route' => 'account.profile', 'label' => __('account.nav.profile'), 'path' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'],
                     ];
-                    // «Подписка» и «Private» одинаковы во всех темах: App\Support\CabinetNav.
+                    // «Подписка» одинакова во всех темах: App\Support\CabinetNav.
                     $navItems = \App\Support\CabinetNav::extend($navItems, $accountUser);
                 @endphp
                 @foreach($navItems as $item)

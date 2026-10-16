@@ -200,6 +200,128 @@ class WebPaymentProtocolTest extends TestCase
         $this->assertTrue(GetStateResponse::parse($this->bankSoapReply(['state' => '1', 'sum' => '100', 'currency' => '000']), new BankSignature(null))->isPaid());
     }
 
+    // ---------------------------------------------------------------- другие виды ответа и текст ошибки
+
+    /** Конверт SOAP с произвольной строкой в GetStateResult (XML внутри экранируется, как это делает ASMX). */
+    private function soapWith(string $result): string
+    {
+        return '<?xml version="1.0"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body>'
+            .'<GetStateResponse xmlns="http://webpayment.services.agroprombank.com/"><GetStateResult>'.htmlspecialchars($result, ENT_XML1).'</GetStateResult></GetStateResponse></soap:Body></soap:Envelope>';
+    }
+
+    private function paidResponseXml(): string
+    {
+        return $this->xmlWith(['state' => '1', 'statedescription' => 'Оплачен', 'sum' => '100000', 'currency' => '000', 'istest' => '1', 'invoiceid' => 'WHT261016LONDXZ']);
+    }
+
+    #[DataProvider('equivalentReplies')]
+    public function test_the_same_answer_is_understood_in_every_shape_the_bank_may_use(callable $shape): void
+    {
+        $xml = $this->paidResponseXml();
+        $envelope = fn (string $response): string => '<envelope><response>'.$response.'</response><signature>'.base64_encode('sig').'</signature></envelope>';
+
+        $state = GetStateResponse::parse($this->soapWith($shape($xml, $envelope)));
+
+        $this->assertTrue($state->isPaid());
+        $this->assertSame(100000, $state->sumKopecks);
+        $this->assertSame('WHT261016LONDXZ', $state->invoiceId);
+    }
+
+    public static function equivalentReplies(): array
+    {
+        return [
+            'как в документе: Base64 от конверта с Base64' => [fn ($xml, $env) => base64_encode($env(base64_encode($xml)))],
+            'конверт сразу XML, response в Base64' => [fn ($xml, $env) => $env(base64_encode($xml))],
+            'конверт сразу XML, response тоже XML' => [fn ($xml, $env) => $env(htmlspecialchars($xml, ENT_XML1))],
+            'без конверта, сразу XML ответа' => [fn ($xml, $env) => $xml],
+            'без конверта, XML ответа в Base64' => [fn ($xml, $env) => base64_encode($xml)],
+            'Base64 с переносами строк' => [fn ($xml, $env) => chunk_split(base64_encode($env(base64_encode($xml))), 64, "\r\n")],
+            'Base64 без завершающих «=»' => [fn ($xml, $env) => rtrim(base64_encode($env(base64_encode($xml))), '=')],
+            'Base64 с алфавитом URL (- и _)' => [fn ($xml, $env) => strtr(base64_encode($env(base64_encode($xml))), '+/', '-_')],
+            'XML с BOM' => [fn ($xml, $env) => "\xEF\xBB\xBF".$xml],
+        ];
+    }
+
+    public function test_with_a_certificate_an_answer_without_the_signed_envelope_is_not_trusted(): void
+    {
+        [, , $cert] = $this->keyPair();
+
+        try {
+            $this->expectException(GatewayException::class);
+            $this->expectExceptionMessage('без электронной подписи');
+
+            GetStateResponse::parse($this->soapWith($this->paidResponseXml()), new BankSignature($cert, 'sha256'));
+        } finally {
+            @unlink($cert);
+        }
+    }
+
+    public function test_an_answer_without_a_result_block_is_an_error_and_never_means_invoice_not_found(): void
+    {
+        // «Счёт не найден» со временем превращается в «просрочен», поэтому мусорный XML не должен читаться как Code=0.
+        $this->expectException(GatewayException::class);
+        $this->expectExceptionMessage('нет блока Result');
+
+        GetStateResponse::parse($this->soapWith('<hello>world</hello>'));
+    }
+
+    #[DataProvider('unreadableReplies')]
+    public function test_the_error_shows_what_the_bank_actually_sent(string $body, string $expected): void
+    {
+        try {
+            GetStateResponse::parse($body);
+            $this->fail('Ожидалось исключение');
+        } catch (GatewayException $e) {
+            $this->assertStringContainsString($expected, $e->getMessage());
+        }
+    }
+
+    public static function unreadableReplies(): array
+    {
+        $soap = fn (string $result) => '<?xml version="1.0"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body>'
+            .'<GetStateResponse xmlns="http://webpayment.services.agroprombank.com/"><GetStateResult>'.htmlspecialchars($result, ENT_XML1).'</GetStateResult></GetStateResponse></soap:Body></soap:Envelope>';
+
+        return [
+            'текст вместо Base64' => [$soap('Merchant not found: 000123'), 'ни строкой Base64, ни XML'],
+            'ответ банка словами' => [$soap('Merchant not found: 000123'), 'Merchant not found: 000123'],
+            'после Base64 не XML' => [$soap(base64_encode('Invalid signature')), 'не XML'],
+            'причина SOAP Fault' => ['<?xml version="1.0"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><soap:Fault><faultcode>soap:Server</faultcode><faultstring>Merchant is blocked</faultstring></soap:Fault></soap:Body></soap:Envelope>', 'Merchant is blocked'],
+            'не SOAP' => ['<html><body>502 Bad Gateway nginx</body></html>', '502 Bad Gateway nginx'],
+            'битый XML' => ['<GetStateResult>oops', 'oops'],
+        ];
+    }
+
+    public function test_the_error_text_is_short_single_line_and_hides_signatures_and_tokens(): void
+    {
+        $noise = "line one\n\n   line two ".str_repeat('long ', 200);
+        $reply = $this->soapWith('<r><signature>TOP-SECRET-SIGNATURE</signature><token>TOP-SECRET-TOKEN</token>'.$noise.'</r>');
+
+        try {
+            GetStateResponse::parse($reply);
+            $this->fail('Ожидалось исключение');
+        } catch (GatewayException $e) {
+            $this->assertStringNotContainsString('TOP-SECRET', $e->getMessage());
+            $this->assertStringNotContainsString("\n", $e->getMessage());
+            $this->assertStringContainsString('line one line two', $e->getMessage());
+            $this->assertLessThan(500, mb_strlen($e->getMessage()));
+        }
+    }
+
+    public function test_excerpt_cleans_control_characters_and_hides_secrets_in_plain_and_escaped_xml(): void
+    {
+        $this->assertSame('a b c d', GetStateResponse::excerpt("a\x07b\x00c\n d"));
+        $this->assertSame('', GetStateResponse::excerpt(''));
+        $this->assertStringNotContainsString("\xFF", GetStateResponse::excerpt("ok \xFF\xFE broken utf-8"));
+
+        foreach (['<signature>SECRET</signature>', '&lt;signature&gt;SECRET&lt;/signature&gt;', '<Token id="1">SECRET</Token>', '&lt;token&gt;SECRET&lt;/token&gt;'] as $text) {
+            $excerpt = GetStateResponse::excerpt('before '.$text.' after');
+
+            $this->assertStringNotContainsString('SECRET', $excerpt, $text);
+            $this->assertStringContainsString('before', $excerpt);
+            $this->assertStringContainsString('after', $excerpt);
+        }
+    }
+
     /** XML ответа ровно в том виде, в каком его собирает bankSoapReply (нужен, чтобы подписать «честное» содержимое). */
     private function xmlWith(array $stateInfo): string
     {

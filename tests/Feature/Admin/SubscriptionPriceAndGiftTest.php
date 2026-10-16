@@ -58,13 +58,12 @@ class SubscriptionPriceAndGiftTest extends TestCase
         $this->assertSame(25000, Plan::Private->price());
         $this->assertSame("750\u{00A0}руб.", Plan::Community->priceLabel('ru'));
 
-        // Участница видит новые цены на странице тарифов и во вкладке Private, форма админки — тоже.
+        // Участница видит новые цены на странице тарифов, форма админки — тоже.
         $user = BotUser::factory()->community()->create();
         $plans = $this->asParticipant($user)->get(route('account.subscription'))->assertOk()->getContent();
         $this->assertStringContainsString("750\u{00A0}руб.", $plans);
         $this->assertStringContainsString("25\u{00A0}000\u{00A0}руб.", $plans);
         $this->assertStringNotContainsString("20\u{00A0}000\u{00A0}руб.", $plans);
-        $this->asParticipant($user)->get(route('account.private'))->assertSee("25\u{00A0}000\u{00A0}руб.", false);
 
         $this->actingAsAdmin()->get(route('admin.subscriptions.index'))->assertSee('value="750"', false)->assertSee('value="25000"', false);
     }
@@ -168,7 +167,7 @@ class SubscriptionPriceAndGiftTest extends TestCase
         $this->assertSame([], Telegram::getRequestHistory(), 'ни одного сообщения участнице');
     }
 
-    public function test_a_gift_of_private_opens_the_private_tab_and_a_second_gift_adds_another_year(): void
+    public function test_a_gift_of_private_gives_the_plan_and_a_second_gift_adds_another_year(): void
     {
         $user = BotUser::factory()->approved()->create();
         $this->travelTo(now()->startOfSecond());
@@ -176,7 +175,7 @@ class SubscriptionPriceAndGiftTest extends TestCase
         $this->actingAsAdmin()->post(route('admin.subscriptions.gift', $user), ['plan' => 'private', 'note' => 'за выступление на встрече'])->assertSessionHas('success');
         $this->assertSame('за выступление на встрече', $user->subscriptions()->first()->note);
 
-        $this->asParticipant($user->fresh())->get(route('account.private'))->assertOk();
+        $this->assertSame(Plan::Private, $user->fresh()->currentPlan());
         $this->asParticipant($user->fresh())->get(route('account.people'))->assertOk();
 
         $this->actingAsAdmin()->post(route('admin.subscriptions.gift', $user), ['plan' => 'private'])->assertSessionHas('success');

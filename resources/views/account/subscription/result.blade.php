@@ -2,7 +2,7 @@
     Итог оплаты (SuccessURL / FailURL банка). Статус берётся из нашей базы, а не из адреса, по которому пришла участница.
     Переменные: $user (BotUser, свежий), $payment (Payment|null), $state: paid | processing | failed | unknown.
 --}}
-@extends('themes.account.'.($accountTheme ?? 'classic').'.layout')
+@extends('themes.account.'.($accountTheme ?? \App\Models\SiteSetting::DEFAULT_ACCOUNT_THEME).'.layout')
 
 @section('title', __('subscription.result.title'))
 

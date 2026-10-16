@@ -25,7 +25,7 @@ class PublicAboutTest extends TestCase
 
     public function test_how_to_become_a_member_is_in_both_the_about_and_the_people_menus(): void
     {
-        foreach (['miro', 'fortun', 'fortuntwo'] as $theme) {
+        foreach (array_keys(\App\Models\SiteSetting::LANDING_THEMES) as $theme) {
             \App\Models\SiteSetting::setLandingTheme($theme);
 
             $html = $this->get(route('about'))->assertOk()->getContent();
@@ -46,7 +46,7 @@ class PublicAboutTest extends TestCase
             '2024' => 'https://gala2024.innovation.md/',
         ];
 
-        foreach (['miro', 'fortun', 'fortuntwo'] as $theme) {
+        foreach (array_keys(\App\Models\SiteSetting::LANDING_THEMES) as $theme) {
             \App\Models\SiteSetting::setLandingTheme($theme);
 
             $html = $this->get(route('about'))->assertOk()->getContent();
@@ -67,7 +67,7 @@ class PublicAboutTest extends TestCase
     public function test_reports_item_is_gone_from_the_about_menu_and_its_page_no_longer_exists(): void
     {
         // Пункта «Отчёты» нет ни в одной теме сайта, а страница-заглушка убрана вместе с ним.
-        foreach (['miro', 'fortun', 'fortuntwo'] as $theme) {
+        foreach (array_keys(\App\Models\SiteSetting::LANDING_THEMES) as $theme) {
             \App\Models\SiteSetting::setLandingTheme($theme);
 
             $html = $this->get(route('about'))->assertOk()->getContent();

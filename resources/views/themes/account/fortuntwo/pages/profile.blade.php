@@ -80,31 +80,5 @@
             </aside>
         </div>
     </div>
-
-    <section class="miro-danger-zone fortun-profile-danger">
-        <div class="miro-danger-zone__header">
-            <div class="min-w-0">
-                <h2>{{ __('account.profile.delete_title') }}</h2>
-                <p>{{ __('account.profile.delete_text') }}</p>
-            </div>
-        </div>
-        <div class="miro-danger-zone__actions">
-            <form id="delete-profile-form" action="{{ route('account.profile.delete') }}" method="POST" onsubmit="return confirmDeleteProfile(event)">@csrf @method('DELETE')
-                <button type="submit" class="miro-button miro-button--danger">{{ __('account.profile.delete_button') }}</button>
-            </form>
-        </div>
-    </section>
 </div>
-@push('scripts')
-<script>
-    function confirmDeleteProfile(event) {
-        if (!window.confirm(@json(__('account.profile.delete_confirm')))) {
-            event.preventDefault();
-            return false;
-        }
-
-        return true;
-    }
-</script>
-@endpush
 @endsection

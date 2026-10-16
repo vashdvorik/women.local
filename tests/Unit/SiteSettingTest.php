@@ -21,45 +21,76 @@ class SiteSettingTest extends TestCase
         parent::tearDown();
     }
 
-    public function test_landing_and_account_themes_are_independent(): void
+    public function test_each_catalogue_contains_its_default_theme_and_the_choice_is_stored(): void
     {
-        $this->assertArrayHasKey('fortun', SiteSetting::ACCOUNT_THEMES);
+        $this->assertArrayHasKey(SiteSetting::DEFAULT_LANDING_THEME, SiteSetting::LANDING_THEMES);
+        $this->assertArrayHasKey(SiteSetting::DEFAULT_ACCOUNT_THEME, SiteSetting::ACCOUNT_THEMES);
+        $this->assertSame('miro', SiteSetting::DEFAULT_LANDING_THEME);
+        $this->assertSame('fortuntwo', SiteSetting::DEFAULT_ACCOUNT_THEME);
 
+        // Без записи в базе действуют темы по умолчанию.
+        $this->assertSame('miro', SiteSetting::landingTheme());
+        $this->assertSame('fortuntwo', SiteSetting::accountTheme());
+
+        foreach (array_keys(SiteSetting::LANDING_THEMES) as $theme) {
+            SiteSetting::setLandingTheme($theme);
+            $this->assertSame($theme, SiteSetting::landingTheme());
+        }
+
+        foreach (array_keys(SiteSetting::ACCOUNT_THEMES) as $theme) {
+            SiteSetting::setAccountTheme($theme);
+            $this->assertSame($theme, SiteSetting::accountTheme());
+        }
+    }
+
+    public function test_an_unknown_or_removed_theme_falls_back_to_the_default(): void
+    {
+        // Темы fortun, classic и другие удалены, но в базе боевого сайта их имя могло остаться.
+        foreach (['not-a-theme', 'classic', 'fortun', 'platform', ''] as $name) {
+            Cache::forget(SiteSetting::LANDING_THEME_KEY);
+            Cache::forget(SiteSetting::ACCOUNT_THEME_KEY);
+            SiteSetting::query()->delete();
+            SiteSetting::create(['key' => SiteSetting::LANDING_THEME_KEY, 'value' => ['theme' => $name]]);
+            SiteSetting::create(['key' => SiteSetting::ACCOUNT_THEME_KEY, 'value' => ['theme' => $name]]);
+
+            $this->assertSame(SiteSetting::DEFAULT_LANDING_THEME, SiteSetting::landingTheme(), "сайт, база: «{$name}»");
+            $this->assertSame(SiteSetting::DEFAULT_ACCOUNT_THEME, SiteSetting::accountTheme(), "кабинет, база: «{$name}»");
+        }
+
+        // Имя удалённой темы осталось в кеше сервера с прошлого запуска: оно тоже не должно дойти до шаблонов.
+        Cache::forever(SiteSetting::LANDING_THEME_KEY, 'platform');
+        Cache::forever(SiteSetting::ACCOUNT_THEME_KEY, 'classic');
+
+        $this->assertSame(SiteSetting::DEFAULT_LANDING_THEME, SiteSetting::landingTheme());
+        $this->assertSame(SiteSetting::DEFAULT_ACCOUNT_THEME, SiteSetting::accountTheme());
+
+        // Сохранить несуществующую тему нельзя: запишется тема по умолчанию.
         SiteSetting::setLandingTheme('platform');
         SiteSetting::setAccountTheme('classic');
 
-        $this->assertSame('platform', SiteSetting::landingTheme());
-        $this->assertSame('classic', SiteSetting::accountTheme());
-
-        SiteSetting::setLandingTheme('miro');
-
-        $this->assertSame('miro', SiteSetting::landingTheme());
-        $this->assertSame('classic', SiteSetting::accountTheme());
+        $this->assertSame(['theme' => 'miro'], SiteSetting::where('key', SiteSetting::LANDING_THEME_KEY)->firstOrFail()->value);
+        $this->assertSame(['theme' => 'fortuntwo'], SiteSetting::where('key', SiteSetting::ACCOUNT_THEME_KEY)->firstOrFail()->value);
     }
 
-    public function test_invalid_account_theme_falls_back_to_classic(): void
+    public function test_pages_of_the_removed_themes_do_not_break_when_the_old_theme_name_is_still_stored(): void
     {
-        Cache::forget(SiteSetting::ACCOUNT_THEME_KEY);
-        SiteSetting::create([
-            'key' => SiteSetting::ACCOUNT_THEME_KEY,
-            'value' => ['theme' => 'not-a-theme'],
-        ]);
+        Cache::forever(SiteSetting::LANDING_THEME_KEY, 'fortun');
+        Cache::forever(SiteSetting::ACCOUNT_THEME_KEY, 'miro');
 
-        $this->assertSame('classic', SiteSetting::accountTheme());
+        $this->get('/')->assertOk()->assertSee('themes/public/miro/', false);
+        $this->get(route('account.login'))->assertOk();
     }
 
     public function test_landing_theme_applies_to_login_instead_of_account_theme(): void
     {
-        $this->assertArrayHasKey('fortun', SiteSetting::LANDING_THEMES);
-
-        SiteSetting::setLandingTheme('fortun');
-        SiteSetting::setAccountTheme('classic');
+        SiteSetting::setLandingTheme('miro');
+        SiteSetting::setAccountTheme('fortuntwo');
 
         $this->get(route('account.login'))
             ->assertOk()
-            ->assertSee('public-theme-fortun', false)
+            ->assertSee('public-theme-miro', false)
             ->assertSee('/themes/public/miro/images/brand/logo-ink.webp', false)
-            ->assertDontSee('account-theme-classic', false);
+            ->assertDontSee('account-theme-fortuntwo', false);
     }
 
     public function test_miro_theme_is_available_and_renders_as_landing_variant(): void

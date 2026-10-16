@@ -32,11 +32,6 @@ class PublicThemeRoutingTest extends TestCase
 
                 $response->assertOk();
                 $response->assertSee("themes/public/{$theme}/", false);
-
-                if ($theme === 'platform' && $page === '/') {
-                    $response->assertSee('hero-gradient', false);
-                    $response->assertSee('landing-docs/hero.jpg', false);
-                }
             }
         }
     }

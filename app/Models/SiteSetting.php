@@ -30,24 +30,27 @@ class SiteSetting extends Model
     /** Самая большая цена подписки, которую принимает админка (в рублях): защита от лишнего нуля. */
     public const SUBSCRIPTION_PRICE_MAX = 1_000_000;
 
+    /** Тема сайта по умолчанию: к ней возвращается любое неизвестное значение (например, тема, которую удалили). */
+    public const DEFAULT_LANDING_THEME = 'miro';
+
+    /** Тема кабинета по умолчанию, по тому же правилу. */
+    public const DEFAULT_ACCOUNT_THEME = 'fortuntwo';
+
+    /**
+     * Темы публичного сайта: ключ — имя папок resources/views/themes/public/{ключ} и public/themes/public/{ключ}.
+     * Чтобы добавить тему, заведите её папки и строку здесь: выбор в админке появится сам (docs/PROJECT_MAP.md, «Как добавить тему»).
+     */
     public const LANDING_THEMES = [
-        'miro'     => 'Miro',
-        'fortun'   => 'Fortun',
-        'fortuntwo' => 'Fortun Two',
-        'platform' => 'Platform',
+        'miro' => 'Miro',
     ];
 
     /**
-     * Themes for the authenticated participant cabinet.
+     * Темы кабинета участницы: ключ — имя папок resources/views/themes/account/{ключ} и public/themes/account/{ключ}.
      *
-     * These are intentionally a separate catalogue from the public landing
-     * themes: changing the landing template must not change the cabinet UI.
+     * Каталог намеренно отдельный от тем сайта: смена оформления сайта не должна менять кабинет.
      */
     public const ACCOUNT_THEMES = [
-        'miro'    => 'Miro',
-        'fortun'  => 'Fortun',
         'fortuntwo' => 'Fortun Two',
-        'classic' => 'Классическая фиолетовая',
     ];
 
     protected $fillable = [
@@ -74,28 +77,18 @@ class SiteSetting extends Model
 
     public static function landingTheme(): string
     {
-        return Cache::rememberForever(self::LANDING_THEME_KEY, function (): string {
-            if (! Schema::hasTable('site_settings')) {
-                return 'miro';
-            }
-
-            $setting = self::where('key', self::LANDING_THEME_KEY)->first();
-            $value   = $setting?->value ?? [];
-            $theme   = is_array($value) ? ($value['theme'] ?? 'miro') : 'miro';
-
-            return array_key_exists($theme, self::LANDING_THEMES) ? $theme : 'miro';
-        });
+        return self::knownTheme(
+            Cache::rememberForever(self::LANDING_THEME_KEY, fn (): string => self::storedTheme(self::LANDING_THEME_KEY)),
+            self::LANDING_THEMES,
+            self::DEFAULT_LANDING_THEME,
+        );
     }
 
     public static function setLandingTheme(string $theme): void
     {
-        if (! array_key_exists($theme, self::LANDING_THEMES)) {
-            $theme = 'miro';
-        }
-
         self::updateOrCreate(
             ['key' => self::LANDING_THEME_KEY],
-            ['value' => ['theme' => $theme]]
+            ['value' => ['theme' => self::knownTheme($theme, self::LANDING_THEMES, self::DEFAULT_LANDING_THEME)]]
         );
 
         Cache::forget(self::LANDING_THEME_KEY);
@@ -103,31 +96,47 @@ class SiteSetting extends Model
 
     public static function accountTheme(): string
     {
-        return Cache::rememberForever(self::ACCOUNT_THEME_KEY, function (): string {
-            if (! Schema::hasTable('site_settings')) {
-                return 'classic';
-            }
-
-            $setting = self::where('key', self::ACCOUNT_THEME_KEY)->first();
-            $value   = $setting?->value ?? [];
-            $theme   = is_array($value) ? ($value['theme'] ?? 'classic') : 'classic';
-
-            return array_key_exists($theme, self::ACCOUNT_THEMES) ? $theme : 'classic';
-        });
+        return self::knownTheme(
+            Cache::rememberForever(self::ACCOUNT_THEME_KEY, fn (): string => self::storedTheme(self::ACCOUNT_THEME_KEY)),
+            self::ACCOUNT_THEMES,
+            self::DEFAULT_ACCOUNT_THEME,
+        );
     }
 
     public static function setAccountTheme(string $theme): void
     {
-        if (! array_key_exists($theme, self::ACCOUNT_THEMES)) {
-            $theme = 'classic';
-        }
-
         self::updateOrCreate(
             ['key' => self::ACCOUNT_THEME_KEY],
-            ['value' => ['theme' => $theme]]
+            ['value' => ['theme' => self::knownTheme($theme, self::ACCOUNT_THEMES, self::DEFAULT_ACCOUNT_THEME)]]
         );
 
         Cache::forget(self::ACCOUNT_THEME_KEY);
+    }
+
+    /**
+     * Имя темы из настройки как есть, без проверки каталога. Проверяет knownTheme(): тему могли удалить,
+     * а в базе и в кеше она осталась.
+     */
+    private static function storedTheme(string $key): string
+    {
+        if (! Schema::hasTable('site_settings')) {
+            return '';
+        }
+
+        $value = self::where('key', $key)->first()?->value;
+
+        return is_array($value) && is_string($value['theme'] ?? null) ? $value['theme'] : '';
+    }
+
+    /**
+     * Тема из каталога, а если такой нет (удалена или опечатка), тема по умолчанию. Проверяется и значение из кеша:
+     * после удаления темы в кеше сервера ещё лежит её имя, и без проверки сайт искал бы папки, которых нет.
+     *
+     * @param  array<string, string>  $catalogue
+     */
+    private static function knownTheme(mixed $theme, array $catalogue, string $default): string
+    {
+        return is_string($theme) && array_key_exists($theme, $catalogue) ? $theme : $default;
     }
 
     /**

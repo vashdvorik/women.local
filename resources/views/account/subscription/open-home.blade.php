@@ -3,7 +3,7 @@
     и приглашение подписаться. Каталога участниц, поиска и ИИ-помощника здесь нет.
     Переменные: $user (BotUser), $feed (App\Support\OpenFeed).
 --}}
-@extends('themes.account.'.($accountTheme ?? 'classic').'.layout')
+@extends('themes.account.'.($accountTheme ?? \App\Models\SiteSetting::DEFAULT_ACCOUNT_THEME).'.layout')
 
 @section('title', __('subscription.open_home.title'))
 

@@ -6,6 +6,7 @@ namespace Tests\Feature\Account;
 
 use App\Models\BotUser;
 use App\Models\LoginToken;
+use App\Models\SiteSetting;
 use App\Jobs\ComputeUserEmbedding;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
@@ -78,6 +79,52 @@ class AccountCabinetTest extends TestCase
         $this->withSession($this->sessionFor($user))
             ->get(route('account.index'))
             ->assertOk();
+    }
+
+    /** @dataProvider accountThemeProvider */
+    #[\PHPUnit\Framework\Attributes\DataProvider('accountThemeProvider')]
+    public function test_sidebar_has_the_same_logo_as_the_public_header_in_every_theme(string $theme): void
+    {
+        SiteSetting::setAccountTheme($theme);
+        $user = BotUser::factory()->community()->create();
+
+        $html = $this->withSession($this->sessionFor($user))
+            ->get(route('account.index'))
+            ->assertOk()
+            ->getContent();
+
+        // Тот же файл, что в шапке публичного сайта, на тёмной плашке: белая надпись на белом сайдбаре не видна.
+        $this->assertStringContainsString('themes/public/miro/images/brand/logo-white.webp', $html);
+        $this->assertStringContainsString('class="account-brand-logo', $html);
+        $this->assertStringContainsString('background:#21140F', $html);
+        $this->assertStringContainsString('href="'.route('account.index').'" aria-label="Women\'s hub"', $html);
+    }
+
+    /** @dataProvider accountThemeProvider */
+    #[\PHPUnit\Framework\Attributes\DataProvider('accountThemeProvider')]
+    public function test_profile_page_has_no_delete_profile_block_in_any_theme(string $theme): void
+    {
+        SiteSetting::setAccountTheme($theme);
+        $user = BotUser::factory()->community()->create();
+
+        $html = $this->withSession($this->sessionFor($user))
+            ->get(route('account.profile'))
+            ->assertOk()
+            ->getContent();
+
+        $this->assertStringNotContainsString('delete-profile-form', $html);
+        $this->assertStringNotContainsString('name="_method" value="DELETE"', $html);
+        $this->assertStringNotContainsString('miro-danger-zone', $html);
+        $this->assertStringNotContainsString('Удалить профиль', $html);
+        $this->assertStringNotContainsString('Удалить мой профиль', $html);
+    }
+
+    public static function accountThemeProvider(): array
+    {
+        // Все темы из каталога: добавленная позже тема попадёт под эти проверки сама.
+        $themes = array_keys(SiteSetting::ACCOUNT_THEMES);
+
+        return array_combine($themes, array_map(fn (string $theme): array => [$theme], $themes));
     }
 
     public function test_all_cabinet_get_pages_render_when_authenticated(): void

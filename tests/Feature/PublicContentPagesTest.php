@@ -287,21 +287,17 @@ class PublicContentPagesTest extends TestCase
 
     // ------------------------------------------------------------------ темы
 
-    public function test_pages_connected_to_the_admin_fall_back_to_miro_in_other_themes(): void
+    public function test_pages_connected_to_the_admin_are_rendered_in_the_miro_theme(): void
     {
-        SiteSetting::setLandingTheme('fortun');
+        SiteSetting::setLandingTheme('miro');
 
-        // У прочих тем этих страниц нет: они выводятся целиком в оформлении miro, вместе
-        // со стилями и картинками, а не «наполовину» из чужой темы.
-        foreach (['/experts', '/projects', '/opportunities', '/media/publications', '/media/photos', '/media/videos'] as $path) {
+        // Эти страницы выводятся целиком в оформлении miro: со своими стилями и картинками.
+        // Если у новой темы такой страницы не будет, PublicThemeView отдаст эту же версию.
+        foreach (['/experts', '/projects', '/opportunities', '/media/publications', '/media/photos', '/media/videos', '/events'] as $path) {
             $this->get($path)
                 ->assertOk()
-                ->assertSee('/themes/public/miro/css/navigation.css', false)
-                ->assertDontSee('/themes/public/fortun/', false);
+                ->assertSee('/themes/public/miro/css/navigation.css', false);
         }
-
-        // Страница событий у темы fortun своя (старая вёрстка), она остаётся как есть.
-        $this->get('/events')->assertOk()->assertSee('/themes/public/fortun/', false);
     }
 
     // ------------------------------------------------------------------ главная и эксперты

@@ -1,6 +1,6 @@
 @php
     $accountTheme = $accountTheme ?? \App\Models\SiteSetting::accountTheme();
-    $accountTheme = array_key_exists($accountTheme, \App\Models\SiteSetting::ACCOUNT_THEMES) ? $accountTheme : 'classic';
+    $accountTheme = array_key_exists($accountTheme, \App\Models\SiteSetting::ACCOUNT_THEMES) ? $accountTheme : \App\Models\SiteSetting::DEFAULT_ACCOUNT_THEME;
 @endphp
 
 @include('themes.account.' . $accountTheme . '.layout', ['accountTheme' => $accountTheme])

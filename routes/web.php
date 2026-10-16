@@ -169,9 +169,8 @@ Route::middleware(RequireAccountAuth::class)
         Route::post('/profile', [AccountController::class, 'updateProfile'])->name('profile.update');
         Route::delete('/profile', [AccountController::class, 'deleteProfile'])->name('profile.delete');
 
-        // Подписка: тарифы, вкладка Private, оплата. Доступно на любом тарифе, в том числе на Open.
+        // Подписка: тарифы и оплата. Доступно на любом тарифе, в том числе на Open.
         Route::get('/subscription', [SubscriptionController::class, 'show'])->name('subscription');
-        Route::get('/private', [SubscriptionController::class, 'private'])->name('private');
         Route::post('/subscription/checkout', [SubscriptionController::class, 'checkout'])->middleware('throttle:8,1')->name('subscription.checkout');
         // SuccessURL и FailURL банка: он возвращает участницу сюда запросом GET или POST (CSRF-исключение — в bootstrap/app.php).
         Route::match(['GET', 'POST'], '/subscription/success', [SubscriptionController::class, 'result'])->name('subscription.success');

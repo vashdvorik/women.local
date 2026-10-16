@@ -29,9 +29,7 @@ Telegram одновременно используется как канал р�
 ```text
 /
 ├── публичный лендинг
-│   ├── classic / warm / dark — одна Blade-страница с разными темами
-│   ├── platform — отдельный вариант landing-platform.blade.php
-│   └── miro — отдельный Miro-inspired вариант landing-miro.blade.php
+│   └── тема miro (resources/views/themes/public/miro); другие темы добавляются по инструкции в разделе 4
 │
 ├── /members
 │   └── публичный каталог из 12 демонстрационных профилей в стиле Miro
@@ -64,7 +62,7 @@ Telegram одновременно используется как канал р�
 │   ├── POST /opportunities
 │   ├── DELETE /opportunities/{opportunity}
 │   ├── POST /profile       сохранение профиля
-│   ├── DELETE /profile     удаление профиля и сессии
+│   ├── DELETE /profile     удаление профиля и сессии (кнопки в кабинете нет, маршрут остался)
 │   └── POST /logout        выход
 │
 ├── /go/{8 hex chars}       короткая ссылка из Telegram
@@ -120,7 +118,7 @@ Web middleware подключает `SetLocale` глобально для web-г
 | Раздел | View | Что делает |
 |---|---|---|
 | Главная | `account/index.blade.php` | Навигационная панель кабинета и быстрые действия |
-| Профиль | `account/profile.blade.php` | Показывает данные, аватар и действие редактирования/удаления |
+| Профиль | `account/profile.blade.php` | Показывает данные, аватар и действие редактирования (кнопки «Удалить профиль» в кабинете нет) |
 | Редактирование | `account/profile-edit.blade.php` | Валидирует и сохраняет `full_name`, `description`, `expectation`; ставит job эмбеддинга |
 | Матчи | `account/matches.blade.php` | Показывает top-N по cosine similarity или пустое состояние |
 | Поиск | `account/search.blade.php` | Берёт `q`, запрашивает Gemini embedding и ищет по approved-профилям |
@@ -130,65 +128,47 @@ Web middleware подключает `SetLocale` глобально для web-г
 | Новая возможность | `account/opportunities/create.blade.php` | Создание `project`, `meeting` или `event` |
 | Знания | `account/knowledge.blade.php` | Текущий статический экран/заготовка раздела |
 
-**Тарифы.** Кабинет делится на три уровня: Open (бесплатно), Community (600 руб./год), Private (20 000 руб./год) — подробно в [SUBSCRIPTIONS.md](SUBSCRIPTIONS.md). У Open открыты «Главная» (материалы публичного сайта, `OpenFeed`), «Профиль», «Подписка»; «Рекомендации», «Поиск контактов», «Профили платформы», «Возможности», «Обучение» и ИИ-помощник входят в Community и закрыты middleware `plan:community` (`RequirePlan`): страница показывает сообщение и кнопку «Купить подписку» (`account/subscription/locked.blade.php`), запись — редирект на «Подписку», запросы ИИ — 403 JSON. Пункты «Подписка» и «Private» добавляет всем четырём темам `App\Support\CabinetNav::extend`.
+**Тарифы.** Кабинет делится на три уровня: Open (бесплатно), Community (600 руб./год), Private (20 000 руб./год) — подробно в [SUBSCRIPTIONS.md](SUBSCRIPTIONS.md). У Open открыты «Главная» (материалы публичного сайта, `OpenFeed`), «Профиль», «Подписка»; «Рекомендации», «Поиск контактов», «Профили платформы», «Возможности», «Обучение» и ИИ-помощник входят в Community и закрыты middleware `plan:community` (`RequirePlan`): страница показывает сообщение и кнопку «Купить подписку» (`account/subscription/locked.blade.php`), запись — редирект на «Подписку», запросы ИИ — 403 JSON. Пункт «Подписка» добавляет всем четырём темам `App\Support\CabinetNav::extend`. Отдельной страницы Private нет: тариф продаётся на странице «Подписка».
 
 | URL | Имя | Назначение |
 |---|---|---|
 | `GET /app/account/subscription` | `account.subscription` | Три тарифа, текущий тариф, история платежей, кнопки оплаты и продления |
-| `GET /app/account/private` | `account.private` | Вкладка Private (видна при действующем Community/Private) |
 | `POST /app/account/subscription/checkout` | `account.subscription.checkout` | Создаёт счёт и отдаёт форму на платёжный сайт банка (throttle `8,1`) |
 | `GET/POST /app/account/subscription/success`, `/fail` | `account.subscription.success/fail` | SuccessURL / FailURL банка; итог берут из нашей базы, не из адреса |
 | `GET/POST /payment/result` | `payment.result` | ResultURL банка; без сессии и CSRF, отвечает `OK`/`ERROR` |
 
 Общий layout кабинета — `resources/views/account/layout.blade.php`. Он содержит sidebar, языковой переключатель, logout, Telegram WebApp initialization и скрывает logout внутри Telegram Mini App.
 
-## 4. Лендинг
+## 4. Лендинг и темы оформления
 
-Корневой маршрут всегда рендерит `resources/views/landing.blade.php`.
+Корневой маршрут рендерит `resources/views/landing.blade.php`; он подключает `themes.public.{тема}.landing`. Остальные публичные страницы (`/about`, `/members`, `/events`, `/partners`, `/contact`, эксперты, проекты, медиатека) выбирает `App\Services\PublicThemeView::render($page)`: если у активной темы нет такой страницы, берётся версия темы `miro` целиком, со своими стилями и картинками.
 
-В начале этого файла есть переключатель:
+**Какие темы есть сейчас.** Одна тема сайта и одна тема кабинета; остальные удалены. Список тем — это каталоги в `App\Models\SiteSetting`:
 
-```blade
-@if(($landingTheme ?? 'classic') === 'platform')
-    @include('landing-platform')
-@elseif(($landingTheme ?? 'classic') === 'miro')
-    @include('landing-miro')
-@else
-    ... classic landing ...
-@endif
-```
+| Каталог | Сейчас | Папки |
+|---|---|---|
+| `LANDING_THEMES` (публичный сайт) | `miro` | `resources/views/themes/public/miro`, `public/themes/public/miro` |
+| `ACCOUNT_THEMES` (кабинет участницы) | `fortuntwo` | `resources/views/themes/account/fortuntwo`, `public/themes/account/fortuntwo` |
 
-### Classic / warm / dark
+Дизайн-система сайта: `resources/views/themes/public/miro/WOMEN_EDITORIAL_LUXURY_DESIGN_SYSTEM.md`; кабинета: `resources/views/themes/account/fortuntwo/DESIGN.md`.
 
-Одна большая Blade-страница с клиентским переключением `ru/en/ro` через `data-lang`, `localStorage` и `document.documentElement.lang`. Основные якоря страницы:
+**Как выбирается тема.** Выбор хранится в `site_settings` (`landing_theme`, `account_theme`), темы сайта и кабинета независимы: смена одной не трогает другую. Меняются в админке («Настройки сайта» и «Настройки кабинетов», вкладка «Тема»). Значение, которого нет в каталоге (например, имя удалённой темы в базе или в кеше сервера), заменяется темой по умолчанию — `SiteSetting::DEFAULT_LANDING_THEME` (`miro`) и `SiteSetting::DEFAULT_ACCOUNT_THEME` (`fortuntwo`). Поэтому удаление темы не ломает сайт, даже если у неё остался выбор в базе.
 
-- `#who-for` — для кого платформа;
-- `#how-works` — как работает;
-- `#tools` — инструменты;
-- `#learning` — обучение и менторство;
-- `#events` — события;
-- `#stories` — истории;
-- `#contact` — контакты.
+### Как добавить тему
 
-Ключевые внешние переходы — `https://t.me/WomenComBot`. В лендинге есть ссылки-заготовки `href="#"`; это не отдельные серверные страницы.
+**Тема кабинета** (допустим, `aurora`):
 
-### Platform
+1. Добавьте строку `'aurora' => 'Aurora'` в `SiteSetting::ACCOUNT_THEMES`. Радиокнопка в админке появится сама.
+2. Создайте `resources/views/themes/account/aurora/layout.blade.php`: боковое меню строится из `App\Support\CabinetNav::extend($navItems, $accountUser)`, логотип — `@include('account.partials.brand-logo')`. За образец возьмите `fortuntwo/layout.blade.php`.
+3. Создайте страницы `resources/views/themes/account/aurora/pages/`: `index`, `knowledge`, `matches`, `people`, `person`, `profile`, `profile-edit`, `search`, `opportunities/index`, `opportunities/create`. Контроллеры открывают их как `themes.account.{тема}.pages.{страница}`; страницы «Подписка», «Закрытый раздел» и вход (`resources/views/account/*`) общие и подключают layout активной темы.
+4. Стили и иконку положите в `public/themes/account/aurora/` (`css/theme.css`, `images/brand/favicon.png`) и подключите в layout.
 
-`resources/views/landing-platform.blade.php` — альтернативный дизайн из старого docs-прототипа. Содержит якоря `#about`, `#learning`, `#members`, `#events`, `#contact`, ссылки в кабинет и ссылки на Telegram-бота/сообщество.
+**Тема сайта** (допустим, `aurora`):
 
-`resources/views/landing-miro.blade.php` — маркетинговая тема по `dizayn/miro/DESIGN.md`: sticky navigation, hero с фото и градиентной композицией, pastel feature cards, benefits/how-it-works/platform-offers, AI/workspace blocks, members, events, stories, dark CTA и multi-column footer. Тема использует существующие изображения из `public/images`; их можно заменить позже без изменения маршрутов.
-
-`resources/views/members-miro.blade.php` — публичный Miro-каталог `/members`. Сейчас содержит 12 экспертных профилей, перенесённых из публичной секции `women.creativity.md`; фотографии сохранены локально в `public/images/experts`. Дополнительные поля профиля пока статичны и не подключены к backend.
-
-`resources/views/about-miro.blade.php` — публичная страница `/about` в теме Miro. Содержит миссию платформы, аудиторию, экосистему возможностей, пользовательский путь, фокус на сотрудничестве между обоими берегами и CTA. Тексты подготовлены по ТЗ и материалам исходных сайтов; контент пока статичный.
-
-`resources/views/partners-miro.blade.php` — публичный каталог `/partners` в теме Miro. Включает 3 координатора платформы, 4 местных и 3 международных партнёра; логотипы загружены в `public/images/partners` с исходной страницы.
-
-Общий header и мобильное меню Miro вынесены в `resources/views/partials/miro-header.blade.php`, общий footer — в `resources/views/partials/miro-footer.blade.php`. Оба partial подключаются на лендинге, `/about`, `/members`, `/events` и `/partners`; активный раздел передаётся параметром `miroCurrentPage`.
-
-Брендовые изображения подготовлены из `dizayn/logo.png`: оптимизированный горизонтальный логотип — `public/images/brand/logo.webp` (около 38 KB), PNG-версия — `public/images/brand/logo.png`, компактная иконка для favicon — `public/images/brand/favicon.png` (около 10 KB). Логотип используется в Miro header/footer и в компактных шапках альтернативного лендинга и кабинета; favicon подключён к публичным страницам, login и кабинету.
-
-Активная тема хранится в `site_settings` под ключом `landing_theme` и изменяется админской страницей `LandingThemeSettings`. Настройка лендинга не влияет на кабинет участницы.
+1. Добавьте строку в `SiteSetting::LANDING_THEMES`.
+2. Создайте `resources/views/themes/public/aurora/landing.blade.php` и те страницы, которые хотите оформить по-своему (`about`, `members`, `events`, `partners`, `contact` и другие). Недостающие страницы автоматически выведутся в оформлении `miro`.
+3. Статику положите в `public/themes/public/aurora/`. Страница входа в кабинет берёт у темы сайта только цвета: добавьте блок `body.public-theme-aurora` с переменными `--login-*` в `resources/views/account/login.blade.php`; без него действуют цвета по умолчанию.
+4. Проверка: тесты `PublicThemeRoutingTest`, `PublicAboutTest`, `PublicNewsPageTest` и `AccountCabinetTest` перебирают все темы из каталогов, поэтому новая тема попадёт под них без правки тестов.
 
 ## 5. Telegram-контур
 
@@ -294,7 +274,7 @@ Callback-и:
 
 **Участницы.** Один список (`resources/data/participants.php`, читает `App\Support\Participants`) выводят и каталог `/members`, и карусель «Участницы платформы» на главной miro: нативный scroll-snap без библиотек, страница 4×4 / 2×4 / 1×4 по ширине экрана, стрелки, точки, свайп; логика — `public/themes/public/miro/js/participants.js`, раскладка — `landing.css`. Карусель отдаёт не оригиналы, а миниатюры 128 px WebP (`images/participants/thumb/`, около 3 КБ вместо 14), все с `loading="lazy"`. После добавления участницы с фото: `php artisan participants:thumbnails` и закоммитить миниатюры; `PublicParticipantsCarouselTest` падает, если миниатюры нет.
 
-**Только тема miro.** Страницы, подключённые к админке, есть только в теме miro; остальные публичные темы получают её версию (`PublicThemeView`).
+**Страницы из админки.** Страницы, подключённые к админке, оформлены в теме miro; тема, у которой такой страницы нет, получает версию miro (`PublicThemeView`).
 
 ## 7. Данные и связи
 
@@ -444,7 +424,7 @@ opportunities/create
 - Удалять возможность может только её автор; удаление профиля должно чистить сессию и каскадно удалять публикации.
 - Любое изменение `description`/`expectation` должно учитывать очередь эмбеддинга и кэш матчей.
 - Webhook Telegram должен оставаться исключённым из CSRF, а auth endpoint — защищённым throttle.
-- При изменении `SiteSetting::LANDING_THEMES` нужно синхронно обновить выбор в админке и стили/ветвление лендинга.
+- Тема добавляется папками и строкой в `SiteSetting::LANDING_THEMES` / `ACCOUNT_THEMES` (раздел 4, «Как добавить тему»); выбор в админке строится из каталога сам.
 
 ## 11. Файловая навигация для разработки
 
@@ -472,11 +452,12 @@ app/Telegram/               keyboard and conversations
 app/Actions/, app/Support/    сохранение материалов, картинки, блоки, переводы (из education3)
 
 resources/views/
-├── landing*.blade.php      public landing variants, including landing-miro.blade.php
+├── landing.blade.php       подключает landing активной темы сайта
 ├── account/                cabinet screens and layout
 ├── admin/                  экраны админки
 ├── components/admin/       компоненты админки (sidebar, формы, редакторы)
-└── themes/public/miro/     публичная тема: content-layout/list/article, partials
+├── themes/public/miro/     тема сайта: content-layout/list/article, partials
+└── themes/account/fortuntwo/  тема кабинета: layout и pages/*
 
 database/
 ├── migrations/              schema history

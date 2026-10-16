@@ -52,8 +52,10 @@ class RequireAccountAuth
 
         $themeValue = $user->getAttribute('account_theme_setting');
         $themeValue = is_string($themeValue) ? json_decode($themeValue, true) : $themeValue;
-        $accountTheme = is_array($themeValue) ? ($themeValue['theme'] ?? 'classic') : 'classic';
-        $accountTheme = array_key_exists($accountTheme, SiteSetting::ACCOUNT_THEMES) ? $accountTheme : 'classic';
+        $accountTheme = is_array($themeValue) ? ($themeValue['theme'] ?? null) : null;
+        $accountTheme = is_string($accountTheme) && array_key_exists($accountTheme, SiteSetting::ACCOUNT_THEMES)
+            ? $accountTheme
+            : SiteSetting::DEFAULT_ACCOUNT_THEME;
 
         view()->share('accountUser', $user);
         view()->share('accountTheme', $accountTheme);

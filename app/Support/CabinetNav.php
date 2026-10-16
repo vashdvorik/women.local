@@ -8,8 +8,7 @@ use App\Enums\Plan;
 use App\Models\BotUser;
 
 /**
- * Дополнительные пункты меню кабинета, одинаковые во всех четырёх темах: «Подписка» (всегда) и «Private»
- * (особая вкладка, появляется у участниц с действующим Community или Private). Первый пункт у Open-участниц
+ * Дополнительные пункты меню кабинета, одинаковые во всех четырёх темах: «Подписка» (всегда). Первый пункт у Open-участниц
  * называется «Главная» вместо «ИИ-помощник».
  *
  * Тема строит меню сама массивом $navItems; сюда она отдаёт его целиком и получает обратно с новыми пунктами.
@@ -38,14 +37,6 @@ final class CabinetNav
             'label' => __('subscription.nav.subscription'),
             'path' => 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z',
         ];
-
-        if ($user !== null && $user->hasPlan(Plan::Community)) {
-            $items[] = [
-                'route' => 'account.private',
-                'label' => __('subscription.nav.private'),
-                'path' => 'M5 16L3 6l5.5 4L12 4l3.5 6L21 6l-2 10H5zm14 3H5v2h14v-2z',
-            ];
-        }
 
         return $items;
     }

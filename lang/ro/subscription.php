@@ -8,7 +8,6 @@ return [
 
     'nav' => [
         'subscription' => 'Abonament',
-        'private' => 'Private',
     ],
 
     // Descrierile pachetelor: traducerea textelor clientului din rusă (variantă de lucru; de corectat).
@@ -98,16 +97,6 @@ return [
             'cancelled' => 'Anulat',
             'expired' => 'Expirat',
         ],
-    ],
-
-    'private' => [
-        'title' => 'Private',
-        'eyebrow' => 'Calitate premium de membră',
-        'heading' => 'WOMEN’S HUB PRIVATE',
-        'active' => 'Calitatea dvs. de membră Private este valabilă până la :date.',
-        'active_text' => 'Curatorul dvs. personal vă va contacta. Dacă doriți să contactați echipa, scrieți managerului proiectului pe Telegram.',
-        'intro' => 'Calitate premium de membră pentru cele care vor mai mult: curator personal, cerc închis și suport individual pe parcursul anului.',
-        'contact' => 'Scrie managerului',
     ],
 
     'locked' => [

@@ -2,7 +2,7 @@
     «Подписка» — три тарифа кабинета. Общая для всех тем: подключает макет текущей темы кабинета и использует её палитру brand-*.
     Переменные: $user (BotUser), $current (Plan), $payments, $testMode.
 --}}
-@extends('themes.account.'.($accountTheme ?? 'classic').'.layout')
+@extends('themes.account.'.($accountTheme ?? \App\Models\SiteSetting::DEFAULT_ACCOUNT_THEME).'.layout')
 
 @section('title', __('subscription.page.title'))
 

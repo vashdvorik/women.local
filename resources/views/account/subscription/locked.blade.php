@@ -2,7 +2,7 @@
     Закрытый раздел для тарифа ниже нужного (RequirePlan): сообщение на месте раздела и кнопка «Купить подписку».
     Переменные: $plan (Plan — минимальный тариф раздела), $section (название раздела из меню или null).
 --}}
-@extends('themes.account.'.($accountTheme ?? 'classic').'.layout')
+@extends('themes.account.'.($accountTheme ?? \App\Models\SiteSetting::DEFAULT_ACCOUNT_THEME).'.layout')
 
 @section('title', $section ?? __('subscription.locked.title'))
 

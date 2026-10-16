@@ -16,7 +16,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 /**
- * Подписка в кабинете: страница тарифов, вкладка Private, оформление оплаты и возврат из банка.
+ * Подписка в кабинете: страница тарифов, оформление оплаты и возврат из банка.
  * Страницы общие для всех четырёх тем кабинета (они подключают макет текущей темы), поэтому лежат в
  * resources/views/account/subscription.
  */
@@ -36,18 +36,6 @@ class SubscriptionController extends Controller
             'user' => $user,
             'current' => $user->currentPlan(),
             'payments' => $user->payments()->latest('id')->limit(10)->get(),
-            'testMode' => (bool) config('webpayment.is_test'),
-        ]);
-    }
-
-    /** Особая вкладка Private: описание пакета и цена или, если пакет уже оплачен, его статус. */
-    public function private(): View
-    {
-        $user = $this->user();
-
-        return view('account.subscription.private', [
-            'user' => $user,
-            'current' => $user->currentPlan(),
             'testMode' => (bool) config('webpayment.is_test'),
         ]);
     }

@@ -70,15 +70,6 @@ body.account-theme-fortuntwo .account-mobile-header {
     box-shadow: none !important;
 }
 
-body.account-theme-fortuntwo .account-brand-mark {
-    background: var(--fortun-brand-purple-soft) !important;
-    background-image: none !important;
-    box-shadow: none !important;
-    color: var(--fortun-primary) !important;
-}
-
-body.account-theme-fortuntwo .account-brand-mark svg { color: var(--fortun-primary) !important; }
-
 body.account-theme-fortuntwo .account-user-card {
     border: 1px solid rgba(241,206,145,.65);
     background: var(--fortun-brand-purple-soft) !important;

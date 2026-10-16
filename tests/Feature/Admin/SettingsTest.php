@@ -91,37 +91,71 @@ class SettingsTest extends TestCase
 
     public function test_site_theme_is_saved_from_site_settings_and_rejects_unknown_values(): void
     {
-        SiteSetting::setAccountTheme('classic');
-
         $this->actingAsAdmin()
             ->put(route('admin.settings.theme'), ['landing_theme' => 'nope'])
             ->assertSessionHasErrors('landing_theme');
 
+        // Удалённые темы выбрать тоже нельзя.
         $this->actingAsAdmin()
             ->put(route('admin.settings.theme'), ['landing_theme' => 'fortun'])
-            ->assertRedirect(route('admin.settings.edit', ['tab' => 'theme']));
+            ->assertSessionHasErrors('landing_theme');
 
-        $this->assertSame('fortun', SiteSetting::landingTheme());
+        foreach (array_keys(SiteSetting::LANDING_THEMES) as $theme) {
+            $this->actingAsAdmin()
+                ->put(route('admin.settings.theme'), ['landing_theme' => $theme])
+                ->assertRedirect(route('admin.settings.edit', ['tab' => 'theme']));
+
+            $this->assertSame($theme, SiteSetting::landingTheme());
+        }
+
         // Тема кабинета от этой формы не меняется, даже если её прислать.
-        $this->actingAsAdmin()->put(route('admin.settings.theme'), ['landing_theme' => 'miro', 'account_theme' => 'fortun']);
-        $this->assertSame('classic', SiteSetting::accountTheme());
+        $account = SiteSetting::accountTheme();
+        $this->actingAsAdmin()->put(route('admin.settings.theme'), ['landing_theme' => 'miro', 'account_theme' => 'nope']);
+        $this->assertSame($account, SiteSetting::accountTheme());
     }
 
     public function test_cabinet_theme_is_saved_from_cabinet_settings_and_rejects_unknown_values(): void
     {
-        SiteSetting::setLandingTheme('fortun');
-
         $this->actingAsAdmin()
             ->put(route('admin.cabinets.settings.theme'), ['account_theme' => 'nope'])
             ->assertSessionHasErrors('account_theme');
 
-        $this->actingAsAdmin()
-            ->put(route('admin.cabinets.settings.theme'), ['account_theme' => 'miro'])
-            ->assertRedirect(route('admin.cabinets.settings', ['tab' => 'theme']));
+        foreach (['classic', 'fortun', 'miro'] as $removed) {
+            $this->actingAsAdmin()
+                ->put(route('admin.cabinets.settings.theme'), ['account_theme' => $removed])
+                ->assertSessionHasErrors('account_theme');
+        }
 
-        $this->assertSame('miro', SiteSetting::accountTheme());
+        foreach (array_keys(SiteSetting::ACCOUNT_THEMES) as $theme) {
+            $this->actingAsAdmin()
+                ->put(route('admin.cabinets.settings.theme'), ['account_theme' => $theme])
+                ->assertRedirect(route('admin.cabinets.settings', ['tab' => 'theme']));
+
+            $this->assertSame($theme, SiteSetting::accountTheme());
+        }
+
         // Публичный сайт от этой формы не меняется.
-        $this->assertSame('fortun', SiteSetting::landingTheme());
+        $landing = SiteSetting::landingTheme();
+        $this->actingAsAdmin()->put(route('admin.cabinets.settings.theme'), ['account_theme' => 'fortuntwo', 'landing_theme' => 'nope']);
+        $this->assertSame($landing, SiteSetting::landingTheme());
+    }
+
+    public function test_theme_forms_list_every_theme_of_the_catalogue(): void
+    {
+        $site = $this->actingAsAdmin()->get(route('admin.settings.edit', ['tab' => 'theme']))->assertOk()->getContent();
+        $cabinet = $this->actingAsAdmin()->get(route('admin.cabinets.settings', ['tab' => 'theme']))->assertOk()->getContent();
+
+        foreach (array_keys(SiteSetting::LANDING_THEMES) as $theme) {
+            $this->assertStringContainsString('name="landing_theme" value="'.$theme.'"', $site);
+        }
+
+        foreach (array_keys(SiteSetting::ACCOUNT_THEMES) as $theme) {
+            $this->assertStringContainsString('name="account_theme" value="'.$theme.'"', $cabinet);
+        }
+
+        $this->assertStringNotContainsString('value="fortun"', $site.$cabinet);
+        $this->assertStringNotContainsString('value="platform"', $site);
+        $this->assertStringNotContainsString('value="classic"', $cabinet);
     }
 
     public function test_assistant_knowledge_is_saved(): void

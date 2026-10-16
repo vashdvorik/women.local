@@ -73,7 +73,7 @@ class OpportunityController extends Controller
         $theme = view()->shared('accountTheme');
         $theme = is_string($theme) && array_key_exists($theme, \App\Models\SiteSetting::ACCOUNT_THEMES)
             ? $theme
-            : 'classic';
+            : \App\Models\SiteSetting::DEFAULT_ACCOUNT_THEME;
 
         return view("themes.account.{$theme}.pages.{$page}", $data);
     }

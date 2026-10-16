@@ -1,6 +1,6 @@
 @php
     $publicTheme = \App\Models\SiteSetting::landingTheme();
-    $publicTheme = array_key_exists($publicTheme, \App\Models\SiteSetting::LANDING_THEMES) ? $publicTheme : 'miro';
+    $publicTheme = array_key_exists($publicTheme, \App\Models\SiteSetting::LANDING_THEMES) ? $publicTheme : \App\Models\SiteSetting::DEFAULT_LANDING_THEME;
     $themeLogo = asset('themes/public/miro/images/brand/logo-ink.webp');
     $themeFavicon = asset('themes/public/' . $publicTheme . '/images/brand/favicon.png');
 @endphp
@@ -62,27 +62,6 @@
             --login-radius-card: 24px;
         }
 
-        body.public-theme-platform {
-            --login-primary: #4a1d96;
-            --login-primary-hover: #36136f;
-            --login-canvas: #f9fafb;
-            --login-surface: #f3f4f6;
-            --login-ink: #1f2937;
-            --login-text: #4b5563;
-            --login-muted: #6b7280;
-            --login-border: #e5e7eb;
-            --login-border-strong: #d1d5db;
-            --login-accent: #f3e8ff;
-            --login-accent-ink: #4a1d96;
-            --login-focus: #4a1d96;
-            --login-success: #0d9488;
-            --login-error-bg: #fee2e2;
-            --login-error-border: #fecaca;
-            --login-error-text: #991b1b;
-            --login-shadow: 0 12px 32px rgba(17, 24, 39, .08);
-            --login-radius-card: 16px;
-        }
-
         body.account-login-page {
             min-height: 100vh;
             background: var(--login-canvas) !important;
@@ -90,9 +69,7 @@
             font-family: "Manrope", Inter, system-ui, sans-serif;
         }
 
-        body.public-theme-platform.account-login-page { font-family: Inter, system-ui, sans-serif; }
         body.account-login-page .account-login-heading { font-family: var(--login-display-font, "Manrope"); font-weight: 400; }
-        body.public-theme-platform .account-login-heading { font-family: Inter, system-ui, sans-serif; font-weight: 700; }
         body.account-login-page :focus-visible { outline: 2px solid var(--login-focus); outline-offset: 3px; border-radius: 8px; }
         body.account-login-page .account-login-languages {
             border-color: var(--login-border) !important;
@@ -141,7 +118,6 @@
             border-color: color-mix(in srgb, var(--login-focus) 20%, transparent) !important;
             border-top-color: var(--login-focus) !important;
         }
-        body.public-theme-platform .account-login-step__number { background: #ccfbf1 !important; color: #0d9488 !important; }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center bg-gray-50 px-4 account-login-page public-theme-{{ $publicTheme }}">

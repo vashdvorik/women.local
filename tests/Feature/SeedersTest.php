@@ -71,13 +71,14 @@ class SeedersTest extends TestCase
 
     public function test_site_setting_seeder_keeps_a_theme_the_admin_already_chose(): void
     {
-        SiteSetting::setLandingTheme('fortun');
+        // Тема, выбранная администратором (в каталоге сейчас одна, поэтому пишем в базу напрямую).
+        SiteSetting::create(['key' => SiteSetting::LANDING_THEME_KEY, 'value' => ['theme' => 'future-theme']]);
 
         $this->seed(SiteSettingSeeder::class);
         $this->seed(SiteSettingSeeder::class);
 
         $this->assertSame(2, SiteSetting::count(), 'повторный запуск ничего не дублирует');
-        $this->assertSame('fortun', SiteSetting::landingTheme());
+        $this->assertSame(['theme' => 'future-theme'], SiteSetting::where('key', SiteSetting::LANDING_THEME_KEY)->firstOrFail()->value, 'выбор администратора не затёрт');
         $this->assertSame('fortuntwo', SiteSetting::accountTheme(), 'недостающее добавлено');
     }
 

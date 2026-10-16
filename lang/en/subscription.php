@@ -8,7 +8,6 @@ return [
 
     'nav' => [
         'subscription' => 'Subscription',
-        'private' => 'Private',
     ],
 
     // Plan descriptions: translation of the customer's Russian texts (draft; to be proofread).
@@ -98,16 +97,6 @@ return [
             'cancelled' => 'Cancelled',
             'expired' => 'Expired',
         ],
-    ],
-
-    'private' => [
-        'title' => 'Private',
-        'eyebrow' => 'Premium membership',
-        'heading' => 'WOMEN’S HUB PRIVATE',
-        'active' => 'Your Private membership is valid until :date.',
-        'active_text' => 'Your personal curator will contact you. If you need to reach the team, write to the project manager on Telegram.',
-        'intro' => 'Premium membership for those who want more: a personal curator, a closed circle and individual support throughout the year.',
-        'contact' => 'Write to the manager',
     ],
 
     'locked' => [

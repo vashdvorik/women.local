@@ -8,6 +8,7 @@ use App\Models\Payment;
 use App\Models\Subscription;
 use App\Services\Subscriptions\SubscriptionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Nutgram\Laravel\Facades\Telegram;
 use Tests\Concerns\SubscriptionHelpers;
 use Tests\TestCase;
@@ -231,6 +232,47 @@ class SubscriptionAdminTest extends TestCase
             ->assertSessionHas('success');
 
         $this->assertSame(Payment::STATUS_PAID, $payment->fresh()->status);
+        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
+    }
+
+    public function test_when_the_bank_answers_in_an_unexpected_way_the_admin_sees_what_it_sent_and_the_payment_stays_open(): void
+    {
+        $user = BotUser::factory()->approved()->create();
+        $payment = $this->checkoutFor($user, Plan::Community);
+        config(['webpayment.driver' => 'bank', 'webpayment.merchant_login' => '000123', 'webpayment.merchant_pass' => 'secret-pass']);
+
+        $soap = fn (string $result) => '<?xml version="1.0"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body>'
+            .'<GetStateResponse xmlns="http://webpayment.services.agroprombank.com/"><GetStateResult>'.htmlspecialchars($result, ENT_XML1).'</GetStateResult></GetStateResponse></soap:Body></soap:Envelope>';
+
+        // Один «банк» на весь тест: его ответ меняется между проверками (повторный Http::fake первый не заменяет).
+        $reply = $soap('Merchant 000123 is not allowed to use GetState');
+        Http::fake(function () use (&$reply) {
+            return Http::response($reply, 200, ['Content-Type' => 'text/xml']);
+        });
+
+        $this->actingAsAdmin()->post(route('admin.payments.recheck', $payment))->assertSessionHas('error');
+
+        $payment->refresh();
+        $this->assertSame(Payment::STATUS_PENDING, $payment->status, 'непонятный ответ не должен ни оплачивать, ни закрывать счёт');
+        $this->assertNull($payment->bank_state);
+        $this->assertSame(Plan::Open, $user->fresh()->currentPlan());
+        $this->assertStringContainsString('Merchant 000123 is not allowed to use GetState', $payment->payload['last_error']);
+
+        $page = $this->actingAsAdmin()->get(route('admin.payments.show', $payment))->assertOk()->getContent();
+        $this->assertStringContainsString('Merchant 000123 is not allowed to use GetState', $page);
+        $this->assertStringNotContainsString('secret-pass', $page);
+
+        // Тот же счёт, но банк на этот раз ответил XML без Base64: оплата подтверждается, ошибка снимается.
+        $xml = '<?xml version="1.0" encoding="utf-8"?><OperationStateResponse><Result><Code>1</Code><Description>OK</Description></Result><StateInfo>'
+            .'<state>1</state><sum>'.$payment->amount.'</sum><currency>'.$payment->currency.'</currency><istest>'.($payment->is_test ? '1' : '0').'</istest>'
+            .'<invoiceid>'.$payment->invoice_id.'</invoiceid><rrn>123456789012</rrn></StateInfo></OperationStateResponse>';
+        $reply = $soap($xml);
+
+        $this->actingAsAdmin()->post(route('admin.payments.recheck', $payment))->assertSessionHas('success');
+
+        $payment->refresh();
+        $this->assertSame(Payment::STATUS_PAID, $payment->status);
+        $this->assertArrayNotHasKey('last_error', $payment->payload);
         $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
     }
 

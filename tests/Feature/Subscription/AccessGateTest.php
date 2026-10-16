@@ -129,7 +129,7 @@ class AccessGateTest extends TestCase
     {
         $open = BotUser::factory()->approved()->create();
 
-        foreach (['account.index', 'account.profile', 'account.profile.edit', 'account.subscription', 'account.private'] as $route) {
+        foreach (['account.index', 'account.profile', 'account.profile.edit', 'account.subscription'] as $route) {
             $this->asParticipant($open)->get(route($route))->assertOk()->assertDontSee(self::LOCKED_MESSAGE);
         }
     }
@@ -241,20 +241,20 @@ class AccessGateTest extends TestCase
 
     // ---------------------------------------------------------------- меню
 
-    public function test_the_menu_has_the_subscription_item_for_everyone_and_private_only_for_paid_members(): void
+    public function test_the_menu_has_the_subscription_item_for_everyone_and_no_private_tab_for_anyone(): void
     {
-        foreach (['classic', 'fortun', 'fortuntwo', 'miro'] as $theme) {
+        foreach (array_keys(SiteSetting::ACCOUNT_THEMES) as $theme) {
             SiteSetting::setAccountTheme($theme);
 
             $open = $this->asParticipant(BotUser::factory()->approved()->create())->get(route('account.subscription'))->assertOk()->getContent();
             $this->assertStringContainsString('href="'.route('account.subscription').'"', $open, "{$theme}: пункт «Подписка»");
-            $this->assertStringNotContainsString('href="'.route('account.private').'"', $open, "{$theme}: Private открытым не показывается");
+            $this->assertStringNotContainsString('/account/private', $open, "{$theme}: вкладки Private нет");
             $this->assertStringNotContainsString('ИИ-помощник</', $open, "{$theme}: у Open нет пункта «ИИ-помощник»");
             $this->assertMatchesRegularExpression('~href="'.preg_quote(route('account.index'), '~').'"[^>]*>(?:(?!</a>).)*Главная~su', $open, "{$theme}: у Open первый пункт — «Главная»");
 
             foreach ([BotUser::factory()->community()->create(), BotUser::factory()->private()->create()] as $paid) {
                 $html = $this->asParticipant($paid)->get(route('account.subscription'))->assertOk()->getContent();
-                $this->assertStringContainsString('href="'.route('account.private').'"', $html, "{$theme}: вкладка Private");
+                $this->assertStringNotContainsString('/account/private', $html, "{$theme}: вкладки Private нет и у платных");
                 $this->assertStringContainsString('ИИ-помощник', $html, "{$theme}: у платных остаётся «ИИ-помощник»");
             }
         }
@@ -264,7 +264,7 @@ class AccessGateTest extends TestCase
     {
         $user = BotUser::factory()->community()->create();
 
-        foreach (['classic', 'fortun', 'fortuntwo', 'miro'] as $theme) {
+        foreach (array_keys(SiteSetting::ACCOUNT_THEMES) as $theme) {
             SiteSetting::setAccountTheme($theme);
 
             $html = $this->asParticipant($user)->get(route('account.subscription'))->assertOk()->getContent();
@@ -301,19 +301,22 @@ class AccessGateTest extends TestCase
         $this->assertStringContainsString('name="plan" value="private"', $open);
     }
 
-    public function test_the_private_tab_sells_private_to_community_and_shows_status_to_private(): void
+    public function test_there_is_no_separate_private_page_and_private_is_sold_on_the_subscription_page(): void
     {
         $community = BotUser::factory()->community()->create();
-        $this->asParticipant($community)->get(route('account.private'))
+        $private = BotUser::factory()->private()->create();
+
+        // Отдельной страницы Private нет ни у кого: ни у платных, ни у Open.
+        foreach ([$community, $private, BotUser::factory()->approved()->create()] as $user) {
+            $this->asParticipant($user)->get('/app/account/private')->assertNotFound();
+        }
+
+        // Тариф остаётся в продаже на странице «Подписка».
+        $this->asParticipant($community)->get(route('account.subscription'))
             ->assertOk()
             ->assertSee('WOMEN’S HUB PRIVATE')
             ->assertSee('name="plan" value="private"', false)
             ->assertSee('персональный куратор в течение года;');
-
-        $private = BotUser::factory()->private()->create();
-        $this->asParticipant($private)->get(route('account.private'))
-            ->assertOk()
-            ->assertSee('Ваше членство Private действует до '.$private->fresh()->plan_ends_at->format('d.m.Y'));
     }
 
     public function test_profile_forms_cannot_be_used_to_give_yourself_a_plan(): void
@@ -335,7 +338,7 @@ class AccessGateTest extends TestCase
 
     public function test_guests_cannot_reach_the_subscription_pages(): void
     {
-        foreach (['account.subscription', 'account.private', 'account.subscription.success', 'account.subscription.fail'] as $route) {
+        foreach (['account.subscription', 'account.subscription.success', 'account.subscription.fail'] as $route) {
             $this->get(route($route))->assertRedirect(route('account.login'));
         }
     }

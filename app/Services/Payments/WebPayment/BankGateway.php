@@ -65,7 +65,7 @@ final class BankGateway implements Gateway
 
         // ASMX отдаёт SOAP Fault с кодом 500: тело всё равно разбираем, там причина.
         if ($response->status() !== 200 && $response->status() !== 500) {
-            throw new GatewayException("Банк ответил HTTP {$response->status()} на запрос состояния счёта.");
+            throw new GatewayException("Банк ответил HTTP {$response->status()} на запрос состояния счёта. Начало ответа: «".GetStateResponse::excerpt($response->body()).'».');
         }
 
         return GetStateResponse::parse($response->body(), $this->bankSignature);
