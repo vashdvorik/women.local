@@ -275,6 +275,25 @@ class PublicCacheTest extends TestCase
         $this->assertSame('old', PublicCache::remember('probe', fn () => 'new'));
     }
 
+    public function test_without_the_public_store_in_the_config_pages_still_open_and_nothing_fails(): void
+    {
+        // Выкладка с ещё не сброшенным старым конфигом: хранилища `public` в нём нет. Кеша нет, но ошибки тоже нет.
+        $this->news();
+        config(['cache.stores.public' => null]);
+
+        $this->assertSame('a', PublicCache::remember('probe', fn () => 'a'));
+        $this->assertSame('b', PublicCache::remember('probe', fn () => 'b'), 'без хранилища каждый раз читается заново');
+
+        $this->get(route('events'))->assertOk()->assertSee('Встреча');
+        $this->get(route('events.show', ['event' => 'vstrecha']))->assertOk();
+        $this->get('/')->assertOk();
+
+        // Сохранение записи и команды сброса тоже не падают.
+        Event::first()->update(['position' => 5]);
+        $this->artisan('public-cache:clear')->assertSuccessful();
+        $this->artisan('optimize:clear')->assertSuccessful();
+    }
+
     public function test_the_admin_routes_carry_the_flush_middleware(): void
     {
         foreach (app('router')->getRoutes() as $route) {

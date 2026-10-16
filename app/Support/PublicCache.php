@@ -72,13 +72,19 @@ final class PublicCache
      */
     public static function remember(string $key, Closure $callback): mixed
     {
+        if (! self::configured()) {
+            return $callback();
+        }
+
         return self::store()->remember(md5(url('/')).'.'.$key, self::TTL, $callback);
     }
 
     /** Стирает кеш публичных страниц. После коммита транзакции: иначе страница успела бы закешировать старые данные. */
     public static function flush(): void
     {
-        DB::afterCommit(static fn () => self::store()->flush());
+        if (self::configured()) {
+            DB::afterCommit(static fn () => self::store()->flush());
+        }
     }
 
     /** Следит за моделями публичных разделов: сохранили или удалили запись — кеш сброшен. */
@@ -88,6 +94,16 @@ final class PublicCache
             $model::saved(static fn () => self::flush());
             $model::deleted(static fn () => self::flush());
         }
+    }
+
+    /**
+     * Есть ли хранилище `public` в настройках. Нет его, пока после выкладки не сброшен старый закешированный конфиг
+     * (между `git pull` и `artisan optimize:clear`, а также в самой команде optimize:clear на первой выкладке с ним):
+     * тогда кеша просто нет, страницы читаются из базы, а не отвечают ошибкой.
+     */
+    private static function configured(): bool
+    {
+        return config('cache.stores.'.self::STORE) !== null;
     }
 
     private static function store(): Repository
