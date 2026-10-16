@@ -40,24 +40,42 @@
             @endif
         </div>
 
-        @unless($payment->isPaid())
-            <div class="card flex flex-wrap items-center gap-3">
-                <form method="POST" action="{{ route('admin.payments.recheck', $payment) }}">
-                    @csrf
-                    <button type="submit" class="btn-secondary">{{ __('Проверить в банке') }}</button>
-                </form>
+        <div class="card space-y-3">
+            <div class="flex flex-wrap items-center gap-3">
+                @unless($payment->isPaid())
+                    <form method="POST" action="{{ route('admin.payments.recheck', $payment) }}">
+                        @csrf
+                        <button type="submit" class="btn-secondary">{{ __('Проверить в банке') }}</button>
+                    </form>
 
-                @if($payment->botUser)
+                    @if($payment->botUser)
+                        <x-admin.confirm-button
+                            :action="route('admin.payments.confirm', $payment)"
+                            :label="__('Подтвердить вручную')"
+                            :title="__('Подтвердить оплату вручную?')"
+                            :message="__('Тариф :plan будет включён участнице на :months мес. без проверки банком. Делайте это, только если сами видели поступление денег.', ['plan' => $payment->planEnum()->shortTitle(), 'months' => $payment->months])"
+                            :confirm="__('Подтвердить и выдать тариф')"
+                            trigger="btn-quiet" />
+                    @endif
+                @endunless
+
+                @if($payment->isDeletable())
                     <x-admin.confirm-button
-                        :action="route('admin.payments.confirm', $payment)"
-                        :label="__('Подтвердить вручную')"
-                        :title="__('Подтвердить оплату вручную?')"
-                        :message="__('Тариф :plan будет включён участнице на :months мес. без проверки банком. Делайте это, только если сами видели поступление денег.', ['plan' => $payment->planEnum()->shortTitle(), 'months' => $payment->months])"
-                        :confirm="__('Подтвердить и выдать тариф')"
+                        :action="route('admin.payments.destroy', $payment)"
+                        method="DELETE"
+                        :label="__('Удалить счёт')"
+                        :title="__('Удалить счёт :id?', ['id' => $payment->invoice_id])"
+                        :message="$payment->deleteWarning()"
+                        :confirm="__('Удалить')"
+                        :danger="true"
                         trigger="btn-quiet" />
                 @endif
             </div>
-        @endunless
+
+            @unless($payment->isDeletable())
+                <p class="field-hint">{{ $payment->deleteBlockedReason() }}</p>
+            @endunless
+        </div>
 
         <div class="card space-y-3">
             <h2 class="text-section font-semibold">{{ __('Данные от банка') }}</h2>

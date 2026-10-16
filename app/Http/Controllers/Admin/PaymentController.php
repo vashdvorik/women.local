@@ -12,6 +12,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * «Платежи» — лагерь «Кабинеты участниц»: все счета Web-платежа, их статусы, проверка в банке вручную и
@@ -35,7 +36,7 @@ class PaymentController extends Controller
         $search = trim($request->string('q')->toString());
 
         $payments = Payment::query()
-            ->with('botUser')
+            ->with(['botUser', 'subscription'])
             ->when($status !== '', fn ($q) => $q->where('status', $status))
             ->when($search !== '', fn ($q) => $q->where(fn ($w) => $w
                 ->where('invoice_id', 'like', "%{$search}%")
@@ -102,5 +103,40 @@ class PaymentController extends Controller
         $notifier->activated($subscription);
 
         return redirect()->route('admin.payments.show', $payment)->with('success', __('Оплата подтверждена вручную, тариф включён.'));
+    }
+
+    /**
+     * Удалить счёт. Разрешено только тому, за что деньги не принимались (Payment::deleteBlockedReason): тестовым
+     * счетам и боевым, по которым банк подтвердил, что оплаты нет. Условие проверяется под блокировкой строки:
+     * пока администратор читал окно подтверждения, фоновая сверка могла перевести счёт в «оплачен».
+     * Подписка участницы остаётся, у неё просто пропадает ссылка на счёт (внешний ключ nullOnDelete).
+     */
+    public function destroy(Payment $payment): RedirectResponse
+    {
+        $invoice = $payment->invoice_id;
+
+        $blocked = DB::transaction(function () use ($payment): ?string {
+            $locked = Payment::query()->lockForUpdate()->findOrFail($payment->id);
+            $reason = $locked->deleteBlockedReason();
+
+            if ($reason === null) {
+                $locked->delete();
+                Log::notice('Payment deleted by admin', [
+                    'invoice' => $locked->invoice_id,
+                    'status' => $locked->status,
+                    'is_test' => $locked->is_test,
+                    'amount' => $locked->amount,
+                    'admin_id' => auth()->id(),
+                ]);
+            }
+
+            return $reason;
+        });
+
+        if ($blocked !== null) {
+            return redirect()->route('admin.payments.show', $payment)->with('error', $blocked);
+        }
+
+        return redirect()->route('admin.payments.index')->with('success', __('Счёт :id удалён.', ['id' => $invoice]));
     }
 }

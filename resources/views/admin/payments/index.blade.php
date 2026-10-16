@@ -56,7 +56,19 @@
                                     @if($payment->driver === 'fake')<span class="badge badge--draft">{{ __('имитатор') }}</span>@endif
                                 </td>
                                 <td class="whitespace-nowrap text-ink-muted">{{ $payment->created_at->format('d.m.Y H:i') }}</td>
-                                <td class="text-right"><a href="{{ route('admin.payments.show', $payment) }}" class="btn-quiet">{{ __('Открыть') }}</a></td>
+                                <td class="whitespace-nowrap text-right">
+                                    <a href="{{ route('admin.payments.show', $payment) }}" class="btn-quiet">{{ __('Открыть') }}</a>
+                                    @if($payment->isDeletable())
+                                        <x-admin.confirm-button
+                                            :action="route('admin.payments.destroy', $payment)"
+                                            method="DELETE"
+                                            :label="__('Удалить')"
+                                            :title="__('Удалить счёт :id?', ['id' => $payment->invoice_id])"
+                                            :message="$payment->deleteWarning()"
+                                            :danger="true"
+                                            trigger="btn-quiet" />
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -313,6 +313,7 @@ Route::middleware(['admin.locale', 'auth', 'admin.email'])
         Route::get('payments/{payment}', [Admin\PaymentController::class, 'show'])->name('payments.show');
         Route::post('payments/{payment}/recheck', [Admin\PaymentController::class, 'recheck'])->name('payments.recheck');
         Route::post('payments/{payment}/confirm', [Admin\PaymentController::class, 'confirm'])->name('payments.confirm');
+        Route::delete('payments/{payment}', [Admin\PaymentController::class, 'destroy'])->name('payments.destroy');
 
         // Кабинеты участниц: «Сообщения бота» — все тексты, которые бот и сайт отправляют участницам в Telegram.
         Route::get('cabinets/bot-messages', [Admin\BotMessageController::class, 'edit'])->name('cabinets.bot-messages');

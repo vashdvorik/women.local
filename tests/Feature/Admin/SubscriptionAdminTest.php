@@ -44,6 +44,7 @@ class SubscriptionAdminTest extends TestCase
             ['get', route('admin.payments.show', $payment)],
             ['post', route('admin.payments.recheck', $payment)],
             ['post', route('admin.payments.confirm', $payment)],
+            ['delete', route('admin.payments.destroy', $payment)],
         ];
 
         foreach ($targets as [$method, $url]) {
@@ -274,6 +275,90 @@ class SubscriptionAdminTest extends TestCase
         $this->assertSame(Payment::STATUS_PAID, $payment->status);
         $this->assertArrayNotHasKey('last_error', $payment->payload);
         $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
+    }
+
+    // ---------------------------------------------------------------- удаление счетов
+
+    private function paymentWith(string $status, bool $test): Payment
+    {
+        $payment = $this->checkoutFor(BotUser::factory()->approved()->create(), Plan::Community);
+        $payment->update(['status' => $status, 'is_test' => $test]);
+
+        return $payment;
+    }
+
+    public function test_test_invoices_can_be_deleted_in_any_status_because_no_money_moved(): void
+    {
+        foreach ([Payment::STATUS_PENDING, Payment::STATUS_VERIFYING, Payment::STATUS_PAID, Payment::STATUS_FAILED, Payment::STATUS_CANCELLED, Payment::STATUS_EXPIRED] as $status) {
+            $payment = $this->paymentWith($status, test: true);
+
+            $this->actingAsAdmin()->delete(route('admin.payments.destroy', $payment))
+                ->assertRedirect(route('admin.payments.index'))
+                ->assertSessionHas('success');
+
+            $this->assertNull(Payment::find($payment->id), "тестовый счёт в статусе {$status} удаляется");
+        }
+    }
+
+    public function test_live_invoices_that_the_bank_confirmed_unpaid_can_be_deleted(): void
+    {
+        foreach ([Payment::STATUS_FAILED, Payment::STATUS_CANCELLED, Payment::STATUS_EXPIRED] as $status) {
+            $payment = $this->paymentWith($status, test: false);
+
+            $this->actingAsAdmin()->delete(route('admin.payments.destroy', $payment))->assertSessionHas('success');
+
+            $this->assertNull(Payment::find($payment->id), "боевой счёт в статусе {$status} удаляется");
+        }
+    }
+
+    public function test_live_invoices_that_are_paid_verifying_or_still_open_cannot_be_deleted(): void
+    {
+        foreach ([Payment::STATUS_PAID, Payment::STATUS_VERIFYING, Payment::STATUS_PENDING] as $status) {
+            $payment = $this->paymentWith($status, test: false);
+
+            $this->actingAsAdmin()->delete(route('admin.payments.destroy', $payment))
+                ->assertRedirect(route('admin.payments.show', $payment))
+                ->assertSessionHas('error', $payment->deleteBlockedReason());
+
+            $this->assertNotNull(Payment::find($payment->id), "боевой счёт в статусе {$status} остаётся");
+        }
+    }
+
+    public function test_deleting_a_paid_test_invoice_keeps_the_members_plan_and_history(): void
+    {
+        $user = BotUser::factory()->approved()->create();
+        $payment = $this->checkoutFor($user, Plan::Community);
+        $payment->update(['payload' => ['fake' => ['state' => 1, 'sum' => 60000, 'currency' => '000', 'istest' => true, 'rrn' => '9']]]);
+        $this->actingAsAdmin()->post(route('admin.payments.recheck', $payment));
+
+        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
+        $subscription = $user->subscriptions()->firstOrFail();
+        $this->assertSame($payment->id, $subscription->payment_id);
+
+        $this->actingAsAdmin()->delete(route('admin.payments.destroy', $payment->fresh()))->assertSessionHas('success');
+
+        $this->assertNull(Payment::find($payment->id));
+        $this->assertSame(Plan::Community, $user->fresh()->currentPlan(), 'тариф остаётся: его снимают отдельно');
+        $this->assertNull($subscription->fresh()->payment_id, 'запись истории подписки сохранилась, ссылка на счёт пропала');
+    }
+
+    public function test_the_buttons_follow_the_same_rule_and_the_admin_is_told_why_not(): void
+    {
+        $deletable = $this->paymentWith(Payment::STATUS_EXPIRED, test: false);
+        $paid = $this->paymentWith(Payment::STATUS_PAID, test: false);
+
+        $show = $this->actingAsAdmin()->get(route('admin.payments.show', $deletable))->assertOk()->getContent();
+        $this->assertStringContainsString(route('admin.payments.destroy', $deletable), $show);
+        $this->assertStringContainsString('Удалить счёт', $show);
+        $this->assertStringContainsString('Банк подтвердил, что оплаты по этому счёту нет', $show);
+
+        $blocked = $this->actingAsAdmin()->get(route('admin.payments.show', $paid))->assertOk()->getContent();
+        $this->assertStringNotContainsString(route('admin.payments.destroy', $paid), $blocked);
+        $this->assertStringContainsString('Оплаченный счёт удалить нельзя', $blocked);
+
+        $list = $this->actingAsAdmin()->get(route('admin.payments.index'))->assertOk()->getContent();
+        $this->assertStringContainsString('action="'.route('admin.payments.destroy', $deletable).'"', $list);
+        $this->assertStringNotContainsString('action="'.route('admin.payments.destroy', $paid).'"', $list);
     }
 
     public function test_recheck_with_nothing_new_from_the_bank_explains_the_status(): void
