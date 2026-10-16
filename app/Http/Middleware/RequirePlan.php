@@ -30,6 +30,7 @@ class RequirePlan
         'account.people' => 'people',
         'account.people.show' => 'people',
         'account.opportunities.*' => 'opportunities',
+        'account.knowledge' => 'knowledge',
     ];
 
     public function handle(Request $request, Closure $next, string $plan = 'community'): Response

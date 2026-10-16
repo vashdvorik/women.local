@@ -44,6 +44,7 @@ class AccessGateTest extends TestCase
             'search' => ['GET', route('account.search')],
             'opportunities' => ['GET', route('account.opportunities.index')],
             'new opportunity' => ['GET', route('account.opportunities.create')],
+            'knowledge' => ['GET', route('account.knowledge')],
         ];
     }
 
@@ -76,6 +77,7 @@ class AccessGateTest extends TestCase
             'account.search' => 'Поиск контактов',
             'account.people' => 'Профили платформы',
             'account.opportunities.index' => 'Возможности',
+            'account.knowledge' => 'Обучение',
         ] as $route => $title) {
             $html = $this->asParticipant($open)->get(route($route))->assertOk()->getContent();
 
@@ -127,8 +129,8 @@ class AccessGateTest extends TestCase
     {
         $open = BotUser::factory()->approved()->create();
 
-        foreach (['account.index', 'account.profile', 'account.profile.edit', 'account.knowledge', 'account.subscription', 'account.private'] as $route) {
-            $this->asParticipant($open)->get(route($route))->assertOk();
+        foreach (['account.index', 'account.profile', 'account.profile.edit', 'account.subscription', 'account.private'] as $route) {
+            $this->asParticipant($open)->get(route($route))->assertOk()->assertDontSee(self::LOCKED_MESSAGE);
         }
     }
 

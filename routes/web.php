@@ -168,7 +168,6 @@ Route::middleware(RequireAccountAuth::class)
         Route::get('/profile/edit', [AccountController::class, 'profileEdit'])->name('profile.edit');
         Route::post('/profile', [AccountController::class, 'updateProfile'])->name('profile.update');
         Route::delete('/profile', [AccountController::class, 'deleteProfile'])->name('profile.delete');
-        Route::get('/knowledge', [AccountController::class, 'knowledge'])->name('knowledge');
 
         // Подписка: тарифы, вкладка Private, оплата. Доступно на любом тарифе, в том числе на Open.
         Route::get('/subscription', [SubscriptionController::class, 'show'])->name('subscription');
@@ -178,9 +177,11 @@ Route::middleware(RequireAccountAuth::class)
         Route::match(['GET', 'POST'], '/subscription/success', [SubscriptionController::class, 'result'])->name('subscription.success');
         Route::match(['GET', 'POST'], '/subscription/fail', [SubscriptionController::class, 'result'])->name('subscription.fail');
 
-        // Закрыто для тарифа Open: видимость других участниц, подбор и поиск контактов, ИИ-помощник и публикации
-        // возможностей входят в Community и Private. Остальным RequirePlan отвечает переходом на «Подписку».
+        // Закрыто для тарифа Open: видимость других участниц, подбор и поиск контактов, ИИ-помощник, публикации
+        // возможностей и «Обучение» входят в Community и Private. На месте раздела RequirePlan показывает сообщение
+        // и кнопку «Купить подписку» (запись и запросы ИИ он отклоняет редиректом и ответом 403).
         Route::middleware('plan:community')->group(function (): void {
+            Route::get('/knowledge', [AccountController::class, 'knowledge'])->name('knowledge');
             Route::get('/matches', [AccountController::class, 'matches'])->name('matches');
             Route::get('/people', [AccountController::class, 'people'])->name('people');
             Route::get('/people/{botUser}', [AccountController::class, 'showPerson'])->name('people.show');
