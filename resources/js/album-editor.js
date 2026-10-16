@@ -1,5 +1,5 @@
 import Alpine from 'alpinejs';
-import { uploadImage, flashError } from './uploader';
+import { uploadImage, editCrop, flashError } from './uploader';
 import { openCropper } from './cropper';
 import { t } from './i18n';
 
@@ -114,6 +114,22 @@ Alpine.data('albumEditor', (initial, cancelUrl) => ({
         } finally {
             this.coverUploading = false;
         }
+    },
+    // Изменить кадр обложки или фото блока, не выбирая файл заново.
+    async recropCover() {
+        const next = await editCrop(this.cover, this.ratios.album, initial.uploadUrl, (busy) => { this.coverUploading = busy; });
+        if (next) this.cover = next;
+    },
+    async recropBlock(i, cell) {
+        const block = this.blocks[i];
+        const slot = block.type === 'image' ? 'image' : block.type;
+        const current = block.type === 'image' ? block.data.path : block.data.images[cell];
+
+        const next = await editCrop(current, this.ratios[slot], initial.uploadUrl, (busy) => { block._busy = busy; });
+        if (!next) return;
+
+        if (block.type === 'image') block.data.path = next;
+        else block.data.images[cell] = next;
     },
     async uploadBlock(event, i, cell) {
         const file = event.target.files[0];

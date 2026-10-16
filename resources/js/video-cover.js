@@ -1,5 +1,5 @@
 import Alpine from 'alpinejs';
-import { uploadImage, flashError } from './uploader';
+import { uploadImage, editCrop, flashError } from './uploader';
 import { openCropper } from './cropper';
 import { t } from './i18n';
 
@@ -31,6 +31,11 @@ Alpine.data('videoCover', (initial) => ({
         } finally {
             this.uploading = false;
         }
+    },
+    // Изменить кадр загруженной обложки, не выбирая файл заново.
+    async recrop() {
+        const next = await editCrop(this.cover, initial.ratio || [16, 9], initial.uploadUrl, (busy) => { this.uploading = busy; });
+        if (next) this.cover = next;
     },
     clear() {
         this.cover = '';

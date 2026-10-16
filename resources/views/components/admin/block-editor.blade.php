@@ -220,6 +220,10 @@
                             </label>
                             <div x-show="block._busy" class="absolute inset-0 flex items-center justify-center bg-surface/70 text-caption text-ink-muted">{{ __('Обработка…') }}</div>
                             <div class="image-cell__actions" x-show="block.data.path">
+                                <button type="button" class="image-cell__action" title="{{ __('Изменить кадр') }}"
+                                        @click="recrop(block.data.path, 'image', (p) => setBlockImage(i, p), (b) => block._busy = b)">
+                                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v11h11M1 4h11v11" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </button>
                                 <label class="image-cell__action cursor-pointer" title="{{ __('Заменить') }}">
                                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 3v4h-4M3 13V9h4M13 7A5 5 0 003 6M3 9a5 5 0 0010 1" stroke-linecap="round"/></svg>
                                     <input type="file" accept="image/jpeg,image/png,image/webp" class="sr-only"
@@ -254,6 +258,10 @@
                                 </label>
                                 <div x-show="block._busy" class="absolute inset-0 flex items-center justify-center bg-surface/70 text-caption text-ink-muted">…</div>
                                 <div class="image-cell__actions" x-show="img">
+                                    <button type="button" class="image-cell__action" title="{{ __('Изменить кадр') }}"
+                                            @click="recrop(img, block.type, (p) => setBlockImage(i, p, cell), (b) => block._busy = b)">
+                                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v11h11M1 4h11v11" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    </button>
                                     <label class="image-cell__action cursor-pointer" title="{{ __('Заменить') }}">
                                         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 3v4h-4M3 13V9h4M13 7A5 5 0 003 6M3 9a5 5 0 0010 1" stroke-linecap="round"/></svg>
                                         <input type="file" accept="image/jpeg,image/png,image/webp" class="sr-only"

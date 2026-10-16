@@ -15,4 +15,8 @@ return [
     'Перетащите рамку, потяните за углы, колесо мыши — масштаб.' => 'Drag the frame, pull the corners, use the mouse wheel to zoom.',
     'Отмена' => 'Cancel',
     'Применить' => 'Apply',
+    'Измените кадр' => 'Change the crop',
+    'Не удалось открыть фото для кадрирования.' => 'Could not open the photo for cropping.',
+    'Не удалось изменить кадр.' => 'Could not change the crop.',
+    'У этой картинки нет сохранённого фото целиком: перекадрировать её нельзя. Загрузите её заново.' => 'This picture has no stored full photo, so it cannot be re-cropped. Upload it again.',
 ];

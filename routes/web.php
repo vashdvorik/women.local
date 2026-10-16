@@ -320,6 +320,10 @@ Route::middleware(['admin.locale', 'auth', 'admin.email'])
         Route::put('cabinets/bot-messages', [Admin\BotMessageController::class, 'update'])->name('cabinets.bot-messages.update');
 
         Route::post('uploads', [Admin\UploadController::class, 'store'])->name('uploads.store');
+        // Перекадрирование загруженной картинки: сведения о сжатом фото целиком, само фото и пересчёт кадра.
+        Route::get('uploads/source-info', [Admin\UploadController::class, 'sourceInfo'])->name('uploads.source-info');
+        Route::get('uploads/source/{imageSource}', [Admin\UploadController::class, 'source'])->name('uploads.source');
+        Route::post('uploads/recrop', [Admin\UploadController::class, 'recrop'])->name('uploads.recrop');
         Route::post('uploads/file', [Admin\UploadController::class, 'storeFile'])->name('uploads.file');
     });
 

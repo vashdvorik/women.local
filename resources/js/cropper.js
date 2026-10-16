@@ -8,15 +8,21 @@ import { t } from './i18n';
  * координатах исходного изображения. Дальше сервер обрезает именно его —
  * поэтому увиденное в форме и оказавшееся на сайте совпадает (AGENTS.md §14).
  *
- * @param {File} file
+ * Открывает либо только что выбранный файл (File), либо уже сохранённое фото целиком по адресу (строка): так
+ * меняют кадр после загрузки. Для сохранённого фото можно передать прежнюю рамку, и окно откроется на ней.
+ *
+ * @param {File|string} source  файл или адрес сохранённого фото
  * @param {[number, number]} ratio  [ширина, высота] кадра слота
+ * @param {{crop?: {x:number,y:number,width:number,height:number}, title?: string}} [options]
+ *        crop — рамка, с которой открыть окно (в пикселях фото); title — заголовок окна
  * @returns {Promise<{x:number,y:number,width:number,height:number}>}
  *          resolve — пользователь нажал «Применить»; reject — отменил.
  */
-export function openCropper(file, ratio) {
+export function openCropper(source, ratio, options = {}) {
     return new Promise((resolve, reject) => {
         const [rw, rh] = ratio || [1, 1];
-        const url = URL.createObjectURL(file);
+        const isFile = typeof source !== 'string';
+        const url = isFile ? URL.createObjectURL(source) : source;
 
         const backdrop = document.createElement('div');
         backdrop.className = 'modal-backdrop z-[60]';
@@ -27,7 +33,7 @@ export function openCropper(file, ratio) {
 
         const heading = document.createElement('p');
         heading.className = 'text-ui-strong font-semibold text-ink';
-        heading.textContent = t('Обрежьте изображение');
+        heading.textContent = options.title || t('Обрежьте изображение');
 
         const stage = document.createElement('div');
         stage.className = 'bg-surface-sunken rounded-sm overflow-hidden';
@@ -68,7 +74,7 @@ export function openCropper(file, ratio) {
         const cleanup = () => {
             if (cropper) cropper.destroy();
             backdrop.remove();
-            URL.revokeObjectURL(url);
+            if (isFile) URL.revokeObjectURL(url);
             document.removeEventListener('keydown', onKey);
         };
         const done = (rect) => {
@@ -112,6 +118,8 @@ export function openCropper(file, ratio) {
                 rotatable: false,
                 scalable: false,
                 checkOrientation: false,
+                // Прежняя рамка (при смене кадра сохранённого фото).
+                data: options.crop || null,
             });
         };
     });

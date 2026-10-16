@@ -46,6 +46,9 @@
             </label>
             <div x-show="uploading" class="absolute inset-0 flex items-center justify-center bg-surface/70 text-caption text-ink-muted">{{ __('Обработка…') }}</div>
             <div class="image-cell__actions" x-show="cover">
+                <button type="button" class="image-cell__action" @click="recrop()" title="{{ __('Изменить кадр') }}">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v11h11M1 4h11v11" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
                 <button type="button" class="image-cell__action" @click="clear()" title="{{ __('Удалить') }}">
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l8 8M12 4l-8 8" stroke-linecap="round"/></svg>
                 </button>

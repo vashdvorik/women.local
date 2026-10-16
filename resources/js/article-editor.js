@@ -1,5 +1,5 @@
 import Alpine from 'alpinejs';
-import { uploadImage, uploadFile, flashError } from './uploader';
+import { uploadImage, uploadFile, editCrop, flashError } from './uploader';
 import { openCropper } from './cropper';
 import { t, decimalSeparator } from './i18n';
 
@@ -129,6 +129,11 @@ function blockEditor(initial) {
             } finally {
                 if (setBusy) setBusy(false);
             }
+        },
+        // Изменить кадр загруженной картинки, не выбирая файл заново. apply(путь) получает путь нового кадра.
+        async recrop(path, slot, apply, setBusy = null) {
+            const next = await editCrop(path, this.ratios[slot], initial.uploadUrl, setBusy);
+            if (next) apply(next);
         },
         setBlockImage(i, path, cell = null) {
             LOCALES.forEach((l) => {

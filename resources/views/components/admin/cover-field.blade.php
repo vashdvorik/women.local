@@ -25,6 +25,10 @@
         </div>
 
         <div class="image-cell__actions" x-show="cover">
+            <button type="button" class="image-cell__action" title="{{ __('Изменить кадр') }}"
+                    @click="recrop(cover, 'cover', (p) => cover = p, (b) => coverUploading = b)">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1v11h11M1 4h11v11" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
             <label class="image-cell__action cursor-pointer" title="{{ __('Заменить') }}">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
                     <path d="M13 3v4h-4M3 13V9h4" stroke-linecap="round"/>

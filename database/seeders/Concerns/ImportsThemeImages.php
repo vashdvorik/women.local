@@ -20,9 +20,10 @@ use Illuminate\Support\Facades\Storage;
 trait ImportsThemeImages
 {
     /**
+     * @param  ?array{x:int,y:int,width:int,height:int}  $crop  вырезать именно этот прямоугольник (иначе — центр кадра)
      * @return string|null относительный путь вида «2026/09/abc123.webp» или null, если файла нет
      */
-    protected function importThemeImage(?string $relativePath, string $slot): ?string
+    protected function importThemeImage(?string $relativePath, string $slot, ?array $crop = null): ?string
     {
         if (blank($relativePath)) {
             return null;
@@ -39,7 +40,7 @@ trait ImportsThemeImages
         // Последний аргумент true — «тестовый» режим: разрешает не-HTTP-загруженный файл.
         $file = new UploadedFile($absolute, basename($absolute), mime_content_type($absolute) ?: null, null, true);
 
-        return app(StoreUploadedImage::class)->handle($file, $slot);
+        return app(StoreUploadedImage::class)->handle($file, $slot, $crop);
     }
 
     /**

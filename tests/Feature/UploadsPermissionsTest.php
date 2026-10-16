@@ -63,4 +63,55 @@ class UploadsPermissionsTest extends TestCase
         $disk->deleteDirectory('2099');
         @rmdir($root);
     }
+
+    // ---------------------------------------------------------------- закрытый диск сжатых фото (originals)
+
+    /** Диск собирается из настроек, а не берётся из Storage: в тестах Storage::fake('originals') подменяет его своим. */
+    private function originalsConverter(): PortableVisibilityConverter
+    {
+        $adapter = \Illuminate\Support\Facades\Storage::build(config('filesystems.disks.originals'))->getAdapter();
+
+        $this->assertInstanceOf(LocalFilesystemAdapter::class, $adapter);
+
+        return (new ReflectionProperty(LocalFilesystemAdapter::class, 'visibility'))->getValue($adapter);
+    }
+
+    public function test_new_originals_directories_and_files_get_the_same_rights_as_uploads(): void
+    {
+        // Без явных прав Laravel создаёт каталоги ГГГГ/ММ с 0700 и файлы с 0600: сидер, запущенный по SSH, и загрузка из
+        // админки (веб-процесс) не прочтут файлы друг друга, если работают под разными пользователями.
+        $converter = $this->originalsConverter();
+
+        $this->assertSame(0755, $converter->defaultForDirectories());
+        $this->assertSame(0755, $converter->forDirectory(Visibility::PRIVATE));
+        $this->assertSame(0755, $converter->forDirectory(Visibility::PUBLIC));
+        $this->assertSame(0644, $converter->forFile(Visibility::PRIVATE));
+        $this->assertSame(0644, $converter->forFile(Visibility::PUBLIC));
+    }
+
+    public function test_the_originals_disk_stays_outside_the_public_folder(): void
+    {
+        $root = str_replace('\\', '/', (string) config('filesystems.disks.originals.root'));
+
+        $this->assertStringStartsWith(str_replace('\\', '/', storage_path('app/private')), $root);
+        $this->assertStringNotContainsString(str_replace('\\', '/', public_path()), $root, 'сжатые фото целиком не должны лежать в публичной папке');
+    }
+
+    public function test_on_a_unix_machine_a_new_originals_month_directory_really_gets_755(): void
+    {
+        if (PHP_OS_FAMILY === 'Windows') {
+            $this->markTestSkipped('На Windows права файлов не действуют.');
+        }
+
+        $root = sys_get_temp_dir().'/originals-perm-'.bin2hex(random_bytes(4));
+        $disk = \Illuminate\Support\Facades\Storage::build([...config('filesystems.disks.originals'), 'root' => $root]);
+
+        $disk->put('2099/12/photo.webp', 'x');
+
+        $this->assertSame('755', substr(sprintf('%o', fileperms($root.'/2099/12')), -3));
+        $this->assertSame('644', substr(sprintf('%o', fileperms($root.'/2099/12/photo.webp')), -3));
+
+        $disk->deleteDirectory('2099');
+        @rmdir($root);
+    }
 }

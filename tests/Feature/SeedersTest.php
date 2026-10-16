@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RuntimeException;
+use Tests\Concerns\FakesImageProcessing;
+use Tests\Concerns\NewsArchiveCounts;
 use Tests\TestCase;
 
 /**
@@ -29,6 +31,8 @@ use Tests\TestCase;
  */
 class SeedersTest extends TestCase
 {
+    use FakesImageProcessing;
+    use NewsArchiveCounts;
     use RefreshDatabase;
 
     /** Случайный пароль без шаблонных слов: такой боевой сервер принимает. */
@@ -39,7 +43,9 @@ class SeedersTest extends TestCase
         parent::setUp();
 
         // Подменный диск: сидеры импортируют фото, а тест не должен писать в реальный public/uploads.
+        // Картинки обрабатывает заглушка: настоящий конвейер на сотню фото новостей занимал бы полминуты в каждом тесте.
         Storage::fake('uploads');
+        $this->fakeImageProcessing();
     }
 
     private function seedDatabase(): void
@@ -137,12 +143,12 @@ class SeedersTest extends TestCase
         $this->seedDatabase(); // повторный запуск не падает и не дублирует
 
         $this->assertSame(11, Expert::count());
-        $this->assertSame(9, Event::count());
-        $this->assertSame(9, Event::whereNotNull('slug')->distinct()->count('slug'), 'у каждой новости свой адрес страницы');
-        $this->assertSame(9, $this->newsWithBody(), 'вне боевого сервера у новостей есть демо-текст');
+        $this->assertSame($this->eventsTotal(), Event::count());
+        $this->assertSame($this->eventsTotal(), Event::whereNotNull('slug')->distinct()->count('slug'), 'у каждой новости свой адрес страницы');
+        $this->assertSame($this->eventsTotal(), $this->newsWithBody(), 'у новостей архива настоящий текст, у остальных вне боевого сервера демо-текст');
         $this->assertSame(28, BotUser::count());
         $this->assertSame(0, BotUser::where('status', '!=', BotUser::STATUS_APPROVED)->count());
-        $this->assertSame(6, SiteSetting::count()); // две темы и четыре настройки ИИ
+        $this->assertSame(7, SiteSetting::count()); // две темы, четыре настройки ИИ и список загруженных новостей архива
 
         $this->assertSame(['admin@example.test'], User::pluck('email')->all(), 'создаётся только администратор');
 
@@ -166,15 +172,15 @@ class SeedersTest extends TestCase
         // Нужное боевому сайту: администратор, эксперты, новости, темы оформления.
         $this->assertSame(['admin@example.test'], User::pluck('email')->all());
         $this->assertSame(11, Expert::count());
-        $this->assertSame(9, Event::count());
-        $this->assertSame(9, Event::whereNotNull('slug')->count(), 'адреса страниц новостей нужны и боевому сайту');
-        $this->assertSame(2, SiteSetting::count());
+        $this->assertSame($this->eventsTotal(), Event::count());
+        $this->assertSame($this->eventsTotal(), Event::whereNotNull('slug')->count(), 'адреса страниц новостей нужны и боевому сайту');
+        $this->assertSame(3, SiteSetting::count(), 'две темы и список загруженных новостей архива');
         $this->assertSame('fortuntwo', SiteSetting::accountTheme());
 
         // Никаких демо-доступов и демо-текстов: ни тестовых участниц, ни пользователей с известным паролем,
         // ни выдуманного текста на страницах настоящих новостей.
         $this->assertSame(0, BotUser::count());
-        $this->assertSame(0, $this->newsWithBody(), 'демо-текст новостей на боевом сервере не создаётся');
+        $this->assertSame($this->archiveNewsWithBody(), $this->newsWithBody(), 'на боевом сервере тексты только у настоящих новостей архива, демо-текст не создаётся');
         $this->assertFalse(User::all()->contains(fn (User $u) => password_verify('password', $u->password)));
 
         // Выбор провайдера ИИ остаётся за админом.
@@ -223,8 +229,20 @@ class SeedersTest extends TestCase
         $this->seed(ContentSeeder::class);
         $this->seedClass(DemoNewsSeeder::class);
 
+        // Новости архива уже с настоящим текстом: демо-сидер их не трогает и дописывает текст только остальным.
+        $archive = array_map(fn (array $item) => $item['merge'] ?? $item['title']['ru'], $this->archiveItems());
+        $demo = 0;
+
         foreach (Event::with('translations')->get() as $event) {
             $this->assertTrue($event->hasBody(), $event->slug);
+
+            if (in_array($event->rawTranslation('ru')->title, $archive, true)) {
+                $this->assertNotSame(10, count($event->rawTranslation('ru')->content), $event->slug.': у новости архива свой текст, а не демо');
+
+                continue;
+            }
+
+            $demo++;
 
             foreach (['ru', 'ro', 'en'] as $locale) {
                 $content = $event->rawTranslation($locale)->content;
@@ -245,6 +263,8 @@ class SeedersTest extends TestCase
                 Storage::disk('uploads')->assertExists($path);
             }
         }
+
+        $this->assertSame(Event::count() - count($archive), $demo, 'демо-текст получили все остальные новости');
     }
 
     public function test_demo_news_seeder_never_overwrites_a_real_text_and_can_be_rerun(): void
@@ -272,7 +292,7 @@ class SeedersTest extends TestCase
 
         $this->seedClass(DemoNewsSeeder::class);
 
-        $this->assertSame(0, $this->newsWithBody());
+        $this->assertSame($this->archiveNewsWithBody(), $this->newsWithBody(), 'текст остался только у настоящих новостей архива');
     }
 
     /**
@@ -320,8 +340,8 @@ class SeedersTest extends TestCase
         }
 
         $this->assertSame(11, Expert::count());
-        $this->assertSame(9, Event::count());
-        $this->assertSame(2, SiteSetting::count());
+        $this->assertSame($this->eventsTotal(), Event::count());
+        $this->assertSame(3, SiteSetting::count());
         $this->assertSame(0, User::count(), 'администратор с шаблонным паролем не создан');
         $this->assertSame(0, BotUser::count());
     }

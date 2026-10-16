@@ -90,7 +90,7 @@ Telegram одновременно используется как канал р�
 | `GET /` | — | closure | Загружает активную тему через `SiteSetting::landingTheme()` и рендерит `landing` |
 | `GET /about` | `about` | closure | Отдельная публичная страница «О платформе» в теме Miro; контент пока статичный |
 | `GET /members` | `members` | closure | Публичный визуальный каталог из 12 статичных демонстрационных профилей; реальный backend пока не подключён |
-| `GET /events` | `events` | closure | Публичная статичная лента из 9 новостей исходного проекта в стиле Miro |
+| `GET /events` | `events` | `PublicSite\EventsController` | Лента новостей из БД (карточки, от новых к старым) и страницы `/events/{slug}` с текстом и фото на трёх языках; начальное наполнение — `EventSeeder` (9 карточек) и `NewsArchiveSeeder` (23 новости организации) |
 | `GET /partners` | `partners` | closure | Публичный каталог из 10 партнёров, перенесённых со страницы `women.creativity.md/partners/`; логотипы хранятся локально |
 | `GET /language/{locale}` | `language.switch` | closure | Разрешены только `ru`, `en`, `ro`; возвращает на предыдущую страницу |
 | `POST /telegram/webhook` | `telegram.webhook` | Nutgram closure | Передаёт обновление Telegram в `$bot->run()` |
@@ -268,7 +268,7 @@ Callback-и:
 
 **Переводы** — как в education3: таблицы `*_translations`, трейт `HasTranslations`; русский обязателен, румынский и английский по желанию, при пустом поле сайт подставляет русский. Публичные страницы по-прежнему выводят все три языка сразу в `data-lang`-спанах.
 
-**Картинки.** Реестр пропорций `App\Support\AspectRatio::SLOTS`, кадрирование в Cropper.js, сохранение WebP (`StoreUploadedImage`, качество и размер — в настройках), диск `uploads` → `public/uploads/ГГГГ/ММ` без `storage:link`; в БД хранится относительный путь.
+**Картинки.** Реестр пропорций `App\Support\AspectRatio::SLOTS`, кадрирование в Cropper.js, сохранение WebP (`StoreUploadedImage`, качество и размер — в настройках), диск `uploads` → `public/uploads/ГГГГ/ММ` без `storage:link`; в БД хранится относительный путь. Кроме готового кадра сохраняется сжатое фото целиком (закрытый диск `originals`, таблица `image_sources` с рамкой), поэтому кадр можно изменить кнопкой «Изменить кадр» в любой форме админки, не загружая файл заново (`UploadController::sourceInfo/source/recrop`). Подробности — docs/ADMIN_MIGRATION.md, «Перекадрирование».
 
 **Что осталось массивами в Blade:** партнёры, служебные страницы-заглушки (руководство, положение, почётные члены, gala, join), приоритеты и тексты лендинга, about, contact. Каталог 112 участниц — файл данных `resources/data/participants.php` (см. ниже).
 

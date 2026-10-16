@@ -9,6 +9,8 @@ use Database\Seeders\EventSeeder;
 use Database\Seeders\ExpertSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
+use Tests\Concerns\FakesImageProcessing;
+use Tests\Concerns\NewsArchiveCounts;
 use Tests\TestCase;
 
 /**
@@ -18,14 +20,17 @@ use Tests\TestCase;
  */
 class ContentSeederRestoreTest extends TestCase
 {
+    use FakesImageProcessing;
+    use NewsArchiveCounts;
     use RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        // Подменный диск: тест не должен писать в реальный public/uploads.
+        // Подменный диск: тест не должен писать в реальный public/uploads. Картинки обрабатывает заглушка.
         Storage::fake('uploads');
+        $this->fakeImageProcessing();
     }
 
     private function firstExpertName(): string
@@ -106,7 +111,7 @@ class ContentSeederRestoreTest extends TestCase
         $this->seed(ContentSeeder::class);
 
         $this->assertSame(11, Expert::count());
-        $this->assertSame(9, Event::count());
+        $this->assertSame($this->eventsTotal(), Event::count());
 
         foreach (Expert::pluck('photo_path') as $path) {
             Storage::disk('uploads')->assertExists($path);

@@ -1,5 +1,5 @@
 import Alpine from 'alpinejs';
-import { uploadImage, flashError } from './uploader';
+import { uploadImage, editCrop, flashError } from './uploader';
 import { openCropper } from './cropper';
 import { t } from './i18n';
 
@@ -31,6 +31,11 @@ Alpine.data('imageField', (initial) => ({
         } finally {
             this.uploading = false;
         }
+    },
+    // Изменить кадр загруженной картинки, не выбирая файл заново.
+    async recrop() {
+        const next = await editCrop(this.path, initial.ratio, initial.uploadUrl, (busy) => { this.uploading = busy; });
+        if (next) this.path = next;
     },
     clear() {
         this.path = '';
