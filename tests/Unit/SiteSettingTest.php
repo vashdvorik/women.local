@@ -89,7 +89,11 @@ class SiteSettingTest extends TestCase
         $this->get(route('account.login'))
             ->assertOk()
             ->assertSee('public-theme-miro', false)
-            ->assertSee('/themes/public/miro/images/brand/logo-ink.webp', false)
+            // Название уже написано заголовком, поэтому логотипа на странице входа нет: иначе оно читалось бы дважды.
+            ->assertSee('<h1', false)
+            ->assertSee(__('account.brand'))
+            ->assertDontSee('/images/brand/logo', false)
+            ->assertDontSee('account-login-logo', false)
             ->assertDontSee('account-theme-fortuntwo', false);
     }
 

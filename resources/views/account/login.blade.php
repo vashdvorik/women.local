@@ -1,7 +1,6 @@
 @php
     $publicTheme = \App\Models\SiteSetting::landingTheme();
     $publicTheme = array_key_exists($publicTheme, \App\Models\SiteSetting::LANDING_THEMES) ? $publicTheme : \App\Models\SiteSetting::DEFAULT_LANDING_THEME;
-    $themeLogo = asset('themes/public/miro/images/brand/logo-ink.webp');
     $themeFavicon = asset('themes/public/' . $publicTheme . '/images/brand/favicon.png');
 @endphp
 <!DOCTYPE html>
@@ -136,8 +135,7 @@
     </div>
 
     <div id="tma-not-member" style="display:none" class="w-full max-w-sm text-center">
-        <img src="{{ $themeLogo }}" alt="Women's hub" class="mx-auto mb-4 h-16 w-auto max-w-[280px] object-contain">
-        <h1 class="account-login-heading mb-2 text-2xl font-bold">{{ __('account.brand') }}</h1>
+        <h1 class="account-login-heading mb-4 text-3xl font-bold">{{ __('account.brand') }}</h1>
         <div class="account-login-card rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
             <p class="account-login-heading mb-1 text-sm font-medium">{{ __('account.login.closed_title') }}</p>
             <p class="account-login-muted text-sm">{{ __('account.login.closed_text') }}</p>
@@ -146,8 +144,7 @@
 
     <div id="login-form-wrapper" class="w-full max-w-sm">
         <div class="mb-8 flex flex-col items-center text-center">
-            <img src="{{ $themeLogo }}" alt="Women's hub" class="mb-4 h-16 w-auto max-w-[280px] object-contain">
-            <h1 class="account-login-heading text-2xl font-bold">{{ __('account.brand') }}</h1>
+            <h1 class="account-login-heading text-3xl font-bold">{{ __('account.brand') }}</h1>
             <p class="account-login-subtitle mt-1 text-sm">{{ __('account.login.subtitle') }}</p>
         </div>
 
