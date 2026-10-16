@@ -707,3 +707,11 @@ body.miro-landing-page .miro-nav__dropdown-menu a span { color: #F8E8DF !importa
 
 /* Пункты меню, ведущие на другие сайты (Gala 2026 и др.): стрелка ↗ справа. */
 .miro-nav__dropdown-menu .miro-nav__external { margin-left: 14px; font-size: 13px; opacity: .6; }
+
+/* Меню на главной: выше есть старое правило «тёмный текст в светлом меню» (!important), а меню давно тёмное. Оно красило
+   тёмным ссылки, у которых текст лежит прямо в <a>, а не во вложенном <span> (пункты Gala): текст сливался с фоном.
+   Здесь светлый цвет возвращён всем ссылкам меню, равная специфичность и более позднее место решают спор. */
+.miro-page .miro-landing-page .miro-nav .miro-nav__dropdown-menu a,
+.miro-page .miro-landing-page .miro-nav .miro-nav__dropdown-menu a span { color: #F8E8DF !important; }
+.miro-page .miro-landing-page .miro-nav .miro-nav__dropdown-menu a:hover,
+.miro-page .miro-landing-page .miro-nav .miro-nav__dropdown-menu a:hover span { color: #FFF9F5 !important; }
