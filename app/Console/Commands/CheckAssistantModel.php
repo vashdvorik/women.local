@@ -22,9 +22,10 @@ use Throwable;
 class CheckAssistantModel extends Command
 {
     protected $signature = 'ai:check-assistant
+                            {--provider= : Проверить другого провайдера: openrouter или deepseek (настройки не меняются; нужна --model и ключ этого провайдера в админке)}
                             {--model= : Проверить другое имя модели (настройки не меняются)}
                             {--tokens= : Лимит токенов пробного ответа (по умолчанию — «Максимум токенов» из настроек)}
-                            {--ask= : Задать ассистенту настоящий вопрос так, как это делает участница (настройки берутся сохранённые)}
+                            {--ask= : Задать ассистенту настоящий вопрос так, как это делает участница (с --provider, --model и --tokens, если указаны)}
                             {--user= : Telegram ID участницы, от имени которой задаётся вопрос --ask (по умолчанию первая одобренная)}';
 
     protected $description = 'Показывает, какая модель реально отвечает ИИ-помощнику (настройки, список моделей провайдера, пробный запрос)';
@@ -32,23 +33,40 @@ class CheckAssistantModel extends Command
     public function handle(): int
     {
         $config = SiteSetting::agentFeatureConfig();
-        $isRouter = $config['provider'] === 'openrouter';
+        $chosen = strtolower(trim((string) $this->option('provider')));
+
+        if ($chosen !== '' && ! in_array($chosen, ['openrouter', 'deepseek'], true)) {
+            $this->error('--provider: допустимо openrouter или deepseek.');
+
+            return self::FAILURE;
+        }
+
+        if ($chosen !== '' && $chosen !== $config['provider'] && blank($this->option('model'))) {
+            $this->error('Для другого провайдера укажите и модель: --model=имя (имя из настроек подойдёт только своему провайдеру).');
+
+            return self::FAILURE;
+        }
+
+        $provider = $chosen !== '' ? $chosen : $config['provider'];
+        $isRouter = $provider === 'openrouter';
         $base = rtrim($isRouter ? SiteSetting::openRouterProviderConfig()['base_url'] : SiteSetting::deepSeekProviderConfig()['base_url'], '/');
         $key = $isRouter ? SiteSetting::openRouterProviderApiKey() : SiteSetting::deepSeekProviderApiKey();
 
         $model = filled($this->option('model')) ? trim((string) $this->option('model')) : $config['model'];
         $tokens = filled($this->option('tokens')) ? max(16, min(8192, (int) $this->option('tokens'))) : $config['max_tokens'];
 
-        $this->line('Провайдер в настройках:  '.($isRouter ? 'OpenRouter' : 'DeepSeek напрямую')." ({$base})");
+        $this->line('Провайдер в настройках:  '.($config['provider'] === 'openrouter' ? 'OpenRouter' : 'DeepSeek напрямую'));
         $this->line("Модель в настройках:     {$config['model']}");
         $this->line("Параметры:               temperature {$config['temperature']}, максимум токенов {$config['max_tokens']}, тайм-аут {$config['timeout']} с");
 
-        if ($model !== $config['model']) {
-            $this->warn("Проверяется другое имя: {$model} (настройки не менялись).");
+        if ($model !== $config['model'] || $provider !== $config['provider']) {
+            $this->warn('Проверяется другое: '.($isRouter ? 'OpenRouter' : 'DeepSeek напрямую')." ({$base}), модель {$model} (настройки не менялись).");
+        } else {
+            $this->line("Адрес провайдера:        {$base}");
         }
 
         if (! is_string($key) || $key === '') {
-            $this->error('API-ключ этого провайдера не задан: ассистент отвечать не будет (админка → «ИИ-провайдеры»).');
+            $this->error('API-ключ '.($isRouter ? 'OpenRouter' : 'DeepSeek').' не задан (админка → «ИИ-провайдеры»).');
 
             return self::FAILURE;
         }
@@ -56,17 +74,24 @@ class CheckAssistantModel extends Command
         $listed = $this->checkModelList($base, $key, $model);
 
         $code = $this->probe($base, $key, $model, $tokens, $config, $listed);
+        $override = ['provider' => $provider, 'model' => $model, 'max_tokens' => filled($this->option('tokens')) ? $tokens : null];
 
         if (filled($this->option('ask'))) {
             $this->newLine();
-            $code = max($code, $this->askAssistant(trim((string) $this->option('ask'))));
+            $code = max($code, $this->askAssistant(trim((string) $this->option('ask')), $override));
         }
 
         return $code;
     }
 
-    /** Настоящий вопрос ассистенту: тот же код, что отвечает в кабинете (подбор участниц, возможности, ответ в JSON). */
-    private function askAssistant(string $question): int
+    /**
+     * Настоящий вопрос ассистенту: тот же код, что отвечает в кабинете (подбор участниц, возможности, ответ в JSON).
+     * Провайдер, модель и лимит токенов берутся из опций --provider, --model, --tokens, а остальное (температура,
+     * тайм-аут, правила, база знаний) — из сохранённых настроек.
+     *
+     * @param  array<string, mixed>  $override
+     */
+    private function askAssistant(string $question, array $override): int
     {
         $user = filled($this->option('user'))
             ? BotUser::query()->where('telegram_id', (int) $this->option('user'))->first()
@@ -78,7 +103,7 @@ class CheckAssistantModel extends Command
             return self::FAILURE;
         }
 
-        $assistant = app(AiAssistantService::class);
+        $assistant = app(AiAssistantService::class)->withConfig($override);
         $started = microtime(true);
 
         $this->line('Настоящий вопрос:        «'.mb_substr($question, 0, 120).'» (от имени '.($user->full_name ?: 'участницы').')');

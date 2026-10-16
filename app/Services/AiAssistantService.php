@@ -23,6 +23,22 @@ class AiAssistantService
     public array $lastCall = [];
 
     /**
+     * Временные настройки вместо сохранённых в админке (provider, model, temperature, max_tokens, timeout). Нужны только
+     * для проверки другой модели на настоящем запросе, не меняя работающих настроек (artisan ai:check-assistant).
+     *
+     * @var array<string, mixed>
+     */
+    private array $configOverride = [];
+
+    /** @param  array<string, mixed>  $overrides */
+    public function withConfig(array $overrides): static
+    {
+        $this->configOverride = array_filter($overrides, fn (mixed $value): bool => $value !== null);
+
+        return $this;
+    }
+
+    /**
      * @param list<array{role: string, content: string}> $history
      * @return array{reply: string, recommendation: array<string, string>|null, profile_proposal: array<string, string>|null}
      */
@@ -124,8 +140,8 @@ PROMPT;
     /** @param list<array{role: string, content: string}> $history */
     private function requestModel(string $system, string $message, array $history): string
     {
-        $config = SiteSetting::agentFeatureConfig();
-        $provider = $config['provider'];
+        $config = array_merge(SiteSetting::agentFeatureConfig(), $this->configOverride);
+        $provider = $config['provider'] === 'openrouter' ? 'openrouter' : 'deepseek';
         $key = $provider === 'openrouter' ? SiteSetting::openRouterProviderApiKey() : SiteSetting::deepSeekProviderApiKey();
         $baseUrl = $provider === 'openrouter' ? SiteSetting::openRouterProviderConfig()['base_url'] : SiteSetting::deepSeekProviderConfig()['base_url'];
 

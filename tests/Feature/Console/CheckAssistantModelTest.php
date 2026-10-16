@@ -85,7 +85,7 @@ class CheckAssistantModelTest extends TestCase
         [$code, $output] = $this->run_();
 
         $this->assertSame(1, $code);
-        $this->assertStringContainsString('API-ключ этого провайдера не задан', $output);
+        $this->assertStringContainsString('API-ключ DeepSeek не задан', $output);
         Http::assertNothingSent();
     }
 
@@ -149,7 +149,7 @@ class CheckAssistantModelTest extends TestCase
         $output = Artisan::output();
 
         $this->assertSame(0, $code);
-        $this->assertStringContainsString('Проверяется другое имя: deepseek-flash', $output);
+        $this->assertStringContainsString('Проверяется другое: DeepSeek напрямую (https://api.deepseek.com), модель deepseek-flash', $output);
         $this->assertStringContainsString('«deepseek-flash» в нём есть', $output);
         $this->assertStringContainsString('лимит 4096 токенов', $output);
         $this->assertStringContainsString('Имя в ответе совпадает', $output);
@@ -217,6 +217,72 @@ class CheckAssistantModelTest extends TestCase
 
         $this->assertSame(1, $code);
         $this->assertStringContainsString('нужна хотя бы одна одобренная', Artisan::output());
+    }
+
+    public function test_another_provider_and_model_can_be_tried_on_a_real_question_without_touching_the_settings(): void
+    {
+        // Рабочие настройки — DeepSeek; проверяем кандидата на OpenRouter тем же настоящим запросом.
+        $this->configureDeepSeek('deepseek-flash');
+        SiteSetting::setOpenRouterProviderConfig(['base_url' => 'https://openrouter.ai/api/v1', 'timeout' => 30, 'api_key' => 'or-test-key']);
+        BotUser::factory()->community()->create(['full_name' => 'Анна Проверяющая']);
+
+        Http::fake([
+            'openrouter.ai/api/v1/models' => Http::response(['data' => [['id' => 'google/gemma-test:free']]]),
+            'openrouter.ai/api/v1/chat/completions' => Http::response([
+                'model' => 'google/gemma-test:free',
+                'choices' => [['finish_reason' => 'stop', 'message' => ['content' => '```json'."\n".'{"reply":"Могу помочь с профилем и поиском."}'."\n".'```']]],
+                'usage' => ['prompt_tokens' => 800, 'completion_tokens' => 40],
+            ]),
+        ]);
+
+        $code = Artisan::call('ai:check-assistant', ['--provider' => 'openrouter', '--model' => 'google/gemma-test:free', '--ask' => 'Привет, чем поможешь?']);
+        $output = Artisan::output();
+
+        $this->assertSame(0, $code);
+        $this->assertStringContainsString('Проверяется другое: OpenRouter (https://openrouter.ai/api/v1), модель google/gemma-test:free', $output);
+        $this->assertStringContainsString('«google/gemma-test:free» в нём есть', $output);
+        $this->assertStringContainsString('Ответ ассистента:        «Могу помочь с профилем и поиском.»', $output, 'JSON в обёртке ```json принят');
+        $this->assertStringNotContainsString('or-test-key', $output);
+
+        // Оба запроса (пробный и настоящий) ушли на OpenRouter с ключом OpenRouter, на DeepSeek — ни одного.
+        Http::assertSent(fn ($request) => str_starts_with($request->url(), 'https://openrouter.ai/') && $request->hasHeader('Authorization', 'Bearer or-test-key'));
+        Http::assertNotSent(fn ($request) => str_contains($request->url(), 'api.deepseek.com'));
+
+        $saved = SiteSetting::agentFeatureConfig();
+        $this->assertSame(['deepseek', 'deepseek-flash'], [$saved['provider'], $saved['model']], 'сохранённые настройки не менялись');
+    }
+
+    public function test_another_provider_requires_a_model_and_a_known_name(): void
+    {
+        $this->configureDeepSeek('deepseek-flash');
+        Http::fake();
+
+        $this->assertSame(1, Artisan::call('ai:check-assistant', ['--provider' => 'openrouter']));
+        $this->assertStringContainsString('Для другого провайдера укажите и модель', Artisan::output());
+
+        $this->assertSame(1, Artisan::call('ai:check-assistant', ['--provider' => 'gemini', '--model' => 'x']));
+        $this->assertStringContainsString('допустимо openrouter или deepseek', Artisan::output());
+
+        Http::assertNothingSent();
+    }
+
+    public function test_a_system_prompt_rejected_by_the_model_is_shown_as_the_providers_own_error(): void
+    {
+        // Часть моделей не принимает роль «system»: ассистент должен показать причину, а не молча упасть.
+        $this->configureDeepSeek('deepseek-flash');
+        SiteSetting::setOpenRouterProviderConfig(['base_url' => 'https://openrouter.ai/api/v1', 'timeout' => 30, 'api_key' => 'or-test-key']);
+        BotUser::factory()->community()->create();
+        Http::fake([
+            'openrouter.ai/api/v1/models' => Http::response([], 404),
+            'openrouter.ai/api/v1/chat/completions' => Http::sequence()
+                ->push(['model' => 'x/y', 'choices' => [['message' => ['content' => 'ок']]]])
+                ->push(['error' => ['message' => 'Developer instruction is not enabled for this model']], 400),
+        ]);
+
+        $code = Artisan::call('ai:check-assistant', ['--provider' => 'openrouter', '--model' => 'x/y', '--ask' => 'Привет']);
+
+        $this->assertSame(1, $code);
+        $this->assertStringContainsString('Ассистент не смог ответить', Artisan::output());
     }
 
     public function test_it_works_for_open_router_too(): void
