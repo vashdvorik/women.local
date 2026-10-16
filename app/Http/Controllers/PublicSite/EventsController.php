@@ -39,11 +39,6 @@ class EventsController extends ContentPageController
             'badge_style' => $event->tagStyle(),
             'meta' => array_filter($date) ? $date : null,
             'blocks' => collect(Locales::ALL)->mapWithKeys(fn (string $l) => [$l => $event->renderBlocks($l)])->all(),
-            // Полный текст мог быть и на сайте организации: ссылку на него не теряем.
-            'source' => filled($event->url) ? [
-                'href' => $event->url,
-                'label' => $this->tri('Читать на сайте организации', 'Read on the organisation’s website', 'Citește pe site-ul organizației'),
-            ] : null,
             'back' => [
                 'href' => route('events'),
                 'label' => $this->tri('Все новости', 'All news', 'Toate noutățile'),

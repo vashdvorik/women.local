@@ -37,7 +37,7 @@ use Intervention\Image\ImageManager;
 class StoreUploadedImage
 {
     /** Качество сжатого фото целиком. Выше, чем у кадра: из него кадр режется ещё раз, и потери не должны копиться. */
-    public const SOURCE_QUALITY = 82;
+    public const SOURCE_QUALITY = 88;
 
     public function handle(UploadedFile $file, string $slot, ?array $crop = null): string
     {

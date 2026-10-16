@@ -7,9 +7,12 @@ use App\Models\Event;
 use App\Models\ImageSource;
 use App\Models\SiteSetting;
 use App\Support\AspectRatio;
+use App\Support\ImageSettings;
 use Database\Seeders\EventSeeder;
 use Database\Seeders\NewsArchiveSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Tests\Concerns\FakesImageProcessing;
 use Tests\TestCase;
@@ -464,5 +467,148 @@ class NewsArchiveSeederTest extends TestCase
             [$width, $height] = array_slice(getimagesizefromstring(Storage::disk('originals')->get($source->source_path)), 0, 2);
             $this->assertSame([$width, $height], [$source->source_width, $source->source_height], 'размер фото в записи совпадает с файлом');
         }
+    }
+
+    // ---------------------------------------------------------------- переделка фото и качество
+
+    /** Сидер на одной новости (4 фото) с настоящим конвейером: вся сотня заняла бы полминуты. */
+    private function oneNews(): NewsArchiveSeeder
+    {
+        $this->app->forgetInstance(StoreUploadedImage::class);
+
+        return new class extends NewsArchiveSeeder
+        {
+            protected function items(): array
+            {
+                return array_slice(parent::items(), 0, 1);
+            }
+        };
+    }
+
+    /** Заменяет пути картинок в блоках страницы на всех языках. @param  array<string, string>  $map */
+    private function swapPaths(Event $event, array $map): void
+    {
+        foreach ($event->translations as $translation) {
+            $content = $translation->content;
+            array_walk_recursive($content, function (&$value) use ($map) {
+                if (is_string($value) && isset($map[$value])) {
+                    $value = $map[$value];
+                }
+            });
+            $translation->forceFill(['content' => $content])->save();
+        }
+    }
+
+    public function test_rebake_makes_untouched_frames_again_and_removes_the_old_files(): void
+    {
+        $this->oneNews()->run();
+
+        $event = Event::query()->with('translations')->firstOrFail();
+        $before = $this->imagePaths($event);
+        $this->assertGreaterThan(1, count($before));
+        $oldSources = ImageSource::query()->whereIn('path', $before)->pluck('source_path')->all();
+
+        $count = $this->oneNews()->rebakePhotos();
+
+        $event = $event->fresh()->load('translations');
+        $after = $this->imagePaths($event);
+
+        $this->assertSame(count($before), $count, 'переделана каждая картинка новости');
+        $this->assertCount(count($before), $after);
+        $this->assertSame([], array_intersect($before, $after), 'все кадры новые');
+
+        foreach ($after as $path) {
+            Storage::disk('uploads')->assertExists($path);
+            $this->assertSame(IMAGETYPE_WEBP, getimagesizefromstring(Storage::disk('uploads')->get($path))[2]);
+        }
+
+        // Прежние кадры, записи о них и ставшие ненужными фото целиком убраны: ничего не копится.
+        foreach ($before as $path) {
+            Storage::disk('uploads')->assertMissing($path);
+        }
+        foreach ($oldSources as $source) {
+            Storage::disk('originals')->assertMissing($source);
+        }
+        $this->assertSame(0, ImageSource::query()->whereIn('path', $before)->count());
+        $this->assertSame(count($after), ImageSource::query()->count(), 'у каждого нового кадра есть запись о фото целиком');
+
+        // Путь заменён во всех языках одинаково, а текст не тронут.
+        $contents = $event->translations->map(fn ($t) => collect($t->content)->where('type', '!=', 'text')->pluck('data')->all())->unique()->count();
+        $this->assertSame(1, $contents);
+        $this->assertNotEmpty($event->translations->firstWhere('locale', 'ru')->content);
+
+        // Повторная переделка так же безопасна.
+        $this->assertSame(count($after), $this->oneNews()->rebakePhotos());
+    }
+
+    public function test_rebake_leaves_a_recropped_frame_and_a_replaced_photo_alone(): void
+    {
+        $this->oneNews()->run();
+
+        $event = Event::query()->with('translations')->firstOrFail();
+        $paths = $this->imagePaths($event);
+        $cover = $event->image_path;
+        $others = array_values(array_diff($paths, [$cover]));
+        $this->assertGreaterThan(1, count($others));
+
+        // Редактор перекадрировал одну картинку кнопкой «Изменить кадр» и заменил другую своей фотографией.
+        $row = ImageSource::query()->where('path', $others[0])->firstOrFail();
+        [$slotWidth, $slotHeight] = AspectRatio::dimensions($row->slot);
+        $cropWidth = intdiv($row->source_width, 2);
+        $recropped = app(StoreUploadedImage::class)->recrop($row, [
+            'x' => 0, 'y' => 0, 'width' => $cropWidth, 'height' => (int) round($cropWidth * $slotHeight / $slotWidth),
+        ]);
+
+        $slot = (string) ImageSource::query()->where('path', $others[1])->value('slot');
+        $mine = app(StoreUploadedImage::class)->handle(UploadedFile::fake()->image('mine.jpg', 900, 700), $slot);
+
+        $this->swapPaths($event, [$others[0] => $recropped, $others[1] => $mine]);
+
+        $count = $this->oneNews()->rebakePhotos();
+
+        $event = $event->fresh()->load('translations');
+        $after = $this->imagePaths($event);
+
+        $this->assertContains($recropped, $after, 'перекадрированный кадр остался');
+        $this->assertContains($mine, $after, 'фото, заменённое редактором, осталось');
+        Storage::disk('uploads')->assertExists($recropped);
+        Storage::disk('uploads')->assertExists($mine);
+
+        // Остальные картинки переделаны: обложка и всё, что редактор не трогал.
+        $this->assertSame(count($paths) - 2, $count);
+        $this->assertNotSame($cover, $event->image_path, 'обложка новая');
+        $this->assertCount(count($paths), $after);
+    }
+
+    public function test_rebake_command_runs_and_reports_how_many_photos_it_made_again(): void
+    {
+        // С заглушкой конвейера у картинок нет записей о фото целиком, то есть сидер их не делал: команда ничего не меняет.
+        $this->seed(NewsArchiveSeeder::class);
+        $paths = Event::query()->ordered()->with('translations')->get()->flatMap(fn (Event $e) => $this->imagePaths($e))->all();
+
+        $this->artisan('news:rebake-archive-photos')
+            ->expectsOutputToContain('Фото новостей переделано: 0')
+            ->assertSuccessful();
+
+        foreach ($paths as $path) {
+            Storage::disk('uploads')->assertExists($path);
+        }
+    }
+
+    public function test_photos_are_compressed_gently_so_that_they_stay_sharp(): void
+    {
+        // Качество кадра по умолчанию: 60 давало «кубики» на гладких местах.
+        $this->assertGreaterThanOrEqual(80, ImageSettings::QUALITY_DEFAULT);
+        $this->assertSame(ImageSettings::QUALITY_DEFAULT, ImageSettings::quality());
+        $this->assertGreaterThan(ImageSettings::QUALITY_DEFAULT, StoreUploadedImage::SOURCE_QUALITY, 'целое фото сжато слабее кадра: потери не копятся');
+
+        // Промежуточные копии архива: разрешение исходников (до 2048 px) и высокое качество. Из них режется кадр,
+        // поэтому сузить их до 1400 px и сжать до 76 значило испортить фото ещё до кадрирования.
+        $options = Artisan::all()['news:compress-archive']->getDefinition();
+        $this->assertGreaterThanOrEqual(2048, (int) $options->getOption('max-side')->getDefault());
+        $this->assertGreaterThanOrEqual(85, (int) $options->getOption('quality')->getDefault());
+
+        $sides = array_map(fn (string $f) => max(array_slice(getimagesize($f), 0, 2)), glob(public_path('themes/public/miro/images/news/archive/*/*.webp')));
+        $this->assertGreaterThan(1800, max($sides), 'крупные фото архива не уменьшены до 1400 px');
     }
 }

@@ -44,7 +44,8 @@
 
             @case('image')
                 @if($data['path'] ?? null)
-                    <img class="miro-prose__image" src="/uploads/{{ $data['path'] }}" alt="" loading="lazy">
+                    {{-- Фото открывается по клику (js/lightbox.js); без скриптов ссылка ведёт на сам файл. --}}
+                    <a class="miro-zoom" href="/uploads/{{ $data['path'] }}" data-lightbox><img class="miro-prose__image" src="/uploads/{{ $data['path'] }}" alt="" loading="lazy"></a>
                 @endif
                 @break
 
@@ -63,7 +64,7 @@
                 @if($imgs)
                     <div class="miro-prose__gallery miro-prose__gallery--{{ $cols }} @if($portrait) is-portrait @endif">
                         @foreach($imgs as $img)
-                            <img src="/uploads/{{ $img }}" alt="" loading="lazy">
+                            <a class="miro-zoom" href="/uploads/{{ $img }}" data-lightbox><img src="/uploads/{{ $img }}" alt="" loading="lazy"></a>
                         @endforeach
                     </div>
                 @endif

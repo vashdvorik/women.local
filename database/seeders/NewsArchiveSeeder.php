@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Event;
+use App\Models\ImageSource;
 use App\Models\SiteSetting;
 use App\Support\AspectRatio;
 use App\Support\Blocks;
@@ -37,7 +38,8 @@ use Ramsey\Uuid\Uuid;
  *  - запоминает, какие новости уже загружены (site_settings: news_archive): удалённую в админке новость повторный
  *    запуск не возвращает. А вот картинки, пропавшие с диска (папка uploads не в git), возвращает из исходников.
  *
- * Не перезаписывает ничего, что уже есть: у новости, где текст уже введён, текст не трогает.
+ * Не перезаписывает ничего, что уже есть: у новости, где текст уже введён, текст не трогает. Готовые картинки
+ * переделывает только отдельная команда `php artisan news:rebake-archive-photos` (см. rebakePhotos()).
  */
 class NewsArchiveSeeder extends Seeder
 {
@@ -78,6 +80,9 @@ class NewsArchiveSeeder extends Seeder
 
     /** @var array<string, string> загруженные картинки за этот запуск: «файл|слот» → путь */
     private array $imported = [];
+
+    /** @var list<string> заменённые при rebakePhotos() кадры, файлы которых надо удалить после записи новых */
+    private array $stale = [];
 
     public function run(): void
     {
@@ -630,21 +635,114 @@ class NewsArchiveSeeder extends Seeder
     }
 
     /**
+     * Переделывает фото уже загруженных новостей заново, из нынешних исходников темы и с нынешним сжатием.
+     * Нужен, когда исходники или сжатие поменялись (так было, когда фото уходили на сайт пережатыми дважды):
+     * обычный запуск сидера готовые картинки не трогает.
+     *
+     *   php artisan news:rebake-archive-photos
+     *
+     * Переделываются только картинки, которые сидер сделал сам и которых никто не менял: исходное фото кадра то же,
+     * что в архиве, и рамка прежняя. Фото, замененное в админке, и кадр, перекадрированный кнопкой «Изменить кадр»,
+     * остаются как есть. Прежние файлы кадров удаляются после того, как новые записаны.
+     *
+     * @return int сколько картинок переделано
+     */
+    public function rebakePhotos(): int
+    {
+        $done = $this->doneKeys();
+        $count = 0;
+        $this->stale = [];
+
+        DB::transaction(function () use ($done, &$count) {
+            foreach ($this->items() as $item) {
+                if (! in_array($item['key'], $done, true)) {
+                    continue;
+                }
+
+                $event = $this->findEvent($item);
+                $count += $event ? $this->restoreImages($event, $item, rebake: true) : 0;
+            }
+        });
+
+        $this->forgetStale();
+
+        return $count;
+    }
+
+    /**
+     * Была ли картинка сделана сидером из этого фото и осталась нетронутой: в таблице есть запись о ней, слот тот же,
+     * сжатый оригинал на месте и это тот же снимок, что в архиве (по отпечатку), а рамка такая, какую выбрал бы сидер.
+     *
+     * @param  array{file: string, w: int, h: int}  $photo
+     */
+    private function isUntouchedArchiveFrame(?string $path, array $photo, string $slot): bool
+    {
+        $row = blank($path) ? null : ImageSource::query()->where('path', $path)->first();
+
+        if ($row === null || $row->slot !== $slot || ! Storage::disk('originals')->exists($row->source_path)) {
+            return false;
+        }
+
+        $expected = $this->crop(['file' => '', 'w' => $row->source_width, 'h' => $row->source_height], $slot);
+        $rect = $row->cropRect();
+
+        foreach (['x', 'y', 'width', 'height'] as $side) {
+            if ($expected === null || abs($expected[$side] - $rect[$side]) > 1) {
+                return false;
+            }
+        }
+
+        $original = $this->fingerprint(Storage::disk('originals')->path($row->source_path));
+        $archive = $this->fingerprint(public_path('themes/public/miro/images/'.$photo['file']));
+
+        return $original !== null && $archive !== null && $this->distance($original, $archive) <= self::DUPLICATE_DISTANCE;
+    }
+
+    /** Старый кадр заменён: после записи новых путей его файл, запись о нём и ставший ненужным оригинал удаляются. */
+    private function forgetStale(): void
+    {
+        foreach (array_unique($this->stale) as $path) {
+            $sources = ImageSource::query()->where('path', $path)->pluck('source_path')->all();
+            ImageSource::query()->where('path', $path)->delete();
+            Storage::disk('uploads')->delete($path);
+
+            foreach (array_unique($sources) as $source) {
+                if (! ImageSource::query()->where('source_path', $source)->exists()) {
+                    Storage::disk('originals')->delete($source);
+                }
+            }
+        }
+
+        $this->stale = [];
+    }
+
+    /**
      * Возвращает с диска пропавшие картинки новости: обложку (кроме «merge»-новостей: её восстанавливает EventSeeder)
      * и фото в блоках страницы. Если файл на месте или у записи нет картинки (убрана редактором), ничего не меняется.
      *
+     * При $rebake картинки, что на месте, тоже делаются заново, но только нетронутые (см. rebakePhotos).
+     *
      * @return int сколько картинок восстановлено
      */
-    private function restoreImages(Event $event, array $item): int
+    private function restoreImages(Event $event, array $item, bool $rebake = false): int
     {
         $plan = $this->plan($item);
         $restored = 0;
 
-        if ($plan['cover'] !== null && filled($event->image_path) && ! Storage::disk('uploads')->exists($event->image_path)) {
+        $lost = fn (?string $path, array $photo, string $slot): bool => blank($path)
+            ? false
+            : (! Storage::disk('uploads')->exists($path) || ($rebake && $this->isUntouchedArchiveFrame($path, $photo, $slot)));
+
+        if ($plan['cover'] !== null && $lost($event->image_path, $plan['photos'][$plan['cover']], 'event')) {
+            $old = $event->image_path;
             $path = $this->importPhoto($plan['photos'][$plan['cover']], 'event');
 
             if ($path !== null) {
                 $event->forceFill(['image_path' => $path])->save();
+                if ($rebake) {
+                    $this->stale[] = $old;
+                }
+
                 $restored++;
             }
         }
@@ -680,7 +778,7 @@ class NewsArchiveSeeder extends Seeder
                 foreach ($block['files'] as $position => $photoIndex) {
                     $path = $current[$position] ?? null;
 
-                    if (blank($path) || Storage::disk('uploads')->exists($path)) {
+                    if (! $lost($path, $plan['photos'][$photoIndex], $block['type'])) {
                         continue;
                     }
 
@@ -688,6 +786,10 @@ class NewsArchiveSeeder extends Seeder
 
                     if ($replace[$path] === null) {
                         continue;
+                    }
+
+                    if ($rebake) {
+                        $this->stale[] = $path;
                     }
 
                     $current[$position] = $replace[$path];

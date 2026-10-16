@@ -56,5 +56,8 @@
     </main>
 
     @include('themes.public.miro.partials.miro-footer')
+
+    {{-- Просмотр фото по клику: фото статей и альбомов (a.miro-zoom). --}}
+    <script defer src="{{ asset('themes/public/'.$theme.'/js/lightbox.js') }}"></script>
 </body>
 </html>

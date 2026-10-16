@@ -7,8 +7,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * Страница новости (/events/{slug}): обложка, тип и дата, текст из блоков на трёх языках, ссылка на сайт
- * организации и возврат к списку. Карточка ведёт на страницу, когда у неё есть текст.
+ * Страница новости (/events/{slug}): обложка, тип и дата, текст из блоков на трёх языках и возврат к списку
+ * (кнопки со ссылкой на сайт организации нет). Карточка ведёт на страницу, когда у неё есть текст.
  */
 class PublicNewsPageTest extends TestCase
 {
@@ -69,9 +69,10 @@ class PublicNewsPageTest extends TestCase
             ->assertSee('/uploads/2026/09/inside.webp', false)
             ->assertSee('/uploads/2026/09/b.webp', false)
             ->assertDontSee('<script>alert(1)</script>', false)
-            // Ссылка на полный текст на сайте организации и возврат к списку.
-            ->assertSee('https://example.test/original', false)
-            ->assertSee('Читать на сайте организации')
+            // Только возврат к списку: кнопки «Читать на сайте организации» на странице нет, даже когда у новости есть внешняя ссылка.
+            ->assertDontSee('https://example.test/original', false)
+            ->assertDontSee('Читать на сайте организации')
+            ->assertDontSee('Read on the organisation')
             ->assertSee(route('events'), false);
 
         $this->assertSame(1, substr_count($response->getContent(), 'id="miro-nav"'));
@@ -88,8 +89,9 @@ class PublicNewsPageTest extends TestCase
         $this->assertStringNotContainsString('class="miro-public-hero"', $html);
         $this->assertSame(1, substr_count($html, '<h1'));
 
-        // Порядок: название → плашка типа и дата → обложка → текст. Краткого описания между ними нет.
-        $order = ['miro-article__title', 'miro-article__meta', 'miro-article__cover', 'miro-prose'];
+        // Порядок в разметке: название → обложка → текст → боковая колонка (тип и дата). На экране от 1024 px боковая
+        // колонка справа, на узком тип и дата поднимаются под название (CSS). Краткого описания между ними нет.
+        $order = ['miro-article__title', 'miro-article__cover', 'miro-prose', 'miro-article__meta'];
         $positions = array_map(fn (string $marker) => strpos($html, $marker), $order);
         $this->assertNotContains(false, $positions, 'не хватает части страницы');
         $sorted = $positions;
@@ -99,6 +101,57 @@ class PublicNewsPageTest extends TestCase
         // Кружки-украшения шапки стоят в блоке с текстом, а не в шапке.
         $this->assertMatchesRegularExpression('#miro-public-content--article.*?miro-public-hero__accent#s', $html);
         $this->assertSame(1, substr_count($html, 'miro-public-hero__accent"'));
+    }
+
+    public function test_article_follows_the_site_grid_with_a_side_column_and_has_no_width_of_its_own(): void
+    {
+        $this->news();
+
+        $html = $this->get(route('events.show', ['event' => 'vstrecha']))->assertOk()->getContent();
+
+        // Название сверху, дальше два блока сетки: слева обложка и текст, справа боковая колонка с типом и датой.
+        $this->assertMatchesRegularExpression('#miro-article__title.*miro-article__layout.*miro-article__main.*miro-article__aside#s', $html);
+        $this->assertMatchesRegularExpression('#miro-article__main.*miro-article__cover.*miro-prose.*miro-article__aside.*miro-article__meta.*miro-article__back#s', $html);
+
+        // Обложка и текст лежат в основной колонке, а тип, дата и «все новости» — в боковой.
+        $aside = substr($html, strpos($html, '<aside class="miro-article__aside"'));
+        $this->assertStringContainsString('miro-tag', $aside);
+        $this->assertStringContainsString('miro-article__date', $aside);
+        $this->assertStringContainsString(route('events'), $aside);
+        $this->assertStringNotContainsString('miro-prose', $aside);
+
+        // У статьи нет собственной ширины: ни max-width, ни центрирования, она идёт по контейнеру сайта.
+        $css = file_get_contents(public_path('themes/public/miro/css/public-section.css'));
+        $article = preg_match('/^\.miro-article \{[^}]*\}/m', $css, $m) ? $m[0] : '';
+        $this->assertNotSame('', $article, 'правило .miro-article найдено');
+        $this->assertStringNotContainsString('max-width', $article);
+        $this->assertStringNotContainsString('margin: 0 auto', $article);
+        $this->assertStringContainsString('grid-template-columns: repeat(12', $css);
+        $this->assertMatchesRegularExpression('/\.miro-article__main \{[^}]*grid-column: 1 \/ span 8/', $css);
+        $this->assertMatchesRegularExpression('/\.miro-article__aside \{[^}]*grid-column: 9 \/ span 4/', $css);
+
+        // Обложку CSS больше не обрезает (раньше новостные 16:9 обрезались до 2,2:1).
+        $this->assertDoesNotMatchRegularExpression('/\.miro-article__cover \{[^}]*aspect-ratio/', $css);
+    }
+
+    public function test_photos_open_by_click_cover_images_and_gallery_cells_alike(): void
+    {
+        $this->news();
+
+        $html = $this->get(route('events.show', ['event' => 'vstrecha']))->assertOk()->getContent();
+
+        // Обложка, картинка в тексте и каждая ячейка галереи — ссылка на сам файл: без скриптов она открывает его,
+        // а lightbox.js перехватывает клик и показывает фото поверх страницы.
+        foreach (['/uploads/2026/09/cover.webp', '/uploads/2026/09/inside.webp', '/uploads/2026/09/a.webp', '/uploads/2026/09/b.webp', '/uploads/2026/09/c.webp'] as $file) {
+            $this->assertMatchesRegularExpression('#<a class="miro-zoom[^"]*" href="'.preg_quote($file, '#').'" data-lightbox><img [^>]*src="'.preg_quote($file, '#').'"#', $html, $file);
+        }
+
+        // Скрипт просмотра подключён и лежит на месте; в его тексте есть закрытие по Esc и листание клавишами.
+        $this->assertStringContainsString('/themes/public/miro/js/lightbox.js', $html);
+        $script = file_get_contents(public_path('themes/public/miro/js/lightbox.js'));
+        foreach (['Escape', 'ArrowLeft', 'ArrowRight', 'aria-modal', 'touchend'] as $needle) {
+            $this->assertStringContainsString($needle, $script, $needle);
+        }
     }
 
     public function test_list_pages_keep_their_hero(): void
@@ -113,15 +166,6 @@ class PublicNewsPageTest extends TestCase
         ]]);
 
         $this->get(route('events.show', ['event' => 'vstrecha']))->assertOk()->assertSee('Мы встретились.');
-    }
-
-    public function test_news_without_a_link_has_no_source_button(): void
-    {
-        $this->news(['url' => null]);
-
-        $this->get(route('events.show', ['event' => 'vstrecha']))
-            ->assertOk()
-            ->assertDontSee('Читать на сайте организации');
     }
 
     public function test_page_without_text_still_opens_with_the_card_details(): void

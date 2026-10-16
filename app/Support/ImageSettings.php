@@ -16,7 +16,8 @@ class ImageSettings
 
     public const QUALITY_MIN = 20;
     public const QUALITY_MAX = 100;
-    public const QUALITY_DEFAULT = 60;
+    /** 60 оставляло на фото «кубики» и муть на гладких местах (кожа, небо, фон); 80 почти неотличимо от оригинала. */
+    public const QUALITY_DEFAULT = 80;
 
     public static function maxSide(): int
     {
