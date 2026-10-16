@@ -8,15 +8,19 @@ use App\Support\PublicCards;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
-/** «Медиатека → Фото»: фотоальбомы с галереями, введённые в админке. */
+/**
+ * «Медиатека → Фото»: фотоальбомы с галереями, введённые в админке. Список и опубликованные альбомы лежат в кеше
+ * публичных страниц (App\Support\PublicCache), а не читаются из базы.
+ */
 class AlbumsController extends ContentPageController
 {
     public function index(): View
     {
-        $albums = Album::with('translations')
-            ->published()
-            ->orderByDesc('published_at')
-            ->paginate(12);
+        [$cards, $albums] = $this->cachedCards(
+            'photos.list',
+            fn () => Album::with('translations')->published()->orderByDesc('published_at'),
+            fn (Album $album) => PublicCards::album($album),
+        );
 
         return $this->listing('photos', [
             'eyebrow' => $this->tri('Медиатека', 'Media library', 'Mediatecă'),
@@ -26,20 +30,30 @@ class AlbumsController extends ContentPageController
                 'Photos from events, meetings and important community moments.',
                 'Fotografii de la evenimente, întâlniri și momente importante ale comunității.'
             ),
-        ], $albums->getCollection()->map(fn (Album $album) => PublicCards::album($album))->all(), $albums);
+        ], $cards, $albums);
     }
 
-    public function show(Request $request, Album $album): View
+    public function show(Request $request, string $album): View
     {
-        $album->load('translations');
-        $this->abortUnlessVisible($request, $album->isPublished());
+        return $this->materialPage(
+            $request,
+            'photos',
+            $this->tri('Фото', 'Photos', 'Fotografii'),
+            $album,
+            fn (bool $withDrafts) => ($withDrafts ? Album::query() : Album::published())->with('translations')->where('slug', $album)->first(),
+            fn (Album $item) => $this->articleData($item),
+        );
+    }
 
+    /** @return array<string, mixed> */
+    private function articleData(Album $album): array
+    {
         $card = PublicCards::album($album);
 
         // Структура альбома — галереи — общая для всех языков; переводятся только заголовок и описание.
         $blocks = $album->blocks ?? [];
 
-        return $this->article('photos', $this->tri('Фото', 'Photos', 'Fotografii'), [
+        return [
             'title' => $card['title'],
             'excerpt' => $card['excerpt'],
             'image' => null,
@@ -52,6 +66,6 @@ class AlbumsController extends ContentPageController
                 'label' => $this->tri('Все фотоальбомы', 'All albums', 'Toate albumele'),
             ],
             'draft' => ! $album->isPublished(),
-        ]);
+        ];
     }
 }

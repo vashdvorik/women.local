@@ -1,3 +1,18 @@
+# Кеш фото в браузере (и на CDN): повторный заход не скачивает картинки заново.
+#  - /uploads (фото из админки) и /build (скрипты и стили сайта с хешем в имени): имя файла уникально и при замене
+#    меняется (перекадрированное фото сохраняется под новым именем), поэтому файл не изменится никогда: год, без проверки;
+#  - остальные картинки и шрифты (фото темы лежат под постоянными именами): неделя.
+# Сами HTML-страницы такой заголовок не получают. Без модулей Apache блок молча пропускается.
+<IfModule mod_setenvif.c>
+    SetEnvIf Request_URI "/(uploads|build)/" LONG_LIVED_FILE
+</IfModule>
+<IfModule mod_headers.c>
+    Header set Cache-Control "public, max-age=31536000, immutable" env=LONG_LIVED_FILE
+    <FilesMatch "\.(avif|gif|ico|jpe?g|png|svg|webp|woff2?)$">
+        Header setifempty Cache-Control "public, max-age=604800"
+    </FilesMatch>
+</IfModule>
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes

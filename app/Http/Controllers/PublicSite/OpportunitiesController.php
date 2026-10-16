@@ -8,15 +8,19 @@ use App\Support\PublicCards;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
-/** «Возможности»: гранты, программы и предложения, введённые в админке (не посты участниц кабинета). */
+/**
+ * «Возможности»: гранты, программы и предложения, введённые в админке (не посты участниц кабинета). Список и
+ * опубликованные страницы лежат в кеше публичных страниц (App\Support\PublicCache).
+ */
 class OpportunitiesController extends ContentPageController
 {
     public function index(): View
     {
-        $items = SiteOpportunity::with(['translations', 'tag.translations'])
-            ->published()
-            ->orderByDesc('published_at')
-            ->paginate(12);
+        [$cards, $items] = $this->cachedCards(
+            'opportunities.list',
+            fn () => SiteOpportunity::with(['translations', 'tag.translations'])->published()->orderByDesc('published_at'),
+            fn (SiteOpportunity $item) => PublicCards::opportunity($item),
+        );
 
         return $this->listing('opportunities', [
             'eyebrow' => $this->tri('Платформа', 'Platform', 'Platformă'),
@@ -26,17 +30,27 @@ class OpportunitiesController extends ContentPageController
                 'Grants, programmes, events and partnership offers for business growth.',
                 'Granturi, programe, evenimente și oferte de parteneriat pentru dezvoltarea afacerii.'
             ),
-        ], $items->getCollection()->map(fn (SiteOpportunity $item) => PublicCards::opportunity($item))->all(), $items);
+        ], $cards, $items);
     }
 
-    public function show(Request $request, SiteOpportunity $opportunity): View
+    public function show(Request $request, string $opportunity): View
     {
-        $opportunity->load(['translations', 'tag.translations']);
-        $this->abortUnlessVisible($request, $opportunity->isPublished());
+        return $this->materialPage(
+            $request,
+            'opportunities',
+            $this->tri('Возможности', 'Opportunities', 'Oportunități'),
+            $opportunity,
+            fn (bool $withDrafts) => ($withDrafts ? SiteOpportunity::query() : SiteOpportunity::published())->with(['translations', 'tag.translations'])->where('slug', $opportunity)->first(),
+            fn (SiteOpportunity $item) => $this->articleData($item),
+        );
+    }
 
+    /** @return array<string, mixed> */
+    private function articleData(SiteOpportunity $opportunity): array
+    {
         $card = PublicCards::opportunity($opportunity);
 
-        return $this->article('opportunities', $this->tri('Возможности', 'Opportunities', 'Oportunități'), [
+        return [
             'title' => $card['title'],
             'excerpt' => $card['excerpt'],
             'image' => $card['image'],
@@ -49,6 +63,6 @@ class OpportunitiesController extends ContentPageController
                 'label' => $this->tri('Все возможности', 'All opportunities', 'Toate oportunitățile'),
             ],
             'draft' => ! $opportunity->isPublished(),
-        ]);
+        ];
     }
 }

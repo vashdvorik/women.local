@@ -165,10 +165,29 @@
   DB_USERNAME=...
   DB_PASSWORD=...
 
-  SESSION_DRIVER=database
+  SESSION_DRIVER=file                # сессии и кеш в файлах (storage/framework): публичные страницы не ходят за
+  CACHE_STORE=file                   # ними в базу. Было database: при смене на file все, кто сейчас вошёл в
+                                     # кабинет или админку, один раз войдут заново; затем: artisan optimize:clear
   SESSION_DOMAIN=womenhub.innovation.md
   QUEUE_CONNECTION=database
-  CACHE_STORE=database
+
+  Кеш публичных страниц (новости, фото, публикации, возможности, видео, проекты, эксперты, превью на главной)
+  работает сам и от этих настроек не зависит: он всегда в файлах storage/framework/cache/public. Списки и
+  страницы берутся оттуда, а не из базы; любое сохранение в админке сбрасывает его, а запись живёт не дольше
+  15 минут. Если страница показывает устаревшее, сбросить вручную:
+
+  /usr/local/bin/ea-php83 artisan public-cache:clear     # он же входит в artisan optimize:clear
+
+  Папка storage/framework (cache, sessions, views) должна быть доступна PHP на запись. Если файлы кеша или
+  сессий создал другой пользователь (например, команды запускали под root) и сайт ругается на права:
+
+  find storage/framework -type d -exec chmod 775 {} \;
+  find storage/framework -type f -exec chmod 664 {} \;
+
+  Фото в браузере: public/.htaccess отдаёт /uploads и /build с заголовком «год, без проверки» (имена файлов
+  уникальны: перекадрированное фото получает новое имя), остальные картинки и шрифты темы на неделю.
+  Нужны модули Apache mod_headers и mod_setenvif (на cPanel включены); без них блок пропускается молча.
+  Проверка: curl -sI https://womenhub.innovation.md/uploads/2026/10/ИМЯ.webp | grep -i cache-control
 
   ADMIN_NAME=...
   ADMIN_EMAIL=...                    # в админку пускает только эта почта

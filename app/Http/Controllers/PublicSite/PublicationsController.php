@@ -8,15 +8,19 @@ use App\Support\PublicCards;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
-/** «Медиатека → Публикации»: каталоги, брошюры и другие материалы организации, введённые в админке (блочный редактор). */
+/**
+ * «Медиатека → Публикации»: каталоги, брошюры и другие материалы организации, введённые в админке (блочный редактор).
+ * Список и опубликованные страницы лежат в кеше публичных страниц (App\Support\PublicCache).
+ */
 class PublicationsController extends ContentPageController
 {
     public function index(): View
     {
-        $posts = Post::with(['translations', 'tag.translations'])
-            ->published()
-            ->orderByDesc('published_at')
-            ->paginate(12);
+        [$cards, $posts] = $this->cachedCards(
+            'publications.list',
+            fn () => Post::with(['translations', 'tag.translations'])->published()->orderByDesc('published_at'),
+            fn (Post $post) => PublicCards::post($post),
+        );
 
         return $this->listing('publications', [
             'eyebrow' => $this->tri('Медиатека', 'Media library', 'Mediatecă'),
@@ -26,17 +30,27 @@ class PublicationsController extends ContentPageController
                 'Catalogues, brochures and other materials published by the organisation.',
                 'Cataloage, broșuri și alte materiale publicate de organizație.'
             ),
-        ], $posts->getCollection()->map(fn (Post $post) => PublicCards::post($post))->all(), $posts);
+        ], $cards, $posts);
     }
 
-    public function show(Request $request, Post $post): View
+    public function show(Request $request, string $post): View
     {
-        $post->load(['translations', 'tag.translations']);
-        $this->abortUnlessVisible($request, $post->isPublished());
+        return $this->materialPage(
+            $request,
+            'publications',
+            $this->tri('Публикации', 'Publications', 'Publicații'),
+            $post,
+            fn (bool $withDrafts) => ($withDrafts ? Post::query() : Post::published())->with(['translations', 'tag.translations'])->where('slug', $post)->first(),
+            fn (Post $item) => $this->articleData($item),
+        );
+    }
 
+    /** @return array<string, mixed> */
+    private function articleData(Post $post): array
+    {
         $card = PublicCards::post($post);
 
-        return $this->article('publications', $this->tri('Публикации', 'Publications', 'Publicații'), [
+        return [
             'title' => $card['title'],
             'excerpt' => $card['excerpt'],
             'image' => $card['image'],
@@ -49,6 +63,6 @@ class PublicationsController extends ContentPageController
                 'label' => $this->tri('Все публикации', 'All publications', 'Toate publicațiile'),
             ],
             'draft' => ! $post->isPublished(),
-        ]);
+        ];
     }
 }

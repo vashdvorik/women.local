@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('CACHE_STORE', 'database'),
+    'default' => env('CACHE_STORE', 'file'),
 
     /*
     |--------------------------------------------------------------------------
@@ -51,6 +51,14 @@ return [
             'driver' => 'file',
             'path' => storage_path('framework/cache/data'),
             'lock_path' => storage_path('framework/cache/data'),
+        ],
+
+        // Кеш публичных страниц (App\Support\PublicCache): свои файлы, чтобы сбрасывать его отдельно от остального кеша
+        // и не ходить за ним в базу. Всегда файлы, какой бы ни была CACHE_STORE; в тестах PUBLIC_CACHE_DRIVER=array.
+        'public' => [
+            'driver' => env('PUBLIC_CACHE_DRIVER', 'file'),
+            'path' => storage_path('framework/cache/public'),
+            'lock_path' => storage_path('framework/cache/public'),
         ],
 
         'memcached' => [

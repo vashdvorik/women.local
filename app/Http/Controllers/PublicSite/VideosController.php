@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\PublicSite;
 
 use App\Models\Video;
+use App\Support\PublicCache;
 use App\Support\PublicCards;
 use Illuminate\Contracts\View\View;
 
@@ -11,7 +12,13 @@ class VideosController extends ContentPageController
 {
     public function __invoke(): View
     {
-        $videos = Video::with('translations')->orderBy('position')->orderBy('id')->get();
+        // Карточки лежат в кеше публичных страниц (App\Support\PublicCache), а не читаются из базы на каждый заход.
+        $cards = PublicCache::remember('videos.cards', fn () => Video::with('translations')
+            ->orderBy('position')
+            ->orderBy('id')
+            ->get()
+            ->map(fn (Video $video) => PublicCards::video($video))
+            ->all());
 
         return $this->listing('videos', [
             'eyebrow' => $this->tri('Медиатека', 'Media library', 'Mediatecă'),
@@ -21,6 +28,6 @@ class VideosController extends ContentPageController
                 'Videos from events, interviews and platform learning programmes.',
                 'Videoclipuri de la evenimente, interviuri și programele educaționale ale platformei.'
             ),
-        ], $videos->map(fn (Video $video) => PublicCards::video($video))->all(), null, 'media');
+        ], $cards, null, 'media');
     }
 }

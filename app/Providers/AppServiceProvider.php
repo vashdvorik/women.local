@@ -6,6 +6,7 @@ use App\Services\Payments\WebPayment\BankGateway;
 use App\Services\Payments\WebPayment\BankSignature;
 use App\Services\Payments\WebPayment\FakeGateway;
 use App\Services\Payments\WebPayment\Gateway;
+use App\Support\PublicCache;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -32,6 +33,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(191);
+
+        // Кеш публичных страниц сбрасывается при любой правке новостей, фото и других разделов (App\Support\PublicCache)
+        // и при `php artisan optimize:clear`, то есть при обычной выкладке.
+        PublicCache::watch();
+        $this->optimizes(clear: 'public-cache:clear');
 
         // 20 auth attempts per minute per IP — prevents brute-force on tokens
         RateLimiter::for('20,1', function (Request $request) {

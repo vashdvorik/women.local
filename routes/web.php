@@ -201,7 +201,7 @@ Route::middleware(RequireAccountAuth::class)
 | в панель пускается только ADMIN_EMAIL.
 */
 
-Route::middleware(['admin.locale', 'auth', 'admin.email'])
+Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-cache'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
