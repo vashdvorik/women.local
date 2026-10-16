@@ -31,11 +31,12 @@
 @endphp
 
 <aside {{ $attributes->merge(['class' => 'admin-sidebar']) }}>
+    {{-- Логотип сайта (тот же, что в кабинете участниц и в шапке публичного сайта), в тёмных тонах: меню светлое. --}}
     <a href="{{ route('admin.dashboard') }}"
-       class="h-header flex items-center gap-2.5 px-4 text-on-sidebar font-semibold border-b border-hairline shrink-0"
-       title="{{ config('app.name') }}">
-        <img src="{{ asset('themes/public/miro/images/brand/favicon.png') }}" alt="{{ config('app.name') }}" class="h-8 w-8 shrink-0">
-        <span>{{ __('Админпанель') }}</span>
+       class="admin-brand-logo h-header flex items-center px-4 border-b border-hairline shrink-0"
+       title="{{ config('app.name') }} — {{ __('Админпанель') }}">
+        <img src="{{ asset('themes/public/miro/images/brand/logo-dark.webp') }}" alt="{{ config('app.name') }} — {{ __('Админпанель') }}"
+             class="h-10 w-auto max-w-full object-contain object-left">
     </a>
 
     <x-admin.camp-switch :camp="$camp" :pending="$pendingProfiles + $pendingMemberPosts" />

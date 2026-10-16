@@ -715,3 +715,6 @@ body.miro-landing-page .miro-nav__dropdown-menu a span { color: #F8E8DF !importa
 .miro-page .miro-landing-page .miro-nav .miro-nav__dropdown-menu a span { color: #F8E8DF !important; }
 .miro-page .miro-landing-page .miro-nav .miro-nav__dropdown-menu a:hover,
 .miro-page .miro-landing-page .miro-nav .miro-nav__dropdown-menu a:hover span { color: #FFF9F5 !important; }
+
+/* Разделитель в меню Gala: ссылки на сайты по годам отдельно, ниже страница сайта (Положение о премии). */
+.miro-nav__dropdown-menu .miro-nav__dropdown-sep { height: 1px; margin: 6px 12px; background: rgba(201, 154, 115, .35); }

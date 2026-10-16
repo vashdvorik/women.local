@@ -29,8 +29,10 @@
 
     <main class="miro-public-page">
         {{-- У страницы материала (новость, публикация, возможность) большой шапки нет: название стоит над
-             текстом, а кружки-украшения шапки переехали в блок с текстом (см. ниже). --}}
-        @unless($compactHero ?? false)
+             текстом, а кружки-украшения шапки переехали в блок с текстом (см. ниже). У страниц со списком без шапки
+             ($bareHero: «Фото», «Видео») нет ни шапки, ни кружков: сразу содержимое, название страницы остаётся
+             в разметке скрытым заголовком h1 для экранных дикторов и поисковиков. --}}
+        @unless(($compactHero ?? false) || ($bareHero ?? false))
         <section class="miro-public-hero">
             <div class="miro-container miro-public-hero__inner">
                 <div class="miro-public-hero__copy">
@@ -45,9 +47,12 @@
         </section>
         @endunless
 
-        <section class="miro-public-content @if($compactHero ?? false) miro-public-content--article @endif">
+        <section class="miro-public-content @if($compactHero ?? false) miro-public-content--article @endif @if($bareHero ?? false) miro-public-content--bare @endif">
             <div class="miro-container">
-                @if($compactHero ?? false)
+                @if($bareHero ?? false)
+                    <h1 class="miro-visually-hidden">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ $heroTitle[$l] }}</span>@endforeach</h1>
+                @endif
+                @if(($compactHero ?? false) && ! ($bareHero ?? false))
                     <div class="miro-public-hero__accent" aria-hidden="true"><span></span><span></span><span></span></div>
                 @endif
                 @yield('content')

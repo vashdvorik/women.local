@@ -28,6 +28,6 @@ class VideosController extends ContentPageController
                 'Videos from events, interviews and platform learning programmes.',
                 'Videoclipuri de la evenimente, interviuri și programele educaționale ale platformei.'
             ),
-        ], $cards, null, 'media');
+        ], $cards, null, 'media', bare: true);
     }
 }

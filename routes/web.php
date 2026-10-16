@@ -12,6 +12,8 @@ use App\Http\Controllers\PublicSite;
 use App\Http\Middleware\RequireAccountAuth;
 use App\Models\LoginToken;
 use App\Services\PublicThemeView;
+use App\Support\GalaRegulations;
+use App\Support\Regulations;
 use Illuminate\Support\Facades\Route;
 use SergiX44\Nutgram\Nutgram;
 
@@ -44,20 +46,9 @@ Route::get('/about/priorities', function () {
     return PublicThemeView::render('priorities');
 })->name('about.priorities');
 
-Route::get('/about/leadership', fn () => $publicSection([
-    'pageKey' => 'leadership',
-    'eyebrow' => ['ru' => 'О нас', 'en' => 'About us', 'ro' => 'Despre noi'],
-    'title' => ['ru' => 'Руководство', 'en' => 'Leadership', 'ro' => 'Conducere'],
-    'intro' => ['ru' => 'Страница о команде и людях, которые развивают платформу и поддерживают сообщество женщин-предпринимательниц.', 'en' => 'A page about the team and people developing the platform and supporting the community of women entrepreneurs.', 'ro' => 'O pagină despre echipa și oamenii care dezvoltă platforma și susțin comunitatea femeilor antreprenoare.'],
-    'placeholder' => true,
-]))->name('about.leadership');
-
-Route::get('/about/regulations', fn () => $publicSection([
-    'pageKey' => 'regulations',
-    'eyebrow' => ['ru' => 'О нас', 'en' => 'About us', 'ro' => 'Despre noi'],
-    'title' => ['ru' => 'Положение', 'en' => 'Regulations', 'ro' => 'Regulament'],
-    'intro' => ['ru' => 'Здесь будет опубликовано положение о работе платформы, правилах участия и взаимодействии внутри сообщества.', 'en' => 'This page will contain the platform regulations, participation rules and community guidelines.', 'ro' => 'Aici va fi publicat regulamentul platformei, regulile de participare și principiile comunității.'],
-    'placeholder' => true,
+// Положение о платформе: текст на трёх языках в App\Support\Regulations, цены пакетов из настроек сайта.
+Route::get('/about/regulations', fn () => PublicThemeView::render('document', [
+    'content' => Regulations::content(),
 ]))->name('about.regulations');
 
 Route::get('/members/participants', fn () => redirect()->route('members'))->name('members.participants');
@@ -91,6 +82,11 @@ Route::get('/gala', fn () => $publicSection([
     'intro' => ['ru' => 'Страница ежегодной гала-премии и историй женщин, которые создают изменения.', 'en' => 'A page for the annual gala award and stories of women creating change.', 'ro' => 'O pagină dedicată galei anuale și poveștilor femeilor care creează schimbare.'],
     'placeholder' => true,
 ]))->name('gala');
+
+// Положение о Гала-премии «Женщина года 2026»: пункт меню GALA после ссылок на сайты по годам. Текст на трёх языках в AppSupportGalaRegulations.
+Route::get('/gala/regulations', fn () => PublicThemeView::render('document', [
+    'content' => GalaRegulations::content(),
+]))->name('gala.regulations');
 
 // Материалы из админки (тема miro): проекты, возможности, медиатека.
 Route::get('/projects', PublicSite\ProjectsController::class)->name('projects');

@@ -29,7 +29,9 @@
 | Партнёры (3 группы, 10) | массив в Blade | `/partners`, полоса на лендинге |
 | Настройки сайта: тема сайта и кабинета; параметры ИИ | БД `site_settings`, `SiteSettingSeeder` (темы) и `AiSettingSeeder` (ИИ, без ключей API) | публичный сайт, кабинет, ИИ-ассистент |
 | Каталог участниц (112) | массив в Blade, независим от `BotUser` | `/members`, превью на лендинге |
-| Служебные страницы (leadership, regulations, honorary, gala, join) | заглушки в `routes/web.php` | — |
+| Служебные страницы (honorary, gala, join) | заглушки в `routes/web.php` | — |
+| Положение о Гала-премии «Женщина года 2026» (`/gala/regulations`, пункт «Положение о премии» в меню GALA после ссылок на сайты по годам) | текст на трёх языках в `App\Support\GalaRegulations` (русский дословно из `docs/pologenie/Положение_Гала_премия_Женщина_года_2026_исправленное (2).docx`, перевод EN и RO), тот же вид `document.blade.php` | — |
+| Положение о платформе (`/about/regulations`) | текст на трёх языках в `App\Support\Regulations` (русский дословно из `docs/pologenie/Womans_Hub_Polozhenie_EBA_19000.docx`, перевод EN и RO), вид `themes/public/miro/document.blade.php` (общий для обоих положений); цены пакетов берутся из настроек сайта («Подписки → Цена подписки»), в тексте их нет | — |
 | Приоритеты, тексты лендинга, about, contact | остались в Blade | — |
 
 Не брали: отзывы, модуль «Страницы».

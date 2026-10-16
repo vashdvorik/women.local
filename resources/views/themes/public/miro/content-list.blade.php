@@ -4,6 +4,8 @@
     $heroEyebrow = $hero['eyebrow'];
     $heroTitle = $hero['title'];
     $heroIntro = $hero['intro'];
+    // Страницы без большой шапки («Видео»): сразу карточки (см. content-layout).
+    $bareHero = $bare ?? false;
 @endphp
 
 @section('content')

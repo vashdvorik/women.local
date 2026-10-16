@@ -4,6 +4,8 @@
     $heroEyebrow = $hero['eyebrow'];
     $heroTitle = $hero['title'];
     $heroIntro = $hero['intro'];
+    // Страница «Фото» без большой шапки: сразу полотно из альбомов (см. content-layout).
+    $bareHero = true;
 @endphp
 
 {{-- Страница «Фото»: не карточки-обложки, а полотно. Альбомы идут один за другим: название со ссылкой на альбом и

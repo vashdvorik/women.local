@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 /**
@@ -28,6 +29,30 @@ class PublicNavigationMenuTest extends TestCase
                 $this->assertStringContainsString("Gala {$year}", $html, "{$url}: Gala {$year}");
             }
         }
+    }
+
+    public function test_the_leadership_page_is_gone_and_the_about_menu_no_longer_links_to_it(): void
+    {
+        $this->get('/about/leadership')->assertNotFound();
+        $this->assertFalse(Route::has('about.leadership'));
+
+        foreach (['/', '/events', '/about/priorities'] as $url) {
+            $html = $this->get($url)->assertOk()->getContent();
+            $menu = substr($html, strpos($html, 'id="miro-about-menu"'), 1400);
+
+            $this->assertStringNotContainsString('/about/leadership', $html, $url);
+            $this->assertStringNotContainsString('Руководство', $menu, $url);
+            $this->assertStringNotContainsString('Conducere', $menu, $url);
+            // Остальные пункты меню «О нас» на месте.
+            $this->assertStringContainsString(route('about.priorities'), $menu);
+            $this->assertStringContainsString(route('about.regulations'), $menu);
+            $this->assertStringContainsString(route('partners'), $menu);
+            $this->assertStringContainsString(route('members.join'), $menu);
+        }
+
+        // Соседние страницы раздела открываются как прежде.
+        $this->get(route('about.regulations'))->assertOk();
+        $this->get(route('about.priorities'))->assertOk();
     }
 
     public function test_the_landing_menu_links_get_a_light_colour_after_the_legacy_dark_rule(): void
