@@ -1,182 +1,177 @@
+@extends('themes.public.miro.content-layout')
+
 @php
-    $botUrl = 'https://t.me/WomenComBot';
-    $managerUrl = 'https://t.me/lesnichenkoP';
-    $communityUrl = config('nutgram.community_url', $botUrl);
+    use Illuminate\Support\HtmlString;
 
-    // The "what we do" / proof / join-the-community sections used to live on the landing
-    // page (/) under #features, #learning, #stories and the closing CTA + logo-wall. They
-    // were moved here verbatim — same markup, same landing.css component classes — because
-    // this is where that detail actually belongs: elaborating on the platform's priorities.
-    $eyebrow = ['ru' => 'О нас', 'en' => 'About us', 'ro' => 'Despre noi'];
-    $title = ['ru' => 'Приоритеты платформы', 'en' => 'Our priorities', 'ro' => 'Prioritățile platformei'];
-    $intro = ['ru' => 'Мы создаём практическую среду, в которой женщины могут развивать бизнес, находить поддержку и открывать новые возможности.', 'en' => 'We create a practical environment where women can grow their businesses, find support and discover new opportunities.', 'ro' => 'Creăm un mediu practic în care femeile își pot dezvolta afacerile, găsi sprijin și descoperi oportunități noi.'];
-    $items = [
-        ['ru' => 'Доступ к знаниям и развитию', 'en' => 'Access to knowledge and growth', 'ro' => 'Acces la cunoștințe și dezvoltare'],
-        ['ru' => 'Связи между предпринимательницами', 'en' => 'Connections between women entrepreneurs', 'ro' => 'Conexiuni între femeile antreprenoare'],
-        ['ru' => 'Поддержка новых проектов и партнёрств', 'en' => 'Support for new projects and partnerships', 'ro' => 'Sprijin pentru proiecte și parteneriate noi'],
-    ];
+    $locales = ['ru', 'en', 'ro'];
+    // Название и описание нужны вкладке браузера и поисковикам (<head> каркаса), а также шапке страницы.
+    $heroEyebrow = $content['eyebrow'];
+    $heroTitle = $content['title'];
+    $heroIntro = $content['intro'];
+
+    // Текст на трёх языках: языки переключаются стилями, как на остальных страницах сайта.
+    $tri = fn (array $text): HtmlString => new HtmlString(
+        collect($locales)->map(fn (string $l) => '<span data-lang="'.$l.'">'.e($text[$l]).'</span>')->implode('')
+    );
+    $icon = fn (string $name) => view('themes.public.miro.partials.icon', ['name' => $name])->render();
+    $about = fn (string $file) => asset('themes/public/miro/images/about/'.$file.'.webp');
 @endphp
-<!DOCTYPE html>
-<html lang="ru" class="miro-page scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title['ru'] }} — Women's hub</title>
-    <meta name="description" content="{{ $intro['ru'] }}">
-    <link rel="icon" type="image/png" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/favicon.png') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Prata&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/css/landing.css') }}">
-    <link rel="stylesheet" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/css/public-section.css') }}">
-    <link rel="stylesheet" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/css/navigation.css') }}">
-</head>
-<body>
-    @include('themes.public.miro.partials.miro-header', ['miroCurrentPage' => null])
 
-    <main class="miro-public-page">
-        <section class="miro-public-hero">
-            <div class="miro-container miro-public-hero__inner">
-                <div class="miro-public-hero__copy">
-                    <p class="miro-eyebrow"><span data-lang="ru">{{ $eyebrow['ru'] }}</span><span data-lang="en">{{ $eyebrow['en'] }}</span><span data-lang="ro">{{ $eyebrow['ro'] }}</span></p>
-                    <h1><span data-lang="ru">{{ $title['ru'] }}</span><span data-lang="en">{{ $title['en'] }}</span><span data-lang="ro">{{ $title['ro'] }}</span></h1>
-                    <p class="miro-public-hero__intro"><span data-lang="ru">{{ $intro['ru'] }}</span><span data-lang="en">{{ $intro['en'] }}</span><span data-lang="ro">{{ $intro['ro'] }}</span></p>
-                </div>
-                <div class="miro-public-hero__accent" aria-hidden="true"><span></span><span></span><span></span></div>
-            </div>
-        </section>
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('themes/public/miro/css/about-pages.css') }}">
+@endpush
 
-        <section class="miro-public-content">
-            <div class="miro-container">
-                <div class="miro-public-items">
-                    @foreach ($items as $item)
-                        <article class="miro-public-item">
-                            <span class="miro-public-item__number">{{ str_pad((string) ($loop->index + 1), 2, '0', STR_PAD_LEFT) }}</span>
-                            <h2><span data-lang="ru">{{ $item['ru'] }}</span><span data-lang="en">{{ $item['en'] }}</span><span data-lang="ro">{{ $item['ro'] }}</span></h2>
-                        </article>
+{{-- «Приоритеты» написаны на основании Положения о платформе (текст — App\Support\AboutContent::priorities()): миссия,
+     шесть целей, принципы, кого объединяет платформа, организационная основа и партнёры, Gala. Фото — с мероприятий
+     платформы (images/about, облегчённые копии фото из альбомов). --}}
+@section('bands')
+<div class="miro-about">
+
+    {{-- Миссия --}}
+    <section class="miro-about__band">
+        <div class="miro-container miro-about__split">
+            <div class="miro-about__copy">
+                <p class="miro-about__eyebrow">{{ $tri($content['mission']['eyebrow']) }}</p>
+                <h2 class="miro-about__title">{{ $tri($content['mission']['title']) }}</h2>
+                <div style="margin-top: 24px;">
+                    @foreach($content['mission']['text'] as $paragraph)
+                        <p class="miro-about__text">{{ $tri($paragraph) }}</p>
                     @endforeach
                 </div>
-            </div>
-        </section>
-
-        <section class="miro-logo-wall">
-            <div class="miro-container miro-logo-wall__layout">
-                <div class="miro-logo-wall__copy">
-                    <div class="miro-logo-wall__items">
-                        <span><span data-lang="ru">Видимость бизнеса</span><span data-lang="en">Business visibility</span><span data-lang="ro">Vizibilitatea afacerii</span></span>
-                        <span><span data-lang="ru">Обучение</span><span data-lang="en">Learning</span><span data-lang="ro">Învățare</span></span>
-                        <span><span data-lang="ru">Партнёры и рынки</span><span data-lang="en">Partners &amp; markets</span><span data-lang="ro">Partenere și piețe</span></span>
-                        <span><span data-lang="ru">Наставничество</span><span data-lang="en">Mentorship</span><span data-lang="ro">Mentorat</span></span>
-                        <span><span data-lang="ru">Возможности</span><span data-lang="en">Opportunities</span><span data-lang="ro">Oportunități</span></span>
-                        <span><span data-lang="ru">Запросы и предложения</span><span data-lang="en">Requests &amp; offers</span><span data-lang="ro">Solicitări și oferte</span></span>
-                    </div>
-                </div>
-                <div class="miro-logo-wall__visual" aria-hidden="true">
-                    <span class="miro-logo-wall__sticker miro-logo-wall__sticker--brand"><span data-lang="ru">Связи, которые работают</span><span data-lang="en">Connections that move business</span><span data-lang="ro">Conexiuni care dezvoltă afaceri</span></span>
+                <div class="miro-about__actions">
+                    <a href="{{ route('about.regulations') }}" class="miro-button miro-button--secondary">{{ $tri($content['mission']['link']) }}</a>
                 </div>
             </div>
-        </section>
+            <figure class="miro-about__figure">
+                <img src="{{ $about('mission') }}" width="900" height="600" alt="" loading="lazy">
+            </figure>
+        </div>
+    </section>
 
-        <section class="miro-section miro-section--surface" id="features">
-            <div class="miro-container">
-                <div class="miro-section__head miro-section__head--center">
-                    <p class="miro-eyebrow"><span data-lang="ru">Возможности</span><span data-lang="en">What you can do</span><span data-lang="ro">Ce poți face</span></p>
-                    <h2><span data-lang="ru">От идеи к следующему действию</span><span data-lang="en">From an idea to the next action</span><span data-lang="ro">De la idee la următoarea acțiune</span></h2>
-                    <p><span data-lang="ru">Платформа помогает не просто хранить информацию, а превращать её в движение.</span><span data-lang="en">The platform turns information into momentum, not just another place to store it.</span><span data-lang="ro">Platforma transformă informația în mișcare, nu doar într-un alt loc de stocare.</span></p>
-                </div>
-                <div class="miro-split">
-                    <div class="miro-split__copy">
-                        <span class="miro-tag"><span data-lang="ru">AI-powered</span><span data-lang="en">AI-powered</span><span data-lang="ro">Cu AI</span></span>
-                        <h3 style="margin-top: 18px;"><span data-lang="ru">Найдите контакт, который нужен именно сейчас</span><span data-lang="en">Find the connection you need right now</span><span data-lang="ro">Găsește conexiunea de care ai nevoie acum</span></h3>
-                        <p><span data-lang="ru">Опишите свой запрос обычными словами. AI сопоставит его с профилями участниц и покажет близкие варианты.</span><span data-lang="en">Describe your request in your own words. AI matches it with member profiles and surfaces relevant options.</span><span data-lang="ro">Descrie cererea în cuvintele tale. AI o potrivește cu profilurile membrelor.</span></p>
-                        <ul class="miro-list">
-                            <li><span class="miro-list__check">✓</span><span data-lang="ru">Поиск партнёров, экспертов и клиентов</span><span data-lang="en">Find partners, experts and clients</span><span data-lang="ro">Găsește partenere, experte și clienți</span></li>
-                            <li><span class="miro-list__check">✓</span><span data-lang="ru">Рекомендации на основе профиля</span><span data-lang="en">Recommendations based on your profile</span><span data-lang="ro">Recomandări bazate pe profil</span></li>
-                            <li><span class="miro-list__check">✓</span><span data-lang="ru">Прямой контакт через Telegram</span><span data-lang="en">Direct contact through Telegram</span><span data-lang="ro">Contact direct prin Telegram</span></li>
-                        </ul>
-                    </div>
-                    <div class="miro-mockup">
-                        <div class="miro-mockup__bar"><i></i><i></i><i></i></div>
-                        <div class="miro-mockup__body miro-mockup__body--ai">
-                            <div class="miro-ai-card">
-                                <span class="miro-ai-card__tag">AI match</span>
-                                <h4>Export partner</h4>
-                                <p>Three relevant profiles found in your community.</p>
-                                <div class="miro-ai-card__meter"><span></span></div>
-                                <p style="margin-top: 8px; color: var(--miro-blue); font-weight: 500;">86% relevance</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    {{-- Шесть целей --}}
+    <section class="miro-about__band miro-about__band--surface">
+        <div class="miro-container">
+            <div class="miro-about__head">
+                <p class="miro-about__eyebrow">{{ $tri($content['goals']['eyebrow']) }}</p>
+                <h2 class="miro-about__title">{{ $tri($content['goals']['title']) }}</h2>
+                <p class="miro-about__lead">{{ $tri($content['goals']['intro']) }}</p>
+            </div>
+            <div class="miro-about__grid">
+                @foreach($content['goals']['items'] as $goal)
+                    <article class="miro-about__card">
+                        <span class="miro-about__card-num">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                        <span class="miro-about__icon">{!! $icon($goal['icon']) !!}</span>
+                        <h3>{{ $tri($goal['title']) }}</h3>
+                        <p>{{ $tri($goal['text']) }}</p>
+                    </article>
+                @endforeach
+            </div>
+        </div>
+    </section>
 
-                <div class="miro-split miro-split--reverse" style="margin-top: 96px;">
-                    <div class="miro-split__copy">
-                        <span class="miro-tag" style="background: var(--miro-surface-featured); color: var(--miro-blue);"><span data-lang="ru">Shared workspace</span><span data-lang="en">Shared workspace</span><span data-lang="ro">Spațiu comun</span></span>
-                        <h3 style="margin-top: 18px;"><span data-lang="ru">Публикуйте возможности, а не только новости</span><span data-lang="en">Share opportunities, not just updates</span><span data-lang="ro">Distribuie oportunități, nu doar noutăți</span></h3>
-                        <p><span data-lang="ru">Проект, встреча, событие или запрос на сотрудничество — публикация сразу попадает в общий поток и Telegram-уведомления участниц.</span><span data-lang="en">A project, meeting, event or collaboration request reaches the shared feed and Telegram notifications.</span><span data-lang="ro">Un proiect, o întâlnire, un eveniment sau o cerere de colaborare ajunge în fluxul comun și în Telegram.</span></p>
-                        <a href="{{ route('account.login') }}" class="miro-button miro-button--primary" style="margin-top: 28px;"><span data-lang="ru">Открыть кабинет</span><span data-lang="en">Open the cabinet</span><span data-lang="ro">Deschide cabinetul</span></a>
+    {{-- Принципы --}}
+    <section class="miro-about__band">
+        <div class="miro-container">
+            <div class="miro-about__head">
+                <h2 class="miro-about__title">{{ $tri($content['principles']['title']) }}</h2>
+            </div>
+            <div class="miro-about__principles">
+                @foreach($content['principles']['items'] as $principle)
+                    <div class="miro-about__principle">
+                        <span class="miro-about__icon">{!! $icon($principle['icon']) !!}</span>
+                        <h3>{{ $tri($principle['title']) }}</h3>
+                        <p>{{ $tri($principle['text']) }}</p>
                     </div>
-                    <div class="miro-mockup">
-                        <div class="miro-mockup__bar"><i></i><i></i><i></i></div>
-                        <div class="miro-mockup__body">
-                            <div class="miro-roadmap">
-                                <div class="miro-roadmap__row"><span class="miro-roadmap__label">Need</span><div class="miro-roadmap__cell is-pink">Find a mentor</div><div class="miro-roadmap__cell">New market</div><div class="miro-roadmap__cell">Local partner</div></div>
-                                <div class="miro-roadmap__row"><span class="miro-roadmap__label">Action</span><div class="miro-roadmap__cell is-blue">Workshop · 14 Jun</div><div class="miro-roadmap__cell">Ask the community</div><div class="miro-roadmap__cell is-pink">Post an opportunity</div></div>
-                                <div class="miro-roadmap__row"><span class="miro-roadmap__label">Result</span><div class="miro-roadmap__cell">New contact</div><div class="miro-roadmap__cell is-blue">Shared learning</div><div class="miro-roadmap__cell">Next step</div></div>
-                            </div>
-                        </div>
-                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- Кого объединяет --}}
+    <section class="miro-about__band miro-about__band--surface">
+        <div class="miro-container miro-about__split">
+            <div class="miro-about__copy">
+                <h2 class="miro-about__title">{{ $tri($content['people']['title']) }}</h2>
+                <p class="miro-about__lead">{{ $tri($content['people']['intro']) }}</p>
+                <div class="miro-about__actions">
+                    <a href="{{ route('members.join') }}" class="miro-button miro-button--primary">{{ $tri($content['people']['link']) }}</a>
                 </div>
             </div>
-        </section>
+            <ul class="miro-about__chips" style="margin-top: 0;">
+                @foreach($content['people']['items'] as $item)
+                    <li class="miro-about__chip">{{ $tri($item) }}</li>
+                @endforeach
+            </ul>
+        </div>
+    </section>
 
-        <section class="miro-section" id="learning">
-            <div class="miro-container">
-                <div class="miro-split">
-                    <div class="miro-image-card">
-                        <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/story-mentor.webp') }}" alt="Mentoring conversation" loading="lazy">
-                        <div class="miro-image-card__caption">
-                            <span class="miro-tag"><span data-lang="ru">Learning &amp; mentoring</span><span data-lang="en">Learning &amp; mentoring</span><span data-lang="ro">Învățare și mentorat</span></span>
-                            <p><span data-lang="ru">Знания становятся полезнее, когда их можно сразу обсудить и применить.</span><span data-lang="en">Knowledge becomes more useful when you can discuss and apply it right away.</span><span data-lang="ro">Cunoștințele devin mai utile când le poți discuta și aplica imediat.</span></p>
-                        </div>
-                    </div>
-                    <div class="miro-split__copy">
-                        <p class="miro-eyebrow"><span data-lang="ru">Обучение</span><span data-lang="en">Learning</span><span data-lang="ro">Învățare</span></p>
-                        <h2><span data-lang="ru">Учитесь в своём темпе, растите рядом с другими</span><span data-lang="en">Learn at your pace, grow with others</span><span data-lang="ro">Învață în ritmul tău, crește alături de comunitate</span></h2>
-                        <p><span data-lang="ru">Материалы, практические встречи, менторство и опыт других предпринимательниц помогают переходить от вопроса к решению.</span><span data-lang="en">Materials, practical sessions, mentoring and peer experience help you move from a question to a solution.</span><span data-lang="ro">Materiale, sesiuni practice, mentorat și experiența comunității te ajută să ajungi de la întrebare la soluție.</span></p>
-                        <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button miro-button--pink" style="margin-top: 28px;"><span data-lang="ru">Присоединиться к сообществу</span><span data-lang="en">Join the community</span><span data-lang="ro">Alătură-te comunității</span></a>
-                    </div>
+    {{-- Организационная основа и партнёры --}}
+    <section class="miro-about__band">
+        <div class="miro-container">
+            <div class="miro-about__head">
+                <h2 class="miro-about__title">{{ $tri($content['foundation']['title']) }}</h2>
+                <p class="miro-about__lead">{{ $tri($content['foundation']['intro']) }}</p>
+            </div>
+            <div class="miro-about__grid miro-about__grid--4">
+                @foreach($content['foundation']['items'] as $item)
+                    <article class="miro-about__card">
+                        <span class="miro-about__icon">{!! $icon($item['icon']) !!}</span>
+                        <h3>{{ $tri($item['title']) }}</h3>
+                        <p>{{ $tri($item['text']) }}</p>
+                    </article>
+                @endforeach
+            </div>
+            <div style="margin-top: 44px; text-align: center;">
+                <p class="miro-about__eyebrow">{{ $tri($content['foundation']['includes_title']) }}</p>
+                <ul class="miro-about__chips miro-about__chips--soft" style="justify-content: center;">
+                    @foreach($content['foundation']['includes'] as $item)
+                        <li class="miro-about__chip">{{ $tri($item) }}</li>
+                    @endforeach
+                </ul>
+                <p style="margin-top: 28px;">
+                    <a href="{{ route('partners') }}" class="miro-about__link">{{ $tri($content['foundation']['link']) }} {!! $icon('arrow') !!}</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    {{-- Gala --}}
+    <section class="miro-about__band miro-about__band--surface">
+        <div class="miro-container miro-about__split">
+            <div class="miro-about__copy">
+                <p class="miro-about__eyebrow">{{ $tri($content['gala']['eyebrow']) }}</p>
+                <h2 class="miro-about__title">{{ $tri($content['gala']['title']) }}</h2>
+                <div style="margin-top: 24px;">
+                    @foreach($content['gala']['text'] as $paragraph)
+                        <p class="miro-about__text">{{ $tri($paragraph) }}</p>
+                    @endforeach
+                </div>
+                <div class="miro-about__actions">
+                    <a href="{{ route('gala.regulations') }}" class="miro-button miro-button--primary">{{ $tri($content['gala']['links']['regulations']) }}</a>
+                    <a href="{{ route('media.photos') }}" class="miro-button miro-button--secondary">{{ $tri($content['gala']['links']['photos']) }}</a>
                 </div>
             </div>
-        </section>
+            <div class="miro-about__photos miro-about__photos--mosaic">
+                <figure><img src="{{ $about('gala-1') }}" width="900" height="600" alt="" loading="lazy"></figure>
+                <figure><img src="{{ $about('gala-2') }}" width="900" height="600" alt="" loading="lazy"></figure>
+                <figure><img src="{{ $about('gala-3') }}" width="900" height="600" alt="" loading="lazy"></figure>
+            </div>
+        </div>
+    </section>
 
-        <section class="miro-section miro-section--surface" id="stories">
-            <div class="miro-container">
-                <div class="miro-story">
-                    <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/story-export.webp') }}" alt="Women entrepreneurs collaborating" loading="lazy">
-                    <div class="miro-story__body">
-                        <span class="miro-tag" style="width: fit-content; background: var(--miro-pink); color: var(--miro-primary);">Member story</span>
-                        <blockquote><span data-lang="ru">«Нужный контакт оказался не где-то далеко — он уже был внутри сообщества.»</span><span data-lang="en">“The right connection was not far away — it was already inside the community.”</span><span data-lang="ro">„Conexiunea potrivită nu era departe — era deja în comunitate.”</span></blockquote>
-                        <p>Women's hub member</p>
-                    </div>
+    {{-- Призыв --}}
+    <section class="miro-about__band">
+        <div class="miro-container">
+            <div class="miro-about__cta">
+                <h2>{{ $tri($content['cta']['title']) }}</h2>
+                <p>{{ $tri($content['cta']['text']) }}</p>
+                <div class="miro-about__actions">
+                    <a href="{{ route('members.join') }}" class="miro-button miro-button--pink">{{ $tri($content['cta']['join']) }}</a>
+                    <a href="{{ route('about.regulations') }}" class="miro-button miro-about__ghost">{{ $tri($content['cta']['regulations']) }}</a>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="miro-section">
-            <div class="miro-container">
-                <div class="miro-cta">
-                    <h2><span data-lang="ru">Готовы собрать свой следующий шаг?</span><span data-lang="en">Ready to bring your next step together?</span><span data-lang="ro">Ești gata să construiești următorul pas?</span></h2>
-                    <p><span data-lang="ru">Присоединяйтесь к платформе через Telegram и начните с простого профиля.</span><span data-lang="en">Join through Telegram and start with a simple profile.</span><span data-lang="ro">Alătură-te prin Telegram și începe cu un profil simplu.</span></p>
-                    <div class="miro-hero__actions">
-                        <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button miro-button--on-dark"><span data-lang="ru">Начать в Telegram</span><span data-lang="en">Start in Telegram</span><span data-lang="ro">Începe în Telegram</span></a>
-                        <a href="{{ route('account.login') }}" class="miro-button" style="border: 1px solid rgba(255,255,255,.35); color: #fff;"><span data-lang="ru">У меня уже есть доступ</span><span data-lang="en">I already have access</span><span data-lang="ro">Am deja acces</span></a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    @include('themes.public.miro.partials.miro-footer')
-</body>
-</html>
+</div>
+@endsection

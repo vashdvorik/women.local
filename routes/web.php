@@ -12,6 +12,7 @@ use App\Http\Controllers\PublicSite;
 use App\Http\Middleware\RequireAccountAuth;
 use App\Models\LoginToken;
 use App\Services\PublicThemeView;
+use App\Support\AboutContent;
 use App\Support\GalaRegulations;
 use App\Support\Regulations;
 use Illuminate\Support\Facades\Route;
@@ -42,9 +43,10 @@ Route::get('/contact', function () {
 
 $publicSection = static fn (array $data) => PublicThemeView::render('public-section', $data);
 
-Route::get('/about/priorities', function () {
-    return PublicThemeView::render('priorities');
-})->name('about.priorities');
+// Приоритеты и «Как стать участницей»: написаны на основании Положения о платформе, текст в App\Support\AboutContent.
+Route::get('/about/priorities', fn () => PublicThemeView::render('priorities', [
+    'content' => AboutContent::priorities(),
+]))->name('about.priorities');
 
 // Положение о платформе: текст на трёх языках в App\Support\Regulations, цены пакетов из настроек сайта.
 Route::get('/about/regulations', fn () => PublicThemeView::render('document', [
@@ -54,25 +56,8 @@ Route::get('/about/regulations', fn () => PublicThemeView::render('document', [
 Route::get('/members/participants', fn () => redirect()->route('members'))->name('members.participants');
 Route::get('/members/experts', fn () => redirect()->route('experts'))->name('members.experts');
 
-Route::get('/members/honorary', fn () => $publicSection([
-    'pageKey' => 'honorary',
-    'eyebrow' => ['ru' => 'Люди', 'en' => 'People', 'ro' => 'Oameni'],
-    'title' => ['ru' => 'Почётные члены', 'en' => 'Honorary members', 'ro' => 'Membre onorifice'],
-    'intro' => ['ru' => 'В этом разделе будут представлены женщины, внесшие особый вклад в развитие сообщества и женского предпринимательства.', 'en' => 'This section will introduce women who have made a special contribution to the community and women’s entrepreneurship.', 'ro' => 'Această secțiune va prezenta femeile care au contribuit în mod special la comunitate și la antreprenoriatul feminin.'],
-    'placeholder' => true,
-]))->name('members.honorary');
-
-Route::get('/members/join', fn () => $publicSection([
-    'pageKey' => 'join',
-    'eyebrow' => ['ru' => 'Люди', 'en' => 'People', 'ro' => 'Oameni'],
-    'title' => ['ru' => 'Как стать участницей', 'en' => 'How to become a member', 'ro' => 'Cum să devii membră'],
-    'intro' => ['ru' => 'Присоединяйтесь к сообществу, чтобы находить знания, контакты, партнёров и возможности для развития.', 'en' => 'Join the community to discover knowledge, connections, partners and opportunities for growth.', 'ro' => 'Alătură-te comunității pentru a descoperi cunoștințe, conexiuni, parteneri și oportunități de dezvoltare.'],
-    'steps' => [
-        ['title' => ['ru' => 'Зарегистрируйтесь', 'en' => 'Register', 'ro' => 'Înregistrează-te'], 'text' => ['ru' => 'Откройте доступ к платформе через Telegram и создайте свой профиль.', 'en' => 'Access the platform through Telegram and create your profile.', 'ro' => 'Accesează platforma prin Telegram și creează-ți profilul.']],
-        ['title' => ['ru' => 'Расскажите о себе', 'en' => 'Tell us about yourself', 'ro' => 'Spune-ne despre tine'], 'text' => ['ru' => 'Укажите свою специализацию, цели, интересы и то, что можете предложить сообществу.', 'en' => 'Add your specialization, goals, interests and what you can offer the community.', 'ro' => 'Adaugă specializarea, obiectivele, interesele și ceea ce poți oferi comunității.']],
-        ['title' => ['ru' => 'Находите свои возможности', 'en' => 'Find your opportunities', 'ro' => 'Găsește oportunitățile potrivite'], 'text' => ['ru' => 'Общайтесь с участницами, экспертами и партнёрами, которые близки вашим задачам.', 'en' => 'Connect with members, experts and partners who match your goals.', 'ro' => 'Conectează-te cu membre, experți și parteneri potriviți obiectivelor tale.']],
-    ],
-    'cta' => true,
+Route::get('/members/join', fn () => PublicThemeView::render('join', [
+    'content' => AboutContent::join(),
 ]))->name('members.join');
 
 Route::get('/gala', fn () => $publicSection([
@@ -83,7 +68,7 @@ Route::get('/gala', fn () => $publicSection([
     'placeholder' => true,
 ]))->name('gala');
 
-// Положение о Гала-премии «Женщина года 2026»: пункт меню GALA после ссылок на сайты по годам. Текст на трёх языках в AppSupportGalaRegulations.
+// Положение о Гала-премии «Женщина года 2026»: пункт меню GALA после ссылок на сайты по годам. Текст на трёх языках в App\Support\GalaRegulations.
 Route::get('/gala/regulations', fn () => PublicThemeView::render('document', [
     'content' => GalaRegulations::content(),
 ]))->name('gala.regulations');

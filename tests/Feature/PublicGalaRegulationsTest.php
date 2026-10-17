@@ -47,7 +47,7 @@ class PublicGalaRegulationsTest extends TestCase
             $this->assertStringContainsString($date, $html, $date);
         }
 
-        // Примечания «рабочая редакция» у этого документа нет, цен тоже.
+        // Примечания у этого документа нет, цен тоже.
         $this->assertStringNotContainsString('miro-doc__note', $html);
         $this->assertStringNotContainsString('miro-doc__package', $html);
         $this->assertStringNotContainsString('Раздел готовится', $html);
@@ -183,7 +183,8 @@ class PublicGalaRegulationsTest extends TestCase
         $html = $this->get(route('about.regulations'))->assertOk()->getContent();
 
         $this->assertStringContainsString('WOMAN’S HUB COMMUNITY', $html);
-        $this->assertStringContainsString('Рабочая редакция.', $html);
+        $this->assertStringContainsString('ПЛАТФОРМА ДЛЯ ЖЕНЩИН-ПРЕДПРИНИМАТЕЛЕЙ WOMAN’S HUB', $html);
+        $this->assertStringNotContainsString('Рабочая редакция', $html);
         $this->assertStringNotContainsString('Гала-премии «Женщина года 2026»</span><span', $html);
         $this->assertSame(10, substr_count($html, 'class="miro-doc__section"'));
     }

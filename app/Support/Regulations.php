@@ -5,7 +5,7 @@ namespace App\Support;
 /**
  * Текст «Положения о платформе Woman’s Hub» (страница /about/regulations) на трёх языках.
  *
- * Русский текст — дословно из документа docs/pologenie/Womans_Hub_Polozhenie_EBA_19000.docx (рабочая редакция); английский и
+ * Русский текст — дословно из документа docs/pologenie/Womans_Hub_Polozhenie_EBA_19000.docx; английский и
  * румынский — переводы. Названия организаций даны так же, как на странице партнёров. Перевод юридического текста стоит
  * показать юристу, прежде чем считать его окончательным.
  *
@@ -22,7 +22,7 @@ final class Regulations
 {
     /**
      * @return array{
-     *     title: array<string, string>, subtitle: array<string, string>, note: array<string, string>, intro: array<string, string>,
+     *     title: array<string, string>, subtitle: array<string, string>, intro: array<string, string>,
      *     contents: array<string, string>, price: array<string, string>, includes: array<string, string>,
      *     sections: list<array{id: string, title: array<string, string>, blocks: list<array<string, mixed>>}>
      * }
@@ -35,11 +35,6 @@ final class Regulations
                 'ПЛАТФОРМА ДЛЯ ЖЕНЩИН-ПРЕДПРИНИМАТЕЛЕЙ WOMAN’S HUB',
                 'PLATFORM FOR WOMEN ENTREPRENEURS WOMAN’S HUB',
                 'PLATFORMĂ PENTRU FEMEI ANTREPRENOARE WOMAN’S HUB',
-            ),
-            'note' => self::t(
-                'Рабочая редакция. Конкретные финансовые, организационные и процедурные условия могут уточняться отдельными регламентами.',
-                'Working draft. Specific financial, organizational and procedural conditions may be clarified by separate rules.',
-                'Ediție de lucru. Condițiile financiare, organizatorice și procedurale concrete pot fi precizate prin regulamente separate.',
             ),
             // Описание страницы для поисковиков и заголовка вкладки.
             'intro' => self::t(

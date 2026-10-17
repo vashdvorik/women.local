@@ -166,7 +166,6 @@ body.miro-player-open { overflow: hidden; }
 /* Сетка и боковая колонка те же, что у статьи (miro-article__layout): слева разделы, справа содержание. */
 .miro-doc .miro-article__title { margin-bottom: 8px; }
 .miro-doc__subtitle { margin: 0 0 20px; color: var(--miro-blue, #74472F); font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
-.miro-doc__note { max-width: 760px; margin: 0 0 40px; padding-left: 16px; border-left: 3px solid var(--miro-hairline-strong, #C5A895); color: var(--miro-slate, #6B5750); font-size: 15px; font-style: italic; line-height: 1.6; }
 /* Подзаголовок без примечания под ним (Положение о Гала-премии): до разделов тот же отступ, что после примечания. */
 .miro-doc__subtitle + .miro-article__layout { margin-top: 20px; }
 .miro-doc__section { scroll-margin-top: 96px; }
@@ -189,9 +188,8 @@ body.miro-player-open { overflow: hidden; }
 .miro-doc__items li:first-child { border-top: 0; }
 .miro-doc__items li::before { content: counter(item); position: absolute; top: 10px; left: 0; display: grid; width: 26px; height: 26px; place-items: center; border-radius: 50%; background: var(--miro-pink, #F1E3DA); color: var(--miro-blue, #74472F); font-size: 12px; font-weight: 600; }
 /* Общее правило navigation.css («.miro-page :is(p, li, a, …) { color: тёмный }») стоит ниже по файлу и равно по весу, поэтому
-   особые цвета документа (синяя подпись, серые примечания, белая цена на тёмной плашке) записаны с большим весом. */
+   особые цвета документа (синяя подпись, серые подписи, белая цена на тёмной плашке) записаны с большим весом. */
 .miro-page .miro-doc .miro-doc__subtitle { color: var(--miro-blue, #74472F); }
-.miro-page .miro-doc .miro-doc__note,
 .miro-page .miro-doc .miro-doc__toc-title,
 .miro-page .miro-doc .miro-doc__includes { color: var(--miro-slate, #6B5750); }
 .miro-page .miro-doc .miro-doc__package--private .miro-doc__price { background: var(--miro-primary, #2A1913); color: #FFFDFC; }
@@ -207,7 +205,6 @@ body.miro-player-open { overflow: hidden; }
 @media (max-width: 767px) {
     .miro-doc__package { padding: 20px; border-radius: 20px; }
     .miro-doc__clause, .miro-doc__list li { font-size: 16px; }
-    .miro-doc__note { margin-bottom: 28px; }
 }
 
 @media (max-width: 767px) {

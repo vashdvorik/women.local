@@ -35,16 +35,13 @@
 
 {{-- Документ-положение (Положение о платформе /about/regulations, Положение о Гала-премии /gala/regulations): название,
      затем слева (8 колонок из 12) разделы, справа (4) содержание со ссылками на разделы. Меньше 1024 px: одна колонка,
-     содержание сразу под названием. Текст — App\Support\Regulations и App\Support\GalaRegulations (подзаголовок и
-     примечание в них необязательны). --}}
+     содержание сразу под названием. Текст — App\Support\Regulations и App\Support\GalaRegulations (подзаголовок в них
+     необязателен). --}}
 @section('content')
     <article class="miro-article miro-doc">
         <h1 class="miro-article__title">{{ $tri($content['title']) }}</h1>
         @if(! empty($content['subtitle']))
             <p class="miro-doc__subtitle">{{ $tri($content['subtitle']) }}</p>
-        @endif
-        @if(! empty($content['note']))
-            <p class="miro-doc__note">{{ $tri($content['note']) }}</p>
         @endif
 
         <div class="miro-article__layout">

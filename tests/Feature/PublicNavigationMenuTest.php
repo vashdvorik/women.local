@@ -55,6 +55,31 @@ class PublicNavigationMenuTest extends TestCase
         $this->get(route('about.priorities'))->assertOk();
     }
 
+    public function test_the_honorary_members_page_is_gone_and_the_people_menu_no_longer_links_to_it(): void
+    {
+        $this->get('/members/honorary')->assertNotFound();
+        $this->assertFalse(Route::has('members.honorary'));
+
+        foreach (['/', '/events', '/members'] as $url) {
+            $html = $this->get($url)->assertOk()->getContent();
+            $menu = substr($html, strpos($html, 'id="miro-people-menu"'), 1200);
+
+            $this->assertStringNotContainsString('/members/honorary', $html, $url);
+            $this->assertStringNotContainsString('Почётные члены', $menu, $url);
+            $this->assertStringNotContainsString('Honorary members', $menu, $url);
+            $this->assertStringNotContainsString('Membre onorifice', $menu, $url);
+            // Остальные пункты меню «Люди» на месте.
+            $this->assertStringContainsString(route('members'), $menu);
+            $this->assertStringContainsString(route('experts'), $menu);
+            $this->assertStringContainsString(route('members.join'), $menu);
+        }
+
+        // Соседние страницы раздела открываются как прежде.
+        $this->get(route('members'))->assertOk();
+        $this->get(route('members.join'))->assertOk();
+        $this->get(route('experts'))->assertOk();
+    }
+
     public function test_the_landing_menu_links_get_a_light_colour_after_the_legacy_dark_rule(): void
     {
         $css = $this->css();

@@ -22,6 +22,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Prata&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('themes/public/'.$theme.'/css/events.css') }}">
     <link rel="stylesheet" href="{{ asset('themes/public/'.$theme.'/css/public-section.css') }}">
+    {{-- Стили отдельных страниц (@push('styles')): перед navigation.css, он остаётся последним (тест PublicButtonsTest). --}}
+    @stack('styles')
     <link rel="stylesheet" href="{{ asset('themes/public/'.$theme.'/css/navigation.css') }}">
 </head>
 <body>
@@ -41,12 +43,18 @@
                     @if($heroIntro && array_filter($heroIntro))
                         <p class="miro-public-hero__intro">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ $heroIntro[$l] }}</span>@endforeach</p>
                     @endif
+                    {{-- Кнопки под описанием (необязательно): секция hero_actions страницы. --}}
+                    @hasSection('hero_actions')
+                        <div class="miro-public-hero__actions">@yield('hero_actions')</div>
+                    @endif
                 </div>
                 <div class="miro-public-hero__accent" aria-hidden="true"><span></span><span></span><span></span></div>
             </div>
         </section>
         @endunless
 
+        {{-- Страница из полноширинных полос (секция bands: «Приоритеты», «Как стать участницей») обходится без этого блока. --}}
+        @if(trim($__env->yieldContent('content')) !== '')
         <section class="miro-public-content @if($compactHero ?? false) miro-public-content--article @endif @if($bareHero ?? false) miro-public-content--bare @endif">
             <div class="miro-container">
                 @if($bareHero ?? false)
@@ -58,6 +66,9 @@
                 @yield('content')
             </div>
         </section>
+        @endif
+
+        @yield('bands')
     </main>
 
     @include('themes.public.miro.partials.miro-footer')

@@ -214,7 +214,7 @@
                 </figure>
             </div>
         </section>
-        {{-- .miro-logo-wall moved to priorities.blade.php (see /about/priorities). --}}
+        {{-- .miro-logo-wall убран с главной (раньше жил на /about/priorities; та страница теперь написана заново по Положению). --}}
 
 
 
@@ -307,9 +307,9 @@
             </div>
         </section>
 
-        {{-- #features moved to priorities.blade.php (see /about/priorities). --}}
+        {{-- #features убран с главной (подробности о платформе: /about/priorities и /members/join). --}}
 
-        {{-- #learning moved to priorities.blade.php (see /about/priorities). --}}
+        {{-- #learning убран с главной (подробности о платформе: /about/priorities и /members/join). --}}
 
         <section class="miro-section miro-section--soft" id="members">
             <div class="miro-container">
@@ -435,8 +435,7 @@
             </div>
         </section>
 
-        {{-- #stories and the closing "Готовы собрать свой следующий шаг?" CTA moved to
-             priorities.blade.php (see /about/priorities). --}}
+        {{-- #stories и завершающий призыв убраны с главной (подробности: /about/priorities и /members/join). --}}
 
         <section class="miro-section miro-section--surface" id="partners-strip">
             <div class="miro-container">

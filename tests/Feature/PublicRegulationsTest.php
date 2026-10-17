@@ -48,10 +48,24 @@ class PublicRegulationsTest extends TestCase
         $this->assertStringContainsString('<title>Положение — Women', $html);
         $this->assertStringContainsString('<meta name="description" content="Положение о платформе Woman’s Hub', $html);
 
-        // Подзаголовок и пометка «рабочая редакция» из документа, на трёх языках.
-        foreach (['ПЛАТФОРМА ДЛЯ ЖЕНЩИН-ПРЕДПРИНИМАТЕЛЕЙ WOMAN’S HUB', 'PLATFORM FOR WOMEN ENTREPRENEURS WOMAN’S HUB', 'PLATFORMĂ PENTRU FEMEI ANTREPRENOARE WOMAN’S HUB', 'Рабочая редакция.', 'Working draft.', 'Ediție de lucru.'] as $text) {
+        // Подзаголовок из документа на трёх языках.
+        foreach (['ПЛАТФОРМА ДЛЯ ЖЕНЩИН-ПРЕДПРИНИМАТЕЛЕЙ WOMAN’S HUB', 'PLATFORM FOR WOMEN ENTREPRENEURS WOMAN’S HUB', 'PLATFORMĂ PENTRU FEMEI ANTREPRENOARE WOMAN’S HUB'] as $text) {
             $this->assertStringContainsString($text, $html, $text);
         }
+    }
+
+    public function test_the_working_draft_note_is_not_shown(): void
+    {
+        $html = $this->get(route('about.regulations'))->assertOk()->getContent();
+
+        // Фразу «Рабочая редакция. Конкретные финансовые, организационные и процедурные условия могут уточняться отдельными
+        // регламентами» с страницы убрали: ни на одном языке, ни в разметке, ни в данных.
+        foreach (['Рабочая редакция', 'Working draft', 'Ediție de lucru', 'могут уточняться отдельными регламентами', 'miro-doc__note'] as $text) {
+            $this->assertStringNotContainsString($text, $html, $text);
+        }
+
+        $this->assertArrayNotHasKey('note', Regulations::content());
+        $this->assertStringNotContainsString('Рабочая редакция', file_get_contents(public_path('themes/public/miro/css/public-section.css')));
     }
 
     public function test_every_section_and_clause_of_the_document_is_on_the_page_in_the_order_of_the_document(): void
