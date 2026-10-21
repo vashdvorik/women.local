@@ -93,10 +93,10 @@ class AccountCabinetTest extends TestCase
             ->assertOk()
             ->getContent();
 
-        // Тот же рисунок, что в шапке публичного сайта, в тёмных тонах: боковое меню светлое, тёмной плашки нет.
-        $this->assertStringContainsString('themes/public/miro/images/brand/logo-dark.webp', $html);
+        // Основной логотип платформы, тот же рисунок, что в шапке публичного сайта, в цветном исполнении: боковое меню светлое, тёмной плашки нет.
+        $this->assertStringContainsString('themes/public/miro/images/brand/logo-platform.webp', $html);
         $this->assertStringContainsString('class="account-brand-logo', $html);
-        $this->assertStringNotContainsString('logo-white', $html);
+        $this->assertStringNotContainsString('logo-platform-light', $html);
         $this->assertStringNotContainsString('background:#21140F', $html);
         $this->assertStringContainsString('href="'.route('account.index').'" aria-label="Women\'s hub"', $html);
     }

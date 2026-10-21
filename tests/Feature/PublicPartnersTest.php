@@ -19,8 +19,8 @@ class PublicPartnersTest extends TestCase
             ->assertSee('UN Women')
             ->assertSee('https://innovation.md/', false)
             ->assertSee('https://moldova.unwomen.org/', false)
-            ->assertSee('images/brand/logo-white.webp', false)
-            ->assertSee('images/brand/favicon.png', false);
+            ->assertSee('images/brand/logo-platform-light.webp', false)
+            ->assertSee('images/brand/favicon-w4w.png', false);
 
         $this->assertSame(10, substr_count($response->getContent(), 'class="miro-partner-card miro-partner-card--'));
         $this->assertSame(10, substr_count($response->getContent(), 'class="miro-partner-link"'));

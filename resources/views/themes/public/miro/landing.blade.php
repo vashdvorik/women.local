@@ -14,7 +14,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Women's hub</title>
     <meta name="description" content="Пространство для женщин-предпринимательниц: обучение, контакты, AI-рекомендации и возможности роста.">
-    <link rel="icon" type="image/png" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/favicon-w4w.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/apple-touch-icon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Prata&display=swap" rel="stylesheet">
@@ -29,7 +30,7 @@
     <nav class="miro-nav" id="miro-nav">
         <div class="miro-container miro-nav__inner">
             <a href="#top" class="miro-brand">
-                <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/logo-white.webp') }}" alt="Women's hub" class="miro-brand__logo">
+                <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/logo-platform-light.webp') }}" alt="Women's hub" class="miro-brand__logo">
                 <span>Women</span>
             </a>
             <div class="miro-nav__links" id="miro-nav-links">
@@ -332,7 +333,7 @@
                     @endforeach
                 </div>
                 <div class="miro-members__cta">
-                    <a class="miro-button miro-button--primary" href="{{ route('experts') }}"><span data-lang="ru">Найти похожие профили&nbsp;→</span><span data-lang="en">Find similar profiles&nbsp;→</span><span data-lang="ro">Găsește profiluri similare&nbsp;→</span></a>
+                    <a class="miro-button miro-button--primary" href="{{ route('experts') }}"><span data-lang="ru">Наши эксперты&nbsp;→</span><span data-lang="en">Our Experts&nbsp;→</span><span data-lang="ro">Experții noștri&nbsp;→</span></a>
                 </div>
             </div>
         </section>

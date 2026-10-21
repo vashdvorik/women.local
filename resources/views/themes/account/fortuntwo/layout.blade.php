@@ -9,7 +9,7 @@
     <title>@yield('title', __('account.cabinet')) — {{ __('account.brand') }}</title>
     <meta name="robots" content="noindex,nofollow">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" type="image/png" href="{{ asset('themes/account/fortuntwo/images/brand/favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('themes/account/fortuntwo/images/brand/favicon-w4w.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Prata&display=swap" rel="stylesheet">

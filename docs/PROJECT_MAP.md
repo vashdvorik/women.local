@@ -162,6 +162,17 @@ Web middleware подключает `SetLocale` глобально для web-г
 
 Дизайн-система сайта: `resources/views/themes/public/miro/WOMEN_EDITORIAL_LUXURY_DESIGN_SYSTEM.md`; кабинета: `resources/views/themes/account/fortuntwo/DESIGN.md`.
 
+**Логотипы.** Заказчик прислал три логотипа (`dizayn/newlogo`, белый фон, без прозрачности). На сайте лежат прозрачные WebP, обрезанные по рисунку, в `public/themes/public/miro/images/brand/`; у каждого есть цветной вариант (для светлых мест) и светлый `-light` (для тёмных шапки и подвала, тёмно-коричневые части перекрашены в кремовый):
+
+| Файл | Что это | Где стоит |
+|---|---|---|
+| `logo-platform.webp`, `logo-platform-light.webp` | основной горизонтальный: W4W + Women's Hub + слоган | шапка и подвал публичного сайта (`-light`), боковое меню кабинета, страница входа в админку (цветной) |
+| `logo-wordmark.webp`, `logo-wordmark-light.webp` | надпись «Women's Hub» + слоган | шапка бокового меню админки (цветной); `-light` пока не используется, держим для тёмных мест |
+| `logo-mark.webp`, `logo-mark-light.webp` | монограмма W4W с лентой и цветком | запас для узких мест; сам знак используется в иконках |
+| `favicon-w4w.png` (256 px), `apple-touch-icon.png` (180 px), `public/favicon.ico` (16/32/48) | монограмма на тёмно-коричневом `#21140F` | вкладка браузера и значок на экране телефона: публичные страницы, админка, кабинет (копия `favicon-w4w.png` лежит и в `public/themes/account/fortuntwo/images/brand/`) |
+
+Имена файлов новые сознательно: старые `logo-dark/white/ink.webp` и `favicon.png` удалены, а браузеры держат иконки и картинки в кеше по адресу — под прежним именем посетители долго видели бы старый логотип. Если логотип придёт снова, сделайте файлам новые имена и поправьте шаблоны (`BrandLogosTest` проверяет, что на удалённые файлы ничего не ссылается). Размеры в шапке и подвале задаёт `public/themes/public/miro/css/navigation.css` (высота 40–50 px в шапке, 64 px в подвале). Тест `tests/Feature/BrandLogosTest.php` следит за прозрачностью, пропорциями и яркостью вариантов.
+
 **Как выбирается тема.** Выбор хранится в `site_settings` (`landing_theme`, `account_theme`), темы сайта и кабинета независимы: смена одной не трогает другую. Меняются в админке («Настройки сайта» и «Настройки кабинетов», вкладка «Тема»). Значение, которого нет в каталоге (например, имя удалённой темы в базе или в кеше сервера), заменяется темой по умолчанию — `SiteSetting::DEFAULT_LANDING_THEME` (`miro`) и `SiteSetting::DEFAULT_ACCOUNT_THEME` (`fortuntwo`). Поэтому удаление темы не ломает сайт, даже если у неё остался выбор в базе.
 
 ### Как добавить тему
@@ -171,7 +182,7 @@ Web middleware подключает `SetLocale` глобально для web-г
 1. Добавьте строку `'aurora' => 'Aurora'` в `SiteSetting::ACCOUNT_THEMES`. Радиокнопка в админке появится сама.
 2. Создайте `resources/views/themes/account/aurora/layout.blade.php`: боковое меню строится из `App\Support\CabinetNav::extend($navItems, $accountUser)`, логотип — `@include('account.partials.brand-logo')`. За образец возьмите `fortuntwo/layout.blade.php`.
 3. Создайте страницы `resources/views/themes/account/aurora/pages/`: `index`, `knowledge`, `matches`, `people`, `person`, `profile`, `profile-edit`, `search`, `opportunities/index`, `opportunities/create`. Контроллеры открывают их как `themes.account.{тема}.pages.{страница}`; страницы «Подписка», «Закрытый раздел» и вход (`resources/views/account/*`) общие и подключают layout активной темы.
-4. Стили и иконку положите в `public/themes/account/aurora/` (`css/theme.css`, `images/brand/favicon.png`) и подключите в layout.
+4. Стили и иконку положите в `public/themes/account/aurora/` (`css/theme.css`, `images/brand/favicon-w4w.png`) и подключите в layout.
 
 **Тема сайта** (допустим, `aurora`):
 

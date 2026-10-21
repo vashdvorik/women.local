@@ -1,7 +1,7 @@
 @php
     $publicTheme = \App\Models\SiteSetting::landingTheme();
     $publicTheme = array_key_exists($publicTheme, \App\Models\SiteSetting::LANDING_THEMES) ? $publicTheme : \App\Models\SiteSetting::DEFAULT_LANDING_THEME;
-    $themeFavicon = asset('themes/public/' . $publicTheme . '/images/brand/favicon.png');
+    $themeFavicon = asset('themes/public/' . $publicTheme . '/images/brand/favicon-w4w.png');
 @endphp
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">

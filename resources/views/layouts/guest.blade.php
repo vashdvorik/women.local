@@ -13,10 +13,10 @@
         <div class="mb-4 flex justify-end">
             <x-admin.lang-switch />
         </div>
-        {{-- Логотип сайта (тот же, что в шапке публичного сайта и в кабинете), в тёмных тонах: страница светлая. --}}
+        {{-- Основной логотип платформы (тот же, что в шапке публичного сайта и в кабинете), цветной: страница светлая. --}}
         <a href="{{ url('/') }}" class="admin-login-logo mb-8 flex justify-center">
-            <img src="{{ asset('themes/public/miro/images/brand/logo-dark.webp') }}" alt="{{ config('app.name') }}"
-                 class="h-10 w-auto max-w-full object-contain">
+            <img src="{{ asset('themes/public/miro/images/brand/logo-platform.webp') }}" alt="{{ config('app.name') }}"
+                 class="h-14 w-auto max-w-full object-contain">
         </a>
         {{ $slot }}
     </div>

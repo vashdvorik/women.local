@@ -31,11 +31,12 @@
 @endphp
 
 <aside {{ $attributes->merge(['class' => 'admin-sidebar']) }}>
-    {{-- Логотип сайта (тот же, что в кабинете участниц и в шапке публичного сайта), в тёмных тонах: меню светлое. --}}
+    {{-- Надпись «Women's Hub» (logo-wordmark.webp): для рабочего инструмента монограмма не нужна, а название читается
+         крупнее, чем в полном логотипе при той же высоте. Цветной вариант: меню светлое. --}}
     <a href="{{ route('admin.dashboard') }}"
        class="admin-brand-logo h-header flex items-center px-4 border-b border-hairline shrink-0"
        title="{{ config('app.name') }} — {{ __('Админпанель') }}">
-        <img src="{{ asset('themes/public/miro/images/brand/logo-dark.webp') }}" alt="{{ config('app.name') }} — {{ __('Админпанель') }}"
+        <img src="{{ asset('themes/public/miro/images/brand/logo-wordmark.webp') }}" alt="{{ config('app.name') }} — {{ __('Админпанель') }}"
              class="h-10 w-auto max-w-full object-contain object-left">
     </a>
 
