@@ -90,6 +90,8 @@
                             <span data-lang="en">A digital space for learning, networking, mentorship, and business growth across the region.</span>
                             <span data-lang="ro">Un spațiu digital pentru învățare, networking, mentorat și creșterea afacerilor în regiune.</span>
                         </p>
+                        {{-- Кнопки и плашка «500+» — один блок одной ширины (на широких экранах кнопки делят ширину плашки поровну) --}}
+                        <div class="miro-hero__cta">
                         <div class="miro-hero__actions">
                             <a href="{{ route('account.login') }}" class="miro-button miro-button--primary miro-button--brand">
                                 <span data-lang="ru">Присоединиться</span><span data-lang="en">Join the Platform</span><span data-lang="ro">Alătură-te platformei</span>
@@ -101,15 +103,37 @@
                         <div class="miro-proof">
                             <span class="miro-proof__icon" aria-hidden="true"><i class="ph ph-users-three"></i></span>
                             <span class="miro-proof__copy">
-                                <strong class="miro-proof__value">500+</strong>
+                                <strong class="miro-proof__value">500<span class="miro-proof__plus">+</span></strong>
                                 <span class="miro-proof__label"><span data-lang="ru">женщин уже объединены в сообщество</span><span data-lang="en">women already connected through the community</span><span data-lang="ro">de femei deja conectate în comunitate</span></span>
                             </span>
+                        </div>
                         </div>
                     </div>
                     <div class="miro-hero__visual" aria-label="Women entrepreneurs collaborating">
                         <div class="miro-hero__image">
                             <img src="{{ asset_v('themes/public/miro/images/bannerhero.webp') }}" alt="Women entrepreneurs collaborating around a laptop">
                         </div>
+                    </div>
+                    {{-- Живой фон первого экрана: три медленных световых пятна и золотистые пылинки, которые мерцают на месте (без
+                         подъёма вверх). Только CSS (transform и opacity), слой лежит между фото и текстом и не ловит клики;
+                         «уменьшить анимацию» в системе его отключает. Положение, размер и скорость каждой пылинки заданы здесь
+                         числами, чтобы вид не менялся от загрузки к загрузке. --}}
+                    @php
+                        $dust = [
+                            // [left %, top %, размер px, период с, сдвиг с, дрейф px]
+                            [5, 22, 3, 9, 0, 14], [12, 64, 2, 11, 6, -12], [19, 38, 4, 10, 13, 16], [27, 80, 2, 12, 3, -14], [34, 18, 3, 9, 7, 12],
+                            [41, 52, 2, 11, 9, -12], [48, 30, 4, 10, 1, 16], [55, 72, 2, 12, 5, -10], [62, 14, 3, 9, 8, 14], [69, 58, 2, 11, 2, -14],
+                            [76, 34, 4, 10, 4, 12], [83, 78, 2, 12, 11, -12], [89, 20, 3, 9, 6, 14], [94, 60, 2, 11, 8, -10], [9, 46, 3, 12, 10, 10],
+                            [31, 66, 2, 10, 12, -8], [58, 46, 3, 12, 2, 12], [86, 44, 4, 10, 14, -14],
+                        ];
+                    @endphp
+                    <div class="miro-hero__ambient" aria-hidden="true">
+                        <span class="miro-hero__glow miro-hero__glow--a"></span>
+                        <span class="miro-hero__glow miro-hero__glow--b"></span>
+                        <span class="miro-hero__glow miro-hero__glow--c"></span>
+                        @foreach($dust as [$x, $y, $size, $period, $delay, $drift])
+                            <span class="miro-hero__dust" style="--x: {{ $x }}%; --y: {{ $y }}%; --s: {{ $size }}px; --t: {{ $period }}s; --d: -{{ $delay }}s; --w: {{ $drift }}px"></span>
+                        @endforeach
                     </div>
                     <svg class="miro-hero__bottom-curve" viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true">
                         <defs>
@@ -142,7 +166,7 @@
                     <div class="miro-direction-card__icon" aria-hidden="true">
                         <i class="ph ph-crown"></i>
                     </div>
-                    <h3><span data-lang="ru">Премия<br>«Женщина года»</span><span data-lang="en">Award<br>“Woman of the Year”</span><span data-lang="ro">Premiul<br>„Femeia anului”</span></h3>
+                    <h3><span data-lang="ru">Гала Премия<br>«Женщина Года»</span><span data-lang="en">Award<br>“Woman of the Year”</span><span data-lang="ro">Premiul<br>„Femeia anului”</span></h3>
                 </article>
                 <article class="miro-direction-card miro-direction-card--learning">
                     <div class="miro-direction-card__icon" aria-hidden="true">
@@ -213,6 +237,57 @@
                     <span class="miro-director-note__accent" aria-hidden="true"></span>
                     <img src="{{ asset_v('themes/public/miro/images/director.webp') }}" alt="Валерия Зелинская">
                 </figure>
+            </div>
+        </section>
+        {{-- «Наш вклад в цифрах»: оргсхема «центр → три ветви → показатели». Цифры и подписи — App\Support\ImpactStats,
+             анимация (линии прорисовываются, цифры считаются) — js/impact.js. Без скрипта или при «уменьшить анимацию»
+             в системе показывается сразу в готовом виде: значения уже стоят в разметке. --}}
+        @php
+            $impactHead = \App\Support\ImpactStats::head();
+            $impactTri = fn (array $text) => new \Illuminate\Support\HtmlString(collect(['ru', 'en', 'ro'])->map(fn ($l) => '<span data-lang="'.$l.'">'.e($text[$l]).'</span>')->implode(''));
+        @endphp
+        <section class="miro-impact" id="impact" data-impact aria-labelledby="impact-title">
+            <div class="miro-container">
+                <div class="miro-impact__head">
+                    <p class="miro-impact__eyebrow">{{ $impactTri($impactHead['eyebrow']) }}</p>
+                    <h2 id="impact-title">{{ $impactTri($impactHead['title']) }}</h2>
+                    <p class="miro-impact__intro">{{ $impactTri($impactHead['intro']) }}</p>
+                </div>
+                <div class="miro-impact__tree">
+                    <div class="miro-impact__hub" aria-hidden="true">
+                        <img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/logo-mark-light.webp') }}" alt="" width="108" height="55" loading="lazy">
+                    </div>
+                    <span class="miro-impact__stem" aria-hidden="true"></span>
+                    <div class="miro-impact__branches">
+                        @foreach(\App\Support\ImpactStats::groups() as $b => $group)
+                            <article class="miro-impact__branch" style="--b: {{ $b }}">
+                                <h3 class="miro-impact__branch-title">{{ $impactTri($group['title']) }}</h3>
+                                <ul class="miro-impact__nodes">
+                                    @foreach($group['nodes'] as $k => $node)
+                                        @php $delay = 2000 + $b * 90 + $k * 170; @endphp
+                                        <li class="miro-impact__node" style="--delay: {{ $delay }}ms">
+                                            @if(isset($node['second']))
+                                                {{-- Две цифры в одной карточке («45 конференций | 15 форумов») с общей подписью --}}
+                                                <span class="miro-impact__pair">
+                                                    @foreach([$node, $node['second']] as $h => $half)
+                                                        <span class="miro-impact__half">
+                                                            <span class="miro-impact__value"><span data-count-to="{{ $half['value'] }}" data-count-delay="{{ $delay + 150 + $h * 120 }}">{{ \App\Support\ImpactStats::format($half['value']) }}</span>@if($half['plus'])<span class="miro-impact__plus">+</span>@endif</span>
+                                                            <span class="miro-impact__label">{{ $impactTri($half['label']) }}</span>
+                                                        </span>
+                                                    @endforeach
+                                                </span>
+                                            @else
+                                                <span class="miro-impact__value"><span data-count-to="{{ $node['value'] }}" data-count-delay="{{ $delay + 150 }}">{{ \App\Support\ImpactStats::format($node['value']) }}</span>@if($node['plus'])<span class="miro-impact__plus">+</span>@endif</span>
+                                                <span class="miro-impact__label">{{ $impactTri($node['label']) }}</span>
+                                            @endif
+                                            <span class="miro-impact__note">{{ $impactTri($node['note']) }}</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </article>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </section>
         {{-- .miro-logo-wall убран с главной (раньше жил на /about/priorities; та страница теперь написана заново по Положению). --}}
@@ -438,23 +513,22 @@
 
         {{-- #stories и завершающий призыв убраны с главной (подробности: /about/priorities и /members/join). --}}
 
+        {{-- Логотипы партнёров: две группы без подписей и ссылок, данные — App\Support\PartnerLogos (общие со страницей «Партнёры»). --}}
         <section class="miro-section miro-section--surface" id="partners-strip">
             <div class="miro-container">
                 <div class="miro-section__head miro-section__head--center">
                     <h2><span data-lang="ru">Наши партнёры</span><span data-lang="en">Our partners</span><span data-lang="ro">Partenerii noștri</span></h2>
                 </div>
-                <div class="miro-partners-strip">
-                    <a class="miro-partner-chip" href="https://innovation.md/" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/coordinator-ida.png') }}" alt="Агентство инноваций и развития" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://creativity.md/" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/coordinator-creative.png') }}" alt="Ассоциация креативных индустрий Приднестровья" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://social.innovation.md/" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/coordinator-platform.png') }}" alt="Платформа социального предпринимательства" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://eba.md/" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/local-eba.png') }}" alt="European Business Association Moldova" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://afam.md/" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/local-afam.png') }}" alt="AFAM" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://glia.md/" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/local-glia.png') }}" alt="Glia Impact Hub" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://progen.md/" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/local-progen.png') }}" alt="Centrul Parteneriat pentru Dezvoltare" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://www.netherlandsandyou.nl/web/moldova" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/intl-netherlands.png') }}" alt="Королевство Нидерландов" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://www.nrc.no/moldova" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/intl-nrc.png') }}" alt="Норвежский совет по делам беженцев" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://moldova.unwomen.org/" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/intl-unwomen.png') }}" alt="ООН-женщины" loading="lazy"></a>
-                </div>
+                @foreach(\App\Support\PartnerLogos::groups() as $group)
+                    <div class="miro-partners-group">
+                        <h3 class="miro-partners-group__title"><span data-lang="ru">{{ $group['title']['ru'] }}</span><span data-lang="en">{{ $group['title']['en'] }}</span><span data-lang="ro">{{ $group['title']['ro'] }}</span></h3>
+                        <div class="miro-partners-strip">
+                            @foreach($group['logos'] as $logo)
+                                <div class="miro-partner-chip"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/home/' . $logo['file'] . '.webp') }}" alt="{{ $logo['alt'] }}" width="{{ \App\Support\PartnerLogos::width($logo['ratio']) }}" loading="lazy"></div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </section>
     </main>
@@ -479,5 +553,6 @@
     @endif
 
     <script defer src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/js/participants.js') }}"></script>
+    <script defer src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/js/impact.js') }}"></script>
 </body>
 </html>

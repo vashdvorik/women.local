@@ -19,6 +19,8 @@ class OpportunityController extends Controller
         /** @var BotUser $accountUser */
         $accountUser = view()->shared('accountUser');
 
+        $accountUser->markSeen('opportunities');
+
         // Одобренные посты видны всем, свои (в том числе ожидающие решения) — их автору.
         $opportunities = Opportunity::with('author')
             ->visibleTo($accountUser)

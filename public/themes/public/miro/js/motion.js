@@ -21,7 +21,7 @@
             '.miro-partners-cta',
             '.miro-partners-group__head',
             '.miro-contact-layout > div:first-child',
-            '.miro-contact-topics',
+            '.miro-contact-form',
             '.miro-public-cta',
             '.miro-public-placeholder',
         ],

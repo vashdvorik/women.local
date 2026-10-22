@@ -1,7 +1,6 @@
 @php
     $botUrl = 'https://t.me/WomenComBot';
     $managerUrl = 'https://t.me/lesnichenkoP';
-    $communityUrl = config('nutgram.community_url', $botUrl);
 @endphp
 <!doctype html>
 <html lang="ru" class="miro-page scroll-smooth">
@@ -37,54 +36,80 @@
                             <a href="{{ $botUrl }}" target="_blank" rel="noopener">@WomenComBot&nbsp;→</a>
                         </article>
                         <article class="miro-contact-card">
-                            <div class="miro-contact-card__icon" aria-hidden="true">✦</div>
-                            <h3><span data-lang="ru">Команда проекта</span><span data-lang="en">Project team</span><span data-lang="ro">Echipa proiectului</span></h3>
-                            <p><span data-lang="ru">Вопросы о платформе, партнёрстве и сотрудничестве.</span><span data-lang="en">Questions about the platform, partnerships and collaboration.</span><span data-lang="ro">Întrebări despre platformă, parteneriate și colaborare.</span></p>
-                            <a href="{{ $managerUrl }}" target="_blank" rel="noopener">@lesnichenkoP&nbsp;→</a>
-                        </article>
-                        <article class="miro-contact-card">
-                            <div class="miro-contact-card__icon" aria-hidden="true">↗</div>
-                            <h3><span data-lang="ru">Сообщество</span><span data-lang="en">Community</span><span data-lang="ro">Comunitate</span></h3>
-                            <p><span data-lang="ru">Новости, приглашения и новые знакомства.</span><span data-lang="en">News, invitations and new connections.</span><span data-lang="ro">Noutăți, invitații și conexiuni noi.</span></p>
-                            <a href="{{ $communityUrl }}" target="_blank" rel="noopener"><span data-lang="ru">Открыть сообщество&nbsp;→</span><span data-lang="en">Open the community&nbsp;→</span><span data-lang="ro">Deschide comunitatea&nbsp;→</span></a>
-                        </article>
-                        <article class="miro-contact-card">
-                            <div class="miro-contact-card__icon" aria-hidden="true">⌂</div>
-                            <h3><span data-lang="ru">Телефон</span><span data-lang="en">Phone</span><span data-lang="ro">Telefon</span></h3>
-                            <p><span data-lang="ru">Свяжитесь с командой по рабочим вопросам.</span><span data-lang="en">Contact the team about project and office matters.</span><span data-lang="ro">Contactează echipa pentru întrebări despre proiect și oficiu.</span></p>
-                            <a href="tel:+37377798317">+373 777 983 17&nbsp;→</a>
-                        </article>
-                        <article class="miro-contact-card">
                             <div class="miro-contact-card__icon" aria-hidden="true">@</div>
                             <h3><span data-lang="ru">Электронная почта</span><span data-lang="en">Email</span><span data-lang="ro">Email</span></h3>
-                            <p><span data-lang="ru">Напишите нам по общим и проектным вопросам.</span><span data-lang="en">Write to us about general and project questions.</span><span data-lang="ro">Scrie-ne pentru întrebări generale și despre proiect.</span></p>
+                            <p><span data-lang="ru">Будем рады идеям и предложениям: о сотрудничестве, партнёрстве, совместных проектах и мероприятиях. Расскажите, чем вы занимаетесь и чем мы могли бы быть друг другу полезны.</span><span data-lang="en">We would love to hear your ideas and proposals: about cooperation, partnerships, joint projects and events. Tell us what you do and how we could be useful to each other.</span><span data-lang="ro">Ne vor bucura ideile și propunerile dvs.: despre colaborare, parteneriate, proiecte comune și evenimente. Spuneți-ne cu ce vă ocupați și cum am putea fi de folos unii altora.</span></p>
                             <div class="miro-contact-card__links">
-                                <a href="mailto:women.tiras.hub@gmail.com">women.tiras.hub@gmail.com</a>
-                                <a href="mailto:elena.sinika@innovation.md">elena.sinika@innovation.md</a>
+                                <a href="mailto:{{ config('site.contacts.email') }}">{{ config('site.contacts.email') }}</a>
                             </div>
                         </article>
                         <article class="miro-contact-card">
+                            <div class="miro-contact-card__icon" aria-hidden="true">✦</div>
+                            <h3><span data-lang="ru">Команда разработчиков</span><span data-lang="en">Development team</span><span data-lang="ro">Echipa de dezvoltare</span></h3>
+                            <p><span data-lang="ru">Если что-то на сайте или в боте работает не так, как хотелось бы, или у вас есть идея, как сделать платформу удобнее, будем рады вашему сообщению.</span><span data-lang="en">If something on the site or in the bot does not work the way you would like, or you have an idea of how to make the platform more convenient, we would be glad to hear from you.</span><span data-lang="ro">Dacă ceva pe site sau în bot nu funcționează așa cum v-ați dori, sau aveți o idee cum să facem platforma mai comodă, vom fi bucuroși să auzim de la dvs.</span></p>
+                            <a href="{{ $managerUrl }}" target="_blank" rel="noopener">@lesnichenkoP&nbsp;→</a>
+                        </article>
+                        <article class="miro-contact-card">
                             <div class="miro-contact-card__icon" aria-hidden="true">⌖</div>
-                            <h3><span data-lang="ru">Адрес и карта</span><span data-lang="en">Address and map</span><span data-lang="ro">Adresă și hartă</span></h3>
-                            <div class="miro-contact-card__map" aria-hidden="true"><span></span></div>
-                            <p><span data-lang="ru">г. Тирасполь, ул. Свердлова, 57<br>Приднестровье, MD-3300</span><span data-lang="en">57 Sverdlova Street, Tiraspol<br>Transnistria, MD-3300</span><span data-lang="ro">str. Sverdlov 57, Tiraspol<br>Transnistria, MD-3300</span></p>
-                            <a href="https://www.google.com/maps/search/?api=1&amp;query=Tiraspol%2C%20Sverdlova%2057" target="_blank" rel="noopener"><span data-lang="ru">Открыть карту&nbsp;→</span><span data-lang="en">Open map&nbsp;→</span><span data-lang="ro">Deschide harta&nbsp;→</span></a>
+                            <h3><span data-lang="ru">Адреса и карта</span><span data-lang="en">Addresses and map</span><span data-lang="ro">Adrese și hartă</span></h3>
+                            <div class="miro-contact-card__address">
+                                <p><span data-lang="ru">г. Тирасполь, ул. Свердлова, 57,<br>MD-3300, Молдова</span><span data-lang="en">57 Sverdlova Street, MD-3300,<br>Tiraspol, Moldova</span><span data-lang="ro">str. Sverdlov 57, MD-3300,<br>Tiraspol, Moldova</span></p>
+                                <a href="https://www.google.com/maps/search/?api=1&amp;query=Tiraspol%2C%20Sverdlova%2057" target="_blank" rel="noopener"><span data-lang="ru">Открыть карту&nbsp;→</span><span data-lang="en">Open map&nbsp;→</span><span data-lang="ro">Deschide harta&nbsp;→</span></a>
+                            </div>
+                            <div class="miro-contact-card__address">
+                                <p><span data-lang="ru">г. Кишинёв, ул. Алексея Щусева, 105,<br>MD-2012, Республика Молдова</span><span data-lang="en">105 Alexei Sciusev Street, MD-2012,<br>Chisinau, Republic of Moldova</span><span data-lang="ro">str. Alexei Sciusev 105, MD-2012,<br>Chișinău, Republica Moldova</span></p>
+                                <a href="https://www.google.com/maps/search/?api=1&amp;query=Chisinau%2C%20Alexei%20Sciusev%20105" target="_blank" rel="noopener"><span data-lang="ru">Открыть карту&nbsp;→</span><span data-lang="en">Open map&nbsp;→</span><span data-lang="ro">Deschide harta&nbsp;→</span></a>
+                            </div>
                         </article>
                     </div>
                 </div>
 
-                <aside class="miro-contact-topics">
-                    <h3><span data-lang="ru">Что можно обсудить?</span><span data-lang="en">What can we discuss?</span><span data-lang="ro">Ce putem discuta?</span></h3>
-                    <ul>
-                        <li><span data-lang="ru">Участие и профиль на платформе</span><span data-lang="en">Participation and your platform profile</span><span data-lang="ro">Participarea și profilul pe platformă</span></li>
-                        <li><span data-lang="ru">Партнёрство и поддержка проекта</span><span data-lang="en">Partnerships and project support</span><span data-lang="ro">Parteneriate și susținerea proiectului</span></li>
-                        <li><span data-lang="ru">Событие, новость или возможность</span><span data-lang="en">An event, news item or opportunity</span><span data-lang="ro">Un eveniment, o știre sau o oportunitate</span></li>
-                        <li><span data-lang="ru">Обучение, наставничество и связи</span><span data-lang="en">Learning, mentoring and connections</span><span data-lang="ro">Învățare, mentorat și conexiuni</span></li>
-                    </ul>
-                    <div class="miro-contact-cta">
-                        <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-contact-button miro-contact-button--primary"><span data-lang="ru">Написать в Telegram&nbsp;→</span><span data-lang="en">Message us on Telegram&nbsp;→</span><span data-lang="ro">Scrie-ne pe Telegram&nbsp;→</span></a>
-                        <a href="{{ route('about') }}" class="miro-contact-button miro-contact-button--secondary"><span data-lang="ru">О платформе</span><span data-lang="en">About the platform</span><span data-lang="ro">Despre platformă</span></a>
-                    </div>
+                {{-- «Связаться с нами»: сохраняется в админке («Обращения») и уходит письмом на почту команды, см. ContactController. --}}
+                <aside class="miro-contact-form" id="contact-form">
+                    <h3><span data-lang="ru">Связаться с нами</span><span data-lang="en">Get in touch</span><span data-lang="ro">Contactează-ne</span></h3>
+                    <p class="miro-contact-form__lead"><span data-lang="ru">Расскажите, чем мы можем быть полезны, и мы ответим на почту.</span><span data-lang="en">Tell us how we can help and we will reply by email.</span><span data-lang="ro">Spune-ne cu ce te putem ajuta și îți vom răspunde pe email.</span></p>
+
+                    @if(session('contact_sent'))
+                        <p class="miro-contact-form__notice" role="status"><span data-lang="ru">Спасибо! Сообщение отправлено, мы ответим вам на почту.</span><span data-lang="en">Thank you! Your message has been sent and we will reply by email.</span><span data-lang="ro">Mulțumim! Mesajul a fost trimis, îți vom răspunde pe email.</span></p>
+                    @else
+                        <form method="POST" action="{{ route('contact.send') }}" class="miro-contact-form__form">
+                            @csrf
+                            <input type="hidden" name="form_token" value="{{ \App\Support\ContactForm::token() }}">
+                            {{-- Приманка для ботов: человек это поле не видит и не заполняет. --}}
+                            <div class="miro-contact-form__trap" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+
+                            <label class="miro-contact-form__field">
+                                <span class="miro-contact-form__label"><span data-lang="ru">Ваше имя</span><span data-lang="en">Your name</span><span data-lang="ro">Numele tău</span></span>
+                                <input type="text" name="name" value="{{ old('name') }}" required maxlength="120" autocomplete="name">
+                            </label>
+                            <label class="miro-contact-form__field">
+                                <span class="miro-contact-form__label"><span data-lang="ru">Электронная почта</span><span data-lang="en">Email</span><span data-lang="ro">Email</span></span>
+                                <input type="email" name="email" value="{{ old('email') }}" required maxlength="191" autocomplete="email" placeholder="name@example.com">
+                            </label>
+                            <label class="miro-contact-form__field">
+                                <span class="miro-contact-form__label"><span data-lang="ru">Телефон</span><span data-lang="en">Phone</span><span data-lang="ro">Telefon</span></span>
+                                <input type="tel" name="phone" value="{{ old('phone') }}" maxlength="32" autocomplete="tel" placeholder="+373 ...">
+                            </label>
+                            <label class="miro-contact-form__field">
+                                <span class="miro-contact-form__label"><span data-lang="ru">Организация и должность (по желанию)</span><span data-lang="en">Organisation and position (optional)</span><span data-lang="ro">Organizația și funcția (opțional)</span></span>
+                                <input type="text" name="organization" value="{{ old('organization') }}" maxlength="191" autocomplete="organization">
+                            </label>
+                            <label class="miro-contact-form__field miro-contact-form__field--wide">
+                                <span class="miro-contact-form__label"><span data-lang="ru">Сообщение</span><span data-lang="en">Message</span><span data-lang="ro">Mesaj</span></span>
+                                <textarea name="message" rows="5" required minlength="5" maxlength="4000">{{ old('message') }}</textarea>
+                            </label>
+
+                            @if(session('contact_error') === 'throttled')
+                                <p class="miro-contact-form__error" role="alert"><span data-lang="ru">Вы уже отправили несколько сообщений. Попробуйте, пожалуйста, чуть позже или напишите нам на почту.</span><span data-lang="en">You have already sent several messages. Please try again a little later or write to us by email.</span><span data-lang="ro">Ai trimis deja mai multe mesaje. Încearcă puțin mai târziu sau scrie-ne pe email.</span></p>
+                            @elseif(session('contact_error') === 'token')
+                                <p class="miro-contact-form__error" role="alert"><span data-lang="ru">Не получилось отправить: страница устарела или форма заполнена слишком быстро. Нажмите «Отправить» ещё раз.</span><span data-lang="en">We could not send it: the page has expired or the form was filled in too quickly. Please press “Send” again.</span><span data-lang="ro">Nu s-a putut trimite: pagina a expirat sau formularul a fost completat prea repede. Apasă din nou „Trimite”.</span></p>
+                            @elseif(session('contact_error'))
+                                <p class="miro-contact-form__error" role="alert"><span data-lang="ru">Проверьте, пожалуйста, имя, почту и сообщение (не короче 5 символов), а в телефоне — только цифры и знак «+».</span><span data-lang="en">Please check your name, email and message (at least 5 characters); the phone number may contain only digits and “+”.</span><span data-lang="ro">Verifică numele, emailul și mesajul (cel puțin 5 caractere); în telefon sunt permise doar cifre și „+”.</span></p>
+                            @endif
+
+                            <button type="submit" class="miro-contact-form__submit"><span data-lang="ru">Отправить</span><span data-lang="en">Send</span><span data-lang="ro">Trimite</span></button>
+                        </form>
+                    @endif
                 </aside>
             </div>
         </section>

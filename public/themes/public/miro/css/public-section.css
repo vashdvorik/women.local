@@ -168,6 +168,8 @@ body.miro-player-open { overflow: hidden; }
 .miro-doc__subtitle { margin: 0 0 20px; color: var(--miro-blue, #74472F); font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
 /* Подзаголовок без примечания под ним (Положение о Гала-премии): до разделов тот же отступ, что после примечания. */
 .miro-doc__subtitle + .miro-article__layout { margin-top: 20px; }
+/* Документ без подзаголовка (Положение о Гала Премии): между названием и первым разделом такой же отступ, как у обычной статьи. */
+.miro-doc .miro-article__title + .miro-article__layout { margin-top: 36px; }
 .miro-doc__section { scroll-margin-top: 96px; }
 .miro-doc__section + .miro-doc__section { margin-top: 48px; }
 .miro-doc__heading { margin: 0 0 20px; color: var(--miro-ink-deep, #21140F); font-family: var(--miro-display-font, "Prata", Georgia, serif); font-size: clamp(24px, 2.6vw, 30px); font-weight: 400; line-height: 1.2; }

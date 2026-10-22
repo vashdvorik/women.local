@@ -1,0 +1,266 @@
+[
+  {
+    "source": "международные партнеры/1.png",
+    "output": "generated/международные партнеры/01-kingdom-of-the-netherlands.png",
+    "original_size": [
+      112,
+      47
+    ],
+    "prepared_size": [
+      900,
+      462
+    ],
+    "background_removed": true
+  },
+  {
+    "source": "международные партнеры/2.png",
+    "output": "generated/международные партнеры/02-un-women.png",
+    "original_size": [
+      81,
+      57
+    ],
+    "prepared_size": [
+      868,
+      900
+    ],
+    "background_removed": true
+  },
+  {
+    "source": "международные партнеры/3.png",
+    "output": "generated/международные партнеры/03-united-nations-moldova.png",
+    "original_size": [
+      77,
+      62
+    ],
+    "prepared_size": [
+      900,
+      883
+    ],
+    "background_removed": true
+  },
+  {
+    "source": "международные партнеры/4.png",
+    "output": "generated/международные партнеры/04-undp.png",
+    "original_size": [
+      205,
+      116
+    ],
+    "prepared_size": [
+      900,
+      496
+    ],
+    "background_removed": true,
+    "note": "Original artwork is preserved; enlarged for web/retina use."
+  },
+  {
+    "source": "международные партнеры/5.png",
+    "output": "generated/международные партнеры/05-nrc.png",
+    "original_size": [
+      107,
+      42
+    ],
+    "prepared_size": [
+      900,
+      840
+    ],
+    "background_removed": true
+  },
+  {
+    "source": "Партнеры и вдохновители/1.png",
+    "output": "generated/Партнеры и вдохновители/01-eba-moldova.png",
+    "original_size": [
+      191,
+      80
+    ],
+    "prepared_size": [
+      900,
+      516
+    ],
+    "background_removed": true
+  },
+  {
+    "source": "Партнеры и вдохновители/2.png",
+    "output": "generated/Партнеры и вдохновители/02-afam.png",
+    "original_size": [
+      214,
+      109
+    ],
+    "prepared_size": [
+      900,
+      363
+    ],
+    "background_removed": true
+  },
+  {
+    "source": "Партнеры и вдохновители/3.png",
+    "output": "generated/Партнеры и вдохновители/03-youth-4-innovation.png",
+    "original_size": [
+      211,
+      107
+    ],
+    "prepared_size": [
+      900,
+      386
+    ],
+    "background_removed": true
+  },
+  {
+    "source": "Партнеры и вдохновители/4.png",
+    "output": "generated/Партнеры и вдохновители/04-glia-impact-hub.png",
+    "original_size": [
+      135,
+      109
+    ],
+    "prepared_size": [
+      900,
+      656
+    ],
+    "background_removed": true
+  },
+  {
+    "source": "Партнеры и вдохновители/5.png",
+    "output": "generated/Партнеры и вдохновители/05-centrul-parteneriat-pentru-dezvoltare.png",
+    "original_size": [
+      222,
+      85
+    ],
+    "prepared_size": [
+      900,
+      345
+    ],
+    "background_removed": true
+  },
+  {
+    "source": "Партнеры и вдохновители/6.png",
+    "output": "generated/Партнеры и вдохновители/06-fintech-hub.png",
+    "original_size": [
+      209,
+      95
+    ],
+    "prepared_size": [
+      900,
+      410
+    ],
+    "background_removed": true,
+    "note": "Photographic backdrop removed conservatively; an original/vector logo is recommended for maximum fidelity."
+  },
+  {
+    "source": "Партнеры и вдохновители/7.png",
+    "output": "generated/Партнеры и вдохновители/07-ziphouse.png",
+    "original_size": [
+      210,
+      80
+    ],
+    "prepared_size": [
+      900,
+      359
+    ],
+    "background_removed": true
+  },
+  {
+    "source": "Партнеры и вдохновители/8.png",
+    "output": "generated/Партнеры и вдохновители/08-multicolor-mark.png",
+    "original_size": [
+      447,
+      447
+    ],
+    "prepared_size": [
+      795,
+      900
+    ],
+    "background_removed": true
+  },
+  {
+    "source": "Партнеры и вдохновители/9.png",
+    "output": "generated/Партнеры и вдохновители/09-moldova-in-development.png",
+    "original_size": [
+      153,
+      132
+    ],
+    "prepared_size": [
+      900,
+      788
+    ],
+    "background_removed": true
+  },
+  {
+    "source": "Партнеры и вдохновители/10.png",
+    "output": "generated/Партнеры и вдохновители/10-creative-association.png",
+    "original_size": [
+      149,
+      125
+    ],
+    "prepared_size": [
+      900,
+      769
+    ],
+    "background_removed": true
+  },
+  {
+    "source": "Партнеры и вдохновители/11.png",
+    "output": "generated/Партнеры и вдохновители/11-social-entrepreneurship-platform.png",
+    "original_size": [
+      203,
+      140
+    ],
+    "prepared_size": [
+      900,
+      639
+    ],
+    "background_removed": true
+  },
+  {
+    "source": "Партнеры и вдохновители/12.jpg",
+    "output": "generated/Партнеры и вдохновители/12-woman-up.png",
+    "original_size": [
+      132,
+      132
+    ],
+    "prepared_size": [
+      824,
+      900
+    ],
+    "background_removed": true
+  },
+  {
+    "source": "Партнеры и вдохновители/13.png",
+    "output": "generated/Партнеры и вдохновители/13-startup-moldova.png",
+    "original_size": [
+      155,
+      60
+    ],
+    "prepared_size": [
+      900,
+      356
+    ],
+    "background_removed": true
+  },
+  {
+    "source": "Партнеры и вдохновители/4,5.png",
+    "output": "generated/Партнеры и вдохновители/14-artcor.png",
+    "original_size": [
+      112,
+      117
+    ],
+    "prepared_size": [
+      781,
+      900
+    ],
+    "background_removed": false,
+    "note": "Split from the combined source file into a separate logo asset."
+  },
+  {
+    "source": "Партнеры и вдохновители/4,5.png",
+    "output": "generated/Партнеры и вдохновители/14-contact.png",
+    "original_size": [
+      274,
+      117
+    ],
+    "prepared_size": [
+      900,
+      287
+    ],
+    "background_removed": false,
+    "note": "Split from the combined source file into a separate logo asset."
+  }
+]

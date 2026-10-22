@@ -7,14 +7,13 @@ namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Account\ProfileUpdateRequest;
 use App\Jobs\ComputeUserEmbedding;
-use App\Enums\Plan;
 use App\Models\BotUser;
 use App\Models\LoginToken;
 use App\Services\EmbeddingService;
 use App\Services\AiAssistantService;
 use App\Services\MatchingService;
 use App\Support\BotMessages;
-use App\Support\OpenFeed;
+use App\Support\CabinetHome;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -95,6 +94,7 @@ class AccountController extends Controller
         $request->session()->regenerate();
         session(['account_telegram_id' => $user->telegram_id]);
         session()->put('_account_expires', now()->addDays(7)->timestamp);
+        $user->markCabinetOpened();
 
         return redirect()->route('account.index');
     }
@@ -104,15 +104,15 @@ class AccountController extends Controller
         /** @var BotUser $user */
         $user = view()->shared('accountUser');
 
-        // Тариф Open видит на главной только то, что есть на публичном сайте, и предложение подписаться.
-        if (! $user->hasPlan(Plan::Community)) {
-            return view('account.subscription.open-home', [
-                'user' => $user,
-                'feed' => OpenFeed::build(app()->getLocale()),
-            ]);
-        }
+        // Главная — навигационная для всех тарифов: список «С чего начать», плитки разделов (закрытые для Open с замком),
+        // «Что нового». У Open вместо «Что нового» — материалы публичного сайта и предложение подписаться.
+        return view('account.home', ['user' => $user] + CabinetHome::build($user, app()->getLocale()));
+    }
 
-        return $this->themedView('index');
+    /** Чат с ИИ-помощником кабинета (подбор контактов и возможностей); открыт с тарифа Community. */
+    public function assistant(): View
+    {
+        return $this->themedView('assistant');
     }
 
     public function profile(): View
@@ -142,6 +142,7 @@ class AccountController extends Controller
         /** @var BotUser $accountUser */
         $accountUser = view()->shared('accountUser');
 
+        $accountUser->markSeen('matches');
         $matches = $matcher->topMatches($accountUser);
 
         return $this->themedView('matches', compact('matches'));
@@ -172,6 +173,8 @@ class AccountController extends Controller
     {
         /** @var BotUser $accountUser */
         $accountUser = view()->shared('accountUser');
+
+        $accountUser->markSeen('search');
 
         $query   = trim((string) $request->query('q', ''));
         $results = null;
@@ -208,12 +211,17 @@ class AccountController extends Controller
         ]);
 
         try {
-            return response()->json($assistant->respond(
+            $reply = $assistant->respond(
                 $user,
                 trim($data['message']),
                 $data['history'] ?? [],
                 app()->getLocale(),
-            ));
+            );
+
+            // Шаг «Спросите ИИ-помощника» на главной отмечается, когда она задала настоящий вопрос и получила ответ.
+            $user->markSeen('assistant');
+
+            return response()->json($reply);
         } catch (\Throwable $e) {
             logger()->warning('AI assistant failed', ['message' => $e->getMessage()]);
 

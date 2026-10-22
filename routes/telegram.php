@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 /** @var SergiX44\Nutgram\Nutgram $bot */
 
-use App\Enums\Plan;
 use App\Models\BotUser;
 use App\Support\BotMessages;
 use App\Telegram\BotReplies;
+use App\Telegram\Conversations\HelpConversation;
 use App\Telegram\Conversations\RegistrationConversation;
-use App\Telegram\Conversations\SearchConversation;
 use App\Telegram\TelegramKeyboards;
 use App\Telegram\TelegramLocale;
 use SergiX44\Nutgram\Nutgram;
@@ -30,11 +29,23 @@ $bot->onCallbackQueryData('start_guide', function (Nutgram $bot) {
     $locale = TelegramLocale::for($bot);
     $cabinet = TelegramKeyboards::cabinetButton($locale);
 
+    $keyboard = InlineKeyboardMarkup::make();
+    if ($cabinet) {
+        $keyboard->addRow($cabinet);
+    }
+    $keyboard->addRow(TelegramKeyboards::helpAskButton($locale));
+
     $bot->sendMessage(
         BotMessages::text('guide_start', $locale),
         parse_mode: 'HTML',
-        reply_markup: $cabinet ? InlineKeyboardMarkup::make()->addRow($cabinet) : null,
+        reply_markup: $keyboard,
     );
+});
+
+// «Спросить помощника» под сообщениями бота (одобрение заявки, памятка, напоминание о кабинете).
+$bot->onCallbackQueryData('help_start', function (Nutgram $bot) {
+    $bot->answerCallbackQuery();
+    HelpConversation::begin($bot);
 });
 
 $bot->onText('/start login', function (Nutgram $bot) {
@@ -77,17 +88,9 @@ $bot->fallback(function (Nutgram $bot) {
     }
 
     if ($user->isApproved()) {
-        $text = $bot->message()?->text;
-
-        // Кнопки меню узнаются по подписи на любом языке, в том числе прежней: клавиатура на телефоне обновляется не сразу.
-        match (true) {
-            // Поиск контактов — только по подписке Community и выше; Open получает ссылку на оплату.
-            BotMessages::matches('menu_matches_button', $text) => $user->hasPlan(Plan::Community)
-                ? SearchConversation::begin($bot)
-                : $bot->sendMessage(BotMessages::text('plan_required', $locale, ['url' => route('account.subscription')]), parse_mode: 'HTML'),
-            BotMessages::matches('menu_chat_button', $text)    => $bot->sendMessage(BotMessages::text('menu_chat_stub', $locale), parse_mode: 'HTML'),
-            default                                            => null,
-        };
+        // Кнопки меню («Кабинет», «AI помощник») узнаются по подписи на любом языке, в том числе прежней: клавиатура
+        // на телефоне обновляется не сразу (подробности — в BotReplies::handleMenuText).
+        BotReplies::handleMenuText($bot, $user, $bot->message()?->text, $locale);
         return;
     }
 

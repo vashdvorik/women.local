@@ -28,8 +28,9 @@
 
     // Цена пакета: из настроек сайта («Подписки → Цена подписки»), чтобы положение и оплата не расходились.
     $price = fn (string $plan): string => number_format(Plan::from($plan)->price(), 0, ',', "\u{00A0}");
+    // Бесплатный пакет (Open) вместо суммы показывает «Бесплатно».
     $priceText = fn (string $plan): HtmlString => new HtmlString(
-        collect($locales)->map(fn (string $l) => '<span data-lang="'.$l.'">'.e(str_replace(':price', $price($plan), $content['price'][$l])).'</span>')->implode('')
+        collect($locales)->map(fn (string $l) => '<span data-lang="'.$l.'">'.e(Plan::from($plan)->isPaid() ? str_replace(':price', $price($plan), $content['price'][$l]) : $content['free'][$l]).'</span>')->implode('')
     );
 @endphp
 

@@ -46,11 +46,13 @@ class PerformanceTest extends TestCase
         $queries = DB::getQueryLog();
         DB::disableQueryLog();
 
-        // Фильтруем только SELECT по bot_users (запрос middleware)
+        // Фильтруем только SELECT по bot_users, который делает middleware (он же берёт тему кабинета). Остальные запросы
+        // к bot_users на главной — данные блока «Что нового» (новые участницы), а не накладные расходы входа.
         $authQueries = array_filter(
             $queries,
             static fn (array $q) => str_contains((string) $q['query'], 'bot_users')
                 && str_contains((string) $q['query'], 'select')
+                && str_contains((string) $q['query'], 'account_theme_setting')
         );
 
         // ТЕКУЩЕЕ ПОВЕДЕНИЕ: 1 SELECT на каждый запрос — допустимо сейчас,
@@ -257,9 +259,11 @@ class PerformanceTest extends TestCase
             DB::disableQueryLog();
         }
 
-        // Максимальный бюджет: 4 маршрута × 3 запроса = 12
+        // Журнал запросов не очищается между страницами, поэтому цифра накопительная. Бюджет: вход на каждой странице
+        // (1) плюс данные главной («Что нового»: возможности и новые участницы, 2 запроса) и разовая запись о том, что
+        // раздел открыт (cabinet_seen), которая ставится один раз на раздел.
         $this->assertLessThanOrEqual(
-            12,
+            20,
             $totalQueries,
             sprintf(
                 'ПРОБЛЕМА: 4 страницы кабинета = %d DB-запросов на одного пользователя. '

@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
  */
 class CabinetSettingController extends Controller
 {
-    private const TABS = ['theme', 'ai', 'knowledge'];
+    private const TABS = ['theme', 'ai', 'knowledge', 'bot-help'];
 
     public function edit(Request $request): View
     {

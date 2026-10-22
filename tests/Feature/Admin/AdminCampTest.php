@@ -44,6 +44,7 @@ class AdminCampTest extends TestCase
             ['admin.videos.index'],
             ['admin.tags.index'],
             ['admin.subscribers.index'],
+            ['admin.contact-messages.index'],
             ['admin.settings.edit'],
         ];
     }
@@ -234,7 +235,7 @@ class AdminCampTest extends TestCase
             return AdminCamp::current($request);
         };
 
-        foreach (['admin.dashboard', 'admin.posts.index', 'admin.settings.edit', 'admin.subscribers.index'] as $name) {
+        foreach (['admin.dashboard', 'admin.posts.index', 'admin.settings.edit', 'admin.subscribers.index', 'admin.contact-messages.index'] as $name) {
             $this->assertSame(AdminCamp::SITE, $detect($name), $name);
         }
         foreach (['admin.cabinets.dashboard', 'admin.cabinets.settings', 'admin.profiles.show', 'admin.member-posts.index', 'admin.statistics.pdf'] as $name) {

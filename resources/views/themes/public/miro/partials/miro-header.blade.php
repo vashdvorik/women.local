@@ -30,12 +30,12 @@
             <a href="{{ route('events') }}"><span data-lang="ru">Новости</span><span data-lang="en">News</span><span data-lang="ro">Știri</span></a>
             <div class="miro-nav__dropdown" data-nav-dropdown>
                 <button type="button" class="miro-nav__dropdown-trigger" aria-expanded="false" aria-controls="miro-gala-menu">
-                    <span data-lang="ru">Gala</span><span data-lang="en">Gala</span><span data-lang="ro">Gala</span>
+                    <span data-lang="ru">Гала Премия</span><span data-lang="en">Gala</span><span data-lang="ro">Gala</span>
                 </button>
                 {{-- Отдельные сайты по годам: адреса в config/site.php. После них, за разделителем, страница сайта с Положением о премии. --}}
                 <div class="miro-nav__dropdown-menu" id="miro-gala-menu" role="menu">
                     @foreach(config('site.gala') as $year => $galaUrl)
-                        <a href="{{ $galaUrl }}" target="_blank" rel="noopener" role="menuitem">Gala {{ $year }}<span class="miro-nav__external" aria-hidden="true">↗</span></a>
+                        <a href="{{ $galaUrl }}" target="_blank" rel="noopener" role="menuitem"><span data-lang="ru">Гала Премия {{ $year }}</span><span data-lang="en">Gala {{ $year }}</span><span data-lang="ro">Gala {{ $year }}</span><span class="miro-nav__external" aria-hidden="true">↗</span></a>
                     @endforeach
                     <div class="miro-nav__dropdown-sep" role="separator"></div>
                     <a href="{{ route('gala.regulations') }}" role="menuitem"><span data-lang="ru">Положение о премии</span><span data-lang="en">Award regulations</span><span data-lang="ro">Regulamentul premiului</span></a>

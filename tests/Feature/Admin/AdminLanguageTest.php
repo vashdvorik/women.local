@@ -6,6 +6,7 @@ use App\Enums\Plan;
 use App\Http\Middleware\AdminLocale;
 use App\Models\Album;
 use App\Models\BotUser;
+use App\Models\ContactMessage;
 use App\Models\Event;
 use App\Models\Expert;
 use App\Models\Opportunity;
@@ -164,6 +165,8 @@ class AdminLanguageTest extends TestCase
         ]);
         $payment = $this->checkoutFor($member, Plan::Private);
         $payment->forceFill(['status' => 'verifying', 'payload' => ['anomaly' => 'x', 'last_error' => 'y']])->save();
+        // Текст обращения пишет посетительница, а не админка, поэтому здесь он английский: страница проверяется на русские слова.
+        $enquiry = ContactMessage::create(['name' => 'Anna', 'email' => 'anna@example.test', 'message' => 'Hello, I would like to talk.', 'locale' => 'en']);
 
         return [
             route('admin.dashboard'), route('admin.cabinets.dashboard'),
@@ -176,6 +179,7 @@ class AdminLanguageTest extends TestCase
             route('admin.opportunities.index'), route('admin.opportunities.create'), route('admin.opportunities.edit', $siteOpportunity),
             route('admin.tags.index'), route('admin.tags.create'), route('admin.tags.edit', $tag),
             route('admin.subscribers.index'),
+            route('admin.contact-messages.index'), route('admin.contact-messages.show', $enquiry),
             route('admin.profiles.index'), route('admin.profiles.show', $pending), route('admin.profiles.show', $member), route('admin.profiles.edit', $member),
             route('admin.member-posts.index'), route('admin.member-posts.show', $memberPost),
             route('admin.subscriptions.index'), route('admin.subscriptions.edit', $member), route('admin.subscriptions.edit', $pending),
@@ -233,7 +237,8 @@ class AdminLanguageTest extends TestCase
             route('admin.cabinets.settings'), route('admin.cabinets.dashboard'), route('admin.profiles.index'),
         ] as $url) {
             $html = $this->asEnglish()->get($url)->assertOk()->getContent();
-            $text = strip_tags(preg_replace('~<(script|style)\b.*?</\1>~s', '', $html));
+            // Текст в полях редактирования — данные (например, инструкция помощника бота на трёх языках), а не интерфейс.
+            $text = strip_tags(preg_replace(['~<(script|style)\b.*?</\1>~s', '~<textarea\b[^>]*>.*?</textarea>~s'], '', $html));
             preg_match_all('/[^\s]*[А-Яа-яЁё][^\s]*/u', $text, $found);
 
             $this->assertSame([], array_values(array_unique($found[0])), "Русский текст на английской странице {$url}");

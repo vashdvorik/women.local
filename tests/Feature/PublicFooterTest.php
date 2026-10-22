@@ -74,32 +74,29 @@ class PublicFooterTest extends TestCase
         return array_map(fn (\DOMElement $a) => $a->getAttribute('href'), iterator_to_array($links));
     }
 
-    public function test_contacts_column_holds_the_cabinet_then_the_phone_and_the_email(): void
+    public function test_contacts_column_holds_the_cabinet_and_the_email_without_a_phone(): void
     {
         foreach (['/', '/events', '/contact'] as $url) {
-            // «Кабинет участницы», телефон и почта — именно в таком порядке и ничего кроме них.
+            // «Кабинет участницы» и почта — именно в таком порядке и ничего кроме них (телефона в подвале нет).
             $this->assertSame(
-                [route('account.login'), 'tel:+37377798317', 'mailto:women.tiras.hub@gmail.com'],
+                [route('account.login'), 'mailto:womenplatform@gmail.com'],
                 $this->contactHrefs($url),
                 $url,
             );
         }
 
-        // Подписи к номеру и адресу на трёх языках; ссылка на телефон без пробелов, а на экране номер с пробелами.
+        // Подпись к адресу на трёх языках.
         $html = $this->get('/events')->assertOk()->getContent();
         preg_match('#<footer class="miro-footer".*?</footer>#s', $html, $m);
 
-        $this->assertStringContainsString('<span data-lang="ru">Тел:</span><span data-lang="en">Tel:</span><span data-lang="ro">Tel:</span> <a href="tel:+37377798317">+373 777 983 17</a>', $m[0]);
-        $this->assertStringContainsString('<span data-lang="ru">Почта:</span><span data-lang="en">Email:</span><span data-lang="ro">E-mail:</span> <a href="mailto:women.tiras.hub@gmail.com">women.tiras.hub@gmail.com</a>', $m[0]);
+        $this->assertStringNotContainsString('tel:', $m[0]);
+        $this->assertStringContainsString('<span data-lang="ru">Почта:</span><span data-lang="en">Email:</span><span data-lang="ro">E-mail:</span> <a href="mailto:womenplatform@gmail.com">womenplatform@gmail.com</a>', $m[0]);
     }
 
-    public function test_an_empty_phone_or_email_in_the_config_drops_that_line_from_the_footer(): void
+    public function test_an_empty_email_in_the_config_drops_that_line_from_the_footer(): void
     {
-        config(['site.contacts.phone' => '']);
-        $this->assertSame([route('account.login'), 'mailto:women.tiras.hub@gmail.com'], $this->contactHrefs('/events'));
-
-        config(['site.contacts.phone' => '+373 777 983 17', 'site.contacts.email' => null]);
-        $this->assertSame([route('account.login'), 'tel:+37377798317'], $this->contactHrefs('/events'));
+        config(['site.contacts.email' => null]);
+        $this->assertSame([route('account.login')], $this->contactHrefs('/events'));
     }
 
     public function test_subscription_stays_a_working_form_with_a_labelled_email_field(): void

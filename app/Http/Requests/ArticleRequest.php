@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Broadcast;
 use App\Support\Locales;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 /**
  * Общая валидация публикации и возможности. Черновик сохраняется с любым уровнем
@@ -44,6 +46,9 @@ abstract class ArticleRequest extends FormRequest
             'author' => ['nullable', 'string', 'max:191'],
             'published_at' => ['nullable', 'date'],
             'tag_id' => ['nullable', 'integer', 'exists:tags,id'],
+            // Галочка «Создать черновик для рассылки» и кому (AppServicesBroadcastsBroadcastDrafts).
+            'broadcast_draft' => ['boolean'],
+            'broadcast_audience' => ['nullable', Rule::in(Broadcast::AUDIENCES)],
             'translations' => ['array'],
         ];
 

@@ -178,10 +178,12 @@ class AccessGateTest extends TestCase
         $this->assertStringContainsString('Каталог для всех', $html);
         $this->assertStringNotContainsString('Черновик новости', $html);
         $this->assertStringNotContainsString('Публикация из будущего', $html);
-        // Приглашение подписаться; ни каталога участниц, ни ИИ-помощника.
+        // Приглашение подписаться; закрытые разделы (каталог, поиск, ИИ-помощник) показаны с замком и ведут на страницу
+        // с объяснением, а их данных на главной нет.
         $this->assertStringContainsString(__('subscription.open_home.upgrade_cta'), $html);
         $this->assertStringContainsString(route('account.subscription'), $html);
-        $this->assertStringNotContainsString('account/assistant', $html, 'ИИ-помощника на главной Open нет');
+        $this->assertStringContainsString(__('account.home.tile_locked'), $html, 'закрытые разделы помечены замком');
+        $this->assertStringNotContainsString(__('account.home.fresh_members'), $html, '«Что нового» с участницами — только у платных');
     }
 
     public function test_community_home_is_the_full_cabinet_not_the_open_feed(): void
@@ -249,7 +251,7 @@ class AccessGateTest extends TestCase
             $open = $this->asParticipant(BotUser::factory()->approved()->create())->get(route('account.subscription'))->assertOk()->getContent();
             $this->assertStringContainsString('href="'.route('account.subscription').'"', $open, "{$theme}: пункт «Подписка»");
             $this->assertStringNotContainsString('/account/private', $open, "{$theme}: вкладки Private нет");
-            $this->assertStringNotContainsString('ИИ-помощник</', $open, "{$theme}: у Open нет пункта «ИИ-помощник»");
+            $this->assertStringContainsString(route('account.assistant'), $open, "{$theme}: пункт «ИИ-помощник» виден и Open (ведёт на объяснение подписки)");
             $this->assertMatchesRegularExpression('~href="'.preg_quote(route('account.index'), '~').'"[^>]*>(?:(?!</a>).)*Главная~su', $open, "{$theme}: у Open первый пункт — «Главная»");
 
             foreach ([BotUser::factory()->community()->create(), BotUser::factory()->private()->create()] as $paid) {
@@ -272,7 +274,7 @@ class AccessGateTest extends TestCase
             foreach (Plan::cases() as $plan) {
                 $this->assertStringContainsString($plan->title('ru'), $html, "{$theme}: {$plan->value}");
             }
-            $this->assertStringContainsString('участие в Gala «Woman of the Year»;', $html, $theme);
+            $this->assertStringContainsString('участие в Гала Премии «Женщина Года»;', $html, $theme);
             $this->assertStringContainsString('персональный куратор в течение года;', $html, $theme);
             $this->assertStringContainsString('информация о грантах, конкурсах и проектах;', $html, $theme);
             $this->assertStringContainsString('600', $html);

@@ -111,13 +111,13 @@ class BotFlowTest extends TestCase
         }
     }
 
-    public function test_the_site_address_in_the_thank_you_message_is_the_site_not_the_telegram_community_link(): void
+    public function test_the_thank_you_message_says_what_happens_next_and_links_the_site_not_the_telegram_community(): void
     {
-        // Раньше {site_url} брался из TELEGRAM_COMMUNITY_URL, и участницам уходил чужой адрес по умолчанию.
+        // Раньше адрес сайта брался из TELEGRAM_COMMUNITY_URL, и участницам уходил чужой адрес по умолчанию.
         config(['app.url' => 'https://womenhub.example', 'nutgram.community_url' => 'https://t.me/some_community']);
 
         $bot = $this->bot('ru');
-        $texts = [];
+        $done = null;
 
         foreach ([
             fn (Nutgram $b) => $b->hearText('/start'),
@@ -127,14 +127,42 @@ class BotFlowTest extends TestCase
             fn (Nutgram $b) => $b->hearCallbackQueryData('reg:skip'),
         ] as $step) {
             $step($bot)->reply();
-            array_push($texts, ...array_column($this->sent($bot, null), 'text'));
+            $done = $this->sent($bot, null);
         }
 
-        $done = end($texts);
+        $message = end($done);
 
-        $this->assertStringContainsString('https://womenhub.example', $done);
-        $this->assertStringNotContainsString('some_community', $done);
-        $this->assertStringNotContainsString('inspair', $done);
+        // Что дальше: проверка, письмо от бота, меню; контакт команды вместо чужих адресов.
+        $this->assertStringContainsString('Команда проекта проверит профиль вручную', $message['text']);
+        $this->assertStringContainsString('«Кабинет» и «AI помощник»', $message['text']);
+        $this->assertStringContainsString(config('site.contacts.telegram'), $message['text']);
+        $this->assertStringNotContainsString('some_community', json_encode($message));
+        // Под сообщением кнопка «Сайт платформы» на сайт, а не в чужое сообщество.
+        $button = $message['reply_markup']['inline_keyboard'][0][0];
+        $this->assertSame(BotMessages::default('registration_done_site_button', 'ru'), $button['text']);
+        $this->assertSame('https://womenhub.example', $button['url']);
+    }
+
+    public function test_the_thank_you_message_has_no_site_button_in_a_local_http_setup(): void
+    {
+        config(['app.url' => 'http://localhost']);
+
+        $bot = $this->bot('ru');
+        foreach ([
+            fn (Nutgram $b) => $b->hearText('/start'),
+            fn (Nutgram $b) => $b->hearCallbackQueryData('reg:yes'),
+            fn (Nutgram $b) => $b->hearText('Ольга Иванова'),
+            fn (Nutgram $b) => $b->hearText('Кондитерская'),
+            fn (Nutgram $b) => $b->hearCallbackQueryData('reg:skip'),
+        ] as $step) {
+            $step($bot)->reply();
+        }
+
+        $bodies = $this->sent($bot, null);
+        $message = end($bodies);
+
+        $this->assertStringContainsString('Заявка отправлена', $message['text']);
+        $this->assertArrayNotHasKey('reply_markup', $message, 'Telegram отклонил бы адрес без https, а сообщение должно дойти');
     }
 
     public function test_the_registration_dialog_runs_in_her_language_and_remembers_it(): void
@@ -159,7 +187,7 @@ class BotFlowTest extends TestCase
             BotMessages::default('registration_ask_name', 'ro'),
             BotMessages::default('registration_ask_description', 'ro'),
             BotMessages::default('registration_ask_expectation', 'ro'),
-            BotMessages::text('registration_done', 'ro', ['name' => 'Maria', 'site_url' => config('app.url')]),
+            BotMessages::text('registration_done', 'ro', ['name' => 'Maria', 'contact' => config('site.contacts.telegram')]),
         ], $texts);
 
         // Язык запомнен в профиле: по нему потом идут решение модератора и рассылки.
@@ -202,8 +230,8 @@ class BotFlowTest extends TestCase
         $this->assertMatchesRegularExpression('#^Bună ziua, Анна! Accesați linkul de mai jos .*🔐 http\S+/go/[0-9a-f]{8}\n\n⏱ Linkul este valabil 24 de ore\.$#su', $message['text']);
         $this->assertSame(
             [[
-                ['text' => BotMessages::default('menu_matches_button', 'ro')],
-                ['text' => BotMessages::default('menu_chat_button', 'ro')],
+                ['text' => BotMessages::default('menu_cabinet_button', 'ro')],
+                ['text' => BotMessages::default('menu_help_button', 'ro')],
             ]],
             $message['reply_markup']['keyboard'],
         );
@@ -258,14 +286,18 @@ class BotFlowTest extends TestCase
         }
     }
 
-    public function test_the_community_chat_button_answers_in_her_language(): void
+    public function test_the_old_community_chat_button_gets_the_new_menu_in_her_language(): void
     {
         $this->participant('approved', 'en');
 
         $bot = $this->bot('en');
         $bot->hearText(BotMessages::default('menu_chat_button', 'en'))->reply();
 
-        $this->assertSame(BotMessages::default('menu_chat_stub', 'en'), $this->sent($bot)[0]['text']);
+        $message = $this->sent($bot)[0];
+
+        $this->assertSame(BotMessages::text('menu_updated', 'en', ['name' => 'Анна']), $message['text']);
+        $this->assertSame(BotMessages::default('menu_cabinet_button', 'en'), $message['reply_markup']['keyboard'][0][0]['text']);
+        $this->assertSame(BotMessages::default('menu_help_button', 'en'), $message['reply_markup']['keyboard'][0][1]['text']);
     }
 
     public function test_an_unrelated_message_from_an_approved_participant_gets_no_answer(): void
@@ -313,7 +345,8 @@ class BotFlowTest extends TestCase
 
         $this->assertSame(BotMessages::text('moderation_approved', 'ro', ['name' => 'Анна']), $approved['text']);
         $this->assertSame('HTML', $approved['parse_mode']);
-        $this->assertSame(BotMessages::default('menu_matches_button', 'ro'), $approved['reply_markup']['keyboard'][0][0]['text']);
+        $this->assertSame(BotMessages::default('menu_cabinet_button', 'ro'), $approved['reply_markup']['keyboard'][0][0]['text']);
+        $this->assertSame(BotMessages::default('menu_help_button', 'ro'), $approved['reply_markup']['keyboard'][0][1]['text']);
 
         $this->assertSame(BotMessages::default('moderation_approved_guide_prompt', 'ro'), $prompt['text']);
         $this->assertSame(
@@ -335,7 +368,8 @@ class BotFlowTest extends TestCase
         $this->assertSame(BotMessages::default('cabinet_open_button', 'ru'), $rows[0][0]['text']);
         $this->assertSame('https://womenhub.example/app/account/login', $rows[0][0]['web_app']['url'], 'мини-приложение: вход по подписи Telegram, без ссылки с токеном');
         $this->assertSame('start_guide', $rows[1][0]['callback_data']);
-        $this->assertCount(2, $rows);
+        $this->assertSame(['text' => BotMessages::default('help_ask_button', 'ru'), 'callback_data' => 'help_start'], $rows[2][0], 'и «Спросить помощника»');
+        $this->assertCount(3, $rows);
         $this->assertStringContainsString('«Открыть кабинет»', $prompt['text'], 'в тексте названа та же кнопка');
     }
 
@@ -349,8 +383,9 @@ class BotFlowTest extends TestCase
         [$approved, $prompt] = $this->sent(app(Nutgram::class));
 
         $this->assertNotEmpty($approved['text']);
-        $this->assertSame([['text' => BotMessages::default('moderation_approved_guide_button', 'ru'), 'callback_data' => 'start_guide']], $prompt['reply_markup']['inline_keyboard'][0] ? [$prompt['reply_markup']['inline_keyboard'][0][0]] : []);
-        $this->assertCount(1, $prompt['reply_markup']['inline_keyboard']);
+        $this->assertSame(['text' => BotMessages::default('moderation_approved_guide_button', 'ru'), 'callback_data' => 'start_guide'], $prompt['reply_markup']['inline_keyboard'][0][0]);
+        $this->assertSame('help_start', $prompt['reply_markup']['inline_keyboard'][1][0]['callback_data']);
+        $this->assertCount(2, $prompt['reply_markup']['inline_keyboard'], 'без кабинета: памятка и помощник');
     }
 
     public function test_the_start_guide_ends_with_the_open_account_button(): void
@@ -366,6 +401,7 @@ class BotFlowTest extends TestCase
         $this->assertSame(BotMessages::default('guide_start', 'en'), $message['text']);
         $this->assertSame('Open my account', $message['reply_markup']['inline_keyboard'][0][0]['text']);
         $this->assertSame('https://womenhub.example/app/account/login', $message['reply_markup']['inline_keyboard'][0][0]['web_app']['url']);
+        $this->assertSame('help_start', $message['reply_markup']['inline_keyboard'][1][0]['callback_data'], 'ниже — «Спросить помощника»');
         $this->assertStringContainsString('Tap “Open my account” under this message', $message['text'], 'шаг 1 памятки называет эту кнопку');
     }
 
@@ -376,7 +412,10 @@ class BotFlowTest extends TestCase
         $bot = $this->bot('en');
         $bot->hearCallbackQueryData('start_guide')->reply();
 
-        $this->assertArrayNotHasKey('reply_markup', $this->sent($bot)[0]);
+        // Мини-приложения без https нет, но «Спросить помощника» есть: callback-кнопке адрес не нужен.
+        $rows = $this->sent($bot)[0]['reply_markup']['inline_keyboard'];
+        $this->assertCount(1, $rows);
+        $this->assertSame('help_start', $rows[0][0]['callback_data']);
     }
 
     public function test_rejection_and_revoking_access_use_their_own_texts(): void

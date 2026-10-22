@@ -56,6 +56,7 @@ class ProfileModeration
         }
 
         $inlineKeyboard->addRow(InlineKeyboardButton::make(BotMessages::text('moderation_approved_guide_button', $locale), callback_data: 'start_guide'));
+        $inlineKeyboard->addRow(TelegramKeyboards::helpAskButton($locale));
 
         try {
             Telegram::sendMessage(

@@ -120,10 +120,16 @@ class RegistrationConversation extends Conversation
 
         ComputeUserEmbedding::dispatch($botUser);
 
+        // Под сообщением кнопка «Сайт платформы»; Telegram отклоняет локальные адреса, поэтому только для https.
+        $siteUrl = (string) config('app.url');
+        $locale = TelegramLocale::for($bot);
+
         $this->say($bot, 'registration_done', [
-            'name'     => BotMessages::firstName($this->fullName),
-            'site_url' => config('app.url'),
-        ]);
+            'name'    => BotMessages::firstName($this->fullName),
+            'contact' => (string) config('site.contacts.telegram'),
+        ], str_starts_with($siteUrl, 'https://')
+            ? InlineKeyboardMarkup::make()->addRow(InlineKeyboardButton::make(BotMessages::text('registration_done_site_button', $locale), url: $siteUrl))
+            : null);
 
         $this->end();
     }

@@ -18,9 +18,13 @@ return [
     'published_by' => 'Publicat de',
 
     'nav' => [
-        'home' => 'Asistent AI',
+        'home' => 'Acasă',
+        'assistant' => 'Asistent AI',
         'matches' => 'Recomandări',
         'search' => 'Căutare contacte',
+        'search_short' => 'Căutare',
+        'profile_short' => 'Profil',
+        'more' => 'Mai mult',
         'people' => 'Profilurile platformei',
         'opportunities' => 'Oportunități',
         'knowledge' => 'Învățare',
@@ -74,6 +78,94 @@ return [
         'tip_label' => 'O idee pentru început',
         'tip_text' => 'Publicați o cerere sau o ofertă — contactul potrivit poate fi mai aproape decât credeți.',
         'tip_action' => 'Adaugă oportunitate',
+    ],
+
+    'home' => [
+        'eyebrow' => 'Spațiul dvs.',
+        'hello' => 'Bună ziua, :name!',
+        'intro' => 'Aici este tot ce are nevoie o membră Women’s hub. Începeți cu pașii de mai jos sau alegeți o secțiune.',
+        'intro_open' => 'Aveți acces deschis. Mai jos sunt toate secțiunile cabinetului: ce este disponibil acum și ce se deschide cu abonamentul.',
+        'hint_title' => 'Cum este organizat totul',
+        'hint_mobile' => 'Meniul este mereu în partea de jos a ecranului: secțiunile principale și butonul „Mai mult” cu toate celelalte. Cardurile de mai jos sunt aceleași secțiuni, cu o explicație ce conțin și cum se folosesc.',
+        'hint_desktop' => 'Meniul este mereu în stânga. Cardurile de mai jos sunt aceleași secțiuni, cu o explicație ce conțin și cum se folosesc.',
+        'hint_close' => 'Am înțeles',
+        'steps_title' => 'De unde să începeți',
+        'steps_progress' => 'Gata :done din :total',
+        'steps_all_done' => 'Ați stăpânit esențialul. Restul este în secțiunile de mai jos.',
+        'step_open' => 'Deschide',
+        'step_done' => 'Gata',
+        'steps' => [
+            'profile' => [
+                'title' => 'Povestiți despre dvs.',
+                'text' => 'O descriere și „ce căutați”: platforma le folosește ca să vă selecteze contacte și oportunități.',
+            ],
+            'matches' => [
+                'title' => 'Priviți recomandările',
+                'text' => 'Platforma vă sugerează cu cine ar trebui să vă cunoașteți.',
+            ],
+            'search' => [
+                'title' => 'Găsiți contactul de care aveți nevoie',
+                'text' => 'Descrieți în cuvinte simple pe cine căutați.',
+            ],
+            'opportunities' => [
+                'title' => 'Priviți oportunitățile',
+                'text' => 'Granturi, concursuri și oferte de la membre.',
+            ],
+            'assistant' => [
+                'title' => 'Întrebați asistentul AI',
+                'text' => 'Selectează contacte și vă spune ce să faceți mai departe.',
+            ],
+            'subscription' => [
+                'title' => 'Deschideți întreaga comunitate',
+                'text' => 'Abonamentul deschide catalogul membrelor, căutarea de contacte și asistentul AI.',
+            ],
+        ],
+        'tiles_title' => 'Secțiunile cabinetului',
+        'tile_go' => 'Deschide →',
+        'tile_locked' => 'În abonamentul Community',
+        'tile_how' => 'Cum se folosește:',
+        'tiles' => [
+            'assistant' => [
+                'what' => 'Chat cu AI: selectează contacte și oportunități pentru sarcina dvs.',
+                'how' => 'Scrieți ce vă trebuie, de exemplu „găsiți un expert în marketing”.',
+            ],
+            'matches' => [
+                'what' => 'Membre și oportunități alese de platformă personal pentru dvs.',
+                'how' => 'Cu cât profilul este mai detaliat, cu atât selecția este mai exactă. Deschideți un card ca să vedeți profilul.',
+            ],
+            'search' => [
+                'what' => 'Căutare de membre după sens, nu după nume.',
+                'how' => 'Descrieți în cuvinte simple pe cine căutați și deschideți profilul potrivit.',
+            ],
+            'people' => [
+                'what' => 'Catalogul tuturor membrelor platformei.',
+                'how' => 'Parcurgeți lista și deschideți profiluri: acolo sunt descrierea și un link pentru a scrie în Telegram.',
+            ],
+            'opportunities' => [
+                'what' => 'Granturi, concursuri, oferte și proiecte. Le publică membrele însele.',
+                'how' => 'Deschideți o oportunitate pentru detalii sau publicați-o pe a dvs.',
+            ],
+            'knowledge' => [
+                'what' => 'Materialele educaționale ale platformei.',
+                'how' => 'Alegeți un subiect și citiți când vă convine.',
+            ],
+            'profile' => [
+                'what' => 'Cartea dvs. de vizită: așa vă văd celelalte membre.',
+                'how' => 'Actualizați-o când se schimbă afacerea dvs.: de ea depind recomandările.',
+            ],
+            'subscription' => [
+                'what' => 'Tariful dvs., termenul de valabilitate și plata.',
+                'how' => 'Aici puteți face sau prelungi abonamentul.',
+            ],
+        ],
+        'fresh_title' => 'Ce este nou',
+        'fresh_opportunities' => 'Cele mai noi oportunități',
+        'fresh_members' => 'Membre noi',
+        'fresh_all_opportunities' => 'Toate oportunitățile',
+        'fresh_all_members' => 'Toate membrele',
+        'fresh_empty' => 'Deocamdată nimic.',
+        'no_description' => 'Descrierea nu este completată încă.',
+        'bot_help' => 'Nu găsiți răspunsul? Întrebați „Asistentul AI” din botul Telegram: explică cum se folosește totul.',
     ],
 
     'profile' => [

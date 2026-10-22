@@ -63,8 +63,8 @@ Route::get('/members/join', fn () => PublicThemeView::render('join', [
 Route::get('/gala', fn () => $publicSection([
     'pageKey' => 'gala',
     'eyebrow' => ['ru' => 'События', 'en' => 'Events', 'ro' => 'Evenimente'],
-    'title' => ['ru' => 'Gala', 'en' => 'Gala', 'ro' => 'Gala'],
-    'intro' => ['ru' => 'Страница ежегодной гала-премии и историй женщин, которые создают изменения.', 'en' => 'A page for the annual gala award and stories of women creating change.', 'ro' => 'O pagină dedicată galei anuale și poveștilor femeilor care creează schimbare.'],
+    'title' => ['ru' => 'Гала Премия', 'en' => 'Gala', 'ro' => 'Gala'],
+    'intro' => ['ru' => 'Страница ежегодной Гала Премии «Женщина Года» и историй женщин, которые создают изменения.', 'en' => 'A page for the annual gala award and stories of women creating change.', 'ro' => 'O pagină dedicată galei anuale și poveștilor femeilor care creează schimbare.'],
     'placeholder' => true,
 ]))->name('gala');
 
@@ -86,6 +86,11 @@ Route::get('/media/photos/{album}', [PublicSite\AlbumsController::class, 'show']
 Route::get('/media/videos', PublicSite\VideosController::class)->name('media.videos');
 Route::get('/media/publications', [PublicSite\PublicationsController::class, 'index'])->name('media.publications');
 Route::get('/media/publications/{post}', [PublicSite\PublicationsController::class, 'show'])->name('media.publications.show');
+
+// Форма «Связаться с нами» на странице «Контакты»: письмо на почту команды и запись в админке («Обращения»).
+Route::post('/contact', [PublicSite\ContactController::class, 'store'])
+    ->middleware('throttle:10,1')
+    ->name('contact.send');
 
 // Подписка на новости (форма в подвале сайта).
 Route::post('/subscribe', [PublicSite\SubscribeController::class, 'store'])
@@ -165,6 +170,7 @@ Route::middleware(RequireAccountAuth::class)
         // возможностей и «Обучение» входят в Community и Private. На месте раздела RequirePlan показывает сообщение
         // и кнопку «Купить подписку» (запись и запросы ИИ он отклоняет редиректом и ответом 403).
         Route::middleware('plan:community')->group(function (): void {
+            Route::get('/assistant', [AccountController::class, 'assistant'])->name('assistant');
             Route::get('/knowledge', [AccountController::class, 'knowledge'])->name('knowledge');
             Route::get('/matches', [AccountController::class, 'matches'])->name('matches');
             Route::get('/people', [AccountController::class, 'people'])->name('people');
@@ -248,6 +254,16 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::delete('projects/{project}', [Admin\ProjectController::class, 'destroy'])->name('projects.destroy');
         Route::post('projects/{project}/move', [Admin\ProjectController::class, 'move'])->name('projects.move');
 
+        // Рассылка сообщения участницам в Telegram (лагерь «Кабинеты участниц»).
+        Route::get('broadcasts', [Admin\BroadcastController::class, 'index'])->name('broadcasts.index');
+        Route::get('broadcasts/create', [Admin\BroadcastController::class, 'create'])->name('broadcasts.create');
+        Route::post('broadcasts', [Admin\BroadcastController::class, 'store'])->name('broadcasts.store');
+        Route::get('broadcasts/{broadcast}', [Admin\BroadcastController::class, 'show'])->name('broadcasts.show');
+        Route::get('broadcasts/{broadcast}/edit', [Admin\BroadcastController::class, 'edit'])->name('broadcasts.edit');
+        Route::put('broadcasts/{broadcast}', [Admin\BroadcastController::class, 'update'])->name('broadcasts.update');
+        Route::post('broadcasts/{broadcast}/cancel', [Admin\BroadcastController::class, 'cancel'])->name('broadcasts.cancel');
+        Route::delete('broadcasts/{broadcast}', [Admin\BroadcastController::class, 'destroy'])->name('broadcasts.destroy');
+
         // Профили участниц из Telegram-бота: модерация (раньше — Filament BotUserResource).
         Route::get('profiles', [Admin\ProfileController::class, 'index'])->name('profiles.index');
         Route::delete('profiles', [Admin\ProfileController::class, 'bulkDestroy'])->name('profiles.bulk-destroy');
@@ -270,6 +286,11 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::get('subscribers/export.txt', [Admin\SubscriberController::class, 'exportTxt'])->name('subscribers.export.txt');
         Route::delete('subscribers/{subscriber}', [Admin\SubscriberController::class, 'destroy'])->name('subscribers.destroy');
 
+        // Обращения из формы «Связаться с нами» на странице «Контакты».
+        Route::get('contact-messages', [Admin\ContactMessageController::class, 'index'])->name('contact-messages.index');
+        Route::get('contact-messages/{contactMessage}', [Admin\ContactMessageController::class, 'show'])->name('contact-messages.show');
+        Route::delete('contact-messages/{contactMessage}', [Admin\ContactMessageController::class, 'destroy'])->name('contact-messages.destroy');
+
         Route::get('statistics', [Admin\StatisticsController::class, 'index'])->name('statistics.index');
         Route::get('statistics/pdf', [Admin\StatisticsController::class, 'pdf'])->name('statistics.pdf');
 
@@ -284,6 +305,8 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::get('cabinets/settings', [Admin\CabinetSettingController::class, 'edit'])->name('cabinets.settings');
         Route::put('cabinets/settings/theme', [Admin\ThemeSettingController::class, 'cabinet'])->name('cabinets.settings.theme');
         Route::put('cabinets/settings/knowledge', [Admin\AssistantKnowledgeController::class, 'update'])->name('cabinets.settings.knowledge');
+        Route::put('cabinets/settings/bot-help', [Admin\BotHelpController::class, 'update'])->name('cabinets.settings.bot-help');
+        Route::post('cabinets/settings/bot-help/reset', [Admin\BotHelpController::class, 'reset'])->name('cabinets.settings.bot-help.reset');
         Route::put('cabinets/settings/ai', [Admin\AiSettingController::class, 'update'])->name('cabinets.settings.ai.update');
         Route::post('cabinets/settings/ai/test/{provider}', [Admin\AiSettingController::class, 'test'])->name('cabinets.settings.ai.test');
 

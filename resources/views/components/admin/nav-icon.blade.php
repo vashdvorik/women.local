@@ -38,6 +38,11 @@
             <path d="M6.5 5.5v5l4-2.5-4-2.5z" fill="currentColor" stroke="none"/>
             @break
 
+        @case('send')
+            <path d="M14 2.5 7 9.5"/>
+            <path d="M14 2.5 9.5 13.5 7 9.5 2.5 7 14 2.5z"/>
+            @break
+
         @case('inbox')
             <path d="M3 8.5 4.8 3.6A1 1 0 0 1 5.75 3h4.5a1 1 0 0 1 .95.65L13 8.5"/>
             <path d="M3 8.5V12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V8.5h-3l-1 1.5H7l-1-1.5H3z"/>

@@ -29,6 +29,7 @@ class AdminAccessTest extends TestCase
             ['admin.cabinets.dashboard'],
             ['admin.cabinets.settings'],
             ['admin.subscribers.index'],
+            ['admin.contact-messages.index'],
             ['admin.settings.edit'],
         ];
     }

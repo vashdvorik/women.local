@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Actions\ResolveSlug;
+use App\Http\Controllers\Concerns\CreatesBroadcastDraft;
 use App\Http\Controllers\Concerns\ManagesFlatCards;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
+    use CreatesBroadcastDraft;
     use ManagesFlatCards;
 
     private const TEXT_FIELDS = ['type', 'date_label', 'title', 'description'];
@@ -43,7 +45,7 @@ class EventController extends Controller
 
     public function store(EventRequest $request): RedirectResponse
     {
-        DB::transaction(function () use ($request) {
+        $event = DB::transaction(function () use ($request) {
             $translations = $request->validated('translations', []);
 
             $event = Event::create([
@@ -58,9 +60,11 @@ class EventController extends Controller
 
             $this->syncFlatTranslations($event, $translations, self::TEXT_FIELDS);
             $this->syncContent($event, $translations);
+
+            return $event;
         });
 
-        return redirect()->route('admin.events.index')->with('success', __('Новость добавлена.'));
+        return redirect()->route('admin.events.index')->with('success', trim(__('Новость добавлена.').' '.$this->broadcastDraftNote($request, $event)));
     }
 
     public function edit(Event $event): View
@@ -88,7 +92,7 @@ class EventController extends Controller
             $this->syncContent($event, $translations);
         });
 
-        return redirect()->route('admin.events.index')->with('success', __('Новость сохранена.'));
+        return redirect()->route('admin.events.index')->with('success', trim(__('Новость сохранена.').' '.$this->broadcastDraftNote($request, $event)));
     }
 
     public function destroy(Event $event): RedirectResponse

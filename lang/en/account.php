@@ -18,9 +18,13 @@ return [
     'published_by' => 'Published by',
 
     'nav' => [
-        'home' => 'AI Assistant',
+        'home' => 'Home',
+        'assistant' => 'AI assistant',
         'matches' => 'Recommendations',
         'search' => 'Contact search',
+        'search_short' => 'Search',
+        'profile_short' => 'Profile',
+        'more' => 'More',
         'people' => 'Platform profiles',
         'opportunities' => 'Opportunities',
         'knowledge' => 'Learning',
@@ -74,6 +78,94 @@ return [
         'tip_label' => 'An idea to start',
         'tip_text' => 'Publish a request or offer — the right contact may be closer than you think.',
         'tip_action' => 'Add opportunity',
+    ],
+
+    'home' => [
+        'eyebrow' => 'Your space',
+        'hello' => 'Hello, :name!',
+        'intro' => 'Everything a Women’s hub member needs is here. Start with the steps below or pick a section.',
+        'intro_open' => 'You have open access. Below are all the sections of your account: what is available now and what unlocks with a subscription.',
+        'hint_title' => 'How everything is arranged',
+        'hint_mobile' => 'The menu is always at the bottom of the screen: the main sections and a “More” button with all the rest. The cards below are the same sections, with a note on what is in them and how to use them.',
+        'hint_desktop' => 'The menu is always on the left. The cards below are the same sections, with a note on what is in them and how to use them.',
+        'hint_close' => 'Got it',
+        'steps_title' => 'Where to start',
+        'steps_progress' => ':done of :total done',
+        'steps_all_done' => 'You have mastered the basics. The rest is in the sections below.',
+        'step_open' => 'Open',
+        'step_done' => 'Done',
+        'steps' => [
+            'profile' => [
+                'title' => 'Tell us about yourself',
+                'text' => 'A description and “what you are looking for”: the platform uses them to match contacts and opportunities for you.',
+            ],
+            'matches' => [
+                'title' => 'Look at your recommendations',
+                'text' => 'The platform suggests who you should meet.',
+            ],
+            'search' => [
+                'title' => 'Find the contact you need',
+                'text' => 'Describe who you need in plain words.',
+            ],
+            'opportunities' => [
+                'title' => 'Look at the opportunities',
+                'text' => 'Grants, competitions and offers from members.',
+            ],
+            'assistant' => [
+                'title' => 'Ask the AI assistant',
+                'text' => 'It matches contacts and suggests what to do next.',
+            ],
+            'subscription' => [
+                'title' => 'Open the whole community',
+                'text' => 'A subscription unlocks the member directory, contact search and the AI assistant.',
+            ],
+        ],
+        'tiles_title' => 'Sections of your account',
+        'tile_go' => 'Open →',
+        'tile_locked' => 'In the Community subscription',
+        'tile_how' => 'How to use it:',
+        'tiles' => [
+            'assistant' => [
+                'what' => 'A chat with AI: matches contacts and opportunities to your task.',
+                'how' => 'Write what you need, for example “find a marketing expert”.',
+            ],
+            'matches' => [
+                'what' => 'Members and opportunities the platform picked personally for you.',
+                'how' => 'The more detailed your profile, the more accurate the matching. Open a card to see the profile.',
+            ],
+            'search' => [
+                'what' => 'A search for members by meaning, not by name.',
+                'how' => 'Describe in plain words who you need and open a suitable profile.',
+            ],
+            'people' => [
+                'what' => 'The directory of all platform members.',
+                'how' => 'Scroll the list and open profiles: there is a description and a link to write in Telegram.',
+            ],
+            'opportunities' => [
+                'what' => 'Grants, competitions, offers and projects. Members publish them themselves.',
+                'how' => 'Open an opportunity for details, or publish your own.',
+            ],
+            'knowledge' => [
+                'what' => 'The platform’s learning materials.',
+                'how' => 'Pick a topic and read when it suits you.',
+            ],
+            'profile' => [
+                'what' => 'Your business card: this is how other members see you.',
+                'how' => 'Update it when your business changes: the recommendations depend on it.',
+            ],
+            'subscription' => [
+                'what' => 'Your plan, its end date and payment.',
+                'how' => 'You can subscribe or renew here.',
+            ],
+        ],
+        'fresh_title' => 'What’s new',
+        'fresh_opportunities' => 'Latest opportunities',
+        'fresh_members' => 'New members',
+        'fresh_all_opportunities' => 'All opportunities',
+        'fresh_all_members' => 'All members',
+        'fresh_empty' => 'Nothing here yet.',
+        'no_description' => 'No description yet.',
+        'bot_help' => 'Cannot find an answer? Ask the “AI assistant” in the Telegram bot: it explains how to use everything.',
     ],
 
     'profile' => [

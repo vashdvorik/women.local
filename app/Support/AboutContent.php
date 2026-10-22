@@ -138,11 +138,11 @@ final class AboutContent
             ],
 
             'foundation' => [
-                'title' => self::t('Кто стоит за платформой', 'Who is behind the platform', 'Cine se află în spatele platformei'),
+                'title' => self::t('Основатели и партнёры платформы', 'Founders and partners of the platform', 'Fondatorii și partenerii platformei'),
                 'intro' => self::t(
-                    'Woman’s Hub действует на базе Агентства Инноваций и Развития и работает вместе с партнёрами.',
-                    'Woman’s Hub operates on the basis of the Agency for Innovation and Development and works together with partners.',
-                    'Woman’s Hub își desfășoară activitatea în cadrul Agenției pentru Inovare și Dezvoltare și lucrează împreună cu parteneri.',
+                    'Women’s Hub создана по инициативе партнёров, объединённых общей миссией — поддерживать женщин, развивать предпринимательство и создавать новые возможности для сотрудничества.',
+                    'Women’s Hub was created on the initiative of partners united by a shared mission: to support women, develop entrepreneurship and create new opportunities for cooperation.',
+                    'Women’s Hub a fost creată din inițiativa unor parteneri uniți de o misiune comună: să sprijine femeile, să dezvolte antreprenoriatul și să creeze noi oportunități de colaborare.',
                 ),
                 'items' => [
                     self::card('building',
@@ -158,9 +158,9 @@ final class AboutContent
                         'Партнёр Woman’s Hub.', 'A partner of Woman’s Hub.', 'Partener al Woman’s Hub.'),
                     self::card('link',
                         'Дополнительные партнёры', 'Additional partners', 'Parteneri suplimentari',
-                        'EBA и AFAM — в соответствии с отдельными соглашениями.',
-                        'EBA and AFAM, under separate agreements.',
-                        'EBA și AFAM, în baza unor acorduri separate.'),
+                        'Партнёры — в соответствии с отдельными соглашениями.',
+                        'Partners, under separate agreements.',
+                        'Parteneri, în baza unor acorduri separate.'),
                 ],
                 'includes_title' => self::t('Партнёрское взаимодействие может включать', 'Partnership cooperation may include', 'Colaborarea cu partenerii poate include'),
                 'includes' => [
@@ -176,21 +176,21 @@ final class AboutContent
 
             'gala' => [
                 'eyebrow' => self::t('Признание', 'Recognition', 'Recunoaștere'),
-                'title' => self::t('Gala «Woman of the Year»', 'Gala “Woman of the Year”', 'Gala „Woman of the Year”'),
+                'title' => self::t('Гала Премия «Женщина Года»', 'Gala “Woman of the Year”', 'Gala „Woman of the Year”'),
                 'text' => [
                     self::t(
-                        'Ежегодная гала-премия признаёт женщин, достигших значимых результатов в профессиональной, предпринимательской, общественной, социальной, культурной и других сферах.',
+                        'Ежегодная Гала Премия «Женщина Года» признаёт женщин, достигших значимых результатов в профессиональной, предпринимательской, общественной, социальной, культурной и других сферах.',
                         'The annual gala award recognizes women who have achieved significant results in professional, entrepreneurial, public, social, cultural and other fields.',
                         'Gala-premiul anual recunoaște femeile care au obținut rezultate semnificative în domeniul profesional, antreprenorial, civic, social, cultural și în alte domenii.',
                     ),
                     self::t(
-                        'Участие в Gala входит в оба пакета членства, а право номинировать на премию есть у резидентов Woman’s Hub.',
+                        'Участие в Гала Премии «Женщина Года» входит в оба пакета членства, а право номинировать на премию есть у резидентов Woman’s Hub.',
                         'Participation in the Gala is included in both membership packages, and residents of Woman’s Hub have the right to nominate for the award.',
                         'Participarea la Gală este inclusă în ambele pachete de membru, iar rezidentele Woman’s Hub au dreptul să nominalizeze la premiu.',
                     ),
                 ],
                 'links' => [
-                    'regulations' => self::t('Положение о Гала-премии', 'Regulations of the Gala Award', 'Regulamentul Gala-premiului'),
+                    'regulations' => self::t('Положение о Гала Премии', 'Regulations of the Gala Award', 'Regulamentul Gala-premiului'),
                     'photos' => self::t('Фото с церемоний', 'Photos from the ceremonies', 'Fotografii de la ceremonii'),
                 ],
             ],
@@ -224,7 +224,7 @@ final class AboutContent
 
             'steps' => [
                 'eyebrow' => self::t('Четыре шага', 'Four steps', 'Patru pași'),
-                'title' => self::t('Путь от заявки до кабинета', 'From application to cabinet', 'De la cerere la cabinet'),
+                'title' => self::t('Ваш путь в сообщество Women’s Hub', 'Your path to the Women’s Hub community', 'Drumul tău în comunitatea Women’s Hub'),
                 'items' => [
                     self::card('telegram',
                         'Подайте заявку', 'Submit an application', 'Depune cererea',
@@ -388,7 +388,7 @@ final class AboutContent
             'photos' => [
                 'title' => self::t('Сообщество вживую', 'The community in person', 'Comunitatea în persoană'),
                 'text' => self::t(
-                    'Встречи, панельные дискуссии, нетворкинг и гала-премия: фото с наших мероприятий.',
+                    'Встречи, панельные дискуссии, нетворкинг и Гала Премия «Женщина Года»: фото с наших мероприятий.',
                     'Meetings, panel discussions, networking and the gala award: photos from our events.',
                     'Întâlniri, dezbateri în panel, networking și gala premiilor: fotografii de la evenimentele noastre.',
                 ),
@@ -431,9 +431,9 @@ final class AboutContent
                         ),
                     ],
                     [
-                        'q' => self::t('Входит ли в пакет участие в Gala?', 'Is participation in the Gala included?', 'Participarea la Gală este inclusă?'),
+                        'q' => self::t('Входит ли в пакет участие в Гала Премии «Женщина Года»?', 'Is participation in the Gala included?', 'Participarea la Gală este inclusă?'),
                         'a' => self::t(
-                            'Да, участие в Gala «Woman of the Year» входит в оба пакета. Номинировать на премию могут резиденты по отдельному Положению о премии.',
+                            'Да, участие в Гала Премии «Женщина Года» входит в оба пакета. Номинировать на премию могут резиденты по отдельному Положению о премии.',
                             'Yes, participation in the Gala “Woman of the Year” is included in both packages. Residents may nominate for the award under the separate Regulations on the Award.',
                             'Da, participarea la Gala „Woman of the Year” este inclusă în ambele pachete. Rezidentele pot nominaliza la premiu conform Regulamentului separat privind premiul.',
                         ),

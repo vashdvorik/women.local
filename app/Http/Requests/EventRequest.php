@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Broadcast;
 use App\Support\CardTone;
 use App\Support\Locales;
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,6 +25,9 @@ class EventRequest extends FormRequest
             'url' => ['nullable', 'url', 'max:2000'],
             'is_published' => ['boolean'],
             'translations' => ['array'],
+            // Галочка «Создать черновик для рассылки» и кому (App\Services\Broadcasts\BroadcastDrafts).
+            'broadcast_draft' => ['boolean'],
+            'broadcast_audience' => ['nullable', Rule::in(Broadcast::AUDIENCES)],
         ];
 
         foreach (Locales::ALL as $locale) {

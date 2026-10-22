@@ -1,0 +1,345 @@
+[
+  {
+    "source": "C:\\Users\\Pavel\\Downloads\\Новая папка (6)\\images.png",
+    "output": "png/международные партнеры/01-kingdom-of-the-netherlands.png",
+    "type": "png",
+    "original_size": [
+      839,
+      365
+    ],
+    "prepared_size": [
+      900,
+      423
+    ],
+    "background_removed": true,
+    "note": "User-provided high-resolution horizontal lockup."
+  },
+  {
+    "source": "C:\\Users\\Pavel\\Downloads\\Новая папка (6)\\images.jpg",
+    "output": "png/международные партнеры/02-un-women.png",
+    "type": "png",
+    "original_size": [
+      225,
+      225
+    ],
+    "prepared_size": [
+      864,
+      900
+    ],
+    "background_removed": true,
+    "note": "User-provided clean UN Women Moldova lockup."
+  },
+  {
+    "source": "C:\\Users\\Pavel\\Downloads\\Новая папка (6)\\2.png",
+    "output": "png/международные партнеры/03-united-nations-moldova.png",
+    "type": "png",
+    "original_size": [
+      554,
+      554
+    ],
+    "prepared_size": [
+      828,
+      900
+    ],
+    "background_removed": true,
+    "note": "User-provided clean United Nations Moldova lockup."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\originals\\международные партнеры\\04-undp-official.png",
+    "output": "png/международные партнеры/04-undp.png",
+    "type": "png",
+    "original_size": [
+      1440,
+      2192
+    ],
+    "prepared_size": [
+      868,
+      1620
+    ],
+    "background_removed": true,
+    "note": "Official UNDP source; preserved as supplied."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\originals\\международные партнеры\\05-nrc.svg",
+    "output": "png/международные партнеры/05-nrc.png",
+    "type": "png",
+    "original_format": "svg",
+    "prepared_size": [
+      1800,
+      568
+    ],
+    "note": "Rasterized from the official SVG at high resolution for site use."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\originals\\международные партнеры\\01-kingdom-of-the-netherlands.svg",
+    "output": "svg/международные партнеры/01-kingdom-of-the-netherlands.svg",
+    "type": "svg",
+    "note": "Untouched official vector source."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\originals\\международные партнеры\\03-united-nations-emblem.svg",
+    "output": "svg/международные партнеры/03-united-nations-emblem.svg",
+    "type": "svg",
+    "note": "Untouched official vector source."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\originals\\международные партнеры\\05-nrc.svg",
+    "output": "svg/международные партнеры/05-nrc.svg",
+    "type": "svg",
+    "note": "Untouched official vector source."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\public\\images\\partners\\local-eba.png",
+    "output": "png/Партнеры и вдохновители/01-eba-moldova.png",
+    "type": "png",
+    "original_size": [
+      191,
+      80
+    ],
+    "prepared_size": [
+      900,
+      516
+    ],
+    "background_removed": true,
+    "note": "Current clean site asset from the official partner set."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\public\\images\\partners\\local-afam.png",
+    "output": "png/Партнеры и вдохновители/02-afam.png",
+    "type": "png",
+    "original_size": [
+      214,
+      109
+    ],
+    "prepared_size": [
+      900,
+      363
+    ],
+    "background_removed": true,
+    "note": "Current clean site asset from the official partner set; official SVG is also included below."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\Партнеры и вдохновители\\3.png",
+    "output": "png/Партнеры и вдохновители/03-youth-4-innovation.png",
+    "type": "png",
+    "original_size": [
+      211,
+      107
+    ],
+    "prepared_size": [
+      900,
+      386
+    ],
+    "background_removed": true,
+    "note": "Official logo supplied as a small raster source; preserved without redraw."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\public\\images\\partners\\local-glia.png",
+    "output": "png/Партнеры и вдохновители/04-glia-impact-hub.png",
+    "type": "png",
+    "original_size": [
+      135,
+      109
+    ],
+    "prepared_size": [
+      900,
+      656
+    ],
+    "background_removed": true,
+    "note": "Current clean site asset from the official partner set."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\public\\images\\partners\\local-progen.png",
+    "output": "png/Партнеры и вдохновители/05-centrul-parteneriat-pentru-dezvoltare.png",
+    "type": "png",
+    "original_size": [
+      222,
+      85
+    ],
+    "prepared_size": [
+      900,
+      345
+    ],
+    "background_removed": true,
+    "note": "Current clean site asset from the official partner set."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\Партнеры и вдохновители\\7.png",
+    "output": "png/Партнеры и вдохновители/07-ziphouse.png",
+    "type": "png",
+    "original_size": [
+      210,
+      80
+    ],
+    "prepared_size": [
+      900,
+      359
+    ],
+    "background_removed": true,
+    "note": "Clean horizontal lockup from the supplied site source; official SVG is also included below."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\Партнеры и вдохновители\\8.png",
+    "output": "png/Партнеры и вдохновители/08-multicolor-mark.png",
+    "type": "png",
+    "original_size": [
+      447,
+      447
+    ],
+    "prepared_size": [
+      795,
+      900
+    ],
+    "background_removed": true,
+    "note": "Supplied source preserved without redraw."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\public\\images\\partners\\coordinator-ida.png",
+    "output": "png/Партнеры и вдохновители/09-moldova-in-development.png",
+    "type": "png",
+    "original_size": [
+      153,
+      132
+    ],
+    "prepared_size": [
+      900,
+      788
+    ],
+    "background_removed": true,
+    "note": "Current clean site asset from the official partner set."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\public\\images\\partners\\coordinator-creative.png",
+    "output": "png/Партнеры и вдохновители/10-creative-association.png",
+    "type": "png",
+    "original_size": [
+      149,
+      125
+    ],
+    "prepared_size": [
+      900,
+      769
+    ],
+    "background_removed": true,
+    "note": "Current clean site asset from the official partner set."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\public\\images\\partners\\coordinator-platform.png",
+    "output": "png/Партнеры и вдохновители/11-social-entrepreneurship-platform.png",
+    "type": "png",
+    "original_size": [
+      203,
+      140
+    ],
+    "prepared_size": [
+      900,
+      639
+    ],
+    "background_removed": true,
+    "note": "Current clean site asset from the official partner set."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\originals\\Партнеры и вдохновители\\12-woman-up.png",
+    "output": "png/Партнеры и вдохновители/12-woman-up.png",
+    "type": "png",
+    "original_size": [
+      1680,
+      1617
+    ],
+    "prepared_size": [
+      1209,
+      1353
+    ],
+    "background_removed": true,
+    "note": "Official source from the project website."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\Партнеры и вдохновители\\13.png",
+    "output": "png/Партнеры и вдохновители/13-startup-moldova.png",
+    "type": "png",
+    "original_size": [
+      155,
+      60
+    ],
+    "prepared_size": [
+      900,
+      356
+    ],
+    "background_removed": true,
+    "note": "Clean black-and-green site lockup from the supplied source."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\Партнеры и вдохновители\\4,5.png",
+    "output": "png/Партнеры и вдохновители/14-artcor.png",
+    "type": "png",
+    "original_size": [
+      112,
+      117
+    ],
+    "prepared_size": [
+      781,
+      900
+    ],
+    "background_removed": false,
+    "note": "Split from the combined source file without redraw."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\Партнеры и вдохновители\\4,5.png",
+    "output": "png/Партнеры и вдохновители/14-contact.png",
+    "type": "png",
+    "original_size": [
+      274,
+      117
+    ],
+    "prepared_size": [
+      900,
+      287
+    ],
+    "background_removed": false,
+    "note": "Split from the combined source file without redraw."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\originals\\Партнеры и вдохновители\\02-afam.svg",
+    "output": "svg/Партнеры и вдохновители/02-afam.svg",
+    "type": "svg",
+    "note": "Untouched official vector source."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\originals\\Партнеры и вдохновители\\07-ziphouse.svg",
+    "output": "svg/Партнеры и вдохновители/07-ziphouse.svg",
+    "type": "svg",
+    "note": "Untouched official vector source."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\originals\\Партнеры и вдохновители\\14-artcor-official-white.svg",
+    "output": "svg/Партнеры и вдохновители/14-artcor-official-white.svg",
+    "type": "svg",
+    "note": "Untouched official white vector source; use on dark background."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\originals\\Партнеры и вдохновители\\06-fintech-hub-official-white.png",
+    "output": "png/Партнеры и вдохновители/transparent/06-fintech-hub.png",
+    "type": "png",
+    "original_size": [
+      1600,
+      727
+    ],
+    "prepared_size": [
+      1733,
+      787
+    ],
+    "background_removed": false,
+    "note": "Untouched official white mark on transparency; use on a dark surface."
+  },
+  {
+    "source": "D:\\OSPanel\\home\\women.local\\dizayn\\partner\\final\\png\\Партнеры и вдохновители\\transparent\\06-fintech-hub.png",
+    "output": "png/Партнеры и вдохновители/06-fintech-hub.png",
+    "type": "png",
+    "variant": "dark-background",
+    "prepared_size": [
+      1733,
+      787
+    ],
+    "note": "Official white mark placed on a dark neutral background for light cards."
+  }
+]

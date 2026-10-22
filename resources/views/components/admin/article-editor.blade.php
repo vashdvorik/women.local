@@ -117,6 +117,7 @@
 
                     @if($l === 'ru')
                         <x-admin.cover-field />
+                        <x-admin.broadcast-draft :item="$article" />
                     @endif
 
                     <x-admin.block-editor :locale="$l" />

@@ -18,6 +18,8 @@ use Illuminate\Validation\ValidationException;
  */
 trait PublishesArticle
 {
+    use CreatesBroadcastDraft;
+
     protected function finishArticle(
         Model $article,
         Request $request,
@@ -41,10 +43,12 @@ trait PublishesArticle
                 ->with('publish_failed', true);
         }
 
-        return redirect()->route($editRoute, $article)->with('success', match ($intent) {
+        $message = match ($intent) {
             'publish' => __(':noun опубликована.', ['noun' => $noun]),
             'unpublish' => __(':noun снята с публикации.', ['noun' => $noun]),
             default => $created ? __('Черновик сохранён.') : __('Изменения сохранены.'),
-        });
+        };
+
+        return redirect()->route($editRoute, $article)->with('success', trim($message.' '.$this->broadcastDraftNote($request, $article)));
     }
 }

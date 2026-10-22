@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * Положение о Гала-премии «Женщина года 2026» (/gala/regulations): текст документа docs/pologenie на трёх языках
+ * Положение о Гала Премии «Женщина Года» (/gala/regulations): текст документа docs/pologenie на трёх языках
  * (App\Support\GalaRegulations), пункт «Положение о премии» в меню GALA после ссылок на сайты по годам.
  */
 class PublicGalaRegulationsTest extends TestCase
@@ -18,7 +18,7 @@ class PublicGalaRegulationsTest extends TestCase
 
     /** Номера пунктов положения в порядке документа. */
     private const CLAUSES = [
-        '1.1.', '1.2.', '1.3.', '1.4.', '1.5.',
+        '1.1.', '1.2.', '1.3.',
         '2.1.', '2.2.',
         '3.1.', '3.2.', '3.3.', '3.4.', '3.5.', '3.6.', '3.7.', '3.8.',
         '4.1.', '4.2.',
@@ -31,20 +31,24 @@ class PublicGalaRegulationsTest extends TestCase
 
     // ---------------------------------------------------------------- страница
 
-    public function test_the_page_opens_with_the_title_and_the_ceremony_date(): void
+    public function test_the_page_opens_with_the_title_and_names_no_year_or_date(): void
     {
         $html = $this->get(route('gala.regulations'))->assertOk()->getContent();
 
         $this->assertSame('/gala/regulations', parse_url(route('gala.regulations'), PHP_URL_PATH));
-        $this->assertStringContainsString('<title>Положение о Гала-премии «Женщина года 2026» — Women', $html);
-        $this->assertStringContainsString('<meta name="description" content="Положение о Гала-премии «Женщина года 2026»: условия участия', $html);
+        $this->assertStringContainsString('<title>Положение о Гала Премии «Женщина Года» — Women', $html);
+        $this->assertStringContainsString('<meta name="description" content="Положение о Гала Премии «Женщина Года»: условия участия', $html);
         $this->assertSame(1, substr_count($html, '<h1'));
 
-        foreach (['Положение о Гала-премии «Женщина года 2026»', 'Regulations of the Gala Award “Woman of the Year 2026”', 'Regulamentul Gala-premiului „Femeia Anului 2026”'] as $title) {
+        foreach (['Положение о Гала Премии «Женщина Года»', 'Regulations of the Gala Award “Woman of the Year”', 'Regulamentul Gala-premiului „Femeia Anului”'] as $title) {
             $this->assertStringContainsString($title, $html, $title);
         }
-        foreach (['Дата проведения церемонии награждения: 4 декабря 2026 года', 'Award ceremony date: 4 December 2026', 'Data ceremoniei de decernare: 4 decembrie 2026'] as $date) {
-            $this->assertStringContainsString($date, $html, $date);
+        // Положение общее для всех гала-премий: ни года, ни даты церемонии в нём нет.
+        // Год проверяем только в тексте документа: в подвале сайта есть «© 2026».
+        $this->assertSame(1, preg_match('#<main.*?</main>#s', $html, $main));
+        $this->assertStringNotContainsString('2026', strip_tags($main[0]));
+        foreach (['4 декабря', '4 December', '4 decembrie', 'Дата проведения церемонии'] as $date) {
+            $this->assertStringNotContainsString($date, $html, $date);
         }
 
         // Примечания у этого документа нет, цен тоже.
@@ -68,7 +72,7 @@ class PublicGalaRegulationsTest extends TestCase
         }
 
         preg_match_all('#<span class="miro-doc__num">([\d.]+)</span>#', $html, $m);
-        $this->assertSame(self::CLAUSES, $m[1], 'все 38 пунктов, номера как в документе');
+        $this->assertSame(self::CLAUSES, $m[1], 'все 36 пунктов, номера как в документе');
 
         // Четыре маркированных списка (задачи, этапы, состав Комиссии, критерии) на 20 пунктов.
         preg_match_all('#<ul class="miro-doc__list">(.*?)</ul>#s', $html, $lists);
@@ -77,12 +81,12 @@ class PublicGalaRegulationsTest extends TestCase
 
         // Ключевые фразы русского текста дословно.
         foreach ([
-            'Организатором Гала-премии «Женщина года 2026» является Некоммерческое партнерство «Агентство инноваций и развития».',
-            'Для рассмотрения заявок и определения лауреатов Гала-премии формируется Комиссия в составе 15 человек.',
-            '5 амбассадоров премии, представляющих участниц и лауреатов Гала-премии прошлых лет;',
+            'Организатором Гала Премии «Женщина Года» является Некоммерческое партнерство «Агентство инноваций и развития» совместно с организациями - партнерами.',
+            'Для рассмотрения заявок и определения лауреатов Гала Премии формируется Комиссия в составе 15 человек.',
+            '5 амбассадоров премии, представляющих участниц и лауреатов Гала Премии прошлых лет;',
             '5 международных экспертов.',
-            'Лауреатами Гала-премии «Женщина года 2026» могут стать исключительно участницы Женской платформы.',
-            'торжественная церемония награждения 4 декабря 2026 года.',
+            'Лауреатами Гала Премии «Женщина Года» могут стать исключительно участницы Женской платформы.',
+            'торжественная церемония награждения.',
             'Вопросы, не урегулированные настоящим Положением, решаются организатором',
         ] as $phrase) {
             $this->assertStringContainsString($phrase, $html, $phrase);
@@ -185,7 +189,7 @@ class PublicGalaRegulationsTest extends TestCase
         $this->assertStringContainsString('WOMAN’S HUB COMMUNITY', $html);
         $this->assertStringContainsString('ПЛАТФОРМА ДЛЯ ЖЕНЩИН-ПРЕДПРИНИМАТЕЛЕЙ WOMAN’S HUB', $html);
         $this->assertStringNotContainsString('Рабочая редакция', $html);
-        $this->assertStringNotContainsString('Гала-премии «Женщина года 2026»</span><span', $html);
+        $this->assertStringNotContainsString('Гала Премии «Женщина Года»</span><span', $html);
         $this->assertSame(10, substr_count($html, 'class="miro-doc__section"'));
     }
 }

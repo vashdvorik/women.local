@@ -30,6 +30,7 @@ final class AdminCamp
         'admin.statistics.*',
         'admin.subscriptions.*',
         'admin.payments.*',
+        'admin.broadcasts.*',
     ];
 
     public static function current(?Request $request = null): string

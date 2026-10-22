@@ -38,11 +38,37 @@ class BotUser extends Model
     protected $casts = [
         'telegram_id'          => 'integer',
         'approved_at'          => 'datetime',
+        'cabinet_opened_at'    => 'datetime',
+        'cabinet_reminded_at'  => 'datetime',
+        'cabinet_seen'         => 'array',
         'plan_ends_at'         => 'datetime',
         'plan_notified_stage'  => 'integer',
         'embedding'            => 'array',
         'embedding_updated_at' => 'datetime',
     ];
+
+    /** Участница вошла в кабинет: запоминаем первый вход (по нему бот понимает, что напоминать о кабинете не нужно). */
+    public function markCabinetOpened(): void
+    {
+        if ($this->cabinet_opened_at === null) {
+            $this->forceFill(['cabinet_opened_at' => now()])->save();
+        }
+    }
+
+    /** Участница открыла раздел кабинета ('matches', 'search', 'opportunities', 'assistant'…): по этому ставится галочка на главной. */
+    public function markSeen(string $section): void
+    {
+        $seen = (array) $this->cabinet_seen;
+
+        if (! in_array($section, $seen, true)) {
+            $this->forceFill(['cabinet_seen' => [...$seen, $section]])->save();
+        }
+    }
+
+    public function hasSeen(string $section): bool
+    {
+        return in_array($section, (array) $this->cabinet_seen, true);
+    }
 
     public function subscriptions(): HasMany
     {

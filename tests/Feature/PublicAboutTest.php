@@ -57,7 +57,7 @@ class PublicAboutTest extends TestCase
 
             // В списке по сайту на год, новые сверху; сайты свои, поэтому в новой вкладке.
             $this->assertSame(1, preg_match('#id="miro-gala-menu"[^>]*>(.*?)</div>#s', $html, $menu), "$theme: меню Gala не найдено");
-            preg_match_all('#<a href="([^"]+)" target="_blank" rel="noopener" role="menuitem">Gala (\d{4})#', $menu[1], $links, PREG_SET_ORDER);
+            preg_match_all('#<a href="([^"]+)" target="_blank" rel="noopener" role="menuitem"><span data-lang="ru">Гала Премия (\d{4})</span>#u', $menu[1], $links, PREG_SET_ORDER);
 
             $this->assertSame($expected, array_column($links, 1, 2), $theme);
             $this->assertSame(['2026', '2025', '2024'], array_column($links, 2), "$theme: порядок пунктов");

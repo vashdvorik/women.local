@@ -52,6 +52,8 @@
         </p>
     @endif
 
+    <x-admin.broadcast-draft :item="$event" />
+
     @foreach($langs as $code => $label)
         <section class="border-t border-hairline pt-5">
             <h3 class="form-section-title">{{ __('Карточка :language', ['language' => $label]) }}@if($code === 'ru')<span class="text-danger"> *</span>@endif</h3>

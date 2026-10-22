@@ -49,6 +49,7 @@ class TmaAuthController extends Controller
         $request->session()->regenerate();
         session(['account_telegram_id' => $user->telegram_id]);
         session()->put('_account_expires', now()->addDays(7)->timestamp);
+        $user->markCabinetOpened();
 
         return response()->json([
             'ok'       => true,

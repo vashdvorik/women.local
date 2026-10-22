@@ -3,7 +3,7 @@
 namespace App\Support;
 
 /**
- * Текст «Положения о Гала-премии «Женщина года 2026»» (страница /gala/regulations) на трёх языках.
+ * Текст «Положения о Гала Премии «Женщина Года»» (страница /gala/regulations) на трёх языках.
  *
  * Русский текст — дословно из документа docs/pologenie/Положение_Гала_премия_Женщина_года_2026_исправленное (2).docx;
  * английский и румынский — переводы. Заголовки разделов в документе набраны заглавными, на странице они даны обычным
@@ -25,22 +25,17 @@ final class GalaRegulations
     public static function content(): array
     {
         return [
-            'eyebrow' => self::t('Gala', 'Gala', 'Gala'),
+            'eyebrow' => self::t('Гала Премия', 'Gala', 'Gala'),
             'title' => self::t(
-                'Положение о Гала-премии «Женщина года 2026»',
-                'Regulations of the Gala Award “Woman of the Year 2026”',
-                'Regulamentul Gala-premiului „Femeia Anului 2026”',
-            ),
-            'subtitle' => self::t(
-                'Дата проведения церемонии награждения: 4 декабря 2026 года',
-                'Award ceremony date: 4 December 2026',
-                'Data ceremoniei de decernare: 4 decembrie 2026',
+                'Положение о Гала Премии «Женщина Года»',
+                'Regulations of the Gala Award “Woman of the Year”',
+                'Regulamentul Gala-premiului „Femeia Anului”',
             ),
             // Описание страницы для поисковиков и заголовка вкладки.
             'intro' => self::t(
-                'Положение о Гала-премии «Женщина года 2026»: условия участия, порядок проведения, Комиссия, критерии оценки и лауреаты.',
-                'Regulations of the Gala Award “Woman of the Year 2026”: conditions of participation, procedure, the Committee, evaluation criteria and laureates.',
-                'Regulamentul Gala-premiului „Femeia Anului 2026”: condiții de participare, desfășurare, Comisia, criterii de evaluare și laureate.',
+                'Положение о Гала Премии «Женщина Года»: условия участия, порядок проведения, Комиссия, критерии оценки и лауреаты.',
+                'Regulations of the Gala Award “Woman of the Year”: conditions of participation, procedure, the Committee, evaluation criteria and laureates.',
+                'Regulamentul Gala-premiului „Femeia Anului”: condiții de participare, desfășurare, Comisia, criterii de evaluare și laureate.',
             ),
             'contents' => self::t('Содержание', 'Contents', 'Cuprins'),
             'sections' => [
@@ -49,22 +44,14 @@ final class GalaRegulations
                     'title' => self::t('1. Общие положения', '1. General provisions', '1. Dispoziții generale'),
                     'blocks' => [
                         self::clause('1.1.',
-                            'Гала-премия «Женщина года 2026» является ежегодной премией, направленной на признание, поддержку и поощрение женщин, достигших значимых результатов в профессиональной, предпринимательской, общественной, социальной, культурной и иных сферах деятельности.',
-                            'The Gala Award “Woman of the Year 2026” is an annual award aimed at recognizing, supporting and encouraging women who have achieved significant results in professional, entrepreneurial, public, social, cultural and other fields.',
-                            'Gala-premiul „Femeia Anului 2026” este un premiu anual menit să recunoască, să sprijine și să încurajeze femeile care au obținut rezultate semnificative în domeniul profesional, antreprenorial, civic, social, cultural și în alte domenii de activitate.'),
+                            'Гала Премия «Женщина Года» является ежегодной премией, направленной на признание, поддержку и поощрение женщин, достигших значимых результатов в профессиональной, предпринимательской, общественной, социальной, культурной и иных сферах деятельности.',
+                            'The Gala Award “Woman of the Year” is an annual award aimed at recognizing, supporting and encouraging women who have achieved significant results in professional, entrepreneurial, public, social, cultural and other fields.',
+                            'Gala-premiul „Femeia Anului” este un premiu anual menit să recunoască, să sprijine și să încurajeze femeile care au obținut rezultate semnificative în domeniul profesional, antreprenorial, civic, social, cultural și în alte domenii de activitate.'),
                         self::clause('1.2.',
-                            'Организатором Гала-премии «Женщина года 2026» является Некоммерческое партнерство «Агентство инноваций и развития».',
-                            'The organizer of the Gala Award “Woman of the Year 2026” is the Non-profit Partnership “Agency for Innovation and Development”.',
-                            'Organizatorul Gala-premiului „Femeia Anului 2026” este Parteneriatul nonprofit „Agenția pentru Inovare și Dezvoltare”.'),
+                            'Организатором Гала Премии «Женщина Года» является Некоммерческое партнерство «Агентство инноваций и развития» совместно с организациями - партнерами.',
+                            'The organizer of the Gala Award “Woman of the Year” is the Non-profit Partnership “Agency for Innovation and Development” together with partner organizations.',
+                            'Organizatorul Gala-premiului „Femeia Anului” este Parteneriatul nonprofit „Agenția pentru Inovare și Dezvoltare” împreună cu organizațiile partenere.'),
                         self::clause('1.3.',
-                            'В 2026 году Гала-премия проводится на базе Женской платформы и является одним из ключевых механизмов признания достижений ее участниц.',
-                            'In 2026 the Gala Award is held on the basis of the Women’s Platform and is one of the key mechanisms for recognizing the achievements of its members.',
-                            'În 2026 Gala-premiul se desfășoară în cadrul Platformei Femeilor și reprezintă unul dintre mecanismele-cheie de recunoaștere a realizărilor participantelor sale.'),
-                        self::clause('1.4.',
-                            'Торжественная церемония награждения лауреатов состоится 4 декабря 2026 года.',
-                            'The solemn awards ceremony for the laureates will take place on 4 December 2026.',
-                            'Ceremonia solemnă de decernare a premiilor către laureate va avea loc la 4 decembrie 2026.'),
-                        self::clause('1.5.',
                             'Настоящее Положение определяет порядок участия в премии, подачи и рассмотрения заявок, принципы формирования Комиссии, порядок оценки кандидатур и определения лауреатов.',
                             'These Regulations define the procedure for participating in the award, submitting and reviewing applications, the principles of forming the Committee, the procedure for evaluating candidates and determining laureates.',
                             'Prezentul Regulament stabilește modul de participare la premiu, depunerea și examinarea cererilor, principiile de formare a Comisiei, procedura de evaluare a candidatelor și de stabilire a laureatelor.'),
@@ -93,9 +80,9 @@ final class GalaRegulations
                     'title' => self::t('3. Условия участия', '3. Conditions of participation', '3. Condiții de participare'),
                     'blocks' => [
                         self::clause('3.1.',
-                            'Право подать заявку на участие в Гала-премии «Женщина года 2026» имеют только женщины, являющиеся участницами Женской платформы.',
-                            'Only women who are members of the Women’s Platform have the right to submit an application to participate in the Gala Award “Woman of the Year 2026”.',
-                            'Au dreptul să depună o cerere de participare la Gala-premiul „Femeia Anului 2026” numai femeile care sunt participante ale Platformei Femeilor.'),
+                            'Право подать заявку на участие в Гала Премии «Женщина Года» имеют только женщины, являющиеся участницами Женской платформы.',
+                            'Only women who are members of the Women’s Platform have the right to submit an application to participate in the Gala Award “Woman of the Year”.',
+                            'Au dreptul să depună o cerere de participare la Gala-premiul „Femeia Anului” numai femeile care sunt participante ale Platformei Femeilor.'),
                         self::clause('3.2.',
                             'Участие в Женской платформе является обязательным условием для подачи заявки и рассмотрения кандидатуры в рамках премии.',
                             'Membership in the Women’s Platform is a mandatory condition for submitting an application and for having a candidacy considered within the award.',
@@ -109,9 +96,9 @@ final class GalaRegulations
                             'A member who has submitted an application may claim the status of nominee and laureate of the award according to the results of the Committee’s review of her candidacy.',
                             'Participanta care a depus o cerere poate pretinde la statutul de nominalizată și laureată a premiului, conform rezultatelor examinării candidaturii sale de către Comisie.'),
                         self::clause('3.5.',
-                            'Лауреатами Гала-премии «Женщина года 2026» могут стать исключительно участницы Женской платформы.',
-                            'Only members of the Women’s Platform may become laureates of the Gala Award “Woman of the Year 2026”.',
-                            'Laureate ale Gala-premiului „Femeia Anului 2026” pot deveni exclusiv participantele Platformei Femeilor.'),
+                            'Лауреатами Гала Премии «Женщина Года» могут стать исключительно участницы Женской платформы.',
+                            'Only members of the Women’s Platform may become laureates of the Gala Award “Woman of the Year”.',
+                            'Laureate ale Gala-premiului „Femeia Anului” pot deveni exclusiv participantele Platformei Femeilor.'),
                         self::clause('3.6.',
                             'Заявка подается в установленный организатором срок по утвержденной форме.',
                             'The application is submitted within the period set by the organizer, in the approved form.',
@@ -137,7 +124,7 @@ final class GalaRegulations
                             ['проверка заявок на соответствие условиям участия;', 'checking applications for compliance with the conditions of participation;', 'verificarea conformității cererilor cu condițiile de participare;'],
                             ['рассмотрение и оценка кандидатур Комиссией;', 'review and evaluation of candidates by the Committee;', 'examinarea și evaluarea candidaturilor de către Comisie;'],
                             ['определение лауреатов по утвержденным номинациям;', 'determination of laureates in the approved nominations;', 'stabilirea laureatelor la nominalizările aprobate;'],
-                            ['торжественная церемония награждения 4 декабря 2026 года.', 'the solemn awards ceremony on 4 December 2026.', 'ceremonia solemnă de decernare la 4 decembrie 2026.'],
+                            ['торжественная церемония награждения.', 'the solemn awards ceremony.', 'ceremonia solemnă de decernare.'],
                         ]),
                         self::clause('4.2.',
                             'Сроки приема заявок, перечень номинаций и дополнительные организационные условия утверждаются и публикуются организатором отдельно.',
@@ -150,12 +137,12 @@ final class GalaRegulations
                     'title' => self::t('5. Комиссия по выбору лауреатов', '5. Committee for selecting laureates', '5. Comisia pentru selectarea laureatelor'),
                     'blocks' => [
                         self::clause('5.1.',
-                            'Для рассмотрения заявок и определения лауреатов Гала-премии формируется Комиссия в составе 15 человек.',
+                            'Для рассмотрения заявок и определения лауреатов Гала Премии формируется Комиссия в составе 15 человек.',
                             'To review applications and determine the laureates of the Gala Award, a Committee of 15 people is formed.',
                             'Pentru examinarea cererilor și stabilirea laureatelor Gala-premiului se formează o Comisie în componență de 15 persoane.'),
                         self::clause('5.2.', 'В состав Комиссии входят:', 'The Committee consists of:', 'Comisia este formată din:'),
                         self::bullets([
-                            ['5 амбассадоров премии, представляющих участниц и лауреатов Гала-премии прошлых лет;', '5 award ambassadors representing participants and laureates of the Gala Award of previous years;', '5 ambasadori ai premiului, care reprezintă participantele și laureatele Gala-premiului din anii precedenți;'],
+                            ['5 амбассадоров премии, представляющих участниц и лауреатов Гала Премии прошлых лет;', '5 award ambassadors representing participants and laureates of the Gala Award of previous years;', '5 ambasadori ai premiului, care reprezintă participantele și laureatele Gala-premiului din anii precedenți;'],
                             ['5 представителей Некоммерческого партнерства «Агентство инноваций и развития»;', '5 representatives of the Non-profit Partnership “Agency for Innovation and Development”;', '5 reprezentanți ai Parteneriatului nonprofit „Agenția pentru Inovare și Dezvoltare”;'],
                             ['5 международных экспертов.', '5 international experts.', '5 experți internaționali.'],
                         ]),
@@ -209,9 +196,9 @@ final class GalaRegulations
                     'title' => self::t('7. Лауреаты премии', '7. Laureates of the award', '7. Laureatele premiului'),
                     'blocks' => [
                         self::clause('7.1.',
-                            'Лауреатами Гала-премии «Женщина года 2026» признаются участницы Женской платформы, определенные Комиссией победительницами в соответствующих номинациях.',
-                            'Laureates of the Gala Award “Woman of the Year 2026” are members of the Women’s Platform whom the Committee has determined to be winners in the relevant nominations.',
-                            'Laureate ale Gala-premiului „Femeia Anului 2026” sunt recunoscute participantele Platformei Femeilor, desemnate de Comisie câștigătoare la nominalizările respective.'),
+                            'Лауреатами Гала Премии «Женщина Года» признаются участницы Женской платформы, определенные Комиссией победительницами в соответствующих номинациях.',
+                            'Laureates of the Gala Award “Woman of the Year” are members of the Women’s Platform whom the Committee has determined to be winners in the relevant nominations.',
+                            'Laureate ale Gala-premiului „Femeia Anului” sunt recunoscute participantele Platformei Femeilor, desemnate de Comisie câștigătoare la nominalizările respective.'),
                         self::clause('7.2.',
                             'Количество и наименования номинаций утверждаются организатором отдельно.',
                             'The number and names of the nominations are approved separately by the organizer.',
@@ -221,9 +208,9 @@ final class GalaRegulations
                             'The results of the Committee’s work are approved by the organizer of the award.',
                             'Rezultatele activității Comisiei sunt aprobate de organizatorul premiului.'),
                         self::clause('7.4.',
-                            'Имена лауреатов объявляются в рамках торжественной церемонии Гала-премии «Женщина года 2026», которая состоится 4 декабря 2026 года.',
-                            'The names of the laureates are announced during the solemn ceremony of the Gala Award “Woman of the Year 2026”, which will take place on 4 December 2026.',
-                            'Numele laureatelor sunt anunțate în cadrul ceremoniei solemne a Gala-premiului „Femeia Anului 2026”, care va avea loc la 4 decembrie 2026.'),
+                            'Имена лауреатов объявляются в рамках торжественной церемонии Гала Премии «Женщина Года».',
+                            'The names of the laureates are announced during the solemn ceremony of the Gala Award “Woman of the Year”.',
+                            'Numele laureatelor sunt anunțate în cadrul ceremoniei solemne a Gala-premiului „Femeia Anului”.'),
                     ],
                 ],
                 [
@@ -257,9 +244,9 @@ final class GalaRegulations
                             'These Regulations enter into force upon their approval by the organizer.',
                             'Prezentul Regulament intră în vigoare din momentul aprobării sale de către organizator.'),
                         self::clause('9.2.',
-                            'Настоящее Положение действует в рамках проведения Гала-премии «Женщина года 2026».',
-                            'These Regulations apply within the framework of holding the Gala Award “Woman of the Year 2026”.',
-                            'Prezentul Regulament se aplică în cadrul desfășurării Gala-premiului „Femeia Anului 2026”.'),
+                            'Настоящее Положение действует в рамках проведения Гала Премии «Женщина Года».',
+                            'These Regulations apply within the framework of holding the Gala Award “Woman of the Year”.',
+                            'Prezentul Regulament se aplică în cadrul desfășurării Gala-premiului „Femeia Anului”.'),
                         self::clause('9.3.',
                             'Вопросы, не урегулированные настоящим Положением, решаются организатором с учетом целей премии и принципов объективности и равного отношения к участницам.',
                             'Matters not regulated by these Regulations are decided by the organizer, taking into account the goals of the award and the principles of objectivity and equal treatment of participants.',

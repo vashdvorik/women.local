@@ -28,6 +28,9 @@
 
     // Платежи, которые банк подтвердил, а мы нет (расхождение суммы и т. п.): ждут решения администратора.
     $problemPayments = \App\Models\Payment::where('status', \App\Models\Payment::STATUS_VERIFYING)->where('updated_at', '<=', now()->subMinutes(15))->count();
+
+    // Непрочитанные обращения из формы «Связаться с нами» на странице «Контакты».
+    $unreadContacts = \App\Models\ContactMessage::unread()->count();
 @endphp
 
 <aside {{ $attributes->merge(['class' => 'admin-sidebar']) }}>
@@ -59,6 +62,10 @@
                class="nav-link @if(request()->routeIs('admin.member-posts.*')) nav-link--active @endif">
                 <x-admin.nav-icon name="news" /><span>{{ __('Посты участниц') }}</span>
                 @if($pendingMemberPosts > 0)<span class="nav-counter">{{ $pendingMemberPosts }}</span>@endif
+            </a>
+            <a href="{{ route('admin.broadcasts.index') }}"
+               class="nav-link @if(request()->routeIs('admin.broadcasts.*')) nav-link--active @endif">
+                <x-admin.nav-icon name="send" /><span>{{ __('Рассылка') }}</span>
             </a>
             <a href="{{ route('admin.subscriptions.index') }}"
                class="nav-link @if(request()->routeIs('admin.subscriptions.*')) nav-link--active @endif">
@@ -173,6 +180,12 @@
             <a href="{{ route('admin.subscribers.index') }}"
                class="nav-link @if(request()->routeIs('admin.subscribers.*')) nav-link--active @endif">
                 <x-admin.nav-icon name="inbox" /><span>{{ __('Подписчики') }}</span>
+            </a>
+
+            <a href="{{ route('admin.contact-messages.index') }}"
+               class="nav-link @if(request()->routeIs('admin.contact-messages.*')) nav-link--active @endif">
+                <x-admin.nav-icon name="inbox" /><span>{{ __('Обращения') }}</span>
+                @if($unreadContacts > 0)<span class="nav-counter" title="{{ __('Непрочитанные обращения') }}">{{ $unreadContacts }}</span>@endif
             </a>
 
             <a href="{{ route('admin.settings.edit') }}"

@@ -10,6 +10,8 @@
                     @click="tab = 'ai'">{{ __('ИИ-провайдеры') }}</button>
             <button type="button" class="tab whitespace-nowrap" :class="{ 'tab--active': tab === 'knowledge' }"
                     @click="tab = 'knowledge'">{{ __('База знаний ассистента') }}</button>
+            <button type="button" class="tab whitespace-nowrap" :class="{ 'tab--active': tab === 'bot-help' }"
+                    @click="tab = 'bot-help'">{{ __('Помощник бота') }}</button>
         </div>
 
         <div x-show="tab === 'theme'" @if($tab !== 'theme') style="display:none" @endif>
@@ -20,6 +22,9 @@
         </div>
         <div x-show="tab === 'knowledge'" @if($tab !== 'knowledge') style="display:none" @endif>
             @include('admin.cabinets.settings._knowledge')
+        </div>
+        <div x-show="tab === 'bot-help'" @if($tab !== 'bot-help') style="display:none" @endif>
+            @include('admin.cabinets.settings._bot-help')
         </div>
     </div>
 </x-layouts.admin>

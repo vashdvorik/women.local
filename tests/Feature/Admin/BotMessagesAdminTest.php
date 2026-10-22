@@ -41,7 +41,7 @@ class BotMessagesAdminTest extends TestCase
     public function test_guests_cannot_open_or_change_the_messages(): void
     {
         $this->get(route('admin.cabinets.bot-messages'))->assertRedirect(route('login'));
-        $this->put(route('admin.cabinets.bot-messages.update'), ['messages' => ['menu_chat_stub' => 'x']])->assertRedirect(route('login'));
+        $this->put(route('admin.cabinets.bot-messages.update'), ['messages' => ['help_exit' => 'x']])->assertRedirect(route('login'));
 
         $this->assertNull(SiteSetting::read(BotMessages::SETTING_KEY));
     }
@@ -107,26 +107,26 @@ class BotMessagesAdminTest extends TestCase
 
     public function test_the_reference_text_or_an_empty_field_returns_the_message_to_the_reference(): void
     {
-        $this->save(['status_rejected' => 'Иначе.', 'menu_chat_stub' => 'Скоро.']);
+        $this->save(['status_rejected' => 'Иначе.', 'help_exit' => 'Скоро.']);
         $this->assertTrue(BotMessages::isCustomized('status_rejected', 'ru'));
 
         $this->save([
             'status_rejected' => BotMessages::default('status_rejected', 'ru'),
-            'menu_chat_stub' => '',
+            'help_exit' => '',
         ])->assertSessionHas('success');
 
         $this->assertFalse(BotMessages::isCustomized('status_rejected', 'ru'));
-        $this->assertFalse(BotMessages::isCustomized('menu_chat_stub', 'ru'));
+        $this->assertFalse(BotMessages::isCustomized('help_exit', 'ru'));
         $this->assertSame([], SiteSetting::read(BotMessages::SETTING_KEY));
     }
 
     public function test_messages_missing_from_the_form_stay_as_they_were(): void
     {
         $this->save(['status_rejected' => 'Иначе.']);
-        $this->save(['menu_chat_stub' => 'Скоро.']); // в форме нет status_rejected — правка не должна пропасть
+        $this->save(['help_exit' => 'Скоро.']); // в форме нет status_rejected — правка не должна пропасть
 
         $this->assertSame('Иначе.', BotMessages::text('status_rejected', 'ru'));
-        $this->assertSame('Скоро.', BotMessages::text('menu_chat_stub', 'ru'));
+        $this->assertSame('Скоро.', BotMessages::text('help_exit', 'ru'));
     }
 
     public function test_broken_html_is_not_saved_and_the_error_names_the_message(): void

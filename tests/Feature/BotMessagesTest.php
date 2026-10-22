@@ -108,7 +108,7 @@ class BotMessagesTest extends TestCase
 
     public function test_a_missing_language_falls_back_to_russian(): void
     {
-        $this->assertSame(BotMessages::text('menu_chat_stub', 'ru'), BotMessages::text('menu_chat_stub', 'xx'));
+        $this->assertSame(BotMessages::text('help_exit', 'ru'), BotMessages::text('help_exit', 'xx'));
     }
 
     public function test_administrator_edits_override_the_reference_only_for_their_language(): void
@@ -144,11 +144,11 @@ class BotMessagesTest extends TestCase
 
     public function test_changes_apply_immediately_despite_the_cache(): void
     {
-        $this->assertSame(BotMessages::default('menu_chat_stub', 'ru'), BotMessages::text('menu_chat_stub', 'ru')); // прогрев кэша
+        $this->assertSame(BotMessages::default('help_exit', 'ru'), BotMessages::text('help_exit', 'ru')); // прогрев кэша
 
-        BotMessages::save('ru', ['menu_chat_stub' => 'Скоро.']);
+        BotMessages::save('ru', ['help_exit' => 'Скоро.']);
 
-        $this->assertSame('Скоро.', BotMessages::text('menu_chat_stub', 'ru'));
+        $this->assertSame('Скоро.', BotMessages::text('help_exit', 'ru'));
     }
 
     public function test_menu_buttons_are_recognised_by_any_language_and_by_the_previous_caption(): void
@@ -183,7 +183,7 @@ class BotMessagesTest extends TestCase
         \Illuminate\Support\Facades\Schema::drop('site_settings');
         BotMessages::flush();
 
-        $this->assertSame(BotMessages::default('menu_chat_stub', 'ru'), BotMessages::text('menu_chat_stub', 'ru'));
+        $this->assertSame(BotMessages::default('help_exit', 'ru'), BotMessages::text('help_exit', 'ru'));
     }
 
     // ---------------------------------------------------------------- проверка введённого текста

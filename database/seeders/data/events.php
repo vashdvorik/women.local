@@ -41,7 +41,7 @@ return [
             'photo' => 'news/news-award.jpg',
             'url' => 'https://women.creativity.md/2026/05/20/%d0%b3%d0%b0%d0%bb%d0%b0-%d0%bf%d1%80%d0%b5%d0%bc%d0%b8%d1%8f-%d0%b6%d0%b5%d0%bd%d1%89%d0%b8%d0%bd%d0%b0-%d0%b3%d0%be%d0%b4%d0%b0-2024/',
             'date' => ['ru' => '20.05.2026', 'en' => 'May 20, 2026', 'ro' => '20.05.2026'],
-            'title' => ['ru' => 'Гала-премия «Женщина года 2024»', 'en' => '“Woman of the Year 2024” gala awards', 'ro' => 'Gala premiilor „Femeia anului 2024”'],
+            'title' => ['ru' => 'Гала Премия «Женщина Года 2024»', 'en' => '“Woman of the Year 2024” gala awards', 'ro' => 'Gala premiilor „Femeia anului 2024”'],
             'description' => ['ru' => 'Событие, посвящённое признанию выдающихся женщин и их достижений.', 'en' => 'An event celebrating outstanding women and their achievements.', 'ro' => 'Un eveniment dedicat recunoașterii femeilor remarcabile și realizărilor lor.'],
             'tone' => 'orange',
         ],

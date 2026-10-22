@@ -72,6 +72,7 @@ Telegram одновременно используется как канал р�
 ├── /events/{slug}          страница новости: обложка, описание, текст из блоков на трёх языках
 ├── /media/publications[/{slug}], /media/photos[/{slug}], /media/videos, /projects, /opportunities[/{slug}]
 │                           материалы из админки, тема miro
+├── POST /contact           форма «Связаться с нами» на /contact: запись в БД + письмо на site.contacts.email
 ├── POST /subscribe         подписка на новости (форма в подвале)
 ├── /login                  вход администратора
 └── /admin                  админка в двух лагерях: «Внешний сайт» (/admin) и «Кабинеты участниц» (/admin/cabinets)
@@ -127,7 +128,8 @@ Web middleware подключает `SetLocale` глобально для web-г
 
 | Раздел | View | Что делает |
 |---|---|---|
-| Главная | `account/index.blade.php` | Навигационная панель кабинета и быстрые действия |
+| Главная | `account/home.blade.php` (общая для тем, данные — `App\Support\CabinetHome`) | Навигационная главная для всех тарифов: подсказка «как тут всё устроено» (закрывается, запоминается в браузере), список «С чего начать» с галочками (профиль и подписка отмечаются по данным, остальные — когда раздел открыт: `bot_users.cabinet_seen`, `BotUser::markSeen`), плитки всех разделов с пояснением «что это» и «как пользоваться» (закрытые для Open с замком), «Что нового» (свежие возможности и новые участницы; у Open вместо этого материалы публичного сайта и приглашение подписаться). На телефоне внизу закреплённая панель: Главная, Поиск, Возможности, Профиль и «Ещё» (открывает полное меню) |
+| ИИ-помощник | `themes/account/{тема}/pages/assistant.blade.php` | Чат с ИИ (подбор контактов и возможностей), `GET /app/account/assistant` (`account.assistant`), с тарифа Community |
 | Профиль | `account/profile.blade.php` | Показывает данные, аватар и действие редактирования (кнопки «Удалить профиль» в кабинете нет) |
 | Редактирование | `account/profile-edit.blade.php` | Валидирует и сохраняет `full_name`, `description`, `expectation`; ставит job эмбеддинга |
 | Матчи | `account/matches.blade.php` | Показывает top-N по cosine similarity или пустое состояние |
@@ -147,7 +149,7 @@ Web middleware подключает `SetLocale` глобально для web-г
 | `GET/POST /app/account/subscription/success`, `/fail` | `account.subscription.success/fail` | SuccessURL / FailURL банка; итог берут из нашей базы, не из адреса |
 | `GET/POST /payment/result` | `payment.result` | ResultURL банка; без сессии и CSRF, отвечает `OK`/`ERROR` |
 
-Общий layout кабинета — `resources/views/account/layout.blade.php`. Он содержит sidebar, языковой переключатель, logout, Telegram WebApp initialization и скрывает logout внутри Telegram Mini App.
+Меню кабинета — один список в `App\Support\CabinetNav::items()` (боковая панель, нижняя панель на телефоне и плитки на главной). Общий layout кабинета — `resources/views/account/layout.blade.php`. Он содержит sidebar, языковой переключатель, logout, Telegram WebApp initialization и скрывает logout внутри Telegram Mini App.
 
 ## 4. Лендинг и темы оформления
 
@@ -181,7 +183,7 @@ Web middleware подключает `SetLocale` глобально для web-г
 
 1. Добавьте строку `'aurora' => 'Aurora'` в `SiteSetting::ACCOUNT_THEMES`. Радиокнопка в админке появится сама.
 2. Создайте `resources/views/themes/account/aurora/layout.blade.php`: боковое меню строится из `App\Support\CabinetNav::extend($navItems, $accountUser)`, логотип — `@include('account.partials.brand-logo')`. За образец возьмите `fortuntwo/layout.blade.php`.
-3. Создайте страницы `resources/views/themes/account/aurora/pages/`: `index`, `knowledge`, `matches`, `people`, `person`, `profile`, `profile-edit`, `search`, `opportunities/index`, `opportunities/create`. Контроллеры открывают их как `themes.account.{тема}.pages.{страница}`; страницы «Подписка», «Закрытый раздел» и вход (`resources/views/account/*`) общие и подключают layout активной темы.
+3. Создайте страницы `resources/views/themes/account/aurora/pages/`: `assistant`, `knowledge`, `matches`, `people`, `person`, `profile`, `profile-edit`, `search`, `opportunities/index`, `opportunities/create`. Контроллеры открывают их как `themes.account.{тема}.pages.{страница}`; страницы «Подписка», «Закрытый раздел» и вход (`resources/views/account/*`) общие и подключают layout активной темы.
 4. Стили и иконку положите в `public/themes/account/aurora/` (`css/theme.css`, `images/brand/favicon-w4w.png`) и подключите в layout.
 
 **Тема сайта** (допустим, `aurora`):
@@ -201,7 +203,9 @@ Web middleware подключает `SetLocale` глобально для web-г
 - `app/Telegram/TelegramKeyboards.php` — основная reply keyboard;
 - `app/Telegram/TelegramLocale.php` — язык ответа: язык Telegram участницы, иначе запомненный в профиле, иначе русский;
 - `app/Telegram/Conversations/RegistrationConversation.php` — регистрационный диалог;
-- `app/Telegram/Conversations/SearchConversation.php` — AI-поиск в чате;
+- `app/Telegram/Conversations/SearchConversation.php` — AI-поиск в чате (из меню убран, живёт для старых клавиатур);
+- `app/Telegram/Conversations/HelpConversation.php` — разговор с AI помощником («AI помощник» в меню): `App\Services\BotHelpAssistant` отвечает по инструкции `App\Support\BotHelp` (эталон `resources/data/bot_help.php`, правка в «Настройки кабинетов → Помощник бота», переменные {site_url}, {community_price}, {private_price}, {contact}), запрос к провайдеру ИИ идёт теми же настройками «Агент», что и у помощника в кабинете (`AiAssistantService::chat`); лимит 30 вопросов в сутки на участницу, история 8 реплик, ответ без Markdown; доступен только одобренным;
+- **Первые шаги** (чтобы не застревали после регистрации): сообщение «что дальше» с кнопкой «Сайт платформы» после анкеты (`registration_done`), под сообщением об одобрении кнопки «Открыть кабинет», «С чего начать?» и «Спросить помощника», напоминание `php artisan bot:remind-cabinet` (раз в сутки: одобрена 2–14 дней назад и ни разу не открыла кабинет, один раз; первый вход отмечает `bot_users.cabinet_opened_at`), разовая команда `php artisan bot:refresh-menu` (всем одобренным сообщение «меню обновилось» с новой клавиатурой);
 - `resources/data/bot_messages.php` и `app/Support/BotMessages.php` — все тексты бота (см. «Тексты бота» ниже).
 
 ### Тексты бота
@@ -212,7 +216,7 @@ Web middleware подключает `SetLocale` глобально для web-г
 - **Язык** — по языку Telegram участницы (ru / en / ro, по умолчанию русский). Для сообщений, которые уходят не в ответ на её слова (решение по заявке, рассылка, сообщения сайта), язык хранится в `bot_users.locale` и обновляется, когда она пишет боту.
 - **Формат** — Telegram-HTML (`<b>`, `<i>`, `<u>`, `<s>`, `<code>`, `<a href>`): все сообщения уходят с `parse_mode=HTML`. Подписи кнопок и описания команд — обычный текст в одну строку. Проверка `TelegramHtml` не даёт сохранить незакрытый тег или голый «<» (Telegram отвергает такой текст целиком).
 - **Правки администратора** — «Кабинеты участниц → Сообщения бота» (`/admin/cabinets/bot-messages`): вкладка на язык, поле на сообщение, подсказки переменных, «Вернуть исходный». Хранятся только отличия от эталона в `site_settings.bot_messages`, поэтому переживают `git pull`; действуют сразу. Пустое поле или текст, совпавший с эталоном, возвращает исходный.
-- **Кнопки меню** («Найти контакты», «Чат сообщества») бот узнаёт по подписи на любом языке и по эталонной тоже: у части телефонов клавиатура остаётся старой. Подписи не должны совпадать.
+- **Кнопки меню** («Кабинет», «AI помощник», «Закрыть помощника», а также прежние «Найти контакты» и «Чат сообщества») бот узнаёт по подписи на любом языке и по эталонной тоже: у части телефонов клавиатура остаётся старой. Подписи не должны совпадать.
 - **Меню команд Telegram** (`/start`, `/login`) обновляется после сохранения описаний в админке и командой `php artisan bot:sync-commands` (по языкам, `BotCommandSync`).
 - Новое сообщение добавляется в файл одной записью и сразу появляется в админке. Английский и румынский тексты — черновой перевод, его стоит вычитать.
 
@@ -228,9 +232,10 @@ Web middleware подключает `SetLocale` глобально для web-г
 /login
 └── только approved → новый magic-link
 
-approved keyboard
-├── «Найти контакты» → SearchConversation
-└── «Чат сообщества» → пока ответ-заглушка
+approved keyboard (App\Telegram\TelegramKeyboards::mainMenu)
+├── «Кабинет»      → кнопка-мини-приложение (https): кабинет открывается в Telegram с входом по подписи; без https — обычная кнопка, в ответ ссылка для входа
+├── «AI помощник»  → HelpConversation (разговор с помощником, пока не нажата «Закрыть помощника» или не отправлена команда)
+└── прежние «Найти контакты» и «Чат сообщества» живут на телефонах со старой клавиатурой: бот отвечает, как раньше (поиск контактов — Community и выше), и присылает сообщение «меню обновилось» с новой клавиатурой (BotReplies::handleMenuText)
 ```
 
 Callback-и:
@@ -263,6 +268,7 @@ Callback-и:
 | Медиатека → Фотоальбомы, видео | `/admin/albums`, `/admin/videos` | Альбомы с галереями и кроппером; ролики YouTube с ручным порядком |
 | Теги | `/admin/tags` | Названия на трёх языках и произвольный цвет |
 | Подписчики | `/admin/subscribers` | Форма в подвале сайта: список, поиск, экспорт CSV/TXT |
+| Обращения | `/admin/contact-messages` | Форма «Связаться с нами» на `/contact`: список, поиск, «только непрочитанные», счётчик в меню; открытое обращение считается прочитанным; метка «Без письма», если почта не ушла (причина в `mail_error`). Защита без капчи: поле-приманка `website`, зашифрованная метка времени формы (`App\Support\ContactForm`: не раньше 4 с и не старше 7 суток), 3 обращения в час с одного IP. Письмо — `App\Mail\ContactMessageMail` (Reply-To = почта автора), SMTP — раздел 5 `DEPLOY.txt` |
 | Настройки сайта | `/admin/settings` | Вкладки: сжатие изображений, тема публичного сайта |
 
 **Лагерь 2 — «Кабинеты участниц»** (закрытый кабинет и Telegram-бот):
@@ -273,6 +279,7 @@ Callback-и:
 | Профили участниц | `/admin/profiles` | Модерация `BotUser` (бывший Filament `BotUserResource`): вкладки статусов, поиск, одобрить/отклонить с уведомлением в Telegram, правка текстов, массовое удаление |
 | Посты участниц | `/admin/member-posts` | Премодерация постов из кабинета (`Opportunity`): одобренный виден всем и уходит рассылкой, ожидающий и отклонённый виден только автору |
 | Статистика | `/admin/statistics` | Отчёт по заявкам, готовности профилей и публикациям (`ImpactReport`), PDF-выгрузка |
+| Рассылка | `/admin/broadcasts` | «Отправить всем сообщение» в Telegram (лагерь «Кабинеты участниц»): текст на ru/en/ro (участница получает на языке профиля, нет перевода — русский; из разметки Telegram разрешены `<b> <i> <u> <s> <a href>`, остальное экранируется, `App\Support\BroadcastText`), до 3 кнопок-ссылок (только `https://`, подпись на трёх языках), фото (хранится целиком на закрытом диске `originals`, Telegram получает его один раз, дальше по `file_id`), получатели (все одобренные / Community и Private / только Open), «Отправить мне для проверки», отправка сразу или по расписанию (время вводится по Кишинёву, хранится в UTC). Таблицы `broadcasts` и `broadcast_deliveries` (по строке на участницу: дошло / заблокировала бота / ошибка). Отправляет задание `App\Jobs\SendBroadcast` (очередь, ~25 сообщений в секунду, при нехватке времени ставит себя заново, на 429 ждёт `retry_after`; повторный запуск никому не пишет второй раз), запуск атомарный (`BroadcastLauncher::start`), запланированные и зависшие рассылки подхватывает `artisan broadcasts:dispatch-due` (расписание: раз в минуту). Редактировать можно только черновик и запланированную; идущую можно отменить. Черновик можно создать и из материала: галочка «Создать черновик для рассылки» в формах новости, публикации и возможности (`App\Services\Broadcasts\BroadcastDrafts`): текст «<b>заголовок</b> + описание» на языках, обложка как фото, кнопка «Подробнее» со ссылкой на страницу; ничего не отправляется, на один материал черновик создаётся один раз (`broadcasts.source_type`, `source_id`) |
 | Подписки | `/admin/subscriptions` | Цена подписки на год (ключ `subscription_prices` в `site_settings`, поверх `config/subscription.php`); тарифы участниц: фильтры Open / Community / Private / скоро заканчиваются, «Подарить на год» (молча, без сообщения участнице), выдать тариф на другой срок или до даты, снять тариф, история |
 | Платежи | `/admin/payments` | Счета Web-платежа: статусы, поиск, «Проверить в банке» (GetState), «Подтвердить вручную»; счётчик проблемных счетов в меню |
 | Сообщения бота | `/admin/cabinets/bot-messages` | Все тексты бота на ru / en / ro: вкладка на язык, поле на сообщение, подсказки переменных, проверка Telegram-HTML, «Вернуть исходный» (см. «Тексты бота» в разделе 5) |
@@ -292,6 +299,8 @@ Callback-и:
 **Картинки.** Реестр пропорций `App\Support\AspectRatio::SLOTS`, кадрирование в Cropper.js, сохранение WebP (`StoreUploadedImage`, качество и размер — в настройках), диск `uploads` → `public/uploads/ГГГГ/ММ` без `storage:link`; в БД хранится относительный путь. Кроме готового кадра сохраняется сжатое фото целиком (закрытый диск `originals`, таблица `image_sources` с рамкой), поэтому кадр можно изменить кнопкой «Изменить кадр» в любой форме админки, не загружая файл заново (`UploadController::sourceInfo/source/recrop`). Подробности — docs/ADMIN_MIGRATION.md, «Перекадрирование».
 
 **Что осталось массивами в Blade:** партнёры, служебные страницы-заглушки (руководство, положение, почётные члены, gala, join), приоритеты и тексты лендинга, about, contact. Каталог 112 участниц — файл данных `resources/data/participants.php` (см. ниже).
+
+**«Наш вклад в цифрах» на главной miro.** Оргсхема «центр → три ветви → десять показателей» между «Посланием директора» и «Преимуществами» (`#impact`). Цифры и подписи на трёх языках лежат в `App\Support\ImpactStats` (из админки не правятся: меняются редко; новый показатель — строка в `groups()`). Разметка — `landing.blade.php`, стили — блок `.miro-impact` в `landing.css`, цвета текста на тёмном фоне — в `navigation.css`. Анимацию делает `js/impact.js`: когда схема появляется на экране, линии прорисовываются (CSS, задержки идут из `--delay` в разметке), цифры считаются от нуля; на телефоне (< 900 px) каждый показатель оживает отдельно, когда до него доскроллили. Итоговые значения стоят в самой разметке, поэтому без скрипта и при «уменьшить анимацию» в системе блок виден сразу готовым. Тест: `PublicImpactTest`.
 
 **Участницы.** Один список (`resources/data/participants.php`, читает `App\Support\Participants`) выводят и каталог `/members`, и карусель «Участницы платформы» на главной miro: нативный scroll-snap без библиотек, страница 4×4 / 2×4 / 1×4 по ширине экрана, стрелки, точки, свайп; логика — `public/themes/public/miro/js/participants.js`, раскладка — `landing.css`. Карусель отдаёт не оригиналы, а миниатюры 128 px WebP (`images/participants/thumb/`, около 3 КБ вместо 14), все с `loading="lazy"`. После добавления участницы с фото: `php artisan participants:thumbnails` и закоммитить миниатюры; `PublicParticipantsCarouselTest` падает, если миниатюры нет.
 
@@ -463,7 +472,7 @@ app/Http/
 └── Requests/Account/       profile/opportunity validation
 
 app/Models/                 User, BotUser, LoginToken, Opportunity (посты кабинета), SiteSetting,
-                            Post, SiteOpportunity, Album, Video, Project, Tag, Expert, Event, Subscriber (+ *Translation)
+                            Post, SiteOpportunity, Album, Video, Project, Tag, Expert, Event, Subscriber, ContactMessage (+ *Translation)
 app/Services/               MatchingService, EmbeddingService, Subscriptions/ (тарифы, напоминания),
                             Payments/WebPayment/ (протокол банка, сверка платежей)
 app/Enums/                  Plan (Open / Community / Private)
@@ -497,7 +506,7 @@ tests/
 
 1. `AccountController::sendLink()` существует, но отдельный POST route и форма для него сейчас не зарегистрированы; фактический web-вход идёт через Telegram bot link или TMA-auth.
 2. Поле `login_tokens.used_at` учитывается в impact-метриках, но текущий `AccountController::auth()` его не заполняет. Поэтому метрики «использованных» токенов могут быть нулевыми, а токен остаётся действительным до `expires_at`.
-3. `knowledge` и ответ «Чат сообщества» в Telegram являются статическими/временными экранами, полноценный контентный раздел и чат-интеграция не подключены.
+3. `knowledge` является статическим экраном, полноценный контентный раздел не подключён.
 4. `region` уже есть в схеме БД, но не проведён через модель, форму регистрации, админку или фильтры кабинета.
 5. Новости (`Event`) и эксперты (`Expert`) теперь модели и редактируются в админке; разделы обучения и историй на лендинге остаются секциями одной страницы без backend.
 6. Очередь важна для AI и рассылок. Для production должны работать `queue:work`/cron, иначе профиль сохранится, но embedding и уведомления останутся невыполненными.

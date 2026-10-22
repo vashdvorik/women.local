@@ -47,7 +47,7 @@ class AiAssistantService
         $locale = in_array($locale, ['ru', 'en', 'ro'], true) ? $locale : 'ru';
         $members = $this->memberCandidates($user, $message);
         $opportunities = $this->opportunities();
-        $payload = $this->requestModel($this->systemPrompt($user, $locale, $members, $opportunities), $message, $history);
+        $payload = $this->chat($this->systemPrompt($user, $locale, $members, $opportunities), $message, $history);
         $decoded = $this->decodeReply($payload);
 
         $reply = $this->stripMarkdown($this->stripContacts((string) ($decoded['reply'] ?? $payload), $locale));
@@ -137,8 +137,13 @@ CURRENT OPPORTUNITIES (safe data only):
 PROMPT;
     }
 
-    /** @param list<array{role: string, content: string}> $history */
-    private function requestModel(string $system, string $message, array $history): string
+    /**
+     * Один обмен с провайдером ИИ (настройки «Агент» из админки): системная инструкция, история и вопрос, ответ как есть.
+     * Им пользуются и помощник в кабинете, и помощник в боте (App\Services\BotHelpAssistant).
+     *
+     * @param list<array{role: string, content: string}> $history
+     */
+    public function chat(string $system, string $message, array $history): string
     {
         $config = array_merge(SiteSetting::agentFeatureConfig(), $this->configOverride);
         $provider = $config['provider'] === 'openrouter' ? 'openrouter' : 'deepseek';

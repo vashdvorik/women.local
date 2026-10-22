@@ -17,14 +17,10 @@
             <div>
                 <h4><span data-lang="ru">Контакты</span><span data-lang="en">Contact</span><span data-lang="ro">Contact</span></h4>
                 @php
-                    $footerPhone = config('site.contacts.phone');
                     $footerEmail = config('site.contacts.email');
                 @endphp
                 <ul>
                     <li><a href="{{ route('account.login') }}"><span data-lang="ru">Кабинет участницы</span><span data-lang="en">Participant cabinet</span><span data-lang="ro">Cabinetul membrei</span></a></li>
-                    @if($footerPhone)
-                        <li><span data-lang="ru">Тел:</span><span data-lang="en">Tel:</span><span data-lang="ro">Tel:</span> <a href="tel:{{ preg_replace('/[^\d+]/', '', $footerPhone) }}">{{ $footerPhone }}</a></li>
-                    @endif
                     @if($footerEmail)
                         <li><span data-lang="ru">Почта:</span><span data-lang="en">Email:</span><span data-lang="ro">E-mail:</span> <a href="mailto:{{ $footerEmail }}">{{ $footerEmail }}</a></li>
                     @endif

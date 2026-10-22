@@ -25,7 +25,7 @@ class AdminTranslationsSourceTest extends TestCase
     /** PHP-классы, чьи сообщения видит администратор. */
     private const PHP_FILES = [
         'app/Http/Controllers/Admin', 'app/Http/Controllers/Concerns', 'app/Http/Requests', 'app/Actions',
-        'app/Enums/PublishStatus.php', 'app/Models/Payment.php', 'app/Models/Subscription.php',
+        'app/Enums/PublishStatus.php', 'app/Models/Broadcast.php', 'app/Models/Payment.php', 'app/Models/Subscription.php',
         'app/Services/ImpactReport.php', 'app/Support/AdminCamp.php', 'app/Support/TelegramHtml.php', 'app/Support/BotMessages.php',
     ];
 

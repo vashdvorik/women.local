@@ -83,7 +83,7 @@ class PublicRegulationsTest extends TestCase
         }
 
         preg_match_all('#<span class="miro-doc__num">([\d.]+)</span>#', $html, $m);
-        $numbers = array_values(array_filter($m[1], fn (string $n) => $n !== '6.1.' && $n !== '6.2.'));
+        $numbers = array_values(array_filter($m[1], fn (string $n) => ! in_array($n, ['6.1.', '6.2.', '6.3.'], true)));
         $this->assertSame(self::CLAUSES, $numbers, 'все 28 пунктов, номера как в документе');
 
         // Ключевые фразы русского текста дословно.
@@ -98,15 +98,24 @@ class PublicRegulationsTest extends TestCase
         }
     }
 
-    public function test_the_two_packages_list_every_benefit(): void
+    public function test_the_three_packages_list_every_benefit(): void
     {
         $html = $this->get(route('about.regulations'))->assertOk()->getContent();
 
-        $this->assertSame(2, substr_count($html, 'class="miro-doc__package '));
+        $this->assertSame(3, substr_count($html, 'class="miro-doc__package '));
+        $this->assertStringContainsString('WOMAN’S HUB OPEN', $html);
         $this->assertStringContainsString('WOMAN’S HUB COMMUNITY', $html);
         $this->assertStringContainsString('WOMAN’S HUB PRIVATE', $html);
 
-        // Community: 12 пунктов, Private: 20; каждый в трёх языках.
+        // Open: 7 пунктов и «Бесплатно» вместо цены; Community: 12, Private: 20; каждый в трёх языках.
+        $openPackage = explode('miro-doc__package--community', $html)[0];
+        $openPackage = substr($openPackage, (int) strpos($openPackage, 'miro-doc__package--open'));
+        $this->assertSame(7, substr_count($openPackage, '<li>'));
+        foreach (['Бесплатно', 'Free', 'Gratuit', 'Истории успешных женщин.', 'Stories of successful women.', 'Povești ale femeilor de succes.'] as $text) {
+            $this->assertStringContainsString($text, $openPackage, $text);
+        }
+        $this->assertStringNotContainsString('Стоимость', $openPackage);
+
         $community = explode('miro-doc__package--private', $html)[0];
         $this->assertSame(12, substr_count(substr($community, (int) strpos($community, 'miro-doc__package--community')), '<li>'));
         $private = substr($html, (int) strpos($html, 'miro-doc__package--private'));
