@@ -99,14 +99,21 @@ class AssetVersioningTest extends TestCase
         }
     }
 
-    public function test_the_server_rules_revalidate_theme_files_and_keep_hashed_files_long_lived(): void
+    public function test_theme_files_are_revalidated_by_a_rule_in_their_own_folder(): void
     {
-        $htaccess = (string) file_get_contents(public_path('.htaccess'));
+        $themes = (string) file_get_contents(public_path('themes/.htaccess'));
 
-        $this->assertStringContainsString('SetEnvIf Request_URI "/(themes|images)/" REVALIDATE_FILE', $htaccess);
-        $this->assertStringContainsString('Header set Cache-Control "no-cache" env=REVALIDATE_FILE', $htaccess);
-        $this->assertStringContainsString('"/(uploads|build)/" LONG_LIVED_FILE', $htaccess);
-        // Правило проверки стоит раньше «недельного» для картинок: иначе картинки темы остались бы на неделю в кеше.
-        $this->assertLessThan(strpos($htaccess, 'setifempty'), strpos($htaccess, 'REVALIDATE_FILE'));
+        $this->assertStringContainsString('<IfModule mod_headers.c>', $themes);
+        $this->assertStringContainsString('Header set Cache-Control "no-cache"', $themes);
+    }
+
+    public function test_the_cache_rules_for_theme_files_are_not_added_to_the_root_htaccess(): void
+    {
+        // public/.htaccess на сервере дописывает cPanel (блок «PHP handler»), и любая наша правка в нём ломает git pull
+        // там. Правила для /themes живут в public/themes/.htaccess.
+        $root = (string) file_get_contents(public_path('.htaccess'));
+
+        $this->assertStringNotContainsString('REVALIDATE_FILE', $root);
+        $this->assertStringContainsString('"/(uploads|build)/" LONG_LIVED_FILE', $root);
     }
 }
