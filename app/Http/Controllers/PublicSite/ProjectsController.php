@@ -22,7 +22,8 @@ class ProjectsController extends ContentPageController
             ->all());
 
         return $this->listing('projects', [
-            'eyebrow' => $this->tri('Платформа', 'Platform', 'Platformă'),
+            // Надписи над заголовком нет: слово «Платформа» там было лишним.
+            'eyebrow' => $this->tri('', '', ''),
             'title' => $this->tri(
                 'Проекты и инициативы для женщин',
                 'Projects and Initiatives for Women',

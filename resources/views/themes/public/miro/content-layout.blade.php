@@ -39,7 +39,10 @@
         <section class="miro-public-hero">
             <div class="miro-container miro-public-hero__inner">
                 <div class="miro-public-hero__copy">
-                    <p class="miro-eyebrow">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ $heroEyebrow[$l] }}</span>@endforeach</p>
+                    {{-- Надпись над заголовком необязательна: пустая (как «Платформа» на «Проектах» и «Возможностях») не выводится. --}}
+                    @if(array_filter((array) ($heroEyebrow ?? [])))
+                        <p class="miro-eyebrow">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ $heroEyebrow[$l] }}</span>@endforeach</p>
+                    @endif
                     <h1>@foreach($locales as $l)<span data-lang="{{ $l }}">{{ $heroTitle[$l] }}</span>@endforeach</h1>
                     @if($heroIntro && array_filter($heroIntro))
                         <p class="miro-public-hero__intro">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ $heroIntro[$l] }}</span>@endforeach</p>

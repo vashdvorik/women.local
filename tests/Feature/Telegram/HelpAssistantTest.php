@@ -231,9 +231,12 @@ class HelpAssistantTest extends TestCase
         $this->assertSame(BotMessages::default('help_exit', 'ru'), $message['text']);
         $this->assertSame(BotMessages::default('menu_help_button', 'ru'), $message['reply_markup']['keyboard'][0][1]['text']);
 
-        // Разговор закончился: обычный текст больше не уходит в ИИ.
+        // Разговор закончился: обычный текст больше не уходит в ИИ, а получает подсказку с кнопкой «Спросить помощника».
         $bot->hearText('Вопрос после закрытия')->reply();
-        $this->assertSame([], $this->sent($bot));
+        $after = $this->sent($bot);
+        $this->assertCount(1, $after);
+        $this->assertStringContainsString('Этот бот не ведёт переписку', $after[0]['text']);
+        $this->assertContains('help_start', array_column(array_merge(...$after[0]['reply_markup']['inline_keyboard']), 'callback_data'));
         $this->assertSame([], $this->aiCalls);
     }
 

@@ -11,7 +11,9 @@ use App\Support\BotMessages;
 use App\Telegram\Conversations\HelpConversation;
 use App\Telegram\Conversations\RegistrationConversation;
 use App\Telegram\Conversations\SearchConversation;
+use Illuminate\Support\Facades\Cache;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Types\Keyboard\InlineKeyboardMarkup;
 
 /**
  * Ответы бота, которые нужны нескольким обработчикам из routes/telegram.php. Тексты — из
@@ -88,8 +90,40 @@ final class BotReplies
             BotMessages::matches('menu_help_button', $text) => HelpConversation::begin($bot),
             BotMessages::matches('menu_matches_button', $text) => self::legacySearch($bot, $user, $locale),
             BotMessages::matches('menu_chat_button', $text) => self::menuUpdated($bot, $user, $locale),
-            default => null,
+            // Не кнопка меню, а обычное сообщение (меню на телефоне часто свёрнуто): бот откликается подсказкой.
+            default => self::menuHint($bot, $user, $locale),
         };
+    }
+
+    /**
+     * Ответ на обычное сообщение одобренной участницы, которая не нажала кнопку меню и не в разговоре с помощником:
+     * коротко объясняет, что бот не переписывается, и даёт кнопки «Кабинет» и «Спросить помощника» прямо под сообщением,
+     * чтобы они работали, даже когда меню внизу свёрнуто. Не чаще раза в 15 секунд: серия сообщений или фото подряд
+     * получает один ответ, а не пять.
+     */
+    public static function menuHint(Nutgram $bot, BotUser $user, string $locale): void
+    {
+        if (! Cache::add('bot-menu-hint:'.$user->telegram_id, 1, 15)) {
+            return;
+        }
+
+        $keyboard = InlineKeyboardMarkup::make();
+        $cabinet = TelegramKeyboards::cabinetButton($locale);
+
+        if ($cabinet !== null) {
+            $keyboard->addRow($cabinet);
+        }
+
+        $keyboard->addRow(TelegramKeyboards::helpAskButton($locale));
+
+        $bot->sendMessage(
+            BotMessages::text('menu_hint', $locale, [
+                'name' => BotMessages::firstName($user->full_name),
+                'contact' => (string) config('site.contacts.telegram'),
+            ]),
+            parse_mode: 'HTML',
+            reply_markup: $keyboard,
+        );
     }
 
     /** Команда, отправленная посреди разговора с помощником: те же ответы, что и вне разговора. */

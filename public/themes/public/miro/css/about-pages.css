@@ -19,7 +19,7 @@
 .miro-page .miro-about .miro-about__lead { margin: 16px 0 0; color: var(--miro-slate, #6B5750); font-size: 18px; line-height: 1.65; }
 .miro-page .miro-about .miro-about__text { margin: 0 0 16px; color: var(--miro-ink, #2A1913); font-size: 18px; line-height: 1.7; }
 .miro-about__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
-.miro-public-hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.miro-public-hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
 
 /* ---------- Текст и картинка рядом ---------- */
 .miro-about__split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; }

@@ -80,7 +80,10 @@ class PublicBareHeroTest extends TestCase
             $html = $this->get(route($route))->assertOk()->getContent();
 
             $this->assertStringContainsString('class="miro-public-hero', $html, $route);
-            $this->assertStringContainsString('miro-eyebrow', $html);
+            // Надпись над заголовком есть только у «Публикаций»: на «Проектах» и «Возможностях» слово «Платформа» убрано как лишнее.
+            $route === 'media.publications'
+                ? $this->assertStringContainsString('miro-eyebrow', $html, $route)
+                : $this->assertStringNotContainsString('miro-eyebrow', $html, $route);
             $this->assertStringContainsString($title, $html);
             $this->assertStringNotContainsString('miro-public-content--bare', $html);
         }

@@ -1018,5 +1018,7 @@
     "Не ушло": "Not delivered",
     "Обращение сохранено здесь, но письмо на почту команды не отправилось. Проверьте настройки почты на сервере.": "The enquiry is saved here, but the email to the team was not sent. Check the mail settings on the server.",
     "Организация и должность": "Organisation and position",
-    "Не указаны": "Not provided"
+    "Не указаны": "Not provided",
+    "Подсказка на обычное сообщение": "Hint for an ordinary message",
+    "Одобренная участница написала боту обычное сообщение, не нажав кнопку меню и не начав разговор с помощником (меню на телефоне часто свёрнуто). Под сообщением кнопки «Открыть кабинет» и «Спросить помощника». Не чаще раза в 15 секунд.": "An approved member wrote an ordinary message to the bot without pressing a menu button or starting a conversation with the assistant (the menu on a phone is often collapsed). Under the message there are the buttons “Open my account” and “Ask the assistant”. At most once every 15 seconds."
 }

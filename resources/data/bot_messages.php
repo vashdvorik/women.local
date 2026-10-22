@@ -641,6 +641,36 @@ return [
                 'ro' => "✨ {name}, meniul botului s-a actualizat.\n\nAcum sunt două butoane jos:\n🏠 „Cabinet” deschide cabinetul personal chiar în Telegram, fără parole.\n🤖 „Asistent AI” vă spune cum se folosește totul: intrarea, profilul, tarifele.\n\nNu știți de unde să începeți? Deschideți cabinetul și completați profilul.",
             ],
         ],
+        'menu_hint' => [
+            'group' => 'onboarding',
+            'title' => 'Подсказка на обычное сообщение',
+            'when' => 'Одобренная участница написала боту обычное сообщение, не нажав кнопку меню и не начав разговор с помощником (меню на телефоне часто свёрнуто). Под сообщением кнопки «Открыть кабинет» и «Спросить помощника». Не чаще раза в 15 секунд.',
+            'kind' => 'text',
+            'vars' => ['name' => 'Имя участницы', 'contact' => 'Telegram команды проекта'],
+            'text' => [
+                'ru' => "{name}, спасибо за сообщение 🌷
+
+Этот бот не ведёт переписку, но готов помочь:
+🤖 «AI помощник» ответит на вопросы: как войти, заполнить профиль, выбрать пакет, как всё устроено.
+🏠 «Кабинет» — ваш личный кабинет Women's hub.
+
+Нажмите нужную кнопку ниже. Если вопрос не для помощника, напишите команде проекта: {contact}.",
+                'en' => "{name}, thank you for your message 🌷
+
+This bot is not a chat, but it can help:
+🤖 “AI assistant” answers questions: how to sign in, fill in your profile, choose a package, how everything works.
+🏠 “Cabinet” is your personal Women's hub account.
+
+Tap a button below. If your question is not for the assistant, write to the project team: {contact}.",
+                'ro' => "{name}, vă mulțumim pentru mesaj 🌷
+
+Acest bot nu este un chat, dar vă poate ajuta:
+🤖 „Asistent AI” răspunde la întrebări: cum intrați, cum completați profilul, cum alegeți pachetul, cum funcționează totul.
+🏠 „Cabinet” este contul dvs. personal Women's hub.
+
+Apăsați un buton de mai jos. Dacă întrebarea nu este pentru asistent, scrieți echipei proiectului: {contact}.",
+            ],
+        ],
         'cabinet_reminder' => [
             'group' => 'onboarding',
             'title' => 'Напоминание о кабинете',

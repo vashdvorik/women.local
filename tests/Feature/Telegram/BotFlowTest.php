@@ -300,14 +300,43 @@ class BotFlowTest extends TestCase
         $this->assertSame(BotMessages::default('menu_help_button', 'en'), $message['reply_markup']['keyboard'][0][1]['text']);
     }
 
-    public function test_an_unrelated_message_from_an_approved_participant_gets_no_answer(): void
+    public function test_an_ordinary_message_from_an_approved_participant_gets_a_hint_with_buttons_in_her_language(): void
+    {
+        foreach (['ru', 'en', 'ro'] as $n => $locale) {
+            $id = self::ID + 30 + $n;
+            $this->participant('approved', $locale, id: $id);
+
+            $bot = $this->bot($locale, $id);
+            $bot->hearText('просто текст')->reply();
+
+            $messages = $this->sent($bot, $id);
+            $this->assertCount(1, $messages, $locale);
+            $this->assertSame(
+                BotMessages::text('menu_hint', $locale, ['name' => 'Анна', 'contact' => (string) config('site.contacts.telegram')]),
+                $messages[0]['text'],
+                $locale,
+            );
+
+            // Кнопки лежат под самим сообщением, а не в меню внизу: они работают и тогда, когда меню на телефоне свёрнуто.
+            $buttons = array_merge(...$messages[0]['reply_markup']['inline_keyboard']);
+            $this->assertContains('help_start', array_column($buttons, 'callback_data'), $locale);
+        }
+    }
+
+    public function test_the_hint_is_not_repeated_within_a_few_seconds(): void
     {
         $this->participant('approved');
 
         $bot = $this->bot('ru');
-        $bot->hearText('просто текст')->reply();
+        // Журнал подменённого бота очищается на каждом новом сообщении, поэтому читаем его после каждого шага.
+        $bot->hearText('первое')->reply();
+        $this->assertCount(1, $this->sent($bot), 'первое сообщение получает подсказку');
 
-        $this->assertSame([], $this->sent($bot));
+        $bot->hearText('второе')->reply();
+        $this->assertCount(0, $this->sent($bot), 'серия сообщений подряд не получает второй ответ');
+
+        $bot->hearText('третье')->reply();
+        $this->assertCount(0, $this->sent($bot));
     }
 
     public function test_the_start_guide_button_sends_the_guide_in_her_language(): void

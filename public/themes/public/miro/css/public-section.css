@@ -3,12 +3,16 @@
 }
 
 .miro-public-page { min-height: 70vh; background: var(--miro-canvas, #fff); color: var(--miro-ink, #2A1913); }
-.miro-public-hero { position: relative; overflow: hidden; padding: 64px 0 56px; border-bottom: 1px solid var(--miro-hairline-soft, #F2E8E3); background: linear-gradient(135deg, var(--miro-surface-featured, #FAEEE8), #fff 65%); }
-.miro-public-hero__inner { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 220px; align-items: center; gap: 48px; }
-.miro-public-hero__copy { max-width: 760px; }
-.miro-public-hero h1 { margin: 0; color: var(--miro-public-ink); font-family: var(--miro-display-font, "Prata", Georgia, serif); font-size: clamp(40px, 6vw, 68px); font-weight: 400; line-height: 1.1; letter-spacing: -.02em; }
-.miro-public-hero__intro { max-width: 680px; margin: 24px 0 0; color: var(--miro-slate, #756158); font-size: 18px; line-height: 1.55; }
+/* Шапка страниц разделов (Проекты, Возможности, Медиатека…): компактная, без декоративных кругов. Раньше 64+56 px отступов,
+   заголовок до 68 px и три круга справа занимали почти полэкрана ещё до содержимого. */
+.miro-public-hero { position: relative; overflow: hidden; padding: 36px 0 32px; border-bottom: 1px solid var(--miro-hairline-soft, #F2E8E3); background: linear-gradient(135deg, var(--miro-surface, #F7EEE9), #fff 70%); }
+.miro-public-hero__inner { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 0; }
+.miro-public-hero__copy { max-width: 960px; }
+.miro-public-hero h1 { margin: 0; color: var(--miro-public-ink); font-family: var(--miro-display-font, "Prata", Georgia, serif); font-size: clamp(30px, 3.8vw, 44px); font-weight: 400; line-height: 1.15; letter-spacing: -.015em; }
+.miro-public-hero__intro { max-width: 680px; margin: 12px 0 0; color: var(--miro-slate, #756158); font-size: 16.5px; line-height: 1.55; }
 .miro-public-hero__accent { position: relative; min-height: 170px; }
+/* Круги-украшения в шапке раздела убраны; в статьях (.miro-public-content--article) они остаются отдельным правилом ниже. */
+.miro-public-hero .miro-public-hero__accent { display: none; }
 .miro-public-hero__accent span { position: absolute; display: block; border-radius: 50%; }
 .miro-public-hero__accent span:nth-child(1) { top: 10px; right: 20px; width: 140px; height: 140px; background: var(--miro-pink, #F1E3DA); }
 .miro-public-hero__accent span:nth-child(2) { right: 0; bottom: 0; width: 92px; height: 92px; background: var(--miro-teal, #FAF4F1); }
@@ -36,8 +40,8 @@
 .miro-public-cta .miro-button { margin-top: 24px; background: var(--miro-pink, #F1E3DA); color: var(--miro-primary, #2A1913); }
 
 @media (max-width: 767px) {
-    .miro-public-hero { padding: 60px 0 52px; }
-    .miro-public-hero__inner { grid-template-columns: 1fr; gap: 20px; }
+    .miro-public-hero { padding: 28px 0 24px; }
+    .miro-public-hero__inner { grid-template-columns: 1fr; gap: 0; }
     .miro-public-hero__accent { min-height: 80px; }
     .miro-public-hero__accent span:nth-child(1) { right: 10%; width: 90px; height: 90px; }
     .miro-public-hero__accent span:nth-child(2) { right: 4%; width: 58px; height: 58px; }

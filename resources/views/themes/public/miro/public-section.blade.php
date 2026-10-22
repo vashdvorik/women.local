@@ -33,7 +33,9 @@
         <section class="miro-public-hero">
             <div class="miro-container miro-public-hero__inner">
                 <div class="miro-public-hero__copy">
-                    <p class="miro-eyebrow"><span data-lang="ru">{{ $eyebrow['ru'] }}</span><span data-lang="en">{{ $eyebrow['en'] }}</span><span data-lang="ro">{{ $eyebrow['ro'] }}</span></p>
+                    @if(array_filter((array) ($eyebrow ?? [])))
+                        <p class="miro-eyebrow"><span data-lang="ru">{{ $eyebrow['ru'] }}</span><span data-lang="en">{{ $eyebrow['en'] }}</span><span data-lang="ro">{{ $eyebrow['ro'] }}</span></p>
+                    @endif
                     <h1><span data-lang="ru">{{ $title['ru'] }}</span><span data-lang="en">{{ $title['en'] }}</span><span data-lang="ro">{{ $title['ro'] }}</span></h1>
                     <p class="miro-public-hero__intro"><span data-lang="ru">{{ $intro['ru'] }}</span><span data-lang="en">{{ $intro['en'] }}</span><span data-lang="ro">{{ $intro['ro'] }}</span></p>
                 </div>

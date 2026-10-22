@@ -23,7 +23,8 @@ class OpportunitiesController extends ContentPageController
         );
 
         return $this->listing('opportunities', [
-            'eyebrow' => $this->tri('Платформа', 'Platform', 'Platformă'),
+            // Надписи над заголовком нет: слово «Платформа» там было лишним.
+            'eyebrow' => $this->tri('', '', ''),
             'title' => $this->tri('Возможности', 'Opportunities', 'Oportunități'),
             'intro' => $this->tri(
                 'Гранты, программы, события и партнёрские предложения для развития бизнеса.',
