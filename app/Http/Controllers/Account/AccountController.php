@@ -9,6 +9,7 @@ use App\Http\Requests\Account\ProfileUpdateRequest;
 use App\Jobs\ComputeUserEmbedding;
 use App\Models\BotUser;
 use App\Models\LoginToken;
+use App\Services\AvatarStore;
 use App\Services\EmbeddingService;
 use App\Services\AiAssistantService;
 use App\Services\MatchingService;
@@ -129,7 +130,14 @@ class AccountController extends Controller
     {
         /** @var BotUser $user */
         $user = view()->shared('accountUser');
-        $user->update($request->validated());
+        $user->update($request->safe()->except(['photo', 'remove_photo']));
+
+        // Фото: новое заменяет прежнее (и фото из Telegram), галочка «Убрать фото» возвращает букву-заглушку.
+        if ($request->hasFile('photo')) {
+            app(AvatarStore::class)->store($user, $request->file('photo'));
+        } elseif ($request->boolean('remove_photo')) {
+            app(AvatarStore::class)->remove($user);
+        }
 
         ComputeUserEmbedding::dispatch($user);
 
