@@ -11,13 +11,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Women's hub — About</title>
     <meta name="description" content="About Women's hub: mission, community and opportunities for women entrepreneurs from both banks.">
-    <link rel="icon" type="image/png" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/favicon-w4w.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/favicon-w4w.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/apple-touch-icon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Prata&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/css/about.css') }}">
-    <link rel="stylesheet" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/css/navigation.css') }}">
+    <link rel="stylesheet" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/css/about.css') }}">
+    <link rel="stylesheet" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/css/navigation.css') }}">
 </head>
 <body>
     @include('themes.public.miro.partials.miro-header', ['miroCurrentPage' => 'about'])
@@ -31,7 +31,7 @@
                     <p class="miro-about-hero__copy"><span data-lang="ru">Women's hub — это цифровая экосистема для обучения, деловых связей, наставничества и новых возможностей женщин-предпринимательниц с обоих берегов.</span><span data-lang="en">Women's hub is a digital ecosystem for learning, business connections, mentorship and new opportunities for women entrepreneurs from both banks.</span><span data-lang="ro">Women's hub este un ecosistem digital pentru învățare, conexiuni de business, mentorat și oportunități noi pentru femeile antreprenoare de pe ambele maluri.</span></p>
                 </div>
                 <div class="miro-about-hero__visual">
-                    <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/hero-community.webp') }}" alt="Women entrepreneurs collaborating">
+                    <img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/hero-community.webp') }}" alt="Women entrepreneurs collaborating">
                     <span class="miro-about-hero__sticker"><span data-lang="ru">Знания · Связи · Рост</span><span data-lang="en">Knowledge · Connection · Growth</span><span data-lang="ro">Cunoștințe · Conexiuni · Creștere</span></span>
                 </div>
             </div>
@@ -39,7 +39,7 @@
 
         <section class="miro-about-section">
             <div class="miro-container miro-about-split">
-                <div class="miro-about-split__image"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/story-mentor.webp') }}" alt="Mentorship and professional growth" loading="lazy"></div>
+                <div class="miro-about-split__image"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/story-mentor.webp') }}" alt="Mentorship and professional growth" loading="lazy"></div>
                 <div class="miro-about-split__copy">
                     <p class="miro-eyebrow"><span data-lang="ru">Наша миссия</span><span data-lang="en">Our mission</span><span data-lang="ro">Misiunea noastră</span></p>
                     <h2><span data-lang="ru">Сделать рост более доступным</span><span data-lang="en">Make growth more accessible</span><span data-lang="ro">Facem creșterea mai accesibilă</span></h2>

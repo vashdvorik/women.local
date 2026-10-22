@@ -15,7 +15,7 @@
         </div>
         {{-- Основной логотип платформы (тот же, что в шапке публичного сайта и в кабинете), цветной: страница светлая. --}}
         <a href="{{ url('/') }}" class="admin-login-logo mb-8 flex justify-center">
-            <img src="{{ asset('themes/public/miro/images/brand/logo-platform.webp') }}" alt="{{ config('app.name') }}"
+            <img src="{{ asset_v('themes/public/miro/images/brand/logo-platform.webp') }}" alt="{{ config('app.name') }}"
                  class="h-14 w-auto max-w-full object-contain">
         </a>
         {{ $slot }}

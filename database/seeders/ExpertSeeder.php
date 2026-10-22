@@ -3,21 +3,22 @@
 namespace Database\Seeders;
 
 use App\Models\Expert;
-use App\Support\CardTone;
-use App\Support\Locales;
-use Database\Seeders\Concerns\ImportsThemeImages;
+use Database\Seeders\Concerns\CreatesExperts;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Переносит 11 экспертов из бывшего массива страницы «Эксперты» в БД. Идемпотентен:
+ * Переносит экспертов из database/seeders/data/experts.php в БД. Идемпотентен:
  * если эксперты уже есть (заведены в админке), ничего не трогает, кроме одного случая —
  * фото, файл которого пропал с диска, возвращается из исходника темы (сопоставление по
  * русскому имени).
+ *
+ * Эксперты, которых добавили в файл позже, и замену фото в базе, где эксперты уже есть, делает
+ * ExpertRosterSeeder; на пустой базе этот сидер заводит всех сразу и сам отмечает это в его списке.
  */
 class ExpertSeeder extends Seeder
 {
-    use ImportsThemeImages;
+    use CreatesExperts;
 
     public function run(): void
     {
@@ -36,29 +37,10 @@ class ExpertSeeder extends Seeder
 
         DB::transaction(function () use ($profiles) {
             foreach ($profiles as $index => $profile) {
-                $expert = Expert::create([
-                    'photo_path' => $this->importThemeImage($profile['photo'] ?? null, 'expert'),
-                    'tone' => CardTone::normalize($profile['tone'] ?? null),
-                    'is_published' => true,
-                    'position' => $index + 1,
-                ]);
-
-                foreach (Locales::ALL as $locale) {
-                    $expert->translations()->create([
-                        'locale' => $locale,
-                        'name' => $profile['name'][$locale] ?? null,
-                        'role' => $profile['role'][$locale] ?? null,
-                        'specialization' => $profile['specialization'][$locale] ?? null,
-                        'description' => $profile['description'][$locale] ?? null,
-                        'looking_for' => $profile['looking_for'][$locale] ?? null,
-                        'can_offer' => $profile['can_offer'][$locale] ?? null,
-                        'tags' => array_values(array_filter(array_map(
-                            fn (array $tag) => $tag[$locale] ?? null,
-                            $profile['tags'] ?? []
-                        ))) ?: null,
-                    ]);
-                }
+                $this->createExpert($profile, $index + 1);
             }
+
+            ExpertRosterSeeder::remember($profiles);
         });
 
         $this->command?->info(count($profiles).' экспертов импортировано.');
@@ -70,13 +52,9 @@ class ExpertSeeder extends Seeder
         $restored = 0;
 
         foreach ($profiles as $profile) {
-            $expert = Expert::query()
-                ->whereHas('translations', fn ($q) => $q
-                    ->where('locale', 'ru')
-                    ->where('name', $profile['name']['ru'] ?? ''))
-                ->first();
+            $expert = $this->findExpertByRuName($profile['name']['ru'] ?? '');
 
-            if ($expert && $this->restoreThemeImage($expert, 'photo_path', $profile['photo'] ?? null, 'expert')) {
+            if ($expert && $this->restoreThemeImage($expert, 'photo_path', $profile['photo'] ?? null, 'expert', $profile['crop'] ?? null)) {
                 $restored++;
             }
         }

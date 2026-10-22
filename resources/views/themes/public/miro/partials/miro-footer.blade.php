@@ -2,7 +2,7 @@
     <div class="miro-container">
         <div class="miro-footer__top">
             <div class="miro-footer__brand">
-                <a href="{{ url('/') }}" class="miro-brand" aria-label="Women's hub"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/logo-platform-light.webp') }}" alt="Women's hub" class="miro-brand__logo"></a>
+                <a href="{{ url('/') }}" class="miro-brand" aria-label="Women's hub"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/logo-platform-light.webp') }}" alt="Women's hub" class="miro-brand__logo"></a>
             <p><span data-lang="ru">Пространство для обучения, деловых связей, наставничества и развития бизнеса</span><span data-lang="en">A space for learning, business connections, mentorship and business growth.</span><span data-lang="ro">Un spațiu pentru învățare, conexiuni de afaceri, mentorat și dezvoltarea afacerii.</span></p>
             </div>
             <div>

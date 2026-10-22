@@ -110,7 +110,7 @@ class ContentSeederRestoreTest extends TestCase
     {
         $this->seed(ContentSeeder::class);
 
-        $this->assertSame(11, Expert::count());
+        $this->assertSame($this->expertsTotal(), Expert::count());
         $this->assertSame($this->eventsTotal(), Event::count());
 
         foreach (Expert::pluck('photo_path') as $path) {
@@ -124,7 +124,7 @@ class ContentSeederRestoreTest extends TestCase
         $before = Expert::pluck('photo_path')->all();
         $this->seed(ContentSeeder::class);
 
-        $this->assertSame(11, Expert::count());
+        $this->assertSame($this->expertsTotal(), Expert::count());
         $this->assertSame($before, Expert::pluck('photo_path')->all());
     }
 }

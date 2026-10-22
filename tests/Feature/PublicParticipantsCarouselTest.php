@@ -84,7 +84,7 @@ class PublicParticipantsCarouselTest extends TestCase
 
         foreach ($images[0] as $tag) {
             // Миниатюра WebP, а не оригинал: аватар рисуется 56 px, оригинал ~225×300.
-            $this->assertMatchesRegularExpression('#src="[^"]*/participants/thumb/[a-z0-9-]+\.webp"#', $tag, $tag);
+            $this->assertMatchesRegularExpression('#src="[^"]*/participants/thumb/[a-z0-9-]+\.webp(?:\?v=\d+)?"#', $tag, $tag);
             // Все фото ленивые: секция далеко от начала страницы. Размеры заданы — вёрстка не прыгает.
             foreach (['loading="lazy"', 'decoding="async"', 'width="56"', 'height="56"', 'alt=""'] as $attr) {
                 $this->assertStringContainsString($attr, $tag, $tag);

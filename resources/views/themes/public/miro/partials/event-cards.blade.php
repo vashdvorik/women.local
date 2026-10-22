@@ -6,7 +6,7 @@
     <article class="miro-event-card{{ $link ? ' miro-event-card--linked' : '' }}">
         <div class="miro-event-card__visual" style="background:var(--miro-{{ $event->toneKey() }});">
             @if($event->imageUrl())<img src="{{ $event->imageUrl() }}" alt="{{ $event->field('title', 'en') }}" loading="lazy">@endif
-            <div class="miro-event-card__type">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->field('type', $locale) }}</span>@endforeach</div>
+            @if(filled($event->field('type', 'ru')))<div class="miro-event-card__type">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->field('type', $locale) }}</span>@endforeach</div>@endif
         </div>
         <div class="miro-event-card__body">
             <div class="miro-event-card__date">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->dateLabel($locale) }}</span>@endforeach</div>

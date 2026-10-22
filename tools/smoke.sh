@@ -44,7 +44,8 @@ CHECKS=(
     "/media/photos 200"
     "/media/videos 200"
     "/media/publications 200"
-    "/about/leadership 200"
+    "/about/regulations 200"
+    "/gala/regulations 200"
     "/gala 200"
 
     # Несуществующие материалы

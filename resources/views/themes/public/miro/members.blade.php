@@ -23,14 +23,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Women's hub — Participants</title>
-    <link rel="icon" type="image/png" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/favicon-w4w.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/favicon-w4w.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/apple-touch-icon.png') }}">
     <meta name="description" content="Public directory of participants of Women's hub.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Prata&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/css/members.css') }}">
-    <link rel="stylesheet" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/css/navigation.css') }}">
+    <link rel="stylesheet" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/css/members.css') }}">
+    <link rel="stylesheet" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/css/navigation.css') }}">
 </head>
 <body>
     @include('themes.public.miro.partials.miro-header', ['miroCurrentPage' => 'members'])
@@ -44,11 +44,11 @@
                     <p><span data-lang="ru">Предпринимательницы, которые уже развивают собственное дело при поддержке платформы — от пищевого производства до туризма и ремёсел.</span><span data-lang="en">Entrepreneurs already growing their businesses with the platform’s support — from food production to tourism and crafts.</span><span data-lang="ro">Antreprenoare care își dezvoltă deja afacerea cu sprijinul platformei — de la producție alimentară la turism și meșteșuguri.</span></p>
                 </div>
 
-                <div class="miro-participants-grid" id="miro-participants-grid" data-image-base="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images') }}/" data-page-size="{{ $participantsPageSize }}">
+                <div class="miro-participants-grid" id="miro-participants-grid" data-image-base="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images') }}/" data-page-size="{{ $participantsPageSize }}">
                     @foreach($participantsVisible as $participant)
                         <article class="miro-participant-card">
                             @if($participant['photo'])
-                                <img class="miro-participant-card__avatar" src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/' . $participant['photo']) }}" alt="{{ $participant['name']['en'] }}" loading="lazy">
+                                <img class="miro-participant-card__avatar" src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/' . $participant['photo']) }}" alt="{{ $participant['name']['en'] }}" loading="lazy">
                             @else
                                 @php
                                     $initialsSource = preg_split('/\s+/u', trim($participant['name']['ru']));
@@ -92,6 +92,6 @@
     </main>
 
     @include('themes.public.miro.partials.miro-footer')
-    <script defer src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/js/members.js') }}"></script>
+    <script defer src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/js/members.js') }}"></script>
 </body>
 </html>

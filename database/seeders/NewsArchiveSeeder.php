@@ -49,16 +49,20 @@ class NewsArchiveSeeder extends Seeder
     /** Ключ настройки со списком загруженных новостей. */
     public const MARKER_KEY = 'news_archive';
 
-    /** Подпись типа на карточке и цвет подложки. Один набор на все новости: так карточки выглядят единообразно. */
-    private const TYPES = [
-        'training' => ['ru' => 'Тренинг', 'en' => 'Training', 'ro' => 'Training', 'tone' => 'teal'],
-        'conference' => ['ru' => 'Конференция', 'en' => 'Conference', 'ro' => 'Conferință', 'tone' => 'blue'],
-        'forum' => ['ru' => 'Форум', 'en' => 'Forum', 'ro' => 'Forum', 'tone' => 'blue'],
-        'networking' => ['ru' => 'Нетворкинг', 'en' => 'Networking', 'ro' => 'Networking', 'tone' => 'rose'],
-        'award' => ['ru' => 'Премия', 'en' => 'Award', 'ro' => 'Premiu', 'tone' => 'orange'],
-        'project' => ['ru' => 'Проект', 'en' => 'Project', 'ro' => 'Proiect', 'tone' => 'coral'],
-        'event' => ['ru' => 'Мероприятие', 'en' => 'Event', 'ro' => 'Eveniment', 'tone' => 'pink'],
-        'announcement' => ['ru' => 'Анонс', 'en' => 'Announcement', 'ro' => 'Anunț', 'tone' => 'coral'],
+    /**
+     * Цвет подложки карточки по виду новости. Один набор на все новости: так карточки выглядят единообразно.
+     * Плашку с названием вида («Конференция», «Нетворкинг») сидер не ставит: новости заводятся без неё, плашку при
+     * желании добавляют в админке (поле «Плашка (тип)»).
+     */
+    private const TONES = [
+        'training' => 'teal',
+        'conference' => 'blue',
+        'forum' => 'blue',
+        'networking' => 'rose',
+        'award' => 'orange',
+        'project' => 'coral',
+        'event' => 'pink',
+        'announcement' => 'coral',
     ];
 
     /** Формат даты на карточке с годом: новости разных лет стоят в одном списке. */
@@ -203,7 +207,7 @@ class NewsArchiveSeeder extends Seeder
     private function create(array $item, int $position): Event
     {
         $plan = $this->plan($item);
-        $type = self::TYPES[$item['type']] ?? self::TYPES['event'];
+        $tone = self::TONES[$item['type']] ?? self::TONES['event'];
 
         // У «merge»-новости обычной обложки в плане нет (на сайте уже есть своя). Если же старой карточки не нашлось
         // и новость создаётся заново, обложкой становится лучший кадр, а те же фото остаются и на странице.
@@ -213,7 +217,7 @@ class NewsArchiveSeeder extends Seeder
             'slug' => $this->uniqueSlug($item),
             // У «merge»-новости обложка нужна только как запасная (когда старой карточки на сайте не нашлось).
             'image_path' => $cover !== null ? $this->importPhoto($plan['photos'][$cover], 'event') : null,
-            'tone' => CardTone::normalize($type['tone']),
+            'tone' => CardTone::normalize($tone),
             'starts_at' => Carbon::parse($item['date'])->startOfDay(),
             'url' => null,
             'is_published' => true,
@@ -225,7 +229,7 @@ class NewsArchiveSeeder extends Seeder
         foreach (Locales::ALL as $locale) {
             $event->translations()->create([
                 'locale' => $locale,
-                'type' => $type[$locale],
+                'type' => null,
                 'date_label' => $this->dateLabel($item['date'], $locale),
                 'title' => $item['title'][$locale],
                 'description' => $item['description'][$locale],
@@ -248,10 +252,9 @@ class NewsArchiveSeeder extends Seeder
             $translation = $event->translations->firstWhere('locale', $locale);
 
             if ($translation === null) {
-                $type = self::TYPES[$item['type']] ?? self::TYPES['event'];
                 $translation = $event->translations()->make([
                     'locale' => $locale,
-                    'type' => $type[$locale],
+                    'type' => null,
                     'title' => $item['title'][$locale],
                     'description' => $item['description'][$locale],
                 ]);

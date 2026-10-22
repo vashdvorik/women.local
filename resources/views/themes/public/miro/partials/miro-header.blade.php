@@ -3,7 +3,7 @@
 <nav class="miro-nav" id="miro-nav">
     <div class="miro-container miro-nav__inner">
         <a href="{{ url('/') }}" class="miro-brand" aria-label="Women's hub">
-            <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/logo-platform-light.webp') }}" alt="Women's hub" class="miro-brand__logo">
+            <img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/logo-platform-light.webp') }}" alt="Women's hub" class="miro-brand__logo">
         </a>
         <div class="miro-nav__links" id="miro-nav-links">
             <div class="miro-nav__dropdown" data-nav-dropdown>
@@ -69,5 +69,5 @@
     </div>
 </nav>
 
-<script src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/js/navigation.js') }}"></script>
-<script defer src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/js/motion.js') }}"></script>
+<script src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/js/navigation.js') }}"></script>
+<script defer src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/js/motion.js') }}"></script>

@@ -16,16 +16,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $heroTitle['ru'] }} — Women's hub</title>
     <meta name="description" content="{{ $heroIntro['ru'] ?? $heroTitle['ru'] }}">
-    <link rel="icon" type="image/png" href="{{ asset('themes/public/'.$theme.'/images/brand/favicon-w4w.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('themes/public/'.$theme.'/images/brand/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset_v('themes/public/'.$theme.'/images/brand/favicon-w4w.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset_v('themes/public/'.$theme.'/images/brand/apple-touch-icon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Prata&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('themes/public/'.$theme.'/css/events.css') }}">
-    <link rel="stylesheet" href="{{ asset('themes/public/'.$theme.'/css/public-section.css') }}">
+    <link rel="stylesheet" href="{{ asset_v('themes/public/'.$theme.'/css/events.css') }}">
+    <link rel="stylesheet" href="{{ asset_v('themes/public/'.$theme.'/css/public-section.css') }}">
     {{-- Стили отдельных страниц (@push('styles')): перед navigation.css, он остаётся последним (тест PublicButtonsTest). --}}
     @stack('styles')
-    <link rel="stylesheet" href="{{ asset('themes/public/'.$theme.'/css/navigation.css') }}">
+    <link rel="stylesheet" href="{{ asset_v('themes/public/'.$theme.'/css/navigation.css') }}">
 </head>
 <body>
     @include('themes.public.miro.partials.miro-header', ['miroCurrentPage' => null])
@@ -75,10 +75,10 @@
     @include('themes.public.miro.partials.miro-footer')
 
     {{-- Просмотр фото по клику: фото статей и альбомов (a.miro-zoom). --}}
-    <script defer src="{{ asset('themes/public/'.$theme.'/js/lightbox.js') }}"></script>
+    <script defer src="{{ asset_v('themes/public/'.$theme.'/js/lightbox.js') }}"></script>
     {{-- Проигрыватель видео по клику (карточки a[data-video] на странице «Видео»). --}}
-    <script defer src="{{ asset('themes/public/'.$theme.'/js/video-player.js') }}"></script>
+    <script defer src="{{ asset_v('themes/public/'.$theme.'/js/video-player.js') }}"></script>
     {{-- Кнопка «Смотреть ещё» (там, где есть [data-load-more], например на странице «Фото»). --}}
-    <script defer src="{{ asset('themes/public/'.$theme.'/js/load-more.js') }}"></script>
+    <script defer src="{{ asset_v('themes/public/'.$theme.'/js/load-more.js') }}"></script>
 </body>
 </html>

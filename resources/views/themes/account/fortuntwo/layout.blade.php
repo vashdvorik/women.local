@@ -9,7 +9,7 @@
     <title>@yield('title', __('account.cabinet')) — {{ __('account.brand') }}</title>
     <meta name="robots" content="noindex,nofollow">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" type="image/png" href="{{ asset('themes/account/fortuntwo/images/brand/favicon-w4w.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset_v('themes/account/fortuntwo/images/brand/favicon-w4w.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Prata&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
     <script>
         tailwind.config = { theme: { extend: { fontFamily: { sans: ['Manrope', 'Inter', 'system-ui', 'sans-serif'], serif: ['Prata', 'Georgia', 'serif'] }, colors: { brand: { 50:'#F1E3DA',100:'#E6CFC1',200:'#D8C5BA',300:'#DBB89B',400:'#C99A73',500:'#B9855B',600:'#8E5B3D',700:'#74472F' } } } } }
     </script>
-    <link rel="stylesheet" href="{{ asset('themes/account/fortuntwo/css/theme.css') }}">
+    <link rel="stylesheet" href="{{ asset_v('themes/account/fortuntwo/css/theme.css') }}">
     @stack('head')
 </head>
 <body class="h-full bg-white text-[#21140F] antialiased account-theme-fortuntwo" x-data="{ sidebarOpen: false }">

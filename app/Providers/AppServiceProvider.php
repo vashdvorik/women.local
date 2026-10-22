@@ -20,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // asset_v(): адрес файла с меткой версии. Подключается здесь, чтобы не менять composer.json (на сервере
+        // composer install всё равно идёт после каждого git pull, но так обновление не зависит от автозагрузки файлов).
+        require_once app_path('Support/helpers.php');
+
         // Канал связи с банком выбирается настройкой webpayment.driver (docs/SUBSCRIPTIONS.md): неизвестное значение
         // означает настоящий банк, а не имитатор, чтобы опечатка в .env не превратила боевой сервер в «песочницу».
         $this->app->bind(Gateway::class, fn () => config('webpayment.driver') === 'fake'

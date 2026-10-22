@@ -29,6 +29,12 @@ trait NewsArchiveCounts
         return self::CARDS_BEFORE_ARCHIVE + $this->archiveNewCount();
     }
 
+    /** Сколько экспертов на сайте после ExpertSeeder: все записи файла данных (database/seeders/data/experts.php). */
+    protected function expertsTotal(): int
+    {
+        return count(require database_path('seeders/data/experts.php'));
+    }
+
     /** Сколько новостей получают настоящий текст из архива (новые и дополненные). */
     protected function archiveNewsWithBody(): int
     {

@@ -167,7 +167,7 @@ class NewsArchiveSeederTest extends TestCase
             foreach (['ru', 'ro', 'en'] as $locale) {
                 $translation = $event->translations->firstWhere('locale', $locale);
                 $this->assertSame($item['title'][$locale], $translation->title, "{$key} {$locale}");
-                $this->assertNotEmpty($translation->type, "{$key} {$locale}");
+                $this->assertNull($translation->type, "{$key} {$locale}: плашку сидер не ставит");
                 $this->assertStringContainsString((string) $event->starts_at->year, (string) $translation->date_label, "{$key}: в подписи даты должен быть год");
             }
         }

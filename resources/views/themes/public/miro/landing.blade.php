@@ -14,15 +14,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Women's hub</title>
     <meta name="description" content="Пространство для женщин-предпринимательниц: обучение, контакты, AI-рекомендации и возможности роста.">
-    <link rel="icon" type="image/png" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/favicon-w4w.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/favicon-w4w.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/apple-touch-icon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Prata&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/css/landing.css') }}">
-    <link rel="stylesheet" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/css/navigation.css') }}">
+    <link rel="stylesheet" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/css/landing.css') }}">
+    <link rel="stylesheet" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/css/navigation.css') }}">
 </head>
 <body class="miro-landing-page">
     @include('themes.public.miro.partials.miro-header', ['miroCurrentPage' => 'home'])
@@ -30,7 +30,7 @@
     <nav class="miro-nav" id="miro-nav">
         <div class="miro-container miro-nav__inner">
             <a href="#top" class="miro-brand">
-                <img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/logo-platform-light.webp') }}" alt="Women's hub" class="miro-brand__logo">
+                <img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/logo-platform-light.webp') }}" alt="Women's hub" class="miro-brand__logo">
                 <span>Women</span>
             </a>
             <div class="miro-nav__links" id="miro-nav-links">
@@ -108,7 +108,7 @@
                     </div>
                     <div class="miro-hero__visual" aria-label="Women entrepreneurs collaborating">
                         <div class="miro-hero__image">
-                            <img src="{{ asset('themes/public/miro/images/bannerhero.webp') }}" alt="Women entrepreneurs collaborating around a laptop">
+                            <img src="{{ asset_v('themes/public/miro/images/bannerhero.webp') }}" alt="Women entrepreneurs collaborating around a laptop">
                         </div>
                     </div>
                     <svg class="miro-hero__bottom-curve" viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true">
@@ -211,7 +211,7 @@
                 </div>
                 <figure class="miro-director-note__portrait">
                     <span class="miro-director-note__accent" aria-hidden="true"></span>
-                    <img src="{{ asset('themes/public/miro/images/director.webp') }}" alt="Валерия Зелинская">
+                    <img src="{{ asset_v('themes/public/miro/images/director.webp') }}" alt="Валерия Зелинская">
                 </figure>
             </div>
         </section>
@@ -346,7 +346,7 @@
              секция далеко от начала страницы, и ни один байт фото не мешает первой отрисовке. --}}
         @php
             $participants = \App\Support\Participants::forCarousel();
-            $participantImages = asset('themes/public/' . ($publicTheme ?? 'miro') . '/images');
+            $participantImages = 'themes/public/' . ($publicTheme ?? 'miro') . '/images';
             $participantLocales = ['ru', 'en', 'ro'];
         @endphp
         <section class="miro-section miro-section--surface" id="participants">
@@ -370,7 +370,7 @@
                         @foreach($participants as $participant)
                             <article class="miro-participant-card">
                                 @if($participant['photo'])
-                                    <img class="miro-participant-card__avatar" src="{{ $participantImages }}/{{ \App\Support\Participants::thumb($participant['photo']) }}" alt="" width="56" height="56" loading="lazy" decoding="async">
+                                    <img class="miro-participant-card__avatar" src="{{ asset_v($participantImages.'/'.\App\Support\Participants::thumb($participant['photo'])) }}" alt="" width="56" height="56" loading="lazy" decoding="async">
                                 @else
                                     @php
                                         $initialsSource = preg_split('/\s+/u', trim($participant['name']['ru']));
@@ -417,7 +417,7 @@
                                 <img src="{{ $event->imageUrl() }}" alt="{{ $event->field('title', 'en') }}" loading="lazy">
                             @endif
                             <div class="miro-event-card__body">
-                                <span class="miro-tag" style="{{ $tagStyle }}">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->field('type', $locale) }}</span>@endforeach</span>
+                                @if(filled($event->field('type', 'ru')))<span class="miro-tag" style="{{ $tagStyle }}">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->field('type', $locale) }}</span>@endforeach</span>@endif
                                 <div class="miro-event-card__date">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $event->dateLabel($locale) }}</span>@endforeach</div>
                                 <h3>
                                     @if($link)<a href="{{ $link['href'] }}"@if($link['external']) target="_blank" rel="noopener"@endif class="miro-event-card__title-link">@endif
@@ -444,16 +444,16 @@
                     <h2><span data-lang="ru">Наши партнёры</span><span data-lang="en">Our partners</span><span data-lang="ro">Partenerii noștri</span></h2>
                 </div>
                 <div class="miro-partners-strip">
-                    <a class="miro-partner-chip" href="https://innovation.md/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/coordinator-ida.png') }}" alt="Агентство инноваций и развития" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://creativity.md/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/coordinator-creative.png') }}" alt="Ассоциация креативных индустрий Приднестровья" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://social.innovation.md/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/coordinator-platform.png') }}" alt="Платформа социального предпринимательства" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://eba.md/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/local-eba.png') }}" alt="European Business Association Moldova" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://afam.md/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/local-afam.png') }}" alt="AFAM" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://glia.md/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/local-glia.png') }}" alt="Glia Impact Hub" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://progen.md/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/local-progen.png') }}" alt="Centrul Parteneriat pentru Dezvoltare" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://www.netherlandsandyou.nl/web/moldova" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/intl-netherlands.png') }}" alt="Королевство Нидерландов" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://www.nrc.no/moldova" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/intl-nrc.png') }}" alt="Норвежский совет по делам беженцев" loading="lazy"></a>
-                    <a class="miro-partner-chip" href="https://moldova.unwomen.org/" target="_blank" rel="noopener"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/intl-unwomen.png') }}" alt="ООН-женщины" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://innovation.md/" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/coordinator-ida.png') }}" alt="Агентство инноваций и развития" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://creativity.md/" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/coordinator-creative.png') }}" alt="Ассоциация креативных индустрий Приднестровья" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://social.innovation.md/" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/coordinator-platform.png') }}" alt="Платформа социального предпринимательства" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://eba.md/" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/local-eba.png') }}" alt="European Business Association Moldova" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://afam.md/" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/local-afam.png') }}" alt="AFAM" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://glia.md/" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/local-glia.png') }}" alt="Glia Impact Hub" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://progen.md/" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/local-progen.png') }}" alt="Centrul Parteneriat pentru Dezvoltare" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://www.netherlandsandyou.nl/web/moldova" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/intl-netherlands.png') }}" alt="Королевство Нидерландов" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://www.nrc.no/moldova" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/intl-nrc.png') }}" alt="Норвежский совет по делам беженцев" loading="lazy"></a>
+                    <a class="miro-partner-chip" href="https://moldova.unwomen.org/" target="_blank" rel="noopener"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/intl-unwomen.png') }}" alt="ООН-женщины" loading="lazy"></a>
                 </div>
             </div>
         </section>
@@ -478,6 +478,6 @@
     </footer>
     @endif
 
-    <script defer src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/js/participants.js') }}"></script>
+    <script defer src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/js/participants.js') }}"></script>
 </body>
 </html>

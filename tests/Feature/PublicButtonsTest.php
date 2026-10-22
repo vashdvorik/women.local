@@ -41,7 +41,7 @@ class PublicButtonsTest extends TestCase
         foreach (['/events', '/partners', '/members/join', '/experts', '/members', '/about/priorities'] as $url) {
             $html = $this->get($url)->assertOk()->getContent();
 
-            preg_match_all('#<link rel="stylesheet" href="[^"]*/css/([a-z-]+)\.css"#', $html, $m);
+            preg_match_all('#<link rel="stylesheet" href="[^"]*/css/([a-z-]+)\.css(?:\?v=\d+)?"#', $html, $m);
             $this->assertSame('navigation', end($m[1]), "$url: navigation.css должен идти последним");
         }
     }

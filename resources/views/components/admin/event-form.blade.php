@@ -60,10 +60,12 @@
                                error="translations.{{ $code }}.title"
                                :value="$event->rawTranslation($code)?->title" :required="$code === 'ru'" />
                 <div class="grid gap-4 sm:grid-cols-2">
-                    <x-forms.field :label="__('Тип :language', ['language' => $label])" name="translations[{{ $code }}][type]"
+                    <x-forms.field :label="__('Плашка (тип) :language', ['language' => $label])" name="translations[{{ $code }}][type]"
                                    error="translations.{{ $code }}.type"
                                    :value="$event->rawTranslation($code)?->type"
-                                   :hint="__('Плашка на обложке: «Обучение», «Нетворкинг».')" />
+                                   :hint="$code === 'ru'
+                                       ? __('Плашка над названием на карточке: «Новости», «Конференция». Оставьте русское поле пустым — плашки не будет.')
+                                       : __('Если пусто, покажется русский текст плашки.')" />
                     <x-forms.field :label="__('Подпись вместо даты :language', ['language' => $label])" name="translations[{{ $code }}][date_label]"
                                    error="translations.{{ $code }}.date_label"
                                    :value="$event->rawTranslation($code)?->date_label"

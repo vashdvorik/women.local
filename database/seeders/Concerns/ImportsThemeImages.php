@@ -48,9 +48,10 @@ trait ImportsThemeImages
      * темы и обновляет путь. Запись без картинки (путь пуст) не трогается: редактор мог убрать
      * её сознательно. Если файл на месте, ничего не меняется.
      *
+     * @param  ?array{x:int,y:int,width:int,height:int}  $crop  тот же кадр, каким картинку заводили
      * @return bool была ли картинка восстановлена
      */
-    protected function restoreThemeImage(Model $model, string $column, ?string $themePath, string $slot): bool
+    protected function restoreThemeImage(Model $model, string $column, ?string $themePath, string $slot, ?array $crop = null): bool
     {
         $current = $model->{$column};
 
@@ -58,7 +59,7 @@ trait ImportsThemeImages
             return false;
         }
 
-        $restored = $this->importThemeImage($themePath, $slot);
+        $restored = $this->importThemeImage($themePath, $slot, $crop);
 
         if ($restored === null) {
             return false;

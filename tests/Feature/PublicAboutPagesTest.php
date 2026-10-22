@@ -188,7 +188,7 @@ class PublicAboutPagesTest extends TestCase
         foreach ([route('about.priorities'), route('members.join')] as $url) {
             $html = $this->get($url)->assertOk()->getContent();
 
-            preg_match_all('#<link rel="stylesheet" href="[^"]*/css/([a-z-]+)\.css"#', $html, $m);
+            preg_match_all('#<link rel="stylesheet" href="[^"]*/css/([a-z-]+)\.css(?:\?v=\d+)?"#', $html, $m);
             $this->assertSame(['events', 'public-section', 'about-pages', 'navigation'], $m[1], $url);
         }
 

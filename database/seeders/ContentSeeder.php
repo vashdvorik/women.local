@@ -12,6 +12,8 @@ use Illuminate\Database\Seeder;
  * Новости загружаются двумя сидерами: EventSeeder — карточки страницы «Новости», NewsArchiveSeeder — полные
  * новости организации (текст на трёх языках и фото). Второй дополняет первый, поэтому идёт после него.
  * AlbumArchiveSeeder заводит фотоальбомы организации (страница «Фото»), VideoArchiveSeeder — видео (страница «Видео»).
+ * ExpertRosterSeeder дополняет ExpertSeeder: добавляет экспертов, которых в базе ещё нет, и меняет фото, помеченное
+ * в данных (на пустой базе ExpertSeeder заводит всех сам, и дополнять нечего).
  *
  *   php artisan db:seed --class=ContentSeeder
  */
@@ -21,6 +23,7 @@ class ContentSeeder extends Seeder
     {
         $this->call([
             ExpertSeeder::class,
+            ExpertRosterSeeder::class,
             EventSeeder::class,
             NewsArchiveSeeder::class,
             AlbumArchiveSeeder::class,

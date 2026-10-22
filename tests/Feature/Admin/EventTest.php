@@ -33,6 +33,28 @@ class EventTest extends TestCase
         $this->actingAsAdmin()->get(route('admin.events.edit', $event))->assertOk()->assertSee('Нетворкинг-вечер');
     }
 
+    public function test_the_card_tag_is_edited_in_the_admin_and_disappears_from_the_site_when_the_russian_field_is_empty(): void
+    {
+        $event = Event::create(['tone' => 'pink', 'position' => 1, 'is_published' => true, 'slug' => 'belyj-shum']);
+        $event->translations()->create(['locale' => 'ru', 'title' => 'Белый Шум', 'type' => 'Новости']);
+
+        // Форма подписана понятно и показывает текущее значение.
+        $this->actingAsAdmin()->get(route('admin.events.edit', $event))->assertOk()
+            ->assertSee('Плашка (тип)')->assertSee('value="Новости"', false)->assertSee('плашки не будет');
+        $this->get(route('events'))->assertOk()->assertSee('miro-event-card__type', false)->assertSee('Новости');
+
+        // Новый текст плашки.
+        $this->actingAsAdmin()->put(route('admin.events.update', $event), $this->payload(['translations' => ['ru' => ['title' => 'Белый Шум', 'type' => 'Выставка']]]))->assertRedirect();
+        $this->assertSame('Выставка', $event->fresh()->rawTranslation('ru')->type);
+        $this->get(route('events'))->assertSee('Выставка');
+
+        // Пустое русское поле: плашки нет ни на странице новостей, ни на главной, пустого пузыря тоже.
+        $this->actingAsAdmin()->put(route('admin.events.update', $event), $this->payload(['translations' => ['ru' => ['title' => 'Белый Шум', 'type' => '']]]))->assertRedirect();
+        $this->assertNull($event->fresh()->rawTranslation('ru')->type);
+        $this->get(route('events'))->assertOk()->assertDontSee('miro-event-card__type', false);
+        $this->get('/')->assertOk()->assertDontSee('<span class="miro-tag"', false);
+    }
+
     public function test_event_is_created_with_russian_only(): void
     {
         $this->actingAsAdmin()->post(route('admin.events.store'), $this->payload())

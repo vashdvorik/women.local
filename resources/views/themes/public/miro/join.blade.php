@@ -24,11 +24,11 @@
         collect($locales)->map(fn (string $l) => '<span data-lang="'.$l.'">'.e(__("subscription.plans.{$plan}.features", [], $l)[$i] ?? '').'</span>')->implode('')
     );
     $icon = fn (string $name) => view('themes.public.miro.partials.icon', ['name' => $name])->render();
-    $about = fn (string $file) => asset('themes/public/miro/images/about/'.$file.'.webp');
+    $about = fn (string $file) => asset_v('themes/public/miro/images/about/'.$file.'.webp');
 @endphp
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('themes/public/miro/css/about-pages.css') }}">
+    <link rel="stylesheet" href="{{ asset_v('themes/public/miro/css/about-pages.css') }}">
 @endpush
 
 @section('hero_actions')
@@ -140,7 +140,7 @@
                     </div>
                 </div>
                 <figure class="miro-about__figure miro-about__figure--plain">
-                    <img src="{{ asset('themes/public/miro/images/illustrations/cabinet.svg') }}" width="640" height="460" alt="" loading="lazy">
+                    <img src="{{ asset_v('themes/public/miro/images/illustrations/cabinet.svg') }}" width="640" height="460" alt="" loading="lazy">
                 </figure>
             </div>
 

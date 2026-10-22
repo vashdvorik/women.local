@@ -44,13 +44,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Women's hub — Partners</title>
     <meta name="description" content="Партнёры Women's hub — организации и сообщества, которые поддерживают развитие женского предпринимательства.">
-    <link rel="icon" type="image/png" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/favicon-w4w.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/favicon-w4w.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/apple-touch-icon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Prata&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/css/partners.css') }}">
-    <link rel="stylesheet" href="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/css/navigation.css') }}">
+    <link rel="stylesheet" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/css/partners.css') }}">
+    <link rel="stylesheet" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/css/navigation.css') }}">
 </head>
 <body>
     @include('themes.public.miro.partials.miro-header', ['miroCurrentPage' => 'partners'])
@@ -70,7 +70,7 @@
                         <div class="miro-partners-grid">
                             @foreach ($group['partners'] as $partner)
                                 <article class="miro-partner-card miro-partner-card--{{ $group['tone'] }}">
-                                    <div class="miro-partner-card__logo"><img src="{{ asset('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/' . $partner['image']) }}" alt="{{ $partner['name']['en'] }}" loading="lazy"></div>
+                                    <div class="miro-partner-card__logo"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/partners/' . $partner['image']) }}" alt="{{ $partner['name']['en'] }}" loading="lazy"></div>
                                     <div class="miro-partner-card__bottom">
                                         <h3><span data-lang="ru">{{ $partner['name']['ru'] }}</span><span data-lang="en">{{ $partner['name']['en'] }}</span><span data-lang="ro">{{ $partner['name']['ro'] }}</span></h3>
                                         <a href="{{ $partner['url'] }}" target="_blank" rel="noopener noreferrer" class="miro-partner-link"><span data-lang="ru">Сайт</span><span data-lang="en">Website</span><span data-lang="ro">Site</span><span aria-hidden="true">↗</span></a>

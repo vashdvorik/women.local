@@ -36,7 +36,7 @@
     <a href="{{ route('admin.dashboard') }}"
        class="admin-brand-logo h-header flex items-center px-4 border-b border-hairline shrink-0"
        title="{{ config('app.name') }} — {{ __('Админпанель') }}">
-        <img src="{{ asset('themes/public/miro/images/brand/logo-wordmark.webp') }}" alt="{{ config('app.name') }} — {{ __('Админпанель') }}"
+        <img src="{{ asset_v('themes/public/miro/images/brand/logo-wordmark.webp') }}" alt="{{ config('app.name') }} — {{ __('Админпанель') }}"
              class="h-10 w-auto max-w-full object-contain object-left">
     </a>
 
