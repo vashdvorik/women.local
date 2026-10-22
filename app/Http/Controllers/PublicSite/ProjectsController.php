@@ -23,11 +23,15 @@ class ProjectsController extends ContentPageController
 
         return $this->listing('projects', [
             'eyebrow' => $this->tri('Платформа', 'Platform', 'Platformă'),
-            'title' => $this->tri('Проекты', 'Projects', 'Proiecte'),
+            'title' => $this->tri(
+                'Проекты и инициативы для женщин',
+                'Projects and Initiatives for Women',
+                'Proiecte și inițiative pentru femei'
+            ),
             'intro' => $this->tri(
-                'Проекты, инициативы и совместные программы сообщества.',
-                'Community projects, initiatives and joint programmes.',
-                'Proiectele, inițiativele și programele comune ale comunității.'
+                'Образовательные программы, поддержка предпринимательства, цифровые инициативы и совместные проекты.',
+                'Educational programmes, entrepreneurship support, digital initiatives and joint projects.',
+                'Programe educaționale, sprijin pentru antreprenoriat, inițiative digitale și proiecte comune.'
             ),
         ], $cards);
     }

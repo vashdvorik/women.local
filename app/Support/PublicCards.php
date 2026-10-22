@@ -115,11 +115,10 @@ class PublicCards
     /** @return array<string, mixed> */
     public static function project(Project $project): array
     {
-        $category = self::field($project, 'category');
-
         return [
             'image' => $project->imageUrl(),
-            'badge' => array_filter($category) ? $category : null,
+            // Категория хранится для админки и поиска, но на публичных карточках плашки не нужны.
+            'badge' => null,
             'badge_style' => null,
             'date' => null,
             'title' => self::field($project, 'title'),

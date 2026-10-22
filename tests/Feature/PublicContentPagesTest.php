@@ -284,7 +284,7 @@ class PublicContentPagesTest extends TestCase
         $this->get(route('projects'))
             ->assertOk()
             ->assertSee('Клуб предпринимательниц')
-            ->assertSee('Сообщество')
+            ->assertDontSee('Сообщество')
             ->assertSee('https://project.example.test', false)
             ->assertDontSee('Скрытый проект');
     }

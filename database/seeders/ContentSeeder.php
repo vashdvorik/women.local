@@ -26,6 +26,7 @@ class ContentSeeder extends Seeder
             ExpertRosterSeeder::class,
             EventSeeder::class,
             NewsArchiveSeeder::class,
+            ProjectSeeder::class,
             AlbumArchiveSeeder::class,
             VideoArchiveSeeder::class,
         ]);
