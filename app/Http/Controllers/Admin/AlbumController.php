@@ -9,6 +9,7 @@ use App\Models\Album;
 use App\Support\AlbumEditorData;
 use App\Support\ArticleList;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -16,12 +17,34 @@ class AlbumController extends Controller
 {
     public function index(Request $request): View
     {
-        $albums = ArticleList::for(Album::query(), $request)->withQueryString();
+        $search = $request->string('q')->toString();
+
+        // Без поиска и сортировки по колонке — весь список в ручном порядке (его можно менять перетаскиванием).
+        // С поиском или сортировкой — постраничный список, порядок там менять нельзя: строки идут не в порядке сайта.
+        $reorderable = trim($search) === '' && ! $request->filled('sort');
+
+        $albums = $reorderable
+            ? Album::query()->with('translations')->ordered()->get()
+            : ArticleList::for(Album::query(), $request)->withQueryString();
 
         return view('admin.albums.index', [
             'albums' => $albums,
-            'search' => $request->string('q')->toString(),
+            'search' => $search,
+            'reorderable' => $reorderable,
         ]);
+    }
+
+    /** Порядок альбомов на сайте: приходит списком id в новом порядке (перетаскивание и кнопки в списке). */
+    public function reorder(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => ['integer', 'exists:albums,id'],
+        ]);
+
+        Album::applyOrder($data['ids']);
+
+        return response()->json(['ok' => true]);
     }
 
     public function create(): View

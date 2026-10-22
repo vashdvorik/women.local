@@ -216,6 +216,7 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
 
         Route::get('albums', [Admin\AlbumController::class, 'index'])->name('albums.index');
         Route::get('albums/create', [Admin\AlbumController::class, 'create'])->name('albums.create');
+        Route::post('albums/reorder', [Admin\AlbumController::class, 'reorder'])->name('albums.reorder');
         Route::post('albums', [Admin\AlbumController::class, 'store'])->name('albums.store');
         Route::get('albums/{album}/edit', [Admin\AlbumController::class, 'edit'])->name('albums.edit');
         Route::put('albums/{album}', [Admin\AlbumController::class, 'update'])->name('albums.update');

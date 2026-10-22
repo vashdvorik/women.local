@@ -9,6 +9,7 @@ import './tag-color';
 import './video-cover';
 import './image-field';
 import './sidebar';
+import './row-reorder';
 import './ai-settings';
 import './bot-messages';
 

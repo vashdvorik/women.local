@@ -235,7 +235,7 @@ class HelpAssistantTest extends TestCase
         $bot->hearText('Вопрос после закрытия')->reply();
         $after = $this->sent($bot);
         $this->assertCount(1, $after);
-        $this->assertStringContainsString('Этот бот не ведёт переписку', $after[0]['text']);
+        $this->assertStringContainsString('Выберите один из вариантов', $after[0]['text']);
         $this->assertContains('help_start', array_column(array_merge(...$after[0]['reply_markup']['inline_keyboard']), 'callback_data'));
         $this->assertSame([], $this->aiCalls);
     }

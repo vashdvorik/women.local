@@ -1020,5 +1020,12 @@
     "Организация и должность": "Organisation and position",
     "Не указаны": "Not provided",
     "Подсказка на обычное сообщение": "Hint for an ordinary message",
-    "Одобренная участница написала боту обычное сообщение, не нажав кнопку меню и не начав разговор с помощником (меню на телефоне часто свёрнуто). Под сообщением кнопки «Открыть кабинет» и «Спросить помощника». Не чаще раза в 15 секунд.": "An approved member wrote an ordinary message to the bot without pressing a menu button or starting a conversation with the assistant (the menu on a phone is often collapsed). Under the message there are the buttons “Open my account” and “Ask the assistant”. At most once every 15 seconds."
+    "Одобренная участница написала боту обычное сообщение, не нажав кнопку меню и не начав разговор с помощником (меню на телефоне часто свёрнуто). Под сообщением кнопки «Открыть кабинет» и «Спросить помощника». Не чаще раза в 15 секунд.": "An approved member wrote an ordinary message to the bot without pressing a menu button or starting a conversation with the assistant (the menu on a phone is often collapsed). Under the message there are the buttons “Open my account” and “Ask the assistant”. At most once every 15 seconds.",
+    "Перетащите альбом за значок слева (или нажмите стрелки), чтобы поменять порядок на сайте. Новые альбомы встают первыми.": "Drag an album by the handle on the left (or use the arrows) to change the order on the site. New albums are placed first.",
+    "Порядок на сайте можно менять в списке без поиска и сортировки.": "The order on the site can be changed in the list without search or sorting.",
+    "Показать весь список": "Show the whole list",
+    "Сохраняем порядок…": "Saving the order…",
+    "Порядок сохранён.": "The order has been saved.",
+    "Не удалось сохранить порядок. Обновите страницу и попробуйте ещё раз.": "Could not save the order. Refresh the page and try again.",
+    "Перетащить": "Drag"
 }

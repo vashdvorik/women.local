@@ -43,6 +43,11 @@ class SaveAlbum
             $album->status = $targetStatus;
             $album->published_at = $this->resolvePublishedAt($targetStatus, $album->published_at, $data['published_at'] ?? null);
 
+            // Новый альбом встаёт первым; дальше порядок меняют перетаскиванием в списке.
+            if (! $album->exists) {
+                $album->position = (int) (Album::query()->min('position') ?? 1) - 1;
+            }
+
             $album->save();
             $album->loadMissing('translations');
 

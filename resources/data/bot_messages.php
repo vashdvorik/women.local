@@ -648,23 +648,23 @@ return [
             'kind' => 'text',
             'vars' => ['name' => 'Имя участницы', 'contact' => 'Telegram команды проекта'],
             'text' => [
-                'ru' => "{name}, спасибо за сообщение 🌷
+                'ru' => "{name}, спасибо за сообщение.
 
-Этот бот не ведёт переписку, но готов помочь:
+Выберите один из вариантов:
 🤖 «AI помощник» ответит на вопросы: как войти, заполнить профиль, выбрать пакет, как всё устроено.
 🏠 «Кабинет» — ваш личный кабинет Women's hub.
 
 Нажмите нужную кнопку ниже. Если вопрос не для помощника, напишите команде проекта: {contact}.",
-                'en' => "{name}, thank you for your message 🌷
+                'en' => "{name}, thank you for your message.
 
-This bot is not a chat, but it can help:
+Choose one of the options:
 🤖 “AI assistant” answers questions: how to sign in, fill in your profile, choose a package, how everything works.
 🏠 “Cabinet” is your personal Women's hub account.
 
 Tap a button below. If your question is not for the assistant, write to the project team: {contact}.",
-                'ro' => "{name}, vă mulțumim pentru mesaj 🌷
+                'ro' => "{name}, vă mulțumim pentru mesaj.
 
-Acest bot nu este un chat, dar vă poate ajuta:
+Alegeți una dintre variante:
 🤖 „Asistent AI” răspunde la întrebări: cum intrați, cum completați profilul, cum alegeți pachetul, cum funcționează totul.
 🏠 „Cabinet” este contul dvs. personal Women's hub.
 

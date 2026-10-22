@@ -30,7 +30,7 @@ class AlbumsController extends ContentPageController
     {
         [$albums, $paginator] = $this->cachedCards(
             'photos.list',
-            fn () => Album::with('translations')->published()->orderByDesc('published_at'),
+            fn () => Album::with('translations')->published()->ordered(),
             fn (Album $album) => PublicCards::albumWall($album),
             self::PER_PAGE,
         );
