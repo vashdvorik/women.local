@@ -26,7 +26,7 @@ return [
         'profile_short' => 'Profil',
         'more' => 'Mai mult',
         'people' => 'Profilurile platformei',
-        'opportunities' => 'Oportunități',
+        'opportunities' => 'Inițiative',
         'knowledge' => 'Învățare',
         'profile' => 'Profilul meu',
     ],
@@ -77,7 +77,7 @@ return [
         'opportunities_note' => 'Cereri, parteneriate și evenimente ale comunității',
         'tip_label' => 'O idee pentru început',
         'tip_text' => 'Publicați o cerere sau o ofertă — contactul potrivit poate fi mai aproape decât credeți.',
-        'tip_action' => 'Adaugă oportunitate',
+        'tip_action' => 'Adaugă o inițiativă',
     ],
 
     'home' => [
@@ -108,8 +108,8 @@ return [
                 'text' => 'Descrieți în cuvinte simple pe cine căutați.',
             ],
             'opportunities' => [
-                'title' => 'Priviți oportunitățile',
-                'text' => 'Granturi, concursuri și oferte de la membre.',
+                'title' => 'Priviți inițiativele',
+                'text' => 'Ce oferă și ce caută membrele: călătorii, întâlniri, parteneriate.',
             ],
             'assistant' => [
                 'title' => 'Întrebați asistentul AI',
@@ -142,8 +142,8 @@ return [
                 'how' => 'Parcurgeți lista și deschideți profiluri: acolo sunt descrierea și un link pentru a scrie în Telegram.',
             ],
             'opportunities' => [
-                'what' => 'Granturi, concursuri, oferte și proiecte. Le publică membrele însele.',
-                'how' => 'Deschideți o oportunitate pentru detalii sau publicați-o pe a dvs.',
+                'what' => 'Cereri, parteneriate și evenimente publicate chiar de membre.',
+                'how' => 'Deschideți o inițiativă pentru detalii și pentru a contacta autoarea sau publicați-o pe a dvs.',
             ],
             'knowledge' => [
                 'what' => 'Materialele educaționale ale platformei.',
@@ -159,9 +159,9 @@ return [
             ],
         ],
         'fresh_title' => 'Ce este nou',
-        'fresh_opportunities' => 'Cele mai noi oportunități',
+        'fresh_opportunities' => 'Cele mai noi inițiative',
         'fresh_members' => 'Membre noi',
-        'fresh_all_opportunities' => 'Toate oportunitățile',
+        'fresh_all_opportunities' => 'Toate inițiativele',
         'fresh_all_members' => 'Toate membrele',
         'fresh_empty' => 'Deocamdată nimic.',
         'no_description' => 'Descrierea nu este completată încă.',
@@ -244,13 +244,13 @@ return [
     ],
 
     'opportunities' => [
-        'title' => 'Oportunități',
-        'subtitle' => 'Cereri, oferte, evenimente și inițiative de parteneriat din partea participantelor.',
-        'add' => 'Adaugă oportunitate',
-        'empty_title' => 'Nu există oportunități publicate încă',
-        'empty_text' => 'Cereri, oferte, evenimente și inițiative noi vor apărea aici.',
+        'title' => 'Inițiative',
+        'subtitle' => 'Cereri, oferte, întâlniri și evenimente din partea membrelor comunității.',
+        'add' => 'Adaugă o inițiativă',
+        'empty_title' => 'Nu există inițiative publicate încă',
+        'empty_text' => 'Cereri, oferte, întâlniri și evenimente noi ale membrelor vor apărea aici.',
         'publish_first' => 'Publică prima →',
-        'new_title' => 'Oportunitate nouă',
+        'new_title' => 'Inițiativă nouă',
         'new_subtitle' => 'Publicați o cerere, ofertă, întâlnire sau eveniment. După verificarea moderatorului, participantele vor primi notificare în Telegram.',
         'status_pending' => 'În moderare: va fi vizibilă tuturor după aprobare',
         'status_rejected' => 'Respinsă de moderator și ascunsă celorlalte participante',

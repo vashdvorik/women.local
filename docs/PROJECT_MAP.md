@@ -136,7 +136,7 @@ Web middleware подключает `SetLocale` глобально для web-г
 | Поиск | `account/search.blade.php` | Берёт `q`, запрашивает Gemini embedding и ищет по approved-профилям |
 | Участницы | `account/people.blade.php` | Все approved-профили, кроме текущей участницы |
 | Участница | `account/person.blade.php` | Профиль approved-пользовательницы; не-approved возвращает 404 |
-| Возможности | `account/opportunities/index.blade.php` | Пагинация по 15 публикаций; удалять можно только свои |
+| Инициативы | `account/opportunities/index.blade.php` | Публикации участниц: запросы, партнёрства, события. Для людей раздел называется «Инициативы», а в коде, адресах (`/app/account/opportunities`) и таблицах остаётся `opportunities`; «Возможности» на сайте и в админке — отдельный раздел, его ведёт администратор. Пагинация по 15 публикаций; удалять можно только свои |
 | Новая возможность | `account/opportunities/create.blade.php` | Создание `project`, `meeting` или `event` |
 | Знания | `account/knowledge.blade.php` | Текущий статический экран/заготовка раздела |
 

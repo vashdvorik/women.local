@@ -76,7 +76,7 @@ class AccessGateTest extends TestCase
             'account.matches' => 'Рекомендации',
             'account.search' => 'Поиск контактов',
             'account.people' => 'Профили платформы',
-            'account.opportunities.index' => 'Возможности',
+            'account.opportunities.index' => 'Инициативы',
             'account.knowledge' => 'Обучение',
         ] as $route => $title) {
             $html = $this->asParticipant($open)->get(route($route))->assertOk()->getContent();

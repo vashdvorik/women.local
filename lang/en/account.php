@@ -26,7 +26,7 @@ return [
         'profile_short' => 'Profile',
         'more' => 'More',
         'people' => 'Platform profiles',
-        'opportunities' => 'Opportunities',
+        'opportunities' => 'Initiatives',
         'knowledge' => 'Learning',
         'profile' => 'My profile',
     ],
@@ -77,7 +77,7 @@ return [
         'opportunities_note' => 'Community requests, partnerships and events',
         'tip_label' => 'An idea to start',
         'tip_text' => 'Publish a request or offer — the right contact may be closer than you think.',
-        'tip_action' => 'Add opportunity',
+        'tip_action' => 'Add an initiative',
     ],
 
     'home' => [
@@ -108,8 +108,8 @@ return [
                 'text' => 'Describe who you need in plain words.',
             ],
             'opportunities' => [
-                'title' => 'Look at the opportunities',
-                'text' => 'Grants, competitions and offers from members.',
+                'title' => 'Look at the initiatives',
+                'text' => 'What members offer and look for: trips, meetups, partnerships.',
             ],
             'assistant' => [
                 'title' => 'Ask the AI assistant',
@@ -142,8 +142,8 @@ return [
                 'how' => 'Scroll the list and open profiles: there is a description and a link to write in Telegram.',
             ],
             'opportunities' => [
-                'what' => 'Grants, competitions, offers and projects. Members publish them themselves.',
-                'how' => 'Open an opportunity for details, or publish your own.',
+                'what' => 'Requests, partnerships and events published by members themselves.',
+                'how' => 'Open an initiative for details and to contact the author, or publish your own.',
             ],
             'knowledge' => [
                 'what' => 'The platform’s learning materials.',
@@ -159,9 +159,9 @@ return [
             ],
         ],
         'fresh_title' => 'What’s new',
-        'fresh_opportunities' => 'Latest opportunities',
+        'fresh_opportunities' => 'Latest initiatives',
         'fresh_members' => 'New members',
-        'fresh_all_opportunities' => 'All opportunities',
+        'fresh_all_opportunities' => 'All initiatives',
         'fresh_all_members' => 'All members',
         'fresh_empty' => 'Nothing here yet.',
         'no_description' => 'No description yet.',
@@ -244,13 +244,13 @@ return [
     ],
 
     'opportunities' => [
-        'title' => 'Opportunities',
-        'subtitle' => 'Requests, offers, events and partnership initiatives from community participants.',
-        'add' => 'Add opportunity',
-        'empty_title' => 'No opportunities published yet',
-        'empty_text' => 'New requests, offers, events and partnership initiatives will appear here.',
+        'title' => 'Initiatives',
+        'subtitle' => 'Requests, offers, meetups and events from community members.',
+        'add' => 'Add an initiative',
+        'empty_title' => 'No initiatives published yet',
+        'empty_text' => 'New requests, offers, meetups and events from members will appear here.',
         'publish_first' => 'Publish the first one →',
-        'new_title' => 'New opportunity',
+        'new_title' => 'New initiative',
         'new_subtitle' => 'Publish a request, offer, meeting or event. After moderator review, participants will receive a Telegram notification.',
         'status_pending' => 'Under review: visible to everyone once approved',
         'status_rejected' => 'Rejected by a moderator and hidden from other participants',

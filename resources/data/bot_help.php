@@ -41,7 +41,7 @@ Women's hub — цифровое пространство для женщин-п
 ЧТО ЕСТЬ В КАБИНЕТЕ
 — «Мой профиль»: ваша анкета. Чем подробнее вы расскажете о себе и о том, что ищете, тем точнее подбор контактов и рекомендации. Профиль можно редактировать в любой момент.
 — «Подписка»: тарифы и оплата.
-— «Возможности»: гранты, конкурсы, предложения и проекты; публикуют их участницы с тарифом Community и выше.
+— «Инициативы»: запросы, партнёрства и события, которые публикуют сами участницы с тарифом Community и выше.
 — «Профили платформы» и «Поиск контактов»: каталог участниц и поиск нужных людей обычными словами.
 — «Рекомендации»: кого и что платформа советует именно вам.
 — «Обучение»: образовательные материалы.
@@ -78,7 +78,7 @@ HOW TO ENTER THE ACCOUNT
 WHAT IS IN THE ACCOUNT
 — “My profile”: your questionnaire. The more detail you give about yourself and what you are looking for, the more accurate the contact matching and recommendations. You can edit the profile at any time.
 — “Subscription”: plans and payment.
-— “Opportunities”: grants, competitions, offers and projects; they are published by members on the Community plan or higher.
+— “Initiatives”: requests, partnerships and events published by members on the Community plan or higher.
 — “Platform profiles” and “Find contacts”: the member directory and a search for the right people in plain words.
 — “Recommendations”: who and what the platform suggests for you personally.
 — “Learning”: educational materials.
@@ -115,7 +115,7 @@ CUM INTRAȚI ÎN CABINET
 CE ESTE ÎN CABINET
 — „Profilul meu”: chestionarul dvs. Cu cât povestiți mai detaliat despre dvs. și despre ce căutați, cu atât mai exacte sunt selecția contactelor și recomandările. Profilul poate fi editat oricând.
 — „Abonament”: tarife și plată.
-— „Oportunități”: granturi, concursuri, oferte și proiecte; le publică membrele cu tariful Community sau mai mare.
+— „Inițiative”: cereri, parteneriate și evenimente publicate de membrele cu tariful Community sau mai mare.
 — „Profiluri ale platformei” și „Căutare de contacte”: catalogul membrelor și căutarea persoanelor potrivite în cuvinte obișnuite.
 — „Recomandări”: pe cine și ce vă sfătuiește platforma personal.
 — „Învățare”: materiale educaționale.
