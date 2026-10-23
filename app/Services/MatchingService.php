@@ -50,8 +50,8 @@ class MatchingService
 
         $myVec = $user->embedding;
 
-        // Load all other approved users that have an embedding
-        $candidates = BotUser::members()
+        // Load all other approved users that have an embedding (hidden members are never recommended)
+        $candidates = BotUser::discoverable()
             ->where('telegram_id', '!=', $user->telegram_id)
             ->whereNotNull('embedding')
             ->get(['id', 'telegram_id', 'telegram_username', 'full_name',
@@ -100,7 +100,7 @@ class MatchingService
     {
         $minScore = SiteSetting::searchMinScore();
 
-        $candidates = BotUser::members()
+        $candidates = BotUser::discoverable()
             ->where('telegram_id', '!=', $exclude->telegram_id)
             ->whereNotNull('embedding')
             ->get(['id', 'telegram_id', 'telegram_username', 'full_name',

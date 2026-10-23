@@ -28,6 +28,7 @@ class ProfileController extends Controller
         $status = $request->string('status')->toString();
         $status = in_array($status, self::STATUSES, true) ? $status : '';
         $search = trim($request->string('q')->toString());
+        $onlyHidden = $request->boolean('hidden');
         $sort = in_array($request->string('sort')->toString(), self::SORTABLE, true)
             ? $request->string('sort')->toString()
             : 'created_at';
@@ -35,6 +36,7 @@ class ProfileController extends Controller
 
         $profiles = BotUser::query()
             ->when($status !== '', fn ($q) => $q->where('status', $status))
+            ->when($onlyHidden, fn ($q) => $q->where('is_hidden', true))
             ->when($search !== '', fn ($q) => $q->where(fn ($w) => $w
                 ->where('full_name', 'like', "%{$search}%")
                 ->orWhere('telegram_username', 'like', "%{$search}%")))
@@ -49,6 +51,8 @@ class ProfileController extends Controller
             'status' => $status,
             'search' => $search,
             'counts' => $counts,
+            'onlyHidden' => $onlyHidden,
+            'hiddenCount' => BotUser::query()->where('is_hidden', true)->count(),
         ]);
     }
 
@@ -67,6 +71,19 @@ class ProfileController extends Controller
         $profile->update($request->validated());
 
         return redirect()->route('admin.profiles.show', $profile)->with('success', __('Профиль сохранён.'));
+    }
+
+    /**
+     * «Скрыть от других участниц» / «Показать»: скрытый человек пользуется платформой изнутри, но не виден в каталоге, поиске,
+     * подборе контактов и ИИ-помощнике и не может публиковать инициативы. Только администратор платформы (маршрут в группе админки).
+     */
+    public function toggleVisibility(BotUser $profile): RedirectResponse
+    {
+        $profile->forceFill(['is_hidden' => ! $profile->is_hidden])->save();
+
+        return back()->with('success', $profile->is_hidden
+            ? __('Профиль скрыт от других участниц.')
+            : __('Профиль снова виден другим участницам.'));
     }
 
     public function approve(BotUser $profile, ProfileModeration $moderation): RedirectResponse

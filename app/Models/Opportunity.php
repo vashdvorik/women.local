@@ -53,11 +53,16 @@ class Opportunity extends Model
         return $query->where('status', self::STATUS_PENDING);
     }
 
-    /** Одобренные всем плюс любые собственные посты автора. */
+    /**
+     * Одобренные всем плюс любые собственные посты автора. Посты скрытых участников (администратор, спонсор) другим не
+     * показываются: иначе по ним можно было бы узнать, что такой человек есть на платформе.
+     */
     public function scopeVisibleTo(Builder $query, BotUser $viewer): Builder
     {
         return $query->where(fn (Builder $q) => $q
-            ->where('status', self::STATUS_APPROVED)
+            ->where(fn (Builder $approved) => $approved
+                ->where('status', self::STATUS_APPROVED)
+                ->whereHas('author', fn (Builder $author) => $author->where('is_hidden', false)))
             ->orWhere('bot_user_id', $viewer->id));
     }
 

@@ -45,6 +45,7 @@ class BotUser extends Model
         'plan_notified_stage'  => 'integer',
         'embedding'            => 'array',
         'embedding_updated_at' => 'datetime',
+        'is_hidden'            => 'boolean',
     ];
 
     /** Участница вошла в кабинет: запоминаем первый вход (по нему бот понимает, что напоминать о кабинете не нужно). */
@@ -108,6 +109,17 @@ class BotUser extends Model
     public function scopeMembers(Builder $query): Builder
     {
         return $query->approved()->withPlan(Plan::Community);
+    }
+
+    /**
+     * Участницы, которых могут видеть и находить другие: члены сообщества (members) без отметки «скрыт». Каталог, поиск,
+     * подбор контактов, ИИ-помощник и «новые участницы» берут только их. Скрытые (администратор, спонсор, партнёр) пользуются
+     * платформой изнутри и получают рассылки (для них audience по-прежнему members), но другим не видны. Отметку ставит только
+     * администратор платформы: в $fillable поля нет.
+     */
+    public function scopeDiscoverable(Builder $query): Builder
+    {
+        return $query->members()->where($query->getModel()->getTable().'.is_hidden', false);
     }
 
     /** Действующий тариф не ниже $min. */

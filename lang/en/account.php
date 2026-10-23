@@ -179,6 +179,7 @@ return [
         'expectation' => 'What you are looking for and can offer',
         'telegram_empty' => 'Telegram is not specified yet',
         'public_label' => 'Visible to participants',
+        'hidden_label' => 'Hidden from other participants',
         'description_empty' => 'The profile is not filled yet.',
         'expectation_empty' => 'Add your needs, interests and possible collaboration formats.',
         'profile_tip_title' => 'A good profile works for you',

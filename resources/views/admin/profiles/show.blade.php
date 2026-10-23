@@ -20,6 +20,9 @@
                     <div class="flex flex-wrap items-center gap-3">
                         <h2 class="text-section font-semibold">{{ $profile->full_name ?: __('Без имени') }}</h2>
                         <x-admin.profile-status-badge :status="$profile->status" />
+                        @if($profile->is_hidden)
+                            <span class="badge badge--draft">{{ __('Скрыт от других участниц') }}</span>
+                        @endif
                     </div>
 
                     <dl class="grid gap-x-6 gap-y-1 text-ui sm:grid-cols-2">
@@ -60,6 +63,21 @@
                 <h3 class="form-section-title">{{ __('Что ищет и чем может быть полезна') }}</h3>
                 <p class="text-reading whitespace-pre-line">{{ $profile->expectation ?: '—' }}</p>
             </div>
+        </div>
+
+        {{-- Скрыть от других участниц: человек пользуется платформой изнутри, но другие его не видят и не находят; публиковать инициативы он не может. --}}
+        <div class="card flex flex-wrap items-center justify-between gap-3">
+            <p class="text-reading text-ink-muted max-w-xl">
+                {{ $profile->is_hidden
+                    ? __('Профиль скрыт: другие участницы не видят его в каталоге, поиске, рекомендациях и ИИ-помощнике, а публиковать инициативы он не может. Рассылки он получает.')
+                    : __('Профиль виден другим участницам. Скройте его, если человек (администратор, спонсор, партнёр) должен быть внутри платформы, но оставаться незаметным.') }}
+            </p>
+            <form method="POST" action="{{ route('admin.profiles.visibility', $profile) }}">
+                @csrf
+                <button type="submit" class="btn-secondary">
+                    {{ $profile->is_hidden ? __('Показать другим участницам') : __('Скрыть от других участниц') }}
+                </button>
+            </form>
         </div>
 
         <div class="flex flex-wrap items-center gap-2">

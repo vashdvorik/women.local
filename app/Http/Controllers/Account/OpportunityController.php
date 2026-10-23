@@ -32,6 +32,9 @@ class OpportunityController extends Controller
 
     public function create(): View
     {
+        // Скрытый участник (администратор, спонсор) только читает: его публикация раскрыла бы его присутствие.
+        abort_if(view()->shared('accountUser')->is_hidden, 403);
+
         return $this->themedView('opportunities.create');
     }
 
@@ -39,6 +42,8 @@ class OpportunityController extends Controller
     {
         /** @var BotUser $accountUser */
         $accountUser = view()->shared('accountUser');
+
+        abort_if($accountUser->is_hidden, 403);
 
         Opportunity::create([
             'bot_user_id' => $accountUser->id,

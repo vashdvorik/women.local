@@ -17,15 +17,21 @@
         <div class="tabs">
             @foreach($tabs as $key => [$label, $count])
                 <a href="{{ route('admin.profiles.index', array_filter(['status' => $key, 'q' => $search])) }}"
-                   class="tab @if($status === (string) $key) tab--active @endif">
+                   class="tab @if($status === (string) $key && ! $onlyHidden) tab--active @endif">
                     {{ $label }}<span class="text-ink-faint">{{ $count }}</span>
                 </a>
             @endforeach
+            {{-- Скрытые от других участниц: администратор, спонсоры, партнёры. --}}
+            <a href="{{ route('admin.profiles.index', array_filter(['hidden' => 1, 'q' => $search])) }}"
+               class="tab @if($onlyHidden) tab--active @endif">
+                {{ __('Скрытые') }}<span class="text-ink-faint">{{ $hiddenCount }}</span>
+            </a>
         </div>
 
         <div class="flex flex-wrap items-center justify-between gap-3">
             <form method="GET" class="flex gap-2 w-full max-w-sm">
                 @if($status !== '') <input type="hidden" name="status" value="{{ $status }}"> @endif
+                @if($onlyHidden) <input type="hidden" name="hidden" value="1"> @endif
                 <input type="search" name="q" value="{{ $search }}" placeholder="{{ __('Поиск по имени или @username') }}"
                        class="field-input">
                 <button type="submit" class="btn-secondary">{{ __('Найти') }}</button>
@@ -39,7 +45,7 @@
         @if($profiles->isEmpty())
             <div class="card text-center">
                 <p class="text-reading text-ink-muted">
-                    {{ ($search !== '' || $status !== '') ? __('Ничего не найдено.') : __('Профилей пока нет.') }}
+                    {{ ($search !== '' || $status !== '' || $onlyHidden) ? __('Ничего не найдено.') : __('Профилей пока нет.') }}
                 </p>
             </div>
         @else
@@ -70,6 +76,9 @@
                                     <a href="{{ route('admin.profiles.show', $profile) }}" class="table-link">
                                         {{ $profile->full_name ?: __('Без имени') }}
                                     </a>
+                                    @if($profile->is_hidden)
+                                        <span class="badge badge--draft ml-2" title="{{ __('Другие участницы этот профиль не видят и не находят.') }}">{{ __('Скрыт') }}</span>
+                                    @endif
                                 </td>
                                 <td class="whitespace-nowrap text-ink-muted">
                                     {{ $profile->telegram_username ? '@'.$profile->telegram_username : '—' }}
@@ -95,6 +104,14 @@
                                                     : __('Участница получит уведомление об отказе в боте.')"
                                                 :danger="true" />
                                         @endunless
+                                        {{-- Быстрое скрытие: человек остаётся внутри, но другие его не видят и не находят. --}}
+                                        <form method="POST" action="{{ route('admin.profiles.visibility', $profile) }}">
+                                            @csrf
+                                            <button type="submit" class="btn-quiet"
+                                                    title="{{ $profile->is_hidden ? __('Сделать профиль видимым для других участниц') : __('Скрыть профиль от других участниц: человек остаётся внутри, но его не видно и не найти') }}">
+                                                {{ $profile->is_hidden ? __('Показать') : __('Скрыть') }}
+                                            </button>
+                                        </form>
                                         <a href="{{ route('admin.profiles.edit', $profile) }}" class="btn-quiet">{{ __('Изменить') }}</a>
                                         <x-admin.delete-button
                                             :action="route('admin.profiles.destroy', $profile)"

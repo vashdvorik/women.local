@@ -80,7 +80,7 @@ final class CabinetHome
     /** Три последние вступившие участницы с действующим тарифом (каталог виден только им, см. AccountController::people). */
     private static function newestMembers(BotUser $user): \Illuminate\Support\Collection
     {
-        return BotUser::members()
+        return BotUser::discoverable()
             ->where('bot_users.id', '!=', $user->id)
             ->orderByDesc('approved_at')->orderByDesc('bot_users.id')
             ->limit(3)

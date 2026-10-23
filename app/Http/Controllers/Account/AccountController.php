@@ -161,7 +161,7 @@ class AccountController extends Controller
         /** @var BotUser $accountUser */
         $accountUser = view()->shared('accountUser');
 
-        $people = BotUser::members()
+        $people = BotUser::discoverable()
             ->where('telegram_id', '!=', $accountUser->telegram_id)
             ->orderBy('full_name')
             ->get(['id', 'full_name', 'telegram_username', 'description', 'expectation', 'avatar_path']);
@@ -171,8 +171,15 @@ class AccountController extends Controller
 
     public function showPerson(BotUser $botUser): View
     {
-        // В каталоге видны только участницы с действующим тарифом Community или Private: остальных открыть нельзя.
-        abort_unless(BotUser::members()->whereKey($botUser->getKey())->exists(), 404);
+        // В каталоге видны только участницы с действующим тарифом Community или Private и не скрытые администратором:
+        // остальных открыть нельзя (скрытый открывает только свою страницу).
+        /** @var BotUser $accountUser */
+        $accountUser = view()->shared('accountUser');
+
+        abort_unless(
+            $botUser->is($accountUser) || BotUser::discoverable()->whereKey($botUser->getKey())->exists(),
+            404,
+        );
 
         return $this->themedView('person', ['person' => $botUser]);
     }

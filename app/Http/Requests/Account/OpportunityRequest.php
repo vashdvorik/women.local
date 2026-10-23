@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Account;
 
+use App\Models\BotUser;
 use Illuminate\Foundation\Http\FormRequest;
 
 class OpportunityRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return session()->has('account_telegram_id');
+        if (! session()->has('account_telegram_id')) {
+            return false;
+        }
+
+        // Скрытый участник (администратор, спонсор) инициативы не публикует: это раскрыло бы его присутствие.
+        return ! BotUser::query()->where('telegram_id', session('account_telegram_id'))->where('is_hidden', true)->exists();
     }
 
     public function rules(): array

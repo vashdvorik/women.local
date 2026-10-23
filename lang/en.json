@@ -1027,5 +1027,19 @@
     "Сохраняем порядок…": "Saving the order…",
     "Порядок сохранён.": "The order has been saved.",
     "Не удалось сохранить порядок. Обновите страницу и попробуйте ещё раз.": "Could not save the order. Refresh the page and try again.",
-    "Перетащить": "Drag"
+    "Перетащить": "Drag",
+    "Скрытые": "Hidden",
+    "Скрыт": "Hidden",
+    "Скрыть": "Hide",
+    "Показать": "Show",
+    "Скрыт от других участниц": "Hidden from other participants",
+    "Скрыть от других участниц": "Hide from other participants",
+    "Показать другим участницам": "Show to other participants",
+    "Другие участницы этот профиль не видят и не находят.": "Other participants cannot see or find this profile.",
+    "Сделать профиль видимым для других участниц": "Make the profile visible to other participants",
+    "Скрыть профиль от других участниц: человек остаётся внутри, но его не видно и не найти": "Hide the profile from other participants: the person stays inside but cannot be seen or found",
+    "Профиль скрыт от других участниц.": "The profile is now hidden from other participants.",
+    "Профиль снова виден другим участницам.": "The profile is visible to other participants again.",
+    "Профиль скрыт: другие участницы не видят его в каталоге, поиске, рекомендациях и ИИ-помощнике, а публиковать инициативы он не может. Рассылки он получает.": "The profile is hidden: other participants do not see it in the directory, search, recommendations or the AI assistant, and the person cannot publish initiatives. They still receive broadcasts.",
+    "Профиль виден другим участницам. Скройте его, если человек (администратор, спонсор, партнёр) должен быть внутри платформы, но оставаться незаметным.": "The profile is visible to other participants. Hide it if the person (an administrator, sponsor or partner) should be inside the platform but stay unseen."
 }

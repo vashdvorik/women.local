@@ -19,7 +19,7 @@
             <div class="fortun-profile-identity__topline">
                 <span class="fortun-profile-badge">
                     <span class="fortun-profile-badge__dot" aria-hidden="true"></span>
-                    {{ __('account.profile.public_label') }}
+                    {{ $accountUser->is_hidden ? __('account.profile.hidden_label') : __('account.profile.public_label') }}
                 </span>
             </div>
 

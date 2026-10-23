@@ -271,6 +271,7 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::get('profiles/{profile}', [Admin\ProfileController::class, 'show'])->name('profiles.show');
         Route::get('profiles/{profile}/edit', [Admin\ProfileController::class, 'edit'])->name('profiles.edit');
         Route::put('profiles/{profile}', [Admin\ProfileController::class, 'update'])->name('profiles.update');
+        Route::post('profiles/{profile}/visibility', [Admin\ProfileController::class, 'toggleVisibility'])->name('profiles.visibility');
         Route::post('profiles/{profile}/approve', [Admin\ProfileController::class, 'approve'])->name('profiles.approve');
         Route::post('profiles/{profile}/reject', [Admin\ProfileController::class, 'reject'])->name('profiles.reject');
         Route::delete('profiles/{profile}', [Admin\ProfileController::class, 'destroy'])->name('profiles.destroy');

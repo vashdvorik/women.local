@@ -179,6 +179,7 @@ return [
         'expectation' => 'Ce căutați și cu ce puteți fi utilă',
         'telegram_empty' => 'Telegram nu este indicat încă',
         'public_label' => 'Vizibil pentru participante',
+        'hidden_label' => 'Ascuns pentru celelalte participante',
         'description_empty' => 'Profilul nu este completat încă.',
         'expectation_empty' => 'Adăugați nevoi, interese și formate posibile de colaborare.',
         'profile_tip_title' => 'Un profil bun lucrează pentru dvs.',
