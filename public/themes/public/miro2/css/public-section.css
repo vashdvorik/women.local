@@ -1,0 +1,257 @@
+:root {
+    --miro-public-ink: var(--miro-ink-deep, #21140F);
+}
+
+.miro-public-page { min-height: 70vh; background: var(--miro-canvas, #fff); color: var(--miro-ink, #2A1913); }
+/* Шапка страниц разделов (Проекты, Возможности, Медиатека…): компактная, без декоративных кругов. Раньше 64+56 px отступов,
+   заголовок до 68 px и три круга справа занимали почти полэкрана ещё до содержимого. */
+.miro-public-hero { position: relative; overflow: hidden; padding: 36px 0 32px; border-bottom: 1px solid var(--miro-hairline-soft, #F2E8E3); background: linear-gradient(135deg, var(--miro-surface, #F7EEE9), #fff 70%); }
+.miro-public-hero__inner { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 0; }
+.miro-public-hero__copy { max-width: 960px; }
+.miro-public-hero h1 { margin: 0; color: var(--miro-public-ink); font-family: var(--miro-display-font, "Prata", Georgia, serif); font-size: clamp(30px, 3.8vw, 44px); font-weight: 400; line-height: 1.15; letter-spacing: -.015em; }
+.miro-public-hero__intro { max-width: 680px; margin: 12px 0 0; color: var(--miro-slate, #756158); font-size: 16.5px; line-height: 1.55; }
+.miro-public-hero__accent { position: relative; min-height: 170px; }
+/* Круги-украшения в шапке раздела убраны; в статьях (.miro-public-content--article) они остаются отдельным правилом ниже. */
+.miro-public-hero .miro-public-hero__accent { display: none; }
+.miro-public-hero__accent span { position: absolute; display: block; border-radius: 50%; }
+.miro-public-hero__accent span:nth-child(1) { top: 10px; right: 20px; width: 140px; height: 140px; background: var(--miro-pink, #F1E3DA); }
+.miro-public-hero__accent span:nth-child(2) { right: 0; bottom: 0; width: 92px; height: 92px; background: var(--miro-teal, #FAF4F1); }
+.miro-public-hero__accent span:nth-child(3) { top: 0; right: 106px; width: 26px; height: 26px; background: var(--miro-coral, #E6CFC1); }
+.miro-public-content { padding: 64px 0 72px; }
+/* Страница со списком без большой шапки («Фото», «Видео»): содержимое начинается сразу под меню. */
+.miro-public-content--bare { padding-top: 48px; }
+.miro-visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+.miro-public-placeholder { max-width: 720px; margin: 0 auto; padding: 48px 40px; border: 1px solid var(--miro-hairline-soft, #F2E8E3); border-radius: 28px; background: #fff; box-shadow: 0 12px 32px rgba(33, 20, 15,.06); text-align: center; }
+.miro-public-placeholder__mark { width: 56px; height: 56px; display: grid; place-items: center; margin: 0 auto 20px; border-radius: 50%; background: var(--miro-teal-light, #E8D1C2); color: var(--miro-teal-dark, #526B5A); font-size: 22px; }
+.miro-public-placeholder h2, .miro-public-item h2, .miro-public-step h2, .miro-public-cta h2 { margin: 0; color: var(--miro-public-ink); font-family: var(--miro-display-font, "Prata", Georgia, serif); font-size: 28px; font-weight: 400; line-height: 1.28; }
+.miro-public-placeholder p, .miro-public-step p, .miro-public-cta p { max-width: 620px; margin: 14px auto 0; color: var(--miro-slate, #756158); font-size: 16px; line-height: 1.5; }
+.miro-public-items { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.miro-public-item { min-height: 180px; padding: 28px 24px; border: 1px solid var(--miro-hairline-soft, #F2E8E3); border-radius: 20px; background: #fff; box-shadow: 0 8px 24px rgba(33, 20, 15,.04); }
+.miro-public-item:nth-child(3n+1) { background: var(--miro-pink, #F1E3DA); }
+.miro-public-item:nth-child(3n+2) { background: var(--miro-teal, #FAF4F1); }
+.miro-public-item:nth-child(3n) { background: var(--miro-coral, #E6CFC1); }
+.miro-public-item__number, .miro-public-step__number { display: inline-grid; width: 36px; height: 36px; place-items: center; margin-bottom: 28px; border-radius: 50%; background: #fff; color: var(--miro-blue, #74472F); font-size: 13px; font-weight: 600; }
+.miro-public-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.miro-public-step { padding: 28px; border: 1px solid var(--miro-hairline-soft, #F2E8E3); border-radius: 20px; background: #fff; }
+.miro-public-step p { margin-left: 0; margin-right: 0; }
+.miro-public-cta { max-width: 760px; margin: 48px auto 0; padding: 40px 28px; border-radius: 28px; background: var(--miro-primary, #2A1913); color: #fff; text-align: center; }
+.miro-public-cta h2 { color: #fff; }
+.miro-public-cta p { color: rgba(255,255,255,.76); }
+.miro-public-cta .miro-button { margin-top: 24px; background: var(--miro-pink, #F1E3DA); color: var(--miro-primary, #2A1913); }
+
+@media (max-width: 767px) {
+    .miro-public-hero { padding: 28px 0 24px; }
+    .miro-public-hero__inner { grid-template-columns: 1fr; gap: 0; }
+    .miro-public-hero__accent { min-height: 80px; }
+    .miro-public-hero__accent span:nth-child(1) { right: 10%; width: 90px; height: 90px; }
+    .miro-public-hero__accent span:nth-child(2) { right: 4%; width: 58px; height: 58px; }
+    .miro-public-hero__accent span:nth-child(3) { right: 28%; }
+    .miro-public-content { padding: 48px 0 64px; }
+    .miro-public-content--article { padding: 32px 0 64px; }
+    .miro-public-content--article .miro-public-hero__accent { top: -8px; right: -6px; width: 150px; height: 110px; }
+    .miro-public-placeholder { padding: 32px 20px; }
+    .miro-public-items, .miro-public-steps { grid-template-columns: 1fr; }
+    .miro-public-cta { margin-top: 40px; padding: 32px 20px; }
+}
+
+/* ---------- Списки и статьи из админки (публикации, возможности, фото, видео, проекты) ---------- */
+.miro-card-play { position: absolute; z-index: 2; top: 50%; left: 50%; display: grid; width: 56px; height: 56px; place-items: center; transform: translate(-50%, -50%); border-radius: 50%; background: rgba(255,255,255,.92); color: var(--miro-primary, #2A1913); box-shadow: 0 8px 24px rgba(33, 20, 15,.25); }
+.miro-pager { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 40px; }
+.miro-pager__status { color: var(--miro-slate, #756158); font-size: 14px; font-weight: 600; }
+.miro-pager .is-disabled { opacity: .4; pointer-events: none; }
+
+/* Страница материала: без большой шапки. Название — обычный жирный шрифт над текстом, а кружки-украшения
+   шапки стоят в углу блока с текстом, за текстом. */
+.miro-public-content--article { position: relative; padding: 48px 0 72px; overflow: hidden; }
+.miro-public-content--article > .miro-container { position: relative; }
+.miro-public-content--article .miro-public-hero__accent { position: absolute; z-index: 0; top: -12px; right: -16px; width: 220px; height: 170px; min-height: 0; pointer-events: none; }
+/* Статья идёт по сетке сайта: на всю ширину контейнера, как шапка и подвал (у неё больше нет своей ширины).
+   Название сверху на всю ширину; ниже слева 8 колонок из 12 — обложка и текст, справа 4 — боковая колонка с типом,
+   датой, ссылкой на источник и «все новости». Меньше 1024 px всё в одну колонку: тип и дата под названием, ссылки под текстом. */
+.miro-article { position: relative; z-index: 1; }
+.miro-article__title { margin: 0 0 32px; color: var(--miro-ink-deep, #21140F); font-family: var(--miro-font, "Manrope", Arial, sans-serif); font-size: clamp(28px, 4vw, 40px); font-weight: 700; line-height: 1.2; letter-spacing: -.01em; overflow-wrap: anywhere; }
+.miro-article__draft { margin: 0 0 24px; padding: 12px 16px; border-radius: 12px; background: #FFF4E5; color: #8A4B08; font-size: 14px; }
+.miro-article__layout { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 32px; align-items: start; }
+.miro-article__main { grid-column: 1 / span 8; min-width: 0; }
+.miro-article__aside { position: sticky; top: 104px; grid-column: 9 / span 4; display: flex; flex-direction: column; align-items: flex-start; gap: 24px; padding-left: 32px; border-left: 1px solid var(--miro-hairline, #E9DCD5); }
+.miro-article__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0; }
+.miro-article__date { color: var(--miro-blue, #74472F); font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+/* Обложка показывается в тех пропорциях, в которых её кадрировали (16:9 у новостей, 2,2:1 у публикаций): CSS её больше не обрезает. */
+.miro-article__cover-link { margin: 0 0 32px; }
+.miro-article__cover { display: block; width: 100%; height: auto; border-radius: 24px; }
+.miro-article__back { display: inline-flex; color: var(--miro-primary, #2A1913); font-size: 15px; font-weight: 600; }
+.miro-article__back:hover { color: var(--miro-blue, #74472F); }
+@media (max-width: 1023px) {
+    .miro-article__layout { display: flex; flex-direction: column; }
+    /* Боковая колонка растворяется: её части встают в общий столбец: тип и дата наверх, ссылка вниз. */
+    .miro-article__aside { display: contents; }
+    .miro-article__meta { order: -1; align-self: flex-start; margin-bottom: 20px; }
+    .miro-article__back { order: 1; align-self: flex-start; margin-top: 40px; }
+}
+
+.miro-prose { color: var(--miro-ink, #2A1913); font-size: 17px; line-height: 1.7; }
+.miro-prose > * + * { margin-top: 1.2em; }
+.miro-prose h2 { margin-top: 1.8em; color: var(--miro-ink-deep, #21140F); font-family: var(--miro-display-font, "Prata", Georgia, serif); font-size: 30px; font-weight: 400; line-height: 1.2; }
+.miro-prose h3 { margin-top: 1.5em; color: var(--miro-ink-deep, #21140F); font-size: 22px; font-weight: 600; line-height: 1.3; }
+.miro-prose a { color: var(--miro-blue, #74472F); text-decoration: underline; text-underline-offset: 3px; }
+.miro-prose ul { padding-left: 1.4em; list-style: disc; }
+.miro-prose ol { padding-left: 1.4em; list-style: decimal; }
+.miro-prose li + li { margin-top: .3em; }
+.miro-prose blockquote { padding-left: 16px; border-left: 3px solid var(--miro-coral, #E6CFC1); color: var(--miro-slate, #756158); font-style: italic; }
+.miro-prose__text > * + * { margin-top: 1em; }
+.miro-prose__embed { overflow-x: auto; }
+.miro-prose__file { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border: 1px solid var(--miro-hairline-soft, #F2E8E3); border-radius: 20px; background: #fff; box-shadow: 0 8px 24px rgba(33, 20, 15,.04); }
+.miro-prose__file-icon { display: grid; flex: none; width: 48px; height: 56px; place-items: center; border-radius: 12px; background: var(--miro-pink, #F1E3DA); color: var(--miro-blue, #74472F); font-size: 13px; font-weight: 600; letter-spacing: .04em; }
+.miro-prose__file-body { flex: 1; min-width: 0; }
+.miro-prose__file-title { margin: 0; color: var(--miro-ink-deep, #21140F); font-size: 18px; font-weight: 600; line-height: 1.35; overflow-wrap: anywhere; }
+.miro-prose__file-meta { margin: 4px 0 0; color: var(--miro-slate, #756158); font-size: 14px; line-height: 1.4; }
+.miro-prose a.miro-prose__file-button { display: inline-flex; flex: none; align-items: center; justify-content: center; min-height: 44px; padding: 12px 24px; border-radius: 9999px; background: var(--miro-primary, #2A1913); color: #fff; font-size: 14px; font-weight: 500; line-height: 1.3; text-decoration: none; transition: background .18s ease, transform .18s ease; }
+.miro-prose a.miro-prose__file-button:hover { background: var(--miro-primary-hover, #34231F); transform: translateY(-1px); }
+.miro-prose a.miro-prose__file-button:focus-visible { outline: 2px solid var(--miro-blue, #74472F); outline-offset: 3px; }
+.miro-prose__image { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 20px; object-fit: cover; }
+.miro-prose__gallery { display: grid; gap: 12px; }
+.miro-prose__gallery--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.miro-prose__gallery--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.miro-prose__gallery--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.miro-prose__gallery img { display: block; width: 100%; aspect-ratio: 4 / 3; border-radius: 16px; object-fit: cover; }
+.miro-prose__gallery.is-portrait img { aspect-ratio: 3 / 4; }
+
+/* ---------- Фотоальбомы: полотно из рядов фото ---------- */
+/* Страница «Фото»: альбомы один за другим, у каждого название со ссылкой и все фото рядами. Страница альбома: то же
+   полотно во всю ширину сетки без боковой колонки. Ряды лежат вплотную, с таким же зазором, как между плитками в ряду
+   (а не с интервалом абзацев текста). */
+.miro-wall { scroll-margin-top: 96px; }
+.miro-wall + .miro-wall { margin-top: 72px; }
+.miro-wall__title { margin: 0; color: var(--miro-ink-deep, #21140F); font-family: var(--miro-display-font, "Prata", Georgia, serif); font-size: clamp(28px, 3.4vw, 40px); font-weight: 400; line-height: 1.15; }
+.miro-wall__title a { color: inherit; }
+.miro-wall__title a:hover { color: var(--miro-blue, #74472F); }
+.miro-wall__count, .miro-article__count { margin: 8px 0 24px; color: var(--miro-blue, #74472F); font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.miro-article--wide .miro-article__title { margin-bottom: 0; }
+.miro-wall .miro-prose > * + *, .miro-article--wide .miro-prose > * + * { margin-top: 12px; }
+.miro-article__back--wall { margin-top: 40px; }
+.miro-wall.is-new { animation: miro-event-card-in .35s ease both; }
+@media (prefers-reduced-motion: reduce) { .miro-wall.is-new { animation: none; } }
+@media (max-width: 767px) {
+    /* Две колонки: третье фото ряда из трёх не остаётся один на один с пустым местом, а встаёт на всю ширину. */
+    .miro-wall .miro-prose__gallery--3 > :last-child:nth-child(odd),
+    .miro-article--wide .miro-prose__gallery--3 > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+    .miro-wall + .miro-wall { margin-top: 56px; }
+}
+
+/* ---------- Видео: кнопка на карточке и проигрыватель (js/video-player.js) ---------- */
+.miro-card-play { transition: transform .2s ease, background .2s ease, color .2s ease; }
+.miro-event-card--linked:hover .miro-card-play { transform: translate(-50%, -50%) scale(1.1); background: var(--miro-primary, #2A1913); color: #FFFDFC; }
+body.miro-player-open { overflow: hidden; }
+.miro-player { position: fixed; z-index: 1000; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(22, 14, 11, .94); opacity: 0; transition: opacity .2s ease; }
+.miro-player[hidden] { display: none; }
+.miro-player.is-open { opacity: 1; }
+/* Ширина окна не больше, чем позволяет высота экрана (кадр 16:9 плюс подпись), иначе на низком окне подпись уезжает за край. */
+.miro-player__box { width: min(1120px, 100%, calc((100vh - 150px) * 16 / 9)); }
+.miro-player__frame { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 20px; background: #000; box-shadow: 0 24px 64px rgba(0, 0, 0, .5); }
+.miro-player__iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.miro-player__caption { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin-top: 16px; }
+.miro-player__title { flex: 1 1 320px; margin: 0; color: #FFFDFC; font-family: var(--miro-display-font, "Prata", Georgia, serif); font-size: clamp(18px, 2vw, 24px); line-height: 1.3; }
+.miro-player__link { flex: none; color: rgba(255, 253, 252, .85); font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.miro-player__link:hover { color: #FFFDFC; }
+.miro-player__close { position: absolute; top: 20px; right: 20px; display: grid; width: 48px; height: 48px; place-items: center; padding: 0; border: 1px solid rgba(255, 253, 252, .28); border-radius: 50%; background: rgba(255, 253, 252, .12); color: #FFFDFC; cursor: pointer; transition: background .15s ease; }
+.miro-player__close:hover { background: rgba(255, 253, 252, .24); }
+.miro-player__close svg { width: 22px; height: 22px; }
+.miro-player__link:focus-visible, .miro-player__close:focus-visible { outline: 2px solid #FFFDFC; outline-offset: 3px; }
+@media (max-width: 767px) {
+    .miro-player { padding: 12px; }
+    .miro-player__frame { border-radius: 12px; }
+    .miro-player__close { top: 12px; right: 12px; width: 42px; height: 42px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .miro-player, .miro-player__close, .miro-card-play { transition: none; }
+}
+
+/* ---------- Документ: Положение о платформе (/about/regulations) ---------- */
+/* Сетка и боковая колонка те же, что у статьи (miro-article__layout): слева разделы, справа содержание. */
+.miro-doc .miro-article__title { margin-bottom: 8px; }
+.miro-doc__subtitle { margin: 0 0 20px; color: var(--miro-blue, #74472F); font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+/* Подзаголовок без примечания под ним (Положение о Гала-премии): до разделов тот же отступ, что после примечания. */
+.miro-doc__subtitle + .miro-article__layout { margin-top: 20px; }
+/* Документ без подзаголовка (Положение о Гала Премии): между названием и первым разделом такой же отступ, как у обычной статьи. */
+.miro-doc .miro-article__title + .miro-article__layout { margin-top: 36px; }
+.miro-doc__section { scroll-margin-top: 96px; }
+.miro-doc__section + .miro-doc__section { margin-top: 48px; }
+.miro-doc__heading { margin: 0 0 20px; color: var(--miro-ink-deep, #21140F); font-family: var(--miro-display-font, "Prata", Georgia, serif); font-size: clamp(24px, 2.6vw, 30px); font-weight: 400; line-height: 1.2; }
+.miro-doc__hnum { margin-right: 4px; color: var(--miro-blue, #74472F); font-family: var(--miro-font, "Manrope", Arial, sans-serif); font-size: .85em; font-weight: 600; }
+.miro-doc__clause { margin: 0 0 14px; color: var(--miro-ink, #2A1913); font-size: 17px; line-height: 1.7; }
+.miro-doc__num { margin-right: 6px; color: var(--miro-blue, #74472F); font-weight: 600; }
+.miro-doc__list { margin: 0 0 14px; padding: 0; list-style: none; }
+.miro-doc__list li { position: relative; margin: 0 0 10px; padding-left: 26px; color: var(--miro-ink, #2A1913); font-size: 17px; line-height: 1.65; }
+.miro-doc__list li::before { content: ""; position: absolute; top: .68em; left: 6px; width: 7px; height: 7px; border-radius: 50%; background: var(--miro-blue, #74472F); }
+.miro-doc__package { margin: 0 0 24px; padding: 28px; border: 1px solid var(--miro-hairline-soft, #F2E8E3); border-radius: 24px; background: #fff; box-shadow: 0 8px 24px rgba(33, 20, 15, .045); }
+.miro-doc__package-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; margin-bottom: 18px; }
+.miro-doc__package-name { margin: 0; color: var(--miro-ink-deep, #21140F); font-size: 20px; font-weight: 600; letter-spacing: .03em; line-height: 1.3; }
+.miro-doc__price { margin: 0; padding: 8px 16px; border-radius: 9999px; background: var(--miro-pink, #F1E3DA); color: var(--miro-primary, #2A1913); font-size: 15px; font-weight: 600; white-space: nowrap; }
+.miro-doc__package--private .miro-doc__price { background: var(--miro-primary, #2A1913); color: #FFFDFC; }
+.miro-doc__includes { margin: 0 0 12px; color: var(--miro-slate, #6B5750); font-size: 15px; font-weight: 600; }
+.miro-doc__items { margin: 0; padding: 0; list-style: none; counter-reset: item; }
+.miro-doc__items li { position: relative; margin: 0; padding: 10px 0 10px 40px; border-top: 1px solid var(--miro-hairline-soft, #F2E8E3); color: var(--miro-ink, #2A1913); font-size: 16px; line-height: 1.55; counter-increment: item; }
+.miro-doc__items li:first-child { border-top: 0; }
+.miro-doc__items li::before { content: counter(item); position: absolute; top: 10px; left: 0; display: grid; width: 26px; height: 26px; place-items: center; border-radius: 50%; background: var(--miro-pink, #F1E3DA); color: var(--miro-blue, #74472F); font-size: 12px; font-weight: 600; }
+/* Общее правило navigation.css («.miro-page :is(p, li, a, …) { color: тёмный }») стоит ниже по файлу и равно по весу, поэтому
+   особые цвета документа (синяя подпись, серые подписи, белая цена на тёмной плашке) записаны с большим весом. */
+.miro-page .miro-doc .miro-doc__subtitle { color: var(--miro-blue, #74472F); }
+.miro-page .miro-doc .miro-doc__toc-title,
+.miro-page .miro-doc .miro-doc__includes { color: var(--miro-slate, #6B5750); }
+.miro-page .miro-doc .miro-doc__package--private .miro-doc__price { background: var(--miro-primary, #2A1913); color: #FFFDFC; }
+.miro-doc__toc-title { margin: 0 0 12px; color: var(--miro-slate, #6B5750); font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.miro-doc__toc-list { margin: 0; padding: 0; list-style: none; }
+.miro-doc__toc-list li { margin: 0 0 10px; }
+.miro-doc__toc-list a { color: var(--miro-ink, #2A1913); font-size: 15px; line-height: 1.4; }
+.miro-doc__toc-list a:hover { color: var(--miro-blue, #74472F); }
+@media (max-width: 1023px) {
+    /* Одна колонка: содержание сразу под названием, до разделов. */
+    .miro-doc__toc { order: -1; align-self: stretch; margin-bottom: 28px; padding: 18px 20px; border: 1px solid var(--miro-hairline-soft, #F2E8E3); border-radius: 20px; background: #fff; }
+}
+@media (max-width: 767px) {
+    .miro-doc__package { padding: 20px; border-radius: 20px; }
+    .miro-doc__clause, .miro-doc__list li { font-size: 16px; }
+}
+
+@media (max-width: 767px) {
+    .miro-prose { font-size: 16px; }
+    .miro-prose h2 { font-size: 26px; }
+    .miro-prose__gallery--3, .miro-prose__gallery--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .miro-prose__file { flex-wrap: wrap; padding: 16px; }
+    .miro-prose a.miro-prose__file-button { width: 100%; }
+    .miro-article__cover { border-radius: 16px; }
+}
+
+
+/* ---------- Просмотр фото по клику (js/lightbox.js) ---------- */
+.miro-zoom { display: block; border-radius: inherit; cursor: zoom-in; }
+.miro-zoom:focus-visible { outline: 2px solid var(--miro-blue, #74472F); outline-offset: 3px; }
+body.miro-lightbox-open { overflow: hidden; }
+.miro-lightbox { position: fixed; z-index: 1000; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(22, 14, 11, .94); opacity: 0; transition: opacity .2s ease; }
+.miro-lightbox[hidden] { display: none; }
+.miro-lightbox.is-open { opacity: 1; }
+.miro-lightbox__figure { display: flex; max-width: 100%; max-height: 100%; margin: 0; align-items: center; justify-content: center; }
+.miro-lightbox__img { display: block; width: auto; height: auto; max-width: min(96vw, 1500px); max-height: 86vh; border-radius: 12px; box-shadow: 0 24px 64px rgba(0, 0, 0, .45); object-fit: contain; transition: opacity .15s ease; }
+.miro-lightbox__img.is-loading { opacity: .25; }
+.miro-lightbox__btn { position: absolute; display: grid; width: 48px; height: 48px; place-items: center; padding: 0; border: 1px solid rgba(255, 253, 252, .28); border-radius: 50%; background: rgba(255, 253, 252, .12); color: #FFFDFC; cursor: pointer; transition: background .15s ease; }
+.miro-lightbox__btn:hover { background: rgba(255, 253, 252, .24); }
+.miro-lightbox__btn:focus-visible { outline: 2px solid #FFFDFC; outline-offset: 3px; }
+.miro-lightbox__btn svg { width: 22px; height: 22px; }
+.miro-lightbox__close { top: 20px; right: 20px; }
+.miro-lightbox__prev { top: 50%; left: 20px; transform: translateY(-50%); }
+.miro-lightbox__next { top: 50%; right: 20px; transform: translateY(-50%); }
+.miro-lightbox__counter { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); color: rgba(255, 253, 252, .8); font-size: 14px; font-weight: 600; letter-spacing: .04em; }
+@media (max-width: 767px) {
+    .miro-lightbox { padding: 12px; }
+    .miro-lightbox__img { max-width: 100%; max-height: 78vh; border-radius: 8px; }
+    .miro-lightbox__btn { width: 42px; height: 42px; }
+    .miro-lightbox__close { top: 12px; right: 12px; }
+    .miro-lightbox__prev { left: 8px; }
+    .miro-lightbox__next { right: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .miro-lightbox, .miro-lightbox__img, .miro-lightbox__btn { transition: none; }
+}
+
+/* Кнопка «Смотреть альбом» под первыми рядами фото в списке альбомов */
+.miro-wall__more { margin: 24px 0 0; }

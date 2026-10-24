@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Jobs\ComputeUserEmbedding;
 use App\Models\Broadcast;
 use App\Models\BotUser;
 use App\Models\Opportunity;
 use App\Services\MatchingService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Bus;
 use Tests\Concerns\SubscriptionHelpers;
 use Tests\TestCase;
 
@@ -193,6 +195,9 @@ class HiddenMembersTest extends TestCase
 
     public function test_a_participant_cannot_hide_herself_or_anyone_through_the_cabinet(): void
     {
+        // Сохранение профиля ставит в очередь пересчёт вектора: в тесте он не должен ходить во внешний ИИ.
+        Bus::fake([ComputeUserEmbedding::class]);
+
         $user = $this->member('Участница');
 
         // Поле не принимается формой профиля: скрыть себя может только администратор.

@@ -71,3 +71,4 @@
 
 <script src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/js/navigation.js') }}"></script>
 <script defer src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/js/motion.js') }}"></script>
+<script defer src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/js/perf.js') }}"></script>

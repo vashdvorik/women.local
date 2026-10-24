@@ -3,6 +3,7 @@
 use App\Http\Middleware\AdminLocale;
 use App\Http\Middleware\EnsureAdminEmail;
 use App\Http\Middleware\FlushPublicCacheAfterAdminChange;
+use App\Http\Middleware\KeepNamesTogether;
 use App\Http\Middleware\RequirePlan;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [
             SetLocale::class,
+            KeepNamesTogether::class,
         ]);
 
         $middleware->alias([

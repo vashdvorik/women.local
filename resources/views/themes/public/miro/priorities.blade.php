@@ -11,7 +11,7 @@
 
     // Текст на трёх языках: языки переключаются стилями, как на остальных страницах сайта.
     $tri = fn (array $text): HtmlString => new HtmlString(
-        collect($locales)->map(fn (string $l) => '<span data-lang="'.$l.'">'.e($text[$l]).'</span>')->implode('')
+        collect($locales)->map(fn (string $l) => '<span data-lang="'.$l.'">'.nl2br(e($text[$l]), false).'</span>')->implode('')
     );
     $icon = fn (string $name) => view('themes.public.miro.partials.icon', ['name' => $name])->render();
     $about = fn (string $file) => asset_v('themes/public/miro/images/about/'.$file.'.webp');

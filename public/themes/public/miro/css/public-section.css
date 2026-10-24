@@ -252,3 +252,6 @@ body.miro-lightbox-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
     .miro-lightbox, .miro-lightbox__img, .miro-lightbox__btn { transition: none; }
 }
+
+/* Кнопка «Смотреть альбом» под первыми рядами фото в списке альбомов */
+.miro-wall__more { margin: 24px 0 0; }

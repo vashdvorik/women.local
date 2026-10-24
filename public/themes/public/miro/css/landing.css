@@ -45,7 +45,7 @@
         :focus-visible { outline: 2px solid var(--miro-blue); outline-offset: 3px; border-radius: 6px; }
 
         .miro-container { width: min(1360px, calc(100% - 64px)); margin: 0 auto; }
-        .miro-nav { position: sticky; top: 0; z-index: 30; min-height: 68px; border-bottom: 1px solid var(--miro-hairline-soft); background: rgba(255,255,255,.94); backdrop-filter: blur(16px); }
+        .miro-nav { position: sticky; top: 0; z-index: 30; min-height: 68px; border-bottom: 1px solid var(--miro-hairline-soft); background: rgba(255,255,255,.94); }
         .miro-nav__inner { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
         .miro-brand { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; font-size: 16px; font-weight: 600; letter-spacing: -.02em; }
         .miro-brand__mark { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 6px; background: var(--miro-pink); color: var(--miro-primary); font-size: 13px; font-weight: 600; }
@@ -85,12 +85,12 @@
         .miro-landing-page main > .miro-hero { order: 1; }
         .miro-landing-page main > .miro-directions { order: 2; }
         .miro-landing-page main > .miro-director-note { order: 3; }
-        .miro-landing-page main > #impact { order: 4; }
-        .miro-landing-page main > #members { order: 5; }
-        .miro-landing-page main > #participants { order: 6; }
-        .miro-landing-page main > #events { order: 7; }
-        .miro-landing-page main > #benefits { order: 8; }
-        .miro-landing-page main > #how-it-works { order: 9; }
+        .miro-landing-page main > #members { order: 4; }
+        .miro-landing-page main > #participants { order: 5; }
+        .miro-landing-page main > #events { order: 6; }
+        .miro-landing-page main > #benefits { order: 7; }
+        .miro-landing-page main > #how-it-works { order: 8; }
+        .miro-landing-page main > #impact { order: 9; }
         .miro-landing-page main > #register-cta { order: 10; }
         .miro-landing-page main > #partners-strip { order: 11; }
         /* #features, #learning, #stories, the closing CTA and .miro-logo-wall moved to
@@ -188,31 +188,32 @@
         .miro-logo-wall__sticker--brand { display: none; }
         .miro-hero--image .miro-floating-accents--hero { display: none; }
 
-        /* Живой фон первого экрана (разметка — .miro-hero__ambient в landing.blade.php): световые пятна и мерцающие пылинки. Слой
-           между фото (z-index 1, раньше в разметке) и текстом (z-index 2). Анимируются только transform и opacity. */
+        /* Живой фон первого экрана (разметка — .miro-hero__ambient в landing.blade.php): три слоя со светлыми точками. Точки — статичные
+           градиенты, нарисованные один раз; у слоя меняется только прозрачность (по очереди, с разным периодом), поэтому нагрузка на
+           процессор почти нулевая. Режим lite и «уменьшить анимацию» слои останавливают. Световых пятен нет: на тёмном фоне они
+           выглядели грязно. */
         .miro-hero__ambient { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; contain: paint; }
-        .miro-hero__glow { position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(219, 184, 155, .17) 0%, rgba(219, 184, 155, 0) 68%); will-change: transform, opacity; animation: miro-hero-glow 24s ease-in-out infinite alternate; }
-        .miro-hero__glow--a { left: -16vmax; bottom: -26vmax; width: 54vmax; height: 54vmax; }
-        .miro-hero__glow--b { left: 36%; top: -20vmax; width: 40vmax; height: 40vmax; background: radial-gradient(circle, rgba(185, 133, 91, .22) 0%, rgba(185, 133, 91, 0) 68%); animation-duration: 30s; animation-delay: -11s; }
-        .miro-hero__glow--c { right: -10vmax; bottom: 4vmax; width: 32vmax; height: 32vmax; background: radial-gradient(circle, rgba(241, 227, 218, .12) 0%, rgba(241, 227, 218, 0) 68%); animation-duration: 27s; animation-delay: -5s; }
-        @keyframes miro-hero-glow { from { transform: translate3d(0, 0, 0) scale(1); opacity: .55; } to { transform: translate3d(6vmax, -4vmax, 0) scale(1.18); opacity: 1; } }
-        /* Пылинки мерцают на месте: загораются, чуть дрейфуют на несколько пикселей и гаснут, не поднимаясь вверх */
-        .miro-hero__dust { position: absolute; top: var(--y); left: var(--x); width: var(--s); height: var(--s); border-radius: 50%; background: #F1E3DA; box-shadow: 0 0 8px 1px rgba(241, 227, 218, .6); opacity: 0; will-change: transform, opacity; animation: miro-hero-dust var(--t) ease-in-out var(--d) infinite; }
-        @keyframes miro-hero-dust {
-            0% { transform: translate3d(0, 0, 0) scale(.6); opacity: 0; }
-            25% { opacity: .8; }
-            50% { transform: translate3d(var(--w), calc(var(--w) * -.35), 0) scale(1); opacity: .45; }
-            75% { opacity: .75; }
-            100% { transform: translate3d(calc(var(--w) * -.5), calc(var(--w) * .3), 0) scale(.6); opacity: 0; }
-        }
-        @media (max-width: 767px) {
-            .miro-hero__dust:nth-of-type(n+13) { display: none; }
-            .miro-hero__glow--c { display: none; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .miro-hero__glow { animation: none; opacity: .8; }
-            .miro-hero__dust { display: none; }
-        }
+        .miro-hero__sparkles { position: absolute; inset: 0; opacity: .12; animation: miro-hero-sparkle var(--t) ease-in-out var(--d) infinite; }
+        .miro-hero__sparkles--1 { --t: 7s; --d: 0s; background: radial-gradient(circle at 5% 22%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 3px, rgba(241, 227, 218, .3) 6px, rgba(241, 227, 218, 0) 10.5px),
+            radial-gradient(circle at 27% 80%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 2px, rgba(241, 227, 218, .3) 4px, rgba(241, 227, 218, 0) 7px),
+            radial-gradient(circle at 48% 30%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 4px, rgba(241, 227, 218, .3) 8px, rgba(241, 227, 218, 0) 14px),
+            radial-gradient(circle at 69% 58%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 2px, rgba(241, 227, 218, .3) 4px, rgba(241, 227, 218, 0) 7px),
+            radial-gradient(circle at 89% 20%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 3px, rgba(241, 227, 218, .3) 6px, rgba(241, 227, 218, 0) 10.5px),
+            radial-gradient(circle at 31% 66%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 2px, rgba(241, 227, 218, .3) 4px, rgba(241, 227, 218, 0) 7px); }
+        .miro-hero__sparkles--2 { --t: 9s; --d: -3s; background: radial-gradient(circle at 12% 64%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 2px, rgba(241, 227, 218, .3) 4px, rgba(241, 227, 218, 0) 7px),
+            radial-gradient(circle at 34% 18%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 3px, rgba(241, 227, 218, .3) 6px, rgba(241, 227, 218, 0) 10.5px),
+            radial-gradient(circle at 55% 72%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 2px, rgba(241, 227, 218, .3) 4px, rgba(241, 227, 218, 0) 7px),
+            radial-gradient(circle at 76% 34%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 4px, rgba(241, 227, 218, .3) 8px, rgba(241, 227, 218, 0) 14px),
+            radial-gradient(circle at 94% 60%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 2px, rgba(241, 227, 218, .3) 4px, rgba(241, 227, 218, 0) 7px),
+            radial-gradient(circle at 58% 46%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 3px, rgba(241, 227, 218, .3) 6px, rgba(241, 227, 218, 0) 10.5px); }
+        .miro-hero__sparkles--3 { --t: 11s; --d: -6s; background: radial-gradient(circle at 19% 38%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 4px, rgba(241, 227, 218, .3) 8px, rgba(241, 227, 218, 0) 14px),
+            radial-gradient(circle at 41% 52%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 2px, rgba(241, 227, 218, .3) 4px, rgba(241, 227, 218, 0) 7px),
+            radial-gradient(circle at 62% 14%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 3px, rgba(241, 227, 218, .3) 6px, rgba(241, 227, 218, 0) 10.5px),
+            radial-gradient(circle at 83% 78%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 2px, rgba(241, 227, 218, .3) 4px, rgba(241, 227, 218, 0) 7px),
+            radial-gradient(circle at 9% 46%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 3px, rgba(241, 227, 218, .3) 6px, rgba(241, 227, 218, 0) 10.5px),
+            radial-gradient(circle at 86% 44%, rgba(241, 227, 218, .95) 0, rgba(241, 227, 218, .95) 4px, rgba(241, 227, 218, .3) 8px, rgba(241, 227, 218, 0) 14px); }
+        @keyframes miro-hero-sparkle { 0%, 100% { opacity: .1; } 50% { opacity: 1; } }
+        @media (prefers-reduced-motion: reduce) { .miro-hero__sparkles { animation: none; opacity: .55; } }
 
         .miro-logo-wall { position: relative; overflow: hidden; padding: 40px 0 72px; }
         .miro-logo-wall::before { content: ""; position: absolute; top: -90px; left: 8%; width: 210px; height: 210px; border: 1px solid var(--miro-pink); border-radius: 50%; opacity: .6; }
@@ -554,94 +555,36 @@
         /* Ширину каждому знаку задаёт атрибут width в вёрстке (одинаковая площадь), высота следует за ней. */
         .miro-partner-chip img { height: auto; max-width: 100%; max-height: 92px; object-fit: contain; }
 
-        /* «Наш вклад в цифрах»: центр → три ветви → показатели. Линии рисуются масштабом (scale) по задержкам, цифры
-           считает js/impact.js. Пока скрипт не «взвёл» блок (.is-armed), всё показано сразу; цвета текста внутри
-           переопределяет navigation.css (там стоит общее правило тёмного текста). */
-        .miro-impact { --impact-line: rgba(219, 184, 155, .7); --impact-gap: 28px; position: relative; overflow: hidden; padding: 88px 0 100px; background: var(--miro-primary); color: var(--miro-on-primary); }
-        .miro-impact::before { content: ''; position: absolute; inset: 0; background: radial-gradient(52% 38% at 50% 14%, rgba(219, 184, 155, .20), transparent 72%), radial-gradient(34% 30% at 92% 92%, rgba(185, 133, 91, .16), transparent 72%), radial-gradient(30% 26% at 6% 70%, rgba(185, 133, 91, .10), transparent 72%); pointer-events: none; }
-        .miro-impact .miro-container { position: relative; }
-        .miro-impact__head { max-width: 700px; margin: 0 auto 52px; text-align: center; }
-        .miro-impact__eyebrow { margin: 0 0 14px; color: var(--miro-orange); font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
-        .miro-impact__head h2 { margin: 0; font-family: var(--miro-display-font); font-weight: 400; font-size: clamp(32px, 4.4vw, 50px); line-height: 1.1; letter-spacing: -.015em; }
-        .miro-impact__intro { margin: 18px 0 0; font-size: 17px; line-height: 1.6; opacity: .78; }
+        /* «Наш вклад в цифрах»: одна сетка из десяти цифр. Заголовок и подзаголовок — общие .miro-section__head, как в соседних
+           секциях; цифры — шрифтом заголовков (как «500+» на первом экране), подписи — основным. Цифры считает js/impact.js. */
+        .miro-impact { padding: 64px 0 68px; color: var(--miro-ink-deep); }
+        .miro-impact .miro-section__head { margin-bottom: 32px; }
+        .miro-impact__grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin: 0; padding: 0; overflow: hidden; border: 1px solid var(--miro-hairline-soft); border-radius: 24px; background: #fff; list-style: none; }
+        .miro-impact__item { padding: 26px 12px 24px; border-top: 1px solid var(--miro-hairline-soft); border-left: 1px solid var(--miro-hairline-soft); text-align: center; }
+        .miro-impact__item:nth-child(-n+5) { border-top: 0; }
+        .miro-impact__item:nth-child(5n+1) { border-left: 0; }
+        .miro-impact__value { display: block; color: var(--miro-ink-deep); font-family: var(--miro-display-font); font-size: clamp(30px, 3vw, 40px); font-weight: 400; line-height: 1.1; letter-spacing: -.01em; white-space: nowrap; }
+        .miro-impact__plus { margin-left: 1px; color: var(--miro-coral-strong); }
+        .miro-impact__label { display: block; margin-top: 8px; color: var(--miro-slate); font-size: 15px; line-height: 1.35; }
 
-        .miro-impact__tree { display: flex; flex-direction: column; align-items: center; }
-
-        /* Центр со знаком платформы и расходящимися кольцами */
-        .miro-impact__hub { position: relative; z-index: 1; display: grid; width: 172px; height: 172px; place-items: center; border-radius: 50%; border: 1px solid rgba(219, 184, 155, .5); background: radial-gradient(circle at 30% 24%, #4B3027 0%, #2A1913 72%); box-shadow: 0 22px 54px rgba(0, 0, 0, .38), inset 0 0 0 8px rgba(219, 184, 155, .05); }
-        .miro-impact__hub img { width: 108px; height: auto; }
-        .miro-impact__hub::before, .miro-impact__hub::after { content: ''; position: absolute; inset: -1px; border-radius: 50%; border: 1px solid rgba(219, 184, 155, .55); opacity: 0; animation: miro-impact-ring 4.2s ease-out infinite; }
-        .miro-impact__hub::after { animation-delay: 2.1s; }
-        @keyframes miro-impact-ring { 0% { transform: scale(1); opacity: .6; } 100% { transform: scale(1.75); opacity: 0; } }
-
-        .miro-impact__stem { position: relative; display: block; width: 2px; height: 46px; background: var(--impact-line); transform-origin: top; }
-        .miro-impact__branches { position: relative; display: grid; width: 100%; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 var(--impact-gap); align-items: start; }
-        /* Шина: от середины левой колонки до середины правой */
-        .miro-impact__branches::before { content: ''; position: absolute; top: 0; left: calc((100% - 2 * var(--impact-gap)) / 6); right: calc((100% - 2 * var(--impact-gap)) / 6); height: 2px; background: var(--impact-line); transform-origin: center; }
-
-        .miro-impact__branch { --drip: 32px; position: relative; display: flex; flex-direction: column; align-items: center; padding-top: 34px; transition: opacity .35s ease; }
-        .miro-impact__branch::before { content: ''; position: absolute; top: 0; left: 50%; width: 2px; height: 34px; margin-left: -1px; background: var(--impact-line); transform-origin: top; }
-        .miro-impact__branch-title { margin: 0; padding: 11px 22px; border: 1px solid rgba(219, 184, 155, .6); border-radius: 999px; background: rgba(255, 255, 255, .05); font-family: var(--miro-font); font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; text-align: center; }
-        .miro-impact__nodes { display: grid; width: 100%; max-width: 330px; gap: 24px; margin: 24px 0 0; padding: 0; list-style: none; }
-
-        .miro-impact__node { position: relative; padding: 22px 22px 20px; border: 1px solid rgba(219, 184, 155, .22); border-radius: 24px; background: linear-gradient(160deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, .03)); text-align: center; transition: transform .3s ease, border-color .3s ease, background .3s ease, box-shadow .3s ease, opacity .5s ease; }
-        .miro-impact__node::before { content: ''; position: absolute; left: 50%; bottom: 100%; width: 2px; height: 24px; margin-left: -1px; background: var(--impact-line); transform-origin: top; }
-        .miro-impact__node:hover { transform: translateY(-5px); border-color: rgba(219, 184, 155, .75); background: linear-gradient(160deg, rgba(255, 255, 255, .15), rgba(255, 255, 255, .05)); box-shadow: 0 18px 38px rgba(0, 0, 0, .32), 0 0 0 4px rgba(219, 184, 155, .08); }
-        .miro-impact__value { display: block; font-family: var(--miro-display-font); font-size: clamp(42px, 4.6vw, 58px); line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
-        .miro-impact__plus { margin-left: 2px; color: var(--miro-orange); }
-        /* Две цифры в одной карточке: слева направо, между ними тонкая черта */
-        .miro-impact__pair { display: grid; grid-template-columns: 1fr 1fr; }
-        .miro-impact__half { display: block; padding: 0 6px; }
-        .miro-impact__half + .miro-impact__half { border-left: 1px solid rgba(219, 184, 155, .32); }
-        .miro-impact__pair .miro-impact__label { font-size: 15px; }
-        .miro-impact__label { display: block; margin-top: 10px; font-size: 17px; font-weight: 700; line-height: 1.3; }
-        .miro-impact__note { display: block; margin-top: 4px; font-size: 14px; line-height: 1.45; opacity: .7; }
-
-        /* Бегущие огоньки по стволу и веткам: лёгкая «жизнь» схемы после появления */
-        .miro-impact__stem { --drip: 44px; }
-        .miro-impact.is-in .miro-impact__stem::after, .miro-impact.is-in .miro-impact__branch::after { content: ''; position: absolute; left: -2px; top: 0; width: 6px; height: 6px; border-radius: 50%; background: #F1E3DA; box-shadow: 0 0 10px 2px rgba(241, 227, 218, .7); opacity: 0; animation: miro-impact-drip 3.4s ease-in-out 3.4s infinite; }
-        .miro-impact.is-in .miro-impact__branch::after { left: calc(50% - 3px); animation-delay: calc(4s + var(--b) * .35s); }
-        @keyframes miro-impact-drip { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(var(--drip, 44px)); opacity: 0; } }
-
-        /* Появление: включается, только когда скрипт «взвёл» блок */
-        .miro-impact.is-armed .miro-impact__hub { opacity: 0; transform: scale(.55); }
-        .miro-impact.is-armed .miro-impact__stem { transform: scaleY(0); }
-        .miro-impact.is-armed .miro-impact__branches::before { transform: scaleX(0); }
-        .miro-impact.is-armed .miro-impact__branch::before, .miro-impact.is-armed .miro-impact__node::before { transform: scaleY(0); }
-        .miro-impact.is-armed .miro-impact__branch-title { opacity: 0; transform: translateY(10px); }
-        .miro-impact.is-armed .miro-impact__node { opacity: 0; transform: translateY(26px); }
-        .miro-impact.is-in .miro-impact__hub { opacity: 1; transform: none; transition: opacity .6s ease, transform .9s cubic-bezier(.2, 1.3, .4, 1); }
-        .miro-impact.is-in .miro-impact__stem { transform: none; transition: transform .5s ease .5s; }
-        .miro-impact.is-in .miro-impact__branches::before { transform: none; transition: transform .8s ease 1s; }
-        .miro-impact.is-in .miro-impact__branch::before { transform: none; transition: transform .45s ease 1.7s; }
-        .miro-impact.is-in .miro-impact__branch-title { opacity: 1; transform: none; transition: opacity .5s ease calc(1.9s + var(--b) * .09s), transform .5s ease calc(1.9s + var(--b) * .09s); }
-        .miro-impact.is-in .miro-impact__node::before { transform: none; transition: transform .35s ease var(--delay); }
-        .miro-impact.is-in .miro-impact__node { opacity: 1; transform: none; transition: opacity .6s ease var(--delay), transform .6s cubic-bezier(.2, .8, .3, 1) var(--delay), border-color .3s ease, background .3s ease, box-shadow .3s ease; }
-        .miro-impact.is-in .miro-impact__node:hover { transform: translateY(-5px); transition-delay: 0s; }
-
-        /* Наведение на ветку приглушает остальные */
-        @supports selector(:has(*)) {
-            .miro-impact__branches:has(.miro-impact__branch:hover) .miro-impact__branch:not(:hover) { opacity: .5; }
-        }
-
-        /* На телефоне схема длинная: каждый показатель и заголовок ветки появляется, когда до него доскроллили (js/impact.js) */
-        .miro-impact.is-stepwise .miro-impact__node { --delay: 0ms !important; }
-        .miro-impact.is-stepwise.is-in .miro-impact__branch-title:not(.is-shown) { opacity: 0; transform: translateY(10px); }
-        .miro-impact.is-stepwise.is-in .miro-impact__branch-title { transition-delay: 0s; }
-        .miro-impact.is-stepwise.is-in .miro-impact__node:not(.is-shown) { opacity: 0; transform: translateY(26px); }
-        .miro-impact.is-stepwise.is-in .miro-impact__node:not(.is-shown)::before { transform: scaleY(0); }
+        /* Появление: включается, только когда скрипт «взвёл» блок (.is-armed); без скрипта всё показано сразу */
+        .miro-impact.is-armed .miro-impact__item { opacity: 0; transform: translateY(12px); }
+        .miro-impact.is-in .miro-impact__item { opacity: 1; transform: none; transition: opacity .5s ease var(--delay, 0ms), transform .5s ease var(--delay, 0ms); }
 
         @media (max-width: 899px) {
-            .miro-impact { padding: 68px 0 76px; }
-            .miro-impact__head { margin-bottom: 40px; }
-            .miro-impact__hub { width: 140px; height: 140px; }
-            .miro-impact__hub img { width: 88px; }
-            .miro-impact__branches { grid-template-columns: 1fr; }
-            .miro-impact__branches::before { display: none; }
-            .miro-impact__nodes { max-width: 360px; }
+            .miro-impact { padding: 44px 0 48px; }
+            .miro-impact .miro-section__head { margin-bottom: 24px; }
+            .miro-impact__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); border-radius: 20px; }
+            .miro-impact__item { padding: 20px 10px 18px; }
+            .miro-impact__item:nth-child(-n+5) { border-top: 1px solid var(--miro-hairline-soft); }
+            .miro-impact__item:nth-child(-n+2) { border-top: 0; }
+            .miro-impact__item:nth-child(5n+1) { border-left: 1px solid var(--miro-hairline-soft); }
+            .miro-impact__item:nth-child(odd) { border-left: 0; }
+            .miro-impact__value { font-size: 30px; }
+            .miro-impact__label { font-size: 14px; }
         }
         @media (prefers-reduced-motion: reduce) {
-            .miro-impact *, .miro-impact *::before, .miro-impact *::after { animation: none !important; transition: none !important; }
+            .miro-impact *, .miro-impact *::before, .miro-impact *::after { transition: none !important; }
         }
 
         .miro-story { display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; border-radius: 28px; background: var(--miro-primary); color: #fff; }
@@ -807,57 +750,15 @@
         .miro-direction-card h3 { color: var(--miro-text-dark, #21140F); font-weight: 600; }
         .miro-direction-card:hover { border-color: var(--miro-accent-deep); background: var(--miro-canvas); box-shadow: 0 14px 28px rgba(33, 20, 15, .12); }
 
-        /* Направления платформы: единый «медный» стиль. Тёмный шоколад, тонкая медная обводка, линейные иконки в круге с
-           медным кольцом; при наведении карточка приподнимается, а кольцо и обводка «зажигаются» (как узлы в блоке «Наш
-           вклад в цифрах»). Стоит ниже всех прежних правил карточек и перебивает их весом селектора. Чтобы вернуть светлый
-           вид, достаточно поменять переменные --dir-* в первом правиле. */
-        .miro-landing-page .miro-directions { --dir-bg-a: #3B261D; --dir-bg-b: #2A1913; --dir-line: rgba(201, 154, 115, .5); --dir-line-hot: rgba(219, 184, 155, .95); --dir-icon: #DBB89B; --dir-icon-hot: #F1E3DA; --dir-text: #FFF9F5; padding: 30px 0 60px; background: var(--miro-canvas); }
-        .miro-landing-page .miro-directions__grid { gap: 16px; }
-        .miro-landing-page .miro-directions__grid > .miro-direction-card:nth-child(n) { min-height: 196px; padding: 24px 9px 20px; border: 1px solid var(--dir-line); border-radius: 22px; background: linear-gradient(160deg, var(--dir-bg-a) 0%, var(--dir-bg-b) 100%); box-shadow: 0 12px 26px rgba(33, 20, 15, .2), inset 0 1px 0 rgba(255, 249, 245, .06); transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
-        .miro-landing-page .miro-directions__grid.is-visible > .miro-direction-card:nth-child(n) { animation: none; }
-        .miro-landing-page .miro-directions__grid > .miro-direction-card:nth-child(n):hover { transform: translateY(-6px); border-color: var(--dir-line-hot); background: linear-gradient(160deg, var(--dir-bg-a) 0%, var(--dir-bg-b) 100%); box-shadow: 0 20px 38px rgba(33, 20, 15, .32), 0 0 0 1px rgba(219, 184, 155, .22), 0 0 30px rgba(219, 184, 155, .2); }
-        .miro-landing-page .miro-directions__grid > .miro-direction-card:nth-child(n) .miro-direction-card__icon { position: relative; width: 70px; height: 70px; flex: 0 0 70px; margin-bottom: 18px; border: 1px solid rgba(219, 184, 155, .65); border-radius: 50%; background: radial-gradient(circle at 50% 35%, rgba(219, 184, 155, .16), rgba(219, 184, 155, .03) 70%); color: var(--dir-icon); animation: none; transition: border-color .3s ease, box-shadow .3s ease, color .3s ease, background .3s ease; }
-        .miro-landing-page .miro-directions__grid > .miro-direction-card:nth-child(n) .miro-direction-card__icon > .ph { font-size: 36px; }
-        .miro-landing-page .miro-directions__grid > .miro-direction-card:nth-child(n):hover .miro-direction-card__icon { border-color: var(--dir-icon-hot); color: var(--dir-icon-hot); background: radial-gradient(circle at 50% 35%, rgba(219, 184, 155, .3), rgba(219, 184, 155, .06) 70%); box-shadow: 0 0 20px rgba(219, 184, 155, .55), inset 0 0 14px rgba(219, 184, 155, .22); }
-        .miro-landing-page .miro-directions__grid > .miro-direction-card:nth-child(n) h3 { min-height: 2.7em; align-items: flex-start; color: var(--dir-text); font-size: clamp(13.5px, 1.26vw, 15.5px); font-weight: 600; line-height: 1.35; letter-spacing: 0; }
-        /* Значок «Поддержка»: две ладони и символ над ними, пересчитан под круг 70 px */
-        .miro-landing-page .miro-direction-card__icon--support .miro-support-hand { top: 22px; font-size: 34px !important; }
-        .miro-landing-page .miro-direction-card__icon--support .miro-support-hand--left { left: 7px; }
-        .miro-landing-page .miro-direction-card__icon--support .miro-support-hand--right { right: 7px; }
-        .miro-landing-page .miro-direction-card__icon--support .miro-support-symbol { top: 9px; left: calc(50% - 10px); color: var(--dir-icon-hot); font-size: 20px !important; }
-        /* Галочка на значке «Ресурсы»: вместо белого кружка тёмный медальон с медной каймой и медной галочкой */
-        .miro-landing-page .miro-direction-card__icon--resources .miro-resource-check { right: 1px; bottom: 1px; display: grid; width: 22px; height: 22px; padding: 0; place-items: center; border: 1px solid rgba(219, 184, 155, .75); border-radius: 50%; background: var(--dir-bg-b); color: var(--dir-icon); font-size: 12px !important; transition: border-color .3s ease, color .3s ease, box-shadow .3s ease; }
-        .miro-landing-page .miro-directions__grid > .miro-direction-card:hover .miro-resource-check { border-color: var(--dir-icon-hot); color: var(--dir-icon-hot); box-shadow: 0 0 10px rgba(219, 184, 155, .5); }
-        @media (max-width: 1023px) {
-            .miro-landing-page .miro-directions__grid > .miro-direction-card:nth-child(n) { min-height: 190px; }
-        }
-        @media (max-width: 767px) {
-            .miro-landing-page .miro-directions { padding: 22px 0 44px; }
-            .miro-landing-page .miro-directions__grid { gap: 12px; }
-            .miro-landing-page .miro-directions__grid > .miro-direction-card:nth-child(n) { min-height: 176px; padding: 20px 10px 16px; border-radius: 18px; }
-            .miro-landing-page .miro-directions__grid > .miro-direction-card:nth-child(n) .miro-direction-card__icon { width: 62px; height: 62px; flex-basis: 62px; margin-bottom: 14px; }
-            .miro-landing-page .miro-directions__grid > .miro-direction-card:nth-child(n) .miro-direction-card__icon > .ph { font-size: 32px; }
-            .miro-landing-page .miro-directions__grid > .miro-direction-card:nth-child(n) h3 { font-size: 14.5px; }
-            .miro-landing-page .miro-direction-card__icon--support .miro-support-hand { top: 19px; font-size: 30px !important; }
-            .miro-landing-page .miro-direction-card__icon--support .miro-support-symbol { top: 8px; left: calc(50% - 9px); font-size: 18px !important; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .miro-landing-page .miro-directions__grid > .miro-direction-card:nth-child(n):hover { transform: none; }
-        }
-
         /* Экраны ноутбуков (низкое окно, до ~860 px): ряд карточек направлений должен целиком помещаться на первом экране, а не
            обрезаться его нижним краем. Для этого первый экран чуть ниже (520 px при высоте окна 681–820 px; при ≤ 680 px действуют
-           свои 500 px, заданные выше), отступ над карточками меньше, а сами карточки и значки компактнее. */
+           свои 500 px, заданные выше), отступ над карточками меньше, а сами карточки компактнее. */
         @media (min-width: 1024px) and (max-height: 860px) {
             .miro-landing-page .miro-directions { padding: 14px 0 44px; }
             .miro-landing-page .miro-directions__grid { gap: 14px; }
-            .miro-landing-page .miro-directions__grid > .miro-direction-card:nth-child(n) { min-height: 168px; padding: 16px 9px 14px; border-radius: 20px; }
-            .miro-landing-page .miro-directions__grid > .miro-direction-card:nth-child(n) .miro-direction-card__icon { width: 58px; height: 58px; flex-basis: 58px; margin-bottom: 11px; }
-            .miro-landing-page .miro-directions__grid > .miro-direction-card:nth-child(n) .miro-direction-card__icon > .ph { font-size: 30px; }
-            .miro-landing-page .miro-direction-card__icon--support .miro-support-hand { top: 18px; font-size: 28px !important; }
-            .miro-landing-page .miro-direction-card__icon--support .miro-support-hand--left { left: 6px; }
-            .miro-landing-page .miro-direction-card__icon--support .miro-support-hand--right { right: 6px; }
-            .miro-landing-page .miro-direction-card__icon--support .miro-support-symbol { top: 7px; left: calc(50% - 8px); font-size: 17px !important; }
+            .miro-landing-page .miro-direction-card { min-height: 134px; padding: 12px 10px 10px; }
+            .miro-landing-page .miro-direction-card__icon { margin-bottom: 8px; }
+            .miro-landing-page .miro-direction-card h3 { min-height: 40px; }
         }
         @media (min-width: 1024px) and (min-height: 681px) and (max-height: 820px) {
             .miro-landing-page .miro-hero--image, .miro-landing-page .miro-hero__grid { min-height: 520px; }
@@ -889,3 +790,11 @@
             .miro-landing-page .miro-hero--image .miro-proof__icon { animation: none; }
             .miro-landing-page .miro-hero--image .miro-proof:hover, .miro-landing-page .miro-hero--image .miro-button:hover { transform: none; }
         }
+
+/* Секции ниже первого экрана браузер не рисует и не считает, пока до них не докрутили (длина страницы запоминается после первого показа) */
+.miro-landing-page main > :is(#members, #participants, #events, #benefits, #how-it-works, #register-cta, #impact, #partners-strip) { content-visibility: auto; contain-intrinsic-size: auto 720px; }
+.miro-landing-page .miro-footer { content-visibility: auto; contain-intrinsic-size: auto 360px; }
+
+/* Портрет руководителя показан целиком, в пропорциях фото 3:4: раньше рамка 4:5 срезала нижнюю часть кадра вместе с руками */
+.miro-director-note__portrait { height: auto; aspect-ratio: 3 / 4; }
+.miro-director-note__portrait img { object-position: center; }

@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-/** Живой фон первого экрана: световые пятна и золотистые пылинки (только CSS), не мешающие тексту. */
+/** Живой фон первого экрана: три слоя золотистых точек (только CSS, меняется лишь прозрачность слоя), не мешающие тексту. Световых пятен нет. */
 class PublicHeroAmbientTest extends TestCase
 {
     use RefreshDatabase;
@@ -14,10 +14,11 @@ class PublicHeroAmbientTest extends TestCase
     {
         $html = $this->get('/')->assertOk()->getContent();
 
-        // Слой чисто декоративный: скрыт от читалок экрана; пылинок 18, световых пятен 3.
+        // Слой чисто декоративный: скрыт от читалок экрана; три слоя точек, пятен и отдельных пылинок нет.
         $this->assertMatchesRegularExpression('#<div class="miro-hero__ambient" aria-hidden="true">#', $html);
-        $this->assertSame(3, substr_count($html, 'class="miro-hero__glow '));
-        $this->assertSame(18, substr_count($html, 'class="miro-hero__dust"'));
+        $this->assertSame(3, substr_count($html, 'class="miro-hero__sparkles '));
+        $this->assertStringNotContainsString('miro-hero__glow', $html);
+        $this->assertStringNotContainsString('miro-hero__dust', $html);
 
         // Слой стоит в разметке после фото (иначе фото закрыло бы его) и до нижней волны.
         $visual = strpos($html, 'class="miro-hero__visual"');
@@ -48,7 +49,8 @@ class PublicHeroAmbientTest extends TestCase
         // Текст (z-index 2) выше слоя (z-index 1).
         $this->assertMatchesRegularExpression('/\.miro-hero__ambient\s*\{[^}]*z-index:\s*1;/', $css);
         $this->assertMatchesRegularExpression('/\.miro-hero__content\s*\{[^}]*z-index:\s*2;/', $css);
-        // «Уменьшить анимацию»: пылинки скрыты, пятна неподвижны.
-        $this->assertMatchesRegularExpression('/prefers-reduced-motion:\s*reduce\)\s*\{\s*\.miro-hero__glow\s*\{\s*animation:\s*none;[^}]*\}\s*\.miro-hero__dust\s*\{\s*display:\s*none;/', $css);
+        // «Уменьшить анимацию»: слои точек неподвижны.
+        $this->assertMatchesRegularExpression('/prefers-reduced-motion:\s*reduce\)\s*\{\s*\.miro-hero__sparkles\s*\{\s*animation:\s*none;/', $css);
+        $this->assertStringNotContainsString('miro-hero__glow', $css);
     }
 }

@@ -21,7 +21,8 @@
 return [
         [
             'photo' => 'experts/expert-carolina.png',
-            'photo_rev' => 2,
+            'photo_rev' => 5,
+            'crop' => ['x' => 135, 'y' => 8, 'width' => 984, 'height' => 984],
             'name' => ['ru' => 'Каролина Бугаян', 'en' => 'Carolina Bugaiyan', 'ro' => 'Carolina Bugaiyan'],
             'role' => ['ru' => 'Президент Ассоциации деловых женщин Молдовы (AFAM)', 'en' => 'President of the Association of Women Entrepreneurs in Moldova (AFAM)', 'ro' => 'Președinta Asociației Femeilor de Afaceri din Moldova (AFAM)'],
             'specialization' => ['ru' => 'Женское предпринимательство и развитие делового сообщества', 'en' => 'Women’s entrepreneurship & business community development', 'ro' => 'Antreprenoriat feminin și dezvoltarea comunității de business'],
@@ -37,7 +38,8 @@ return [
         ],
         [
             'photo' => 'experts/expert-aurelia-portrait.webp',
-            'photo_rev' => 2,
+            'photo_rev' => 5,
+            'crop' => ['x' => 161, 'y' => 71, 'width' => 856, 'height' => 856],
             'name' => ['ru' => 'Аурелия Саликов', 'en' => 'Aurelia Salicov', 'ro' => 'Aurelia Salicov'],
             'role' => ['ru' => 'Вице-президент Международного бизнес-сообщества в Молдове', 'en' => 'Vice-President of the International Business Society in Moldova', 'ro' => 'Vicepreședinta International Business Society din Moldova'],
             'specialization' => ['ru' => 'Международное деловое сотрудничество', 'en' => 'International business cooperation', 'ro' => 'Cooperare internațională de business'],
@@ -52,8 +54,8 @@ return [
             'tone' => 'teal',
         ],
         [
-            'photo' => 'experts/expert-vlada.webp',
-            'photo_rev' => 3,
+            'photo' => 'experts/expert-vlada-wide.webp',
+            'photo_rev' => 6,
             'name' => ['ru' => 'Влада Лысенко', 'en' => 'Vlada Lysenko', 'ro' => 'Vlada Lysenko'],
             'role' => ['ru' => 'Доктор наук, профессор, международный консультант', 'en' => 'Doctor of Sciences, Professor & International Consultant', 'ro' => 'Doctor în științe, profesor și consultant internațional'],
             'specialization' => ['ru' => 'Наука, образование и международный консалтинг', 'en' => 'Research, education & international consulting', 'ro' => 'Cercetare, educație și consultanță internațională'],
@@ -68,8 +70,8 @@ return [
             'tone' => 'orange',
         ],
         [
-            'photo' => 'experts/expert-mariana.png',
-            'photo_rev' => 2,
+            'photo' => 'experts/expert-mariana-wide.webp',
+            'photo_rev' => 5,
             'name' => ['ru' => 'Мариана Руфа', 'en' => 'Mariana Rufa', 'ro' => 'Mariana Rufa'],
             'role' => ['ru' => 'Исполнительный директор Европейской бизнес-ассоциации в Молдове (EBA)', 'en' => 'Executive Director of the European Business Association of Moldova (EBA)', 'ro' => 'Directoarea executivă a European Business Association of Moldova (EBA)'],
             'specialization' => ['ru' => 'Европейский бизнес и деловые ассоциации', 'en' => 'European business & business associations', 'ro' => 'Business european și asociații de business'],
@@ -84,8 +86,8 @@ return [
             'tone' => 'coral',
         ],
         [
-            'photo' => 'experts/expert-valeria.webp',
-            'photo_rev' => 3,
+            'photo' => 'experts/expert-valeria-wide.webp',
+            'photo_rev' => 6,
             'name' => ['ru' => 'Валерия Зелинская', 'en' => 'Valeria Zelinskaya', 'ro' => 'Valeria Zelinskaya'],
             'role' => ['ru' => 'Стилистка, основательница бренда L’emone и собственного ателье', 'en' => 'Stylist, founder of L’emone and her own atelier', 'ro' => 'Stilistă, fondatoarea brandului L’emone și a propriului atelier'],
             'specialization' => ['ru' => 'Стиль, мода и собственный бренд', 'en' => 'Styling, fashion & brand building', 'ro' => 'Stil, modă și dezvoltarea unui brand'],
@@ -101,7 +103,8 @@ return [
         ],
         [
             'photo' => 'experts/expert-irena.png',
-            'photo_rev' => 2,
+            'photo_rev' => 5,
+            'crop' => ['x' => 82, 'y' => 4, 'width' => 1090, 'height' => 1090],
             'name' => ['ru' => 'Ирена Покладова', 'en' => 'Irena Pokladova', 'ro' => 'Irena Pokladova'],
             'role' => ['ru' => 'Соосновательница Forge Academy, CEO Moldova Business Club', 'en' => 'Co-founder of Forge Academy, CEO of Moldova Business Club', 'ro' => 'Co-fondatoarea Forge Academy, CEO Moldova Business Club'],
             'specialization' => ['ru' => 'Образование, бизнес-сообщества и лидерство', 'en' => 'Education, business communities & leadership', 'ro' => 'Educație, comunități de business și leadership'],
@@ -117,7 +120,8 @@ return [
         ],
         [
             'photo' => 'experts/expert-sabina.png',
-            'photo_rev' => 2,
+            'photo_rev' => 5,
+            'crop' => ['x' => 55, 'y' => 1, 'width' => 1145, 'height' => 1145],
             'name' => ['ru' => 'Сабина Криган', 'en' => 'Sabina Crigan', 'ro' => 'Sabina Crigan'],
             'role' => ['ru' => 'Член совета директоров AFAM, владелица и партнёр Gateway & Partners', 'en' => 'AFAM board member, owner and partner at Gateway & Partners', 'ro' => 'Membră a consiliului AFAM, proprietară și parteneră la Gateway & Partners'],
             'specialization' => ['ru' => 'Бизнес-консалтинг и предпринимательство', 'en' => 'Business consulting & entrepreneurship', 'ro' => 'Consultanță de business și antreprenoriat'],
@@ -132,8 +136,8 @@ return [
             'tone' => 'rose',
         ],
         [
-            'photo' => 'experts/expert-diana.webp',
-            'photo_rev' => 3,
+            'photo' => 'experts/expert-diana-wide.webp',
+            'photo_rev' => 6,
             'name' => ['ru' => 'Диана Сакирчук', 'en' => 'Diana Sakirchuk', 'ro' => 'Diana Sakirchuk'],
             'role' => ['ru' => 'Основательница PureCup', 'en' => 'Founder of PureCup', 'ro' => 'Fondatoarea PureCup'],
             'specialization' => ['ru' => 'Предпринимательство и развитие продукта', 'en' => 'Entrepreneurship & product development', 'ro' => 'Antreprenoriat și dezvoltarea produsului'],
@@ -148,8 +152,8 @@ return [
             'tone' => 'orange',
         ],
         [
-            'photo' => 'experts/expert-olga-melnichuk.webp',
-            'photo_rev' => 3,
+            'photo' => 'experts/expert-olga-melnichuk-wide.webp',
+            'photo_rev' => 6,
             'name' => ['ru' => 'Ольга Мельничук', 'en' => 'Olga Melnichuk', 'ro' => 'Olga Melnichuk'],
             'role' => ['ru' => 'Соучредительница Business Angels Moldova, исполнительный директор Startup Moldova', 'en' => 'Co-founder of Business Angels Moldova, Executive Director of Startup Moldova', 'ro' => 'Co-fondatoarea Business Angels Moldova, directoarea executivă Startup Moldova'],
             'specialization' => ['ru' => 'Стартапы, инвестиции и предпринимательство', 'en' => 'Startups, investment & entrepreneurship', 'ro' => 'Startupuri, investiții și antreprenoriat'],
@@ -164,8 +168,8 @@ return [
             'tone' => 'coral',
         ],
         [
-            'photo' => 'experts/expert-irina.png',
-            'photo_rev' => 2,
+            'photo' => 'experts/expert-irina-wide.webp',
+            'photo_rev' => 5,
             'name' => ['ru' => 'Ирина Плешкова', 'en' => 'Irina Pleshkova', 'ro' => 'Irina Pleshkova'],
             'role' => ['ru' => 'Эксперт по внедрению AI и цифровой эффективности', 'en' => 'Expert in AI adoption and digital efficiency', 'ro' => 'Expertă în implementarea AI și eficiență digitală'],
             'specialization' => ['ru' => 'AI, цифровая трансформация и эффективность', 'en' => 'AI, digital transformation & efficiency', 'ro' => 'AI, transformare digitală și eficiență'],
@@ -180,7 +184,8 @@ return [
             'tone' => 'blue',
         ],
         [
-            'photo' => 'experts/expert-oxana.webp',
+            'photo' => 'experts/expert-oxana-wide.webp',
+            'photo_rev' => 4,
             'name' => ['ru' => 'Оксана Паладичук', 'en' => 'Oxana Paladiciuc', 'ro' => 'Oxana Paladiciuc'],
             'role' => ['ru' => 'Руководитель FinTech HUB', 'en' => 'Head of FinTech HUB', 'ro' => 'Directoarea FinTech HUB'],
             'specialization' => ['ru' => 'Финтех, стартапы и инновации', 'en' => 'Fintech, startups & innovation', 'ro' => 'Fintech, startup-uri și inovație'],
@@ -194,6 +199,8 @@ return [
         ],
         [
             'photo' => 'experts/expert-viorica.webp',
+            'photo_rev' => 4,
+            'crop' => ['x' => 122, 'y' => 6, 'width' => 984, 'height' => 984],
             'name' => ['ru' => 'Виорика Чербушка', 'en' => 'Viorica Cherbushka', 'ro' => 'Viorica Cerbușca'],
             'role' => ['ru' => 'Генеральный директор Artcor', 'en' => 'General Director of Artcor', 'ro' => 'Directoarea generală a Artcor'],
             'specialization' => ['ru' => 'Стартап-экосистема и креативные индустрии', 'en' => 'Startup ecosystem & creative industries', 'ro' => 'Ecosistemul startup și industriile creative'],
@@ -207,6 +214,8 @@ return [
         ],
         [
             'photo' => 'experts/expert-larisa.webp',
+            'photo_rev' => 4,
+            'crop' => ['x' => 186, 'y' => 26, 'width' => 807, 'height' => 807],
             'name' => ['ru' => 'Лариса Чепой', 'en' => 'Larisa Chepoi', 'ro' => 'Larisa Cepoi'],
             'role' => ['ru' => 'Амбассадор международной школы коучинга Noble Manhattan Coaching', 'en' => 'Ambassador of the Noble Manhattan Coaching international school of coaching', 'ro' => 'Ambasadoare a școlii internaționale de coaching Noble Manhattan Coaching'],
             'specialization' => ['ru' => 'Коучинг и бизнес-процессы', 'en' => 'Coaching & business processes', 'ro' => 'Coaching și procese de afaceri'],
@@ -220,6 +229,8 @@ return [
         ],
         [
             'photo' => 'experts/expert-kristina.webp',
+            'photo_rev' => 4,
+            'crop' => ['x' => 37, 'y' => 24, 'width' => 758, 'height' => 758],
             'name' => ['ru' => 'Кристина Цуркан', 'en' => 'Kristina Tsurkan', 'ro' => 'Cristina Țurcan'],
             'role' => ['ru' => 'Основательница Woman Up и управляющая бизнес-сообществом Tractor', 'en' => 'Founder of Woman Up and manager of the Tractor business community', 'ro' => 'Fondatoarea Woman Up și coordonatoarea comunității de afaceri Tractor'],
             'specialization' => ['ru' => 'Женское лидерство и личностный рост', 'en' => 'Women’s leadership & personal growth', 'ro' => 'Leadership feminin și dezvoltare personală'],
@@ -232,7 +243,8 @@ return [
             'tone' => 'blue',
         ],
         [
-            'photo' => 'experts/expert-inna.webp',
+            'photo' => 'experts/expert-inna-wide.webp',
+            'photo_rev' => 4,
             'name' => ['ru' => 'Инна Барышникова', 'en' => 'Inna Baryshnikova', 'ro' => 'Inna Barîșnicova'],
             'role' => ['ru' => 'Финансовый эксперт, ментор и общественный деятель', 'en' => 'Financial expert, mentor and public figure', 'ro' => 'Expertă financiară, mentoră și personalitate publică'],
             'specialization' => ['ru' => 'Финансы, менторство и малый бизнес', 'en' => 'Finance, mentoring & small business', 'ro' => 'Finanțe, mentorat și afaceri mici'],
@@ -246,7 +258,8 @@ return [
         ],
         [
             'photo' => 'experts/expert-olga-levitskaya.webp',
-            'photo_rev' => 3,
+            'photo_rev' => 6,
+            'crop' => ['x' => 163, 'y' => 34, 'width' => 979, 'height' => 979],
             'move_to_end' => 1,
             'name' => ['ru' => 'Ольга Левицкая', 'en' => 'Olga Levitskaya', 'ro' => 'Olga Levitskaya'],
             'role' => ['ru' => 'Президент NGO Scenario', 'en' => 'President of NGO Scenario', 'ro' => 'Președinta ONG Scenario'],

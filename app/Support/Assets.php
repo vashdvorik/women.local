@@ -27,8 +27,12 @@ class Assets
         self::$urls = [];
     }
 
+    /** Тема, чьи картинки общие для всех тем сайта: у остальных тем своей папки images/ нет, пока там нечего заменять. */
+    private const SHARED_IMAGES_THEME = 'miro';
+
     private static function build(string $path): string
     {
+        $path = self::sharedImage($path);
         $url = asset($path);
         $file = public_path(ltrim($path, '/'));
 
@@ -40,5 +44,24 @@ class Assets
         }
 
         return $url.(str_contains($url, '?') ? '&' : '?').'v='.$time;
+    }
+
+    /**
+     * Картинка (или папка картинок) другой темы сайта: если у темы своего файла нет, берётся такой же из темы miro.
+     * Так вторая тема не копирует сотни мегабайт фото, но любой файл можно заменить, положив его в свою папку images/.
+     */
+    private static function sharedImage(string $path): string
+    {
+        if (! preg_match('#^(/?themes/public/)([^/]+)/(images(?:/.*)?)$#', $path, $m) || $m[2] === self::SHARED_IMAGES_THEME) {
+            return $path;
+        }
+
+        if (file_exists(public_path(ltrim($path, '/')))) {
+            return $path;
+        }
+
+        $shared = $m[1].self::SHARED_IMAGES_THEME.'/'.$m[3];
+
+        return file_exists(public_path(ltrim($shared, '/'))) ? $shared : $path;
     }
 }

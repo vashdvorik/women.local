@@ -1,0 +1,283 @@
+/* Тема miro2: светлая версия miro. Подключается последней на каждой странице, после navigation.css.
+   В miro тёмно-шоколадными были шапка, первый экран, подвал и крупные блоки-призывы. Здесь они молочные и персиковые,
+   текст — шоколадный, акцент — карамель. Правила нарочно длиннее по селекторам, чем старые (html.miro-page.miro-page body …):
+   так они выигрывают у тёмных правил с !important, не трогая их исходный код.
+
+   Палитра: молочный #FBF3EE, персиковый #F1E3DA, песочный #EBD3C3, карамель #B9855B, тёмная карамель #74472F,
+   шоколад (только для текста) #21140F. */
+
+html.miro-page {
+    --miro2-milk: #FBF3EE;
+    --miro2-peach: #F1E3DA;
+    --miro2-sand: #EBD3C3;
+    --miro2-caramel: #B9855B;
+    --miro2-caramel-soft: #C99A73;
+    --miro2-btn: #E6BC95;
+    --miro2-btn-hover: #DBA97C;
+    --miro2-caramel-deep: #74472F;
+    --miro2-ink: #21140F;
+    --miro2-text: #34231F;
+    --miro2-muted: #604B42;
+    --miro2-line: #E4D4CB;
+    --miro2-line-strong: #D6BEB1;
+}
+
+/* ---------- Шапка ---------- */
+html.miro-page.miro-page body .miro-nav,
+html.miro-page.miro-page body .miro-nav .miro-nav__inner {
+    background: rgba(255, 253, 252, .98) !important;
+    border-bottom-color: var(--miro2-line) !important;
+}
+html.miro-page.miro-page body .miro-nav { box-shadow: 0 1px 0 rgba(185, 133, 91, .12), 0 8px 24px -18px rgba(116, 71, 47, .35); }
+html.miro-page.miro-page body .miro-brand__logo { filter: none !important; opacity: 1; }
+
+html.miro-page.miro-page body .miro-nav .miro-nav__links > a,
+html.miro-page.miro-page body .miro-nav .miro-nav__links > a span,
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-trigger,
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-trigger span { color: var(--miro2-text) !important; }
+html.miro-page.miro-page body .miro-nav .miro-nav__links > a:hover,
+html.miro-page.miro-page body .miro-nav .miro-nav__links > a:hover span,
+html.miro-page.miro-page body .miro-nav .miro-nav__links > a.is-active,
+html.miro-page.miro-page body .miro-nav .miro-nav__links > a.is-active span,
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-trigger:hover,
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-trigger:hover span { color: var(--miro2-caramel-deep) !important; }
+html.miro-page.miro-page body .miro-nav .miro-nav__links a.is-active { box-shadow: inset 0 -2px 0 var(--miro2-caramel) !important; }
+
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-menu,
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-menu::before { background: #fff !important; border-color: var(--miro2-line-strong) !important; }
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-menu { box-shadow: 0 20px 44px rgba(116, 71, 47, .16); }
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-menu a,
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-menu a span,
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-menu [data-lang],
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-item { color: var(--miro2-text) !important; }
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-menu a:hover,
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-item:hover { background: var(--miro2-peach) !important; }
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-menu a:hover,
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-menu a:hover span { color: var(--miro2-caramel-deep) !important; }
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-menu .miro-nav__dropdown-sep { background: var(--miro2-line-strong); }
+
+html.miro-page.miro-page body .miro-nav .miro-languages { border-color: var(--miro2-line-strong) !important; background: var(--miro-surface-soft, #FBF6F3) !important; }
+html.miro-page.miro-page body .miro-nav .miro-languages button { color: var(--miro2-muted) !important; }
+html.miro-page.miro-page body .miro-nav .miro-languages button.is-active { color: var(--miro2-caramel-deep) !important; }
+
+html.miro-page.miro-page body .miro-nav .miro-mobile-toggle { border-color: var(--miro2-line-strong) !important; background: transparent !important; color: var(--miro2-ink) !important; }
+
+html.miro-page.miro-page body .miro-nav .miro-nav__actions .miro-button--secondary,
+html.miro-page.miro-page body .miro-nav .miro-nav__mobile-menu .miro-button--secondary,
+html.miro-page.miro-page body .miro-nav .miro-nav__actions .miro-button--secondary span,
+html.miro-page.miro-page body .miro-nav .miro-nav__mobile-menu .miro-button--secondary span { border-color: var(--miro2-line-strong) !important; background: transparent !important; color: var(--miro2-ink) !important; }
+html.miro-page.miro-page body .miro-nav .miro-nav__actions .miro-button--secondary:hover,
+html.miro-page.miro-page body .miro-nav .miro-nav__mobile-menu .miro-button--secondary:hover { border-color: var(--miro2-btn) !important; background: var(--miro2-peach) !important; }
+html.miro-page.miro-page body .miro-nav .miro-nav__actions .miro-button--primary,
+html.miro-page.miro-page body .miro-nav .miro-nav__actions .miro-button--brand,
+html.miro-page.miro-page body .miro-nav .miro-nav__mobile-menu .miro-button--primary { border-color: var(--miro2-btn) !important; background: var(--miro2-btn) !important; color: var(--miro2-ink) !important; }
+html.miro-page.miro-page body .miro-nav .miro-nav__actions .miro-button--primary span,
+html.miro-page.miro-page body .miro-nav .miro-nav__actions .miro-button--brand span,
+html.miro-page.miro-page body .miro-nav .miro-nav__mobile-menu .miro-button--primary span { color: var(--miro2-ink) !important; }
+html.miro-page.miro-page body .miro-nav .miro-nav__actions .miro-button--primary:hover,
+html.miro-page.miro-page body .miro-nav .miro-nav__actions .miro-button--brand:hover,
+html.miro-page.miro-page body .miro-nav .miro-nav__mobile-menu .miro-button--primary:hover { background: var(--miro2-btn-hover) !important; }
+
+@media (max-width: 1023px) {
+    html.miro-page.miro-page body .miro-nav.is-open .miro-nav__links { background: #fff !important; border-bottom-color: var(--miro2-line) !important; box-shadow: 0 18px 30px -20px rgba(116, 71, 47, .3); }
+    html.miro-page.miro-page body .miro-nav.is-open .miro-nav__links a,
+    html.miro-page.miro-page body .miro-nav.is-open .miro-nav__dropdown-trigger { color: var(--miro2-text) !important; }
+    html.miro-page.miro-page body .miro-nav.is-open .miro-nav__links a { border-bottom-color: var(--miro2-line) !important; }
+}
+
+/* ---------- Первый экран ---------- */
+/* Световые пятна запечены в фон первого экрана (раньше три больших движущихся слоя), а у фото нет ни маски, ни фильтров:
+   растворение слева и цветокоррекция уже внутри файла bannerhero-light.webp, браузер просто рисует готовую картинку. */
+html.miro-page .miro-hero--image {
+    background:
+        radial-gradient(circle 54vmax at -8% 112%, rgba(219, 184, 155, .32) 0%, rgba(219, 184, 155, 0) 66%),
+        radial-gradient(circle 40vmax at 46% -6%, rgba(185, 133, 91, .15) 0%, rgba(185, 133, 91, 0) 66%),
+        linear-gradient(120deg, var(--miro2-milk) 0%, #F6E8DF 52%, #EFD9CA 100%);
+}
+html.miro-page .miro-hero__image { -webkit-mask-image: none; mask-image: none; }
+html.miro-page .miro-hero__image::after { content: none; }
+html.miro-page .miro-hero__image img { filter: none; }
+
+html.miro-page .miro-hero--image .miro-hero__content h1,
+html.miro-page .miro-hero--image .miro-hero__content h1 span,
+html.miro-page .miro-hero--image .miro-hero__title-main,
+html.miro-page .miro-hero--image .miro-hero__title-sub { color: var(--miro2-ink); }
+html.miro-page .miro-hero--image .miro-eyebrow { color: var(--miro2-caramel-deep); }
+html.miro-page .miro-hero--image .miro-hero__subtitle,
+html.miro-page .miro-hero--image .miro-hero__subtitle span { color: var(--miro2-muted); }
+
+html.miro-page .miro-hero--image .miro-button--primary,
+html.miro-page .miro-hero--image .miro-button--primary span { color: var(--miro2-ink); }
+html.miro-page .miro-hero--image .miro-button--secondary { border-color: var(--miro2-line-strong); background: rgba(255, 255, 255, .6); }
+html.miro-page .miro-hero--image .miro-button--secondary,
+html.miro-page .miro-hero--image .miro-button--secondary span { color: var(--miro2-ink); }
+html.miro-page .miro-hero--image .miro-button--secondary:hover { border-color: var(--miro2-btn); background: #fff; }
+
+html.miro-page .miro-hero--image .miro-proof { border-color: rgba(185, 133, 91, .45); background: rgba(255, 255, 255, .86); box-shadow: 0 14px 34px rgba(116, 71, 47, .14); }
+
+/* Волна под первым экраном: персиковая лента с карамельной линией вместо тёмной */
+html.miro-page .miro-hero__bottom-curve-fill { fill: var(--miro2-sand); }
+html.miro-page .miro-hero__bottom-curve-line { stroke: var(--miro2-caramel-soft); opacity: 1; }
+
+/* ---------- Кнопки: основной акцент — карамель ---------- */
+html.miro-page .miro-button--primary,
+html.miro-page #events .miro-event-card__link,
+html.miro-page .miro-prose a.miro-prose__file-button { border-color: var(--miro2-btn); background: var(--miro2-btn); }
+html.miro-page .miro-button--primary,
+html.miro-page .miro-button--primary span,
+html.miro-page #events .miro-event-card__link,
+html.miro-page #events .miro-event-card__link span,
+html.miro-page .miro-prose a.miro-prose__file-button { color: var(--miro2-ink); }
+html.miro-page .miro-button--primary:hover,
+html.miro-page #events .miro-event-card__link:hover,
+html.miro-page .miro-prose a.miro-prose__file-button:hover { background: var(--miro2-btn-hover); }
+
+/* ---------- Крупные блоки-призывы: персиковые вместо шоколадных ---------- */
+html.miro-page :is(.miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-public-cta, .miro-about__cta, .miro-contact-form) {
+    border: 1px solid var(--miro2-line-strong);
+    background: linear-gradient(135deg, #F7EAE1 0%, var(--miro2-sand) 100%);
+    color: var(--miro2-ink);
+    box-shadow: 0 18px 40px -26px rgba(116, 71, 47, .45);
+}
+html.miro-page :is(.miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-public-cta, .miro-about__cta, .miro-contact-form) :is(h1, h2, h3, h4, blockquote, strong, label) { color: var(--miro2-ink); }
+html.miro-page :is(.miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-public-cta, .miro-about__cta, .miro-contact-form) :is(p, li, small, span) { color: var(--miro2-muted); }
+html.miro-page :is(.miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-public-cta, .miro-about__cta, .miro-contact-form) :is(h1, h2, h3, h4, blockquote, strong, label) span { color: var(--miro2-ink); }
+html.miro-page :is(.miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-public-cta, .miro-about__cta, .miro-contact-form) .miro-eyebrow { color: var(--miro2-caramel-deep); }
+html.miro-page .miro-contact-form .miro-contact-form__error span { color: #8C4842; }
+
+/* ---------- Подвал ---------- */
+/* Фон подвала заметно темнее блока «Наши партнёры» над ним (#FAF2EE), чтобы они не сливались: сверху #F1E3DA, к низу #EAD3C4 */
+html.miro-page .miro-footer { border-top: 1px solid var(--miro2-line-strong); background: linear-gradient(180deg, #F1E3DA 0%, #EAD3C4 100%); color: var(--miro2-text); }
+html.miro-page #partners-strip { background: #FAF2EE; }
+html.miro-page .miro-footer :is(h4, h3) { color: var(--miro2-ink); }
+html.miro-page .miro-footer :is(p, li, small, span) { color: var(--miro2-muted); }
+html.miro-page .miro-footer :is(h4, h3) span { color: var(--miro2-ink); }
+html.miro-page .miro-footer a,
+html.miro-page .miro-footer a span { color: var(--miro2-text); }
+html.miro-page .miro-footer li a:hover,
+html.miro-page .miro-footer li a:hover span { color: var(--miro2-caramel-deep); }
+html.miro-page .miro-footer__bottom { border-top-color: rgba(33, 20, 15, .12); color: var(--miro2-muted); }
+
+html.miro-page .miro-subscribe input[type="email"] { border-color: var(--miro2-line-strong); background: #fff; color: var(--miro2-ink); }
+html.miro-page .miro-subscribe input[type="email"]::placeholder { color: #8E776C; }
+html.miro-page .miro-subscribe input[type="email"]:focus { outline-color: var(--miro2-caramel); }
+/* Кнопка подписки на более тёмном подвале: тёмная карамель с кремовым текстом, как главный призыв страницы */
+html.miro-page .miro-subscribe .miro-button { background: var(--miro2-caramel-deep); }
+html.miro-page .miro-subscribe .miro-button:hover { background: #5E3825; }
+html.miro-page .miro-footer .miro-subscribe .miro-button,
+html.miro-page .miro-footer .miro-subscribe .miro-button span { color: #FFF9F5; }
+html.miro-page .miro-subscribe__consent input { accent-color: var(--miro2-caramel); }
+html.miro-page .miro-footer .miro-subscribe .miro-subscribe__notice,
+html.miro-page .miro-footer .miro-subscribe .miro-subscribe__notice span { color: var(--miro2-caramel-deep); }
+html.miro-page .miro-footer .miro-subscribe .miro-subscribe__error,
+html.miro-page .miro-footer .miro-subscribe .miro-subscribe__error span { color: #8C4842; }
+
+/* ---------- Мелкие тёмные значки и кнопки: тоже карамельные ---------- */
+html.miro-page .miro-contact-card__icon,
+html.miro-page .miro-about .miro-about__step-num,
+html.miro-page .miro-about .miro-about__group--closed .miro-about__badge,
+html.miro-page .miro-about-hero__sticker { background: var(--miro2-btn); color: var(--miro2-ink); }
+html.miro-page .miro-contact-form .miro-contact-form__submit { border-color: var(--miro2-btn); background: var(--miro2-btn); }
+html.miro-page .miro-contact-form .miro-contact-form__submit:hover { background: var(--miro2-btn-hover); }
+html.miro-page .miro-doc__package--private .miro-doc__price,
+html.miro-page.miro-page .miro-doc .miro-doc__package--private .miro-doc__price { background: var(--miro2-btn); color: var(--miro2-ink); }
+/* Полоски значка меню на телефоне берут цвет из текста: общее правило красило их светлым, и на светлой шапке они не были видны */
+html.miro-page.miro-page body .miro-nav .miro-mobile-toggle span { color: var(--miro2-ink) !important; }
+/* Старое правило тёмной шапки красило фоном уже сам текст пункта при наведении: на светлом меню оставался тёмный прямоугольник */
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-menu a span,
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-menu a:hover span,
+html.miro-page.miro-page body .miro-nav .miro-nav__dropdown-menu a:focus span { background: transparent !important; }
+html.miro-page .miro-carousel-btn:hover { border-color: var(--miro2-btn); background: var(--miro2-btn); color: var(--miro2-ink); }
+
+/* ---------- Слово руководителя: три стиля вместо пяти ----------
+   Раньше здесь были жирная строка подписи, шрифт заголовков у обращения, обычные абзацы разного оттенка и отдельно
+   выделенный жирным последний абзац. Теперь: подпись одной строкой без жирного, имя и должность одним цветом и начертанием, обращение
+   шрифтом заголовков и ровный текст одного размера и цвета. */
+html.miro-page .miro-director-note__copy { font-size: 16px; line-height: 1.7; }
+html.miro-page .miro-director-note__meta { margin-bottom: 20px; }
+html.miro-page .miro-director-note__meta p,
+html.miro-page .miro-director-note__meta p span { color: var(--miro2-muted); font-size: 15px; font-weight: 400; line-height: 1.45; }
+html.miro-page .miro-director-note__meta p strong { color: inherit; font-weight: 400; }
+html.miro-page .miro-director-note__copy > div[data-lang] > p:first-child { margin-bottom: 18px; color: var(--miro2-ink); font-family: var(--miro-display-font); font-size: 24px; font-weight: 400; line-height: 1.25; letter-spacing: -.005em; }
+html.miro-page .miro-director-note__copy > div[data-lang] > p:not(:first-child),
+html.miro-page .miro-director-note__copy > div[data-lang] > p:last-child { margin-bottom: 14px; color: var(--miro2-text); font-size: 16px; font-weight: 400; }
+html.miro-page .miro-director-note__copy > div[data-lang] > p:last-child { margin-bottom: 0; }
+@media (max-width: 767px) {
+    html.miro-page .miro-director-note__copy { font-size: 15px; }
+    html.miro-page .miro-director-note__copy > div[data-lang] > p:first-child { font-size: 21px; }
+    html.miro-page .miro-director-note__copy > div[data-lang] > p:not(:first-child) { font-size: 15px; }
+}
+
+/* ---------- Главный призыв «Присоединиться»: самая контрастная кнопка страницы, но в цветах сайта ----------
+   Светлая карамель на молочном и персиковом фоне терялась (контраст кнопки с фоном около 1,6:1). Главная кнопка первого экрана
+   и блока регистрации стала тёмной карамелью #74472F из палитры сайта (она же цвет ссылок и акцентов, не шоколад) с кремовым
+   текстом: контраст текста 7,5:1, кнопки с фоном 6,5:1. Размер 50 px и тень в тон; при наведении чуть темнее и приподнимается. */
+html.miro-page .miro-hero--image .miro-hero__actions .miro-button--primary,
+html.miro-page #register-cta .miro-button--primary {
+    min-height: 50px;
+    padding: 14px 32px;
+    border-color: var(--miro2-caramel-deep);
+    background: var(--miro2-caramel-deep);
+    box-shadow: 0 12px 24px -12px rgba(116, 71, 47, .7);
+    font-size: 15px;
+    font-weight: 600;
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+html.miro-page .miro-hero--image .miro-hero__actions .miro-button--primary,
+html.miro-page .miro-hero--image .miro-hero__actions .miro-button--primary span,
+html.miro-page #register-cta .miro-button--primary,
+html.miro-page #register-cta .miro-button--primary span { color: #FFF9F5; }
+html.miro-page .miro-hero--image .miro-hero__actions .miro-button--primary:hover,
+html.miro-page #register-cta .miro-button--primary:hover {
+    border-color: #5E3825;
+    background: #5E3825;
+    box-shadow: 0 16px 28px -12px rgba(94, 56, 37, .75);
+    transform: translateY(-2px);
+}
+html.miro-page .miro-hero--image .miro-hero__actions .miro-button--secondary { min-height: 50px; }
+@media (prefers-reduced-motion: reduce) {
+    html.miro-page .miro-hero--image .miro-hero__actions .miro-button--primary:hover,
+    html.miro-page #register-cta .miro-button--primary:hover { transform: none; }
+}
+
+/* ---------- Производительность: никаких бесконечных декоративных анимаций ----------
+   В miro плавали карточки направлений (16 анимаций), значки, плашка 500+, кольца и пятна, на слабых устройствах это
+   давало постоянную нагрузку и подтормаживание прокрутки. В miro2 остаются только появление при прокрутке, подсветка
+   при наведении. */
+html.miro-page :is(.miro-directions__grid .miro-direction-card, .miro-direction-card__icon, .miro-hero--image .miro-proof, .miro-hero--image .miro-proof__icon, .miro-floating-accents span, .miro-logo-wall__sticker, .miro-about-hero__sticker, .miro-public-hero__accent span, .miro-public-hero__accent span:nth-child(2), .miro-public-hero__accent span:nth-child(3)),
+html.miro-page :is(.miro-logo-wall, .miro-about-hero, .miro-about-hero__visual, .miro-public-member__visual, .miro-event-card__visual)::before,
+html.miro-page :is(.miro-logo-wall, .miro-public-member__visual, .miro-event-card__visual)::after { animation: none !important; will-change: auto !important; }
+
+/* Тонкая линия под волной на нецелом масштабе страницы (110%, 125% и т. п.): нижний край первого экрана попадает на дробный пиксель,
+   и в этой строке персиковый фон смешивался с белым. Нижние 3 px закрыты цветом страницы (волна и так уходит в него), поэтому
+   смешивать нечего. Ниже 1024 px волны нет, и полоска не нужна. */
+@media (min-width: 1024px) {
+    html.miro-page .miro-hero--image::after { content: ""; position: absolute; z-index: 2; right: 0; bottom: 0; left: 0; height: 3px; background: var(--miro-canvas); pointer-events: none; }
+}
+
+/* ---------- Страницы «Как стать участницей» и «Приоритеты»: остатки тёмной темы ----------
+   Тёмная карточка закрытого пакета и «прозрачная» кнопка с кремовым текстом (на светлом фоне её текст был не виден). */
+html.miro-page .miro-about__plan--private { border: 1px solid var(--miro2-line-strong); background: linear-gradient(160deg, #F7EAE1 0%, var(--miro2-sand) 100%); box-shadow: 0 18px 40px -26px rgba(116, 71, 47, .45); }
+html.miro-page .miro-about .miro-about__plan--private .miro-about__plan-name,
+html.miro-page .miro-about .miro-about__plan--private .miro-about__plan-amount { color: var(--miro2-ink); }
+html.miro-page .miro-about .miro-about__plan--private .miro-about__plan-tag { color: var(--miro2-caramel-deep); }
+html.miro-page .miro-about .miro-about__plan--private .miro-about__plan-unit,
+html.miro-page .miro-about .miro-about__plan--private .miro-about__plan-lead,
+html.miro-page .miro-about .miro-about__plan--private .miro-about__plan-list li { color: var(--miro2-text); }
+html.miro-page .miro-about__plan--private .miro-about__plan-list li::before { border-color: var(--miro2-caramel-deep); }
+html.miro-page .miro-about .miro-about__ghost,
+html.miro-page .miro-about .miro-about__ghost span { border-color: var(--miro2-line-strong); color: var(--miro2-ink); }
+html.miro-page .miro-about .miro-about__ghost { background: transparent; }
+html.miro-page .miro-about .miro-about__ghost:hover { border-color: var(--miro2-caramel); background: rgba(255, 255, 255, .6); }
+
+/* ---------- Кнопки внутри персиковых блоков-призывов ----------
+   Светлая «розовая» кнопка сливалась с персиковым фоном, а кнопка с белой рамкой и белым текстом (цвета заданы прямо в
+   разметке, поэтому !important) была почти не видна. Главная кнопка блока — тёмная карамель с кремовым текстом, вторая — с
+   шоколадным текстом и тёмной рамкой. */
+html.miro-page :is(.miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-public-cta, .miro-about__cta) :is(.miro-button--pink, .miro-button--accent, .miro-button--on-dark, .miro-button--primary),
+html.miro-page :is(.miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-public-cta, .miro-about__cta) :is(.miro-button--pink, .miro-button--accent, .miro-button--on-dark, .miro-button--primary) span { background: var(--miro2-caramel-deep); border-color: var(--miro2-caramel-deep); color: #FFF9F5 !important; }
+html.miro-page :is(.miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-public-cta, .miro-about__cta) :is(.miro-button--pink, .miro-button--accent, .miro-button--on-dark, .miro-button--primary) span { background: transparent; }
+html.miro-page :is(.miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-public-cta, .miro-about__cta) :is(.miro-button--pink, .miro-button--accent, .miro-button--on-dark, .miro-button--primary):hover { background: #5E3825; border-color: #5E3825; }
+html.miro-page :is(.miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-public-cta, .miro-about__cta) .miro-button:not(.miro-button--pink):not(.miro-button--accent):not(.miro-button--on-dark):not(.miro-button--primary),
+html.miro-page :is(.miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-public-cta, .miro-about__cta) .miro-button:not(.miro-button--pink):not(.miro-button--accent):not(.miro-button--on-dark):not(.miro-button--primary) span { border-color: var(--miro2-caramel-deep) !important; color: var(--miro2-ink) !important; }
+html.miro-page :is(.miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-public-cta, .miro-about__cta) .miro-button:not(.miro-button--pink):not(.miro-button--accent):not(.miro-button--on-dark):not(.miro-button--primary):hover { background: rgba(255, 255, 255, .6); }

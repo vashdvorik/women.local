@@ -41,7 +41,8 @@
             --login-display-font: "Prata", Georgia, "Times New Roman", serif;
         }
 
-        body.public-theme-miro {
+        body.public-theme-miro,
+        body.public-theme-miro2 {
             --login-canvas: #FFFDFC;
             --login-surface: #FAF4F1;
             --login-primary-hover: #34231F;

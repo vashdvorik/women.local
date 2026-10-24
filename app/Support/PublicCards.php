@@ -73,15 +73,74 @@ class PublicCards
      *
      * @return array{slug: string, title: array<string, string>, href: string, count: ?array<string, string>, blocks: list<array<string, mixed>>}
      */
-    public static function albumWall(Album $album): array
+    public static function albumWall(Album $album, ?int $rows = null): array
     {
+        $blocks = array_values($album->blocks ?? []);
+        $more = false;
+
+        // Список альбомов показывает только первые ряды фото, остальное — на странице альбома (кнопка «Смотреть альбом»)
+        if ($rows !== null) {
+            [$blocks, $more] = self::firstRows($blocks, $rows);
+        }
+
         return [
             'slug' => $album->slug,
             'title' => self::field($album, 'title'),
             'href' => url('media/photos/'.$album->slug),
             'count' => self::photoLabel($album->photoCount()),
-            'blocks' => array_values($album->blocks ?? []),
+            'blocks' => $blocks,
+            'more' => $more,
         ];
+    }
+
+    /**
+     * Первые $rows рядов фото из блоков материала. Ряд — это строка галереи (по 2, 3 или 4 фото, как в вёрстке на широком экране)
+     * или одиночное фото; текстовые блоки до обрезки сохраняются. Второй элемент ответа true, если часть фото осталась за кадром.
+     *
+     * @param  list<array<string, mixed>>  $blocks
+     * @return array{0: list<array<string, mixed>>, 1: bool}
+     */
+    public static function firstRows(array $blocks, int $rows): array
+    {
+        $photoTypes = ['image', 'gallery_2', 'gallery_3', 'gallery_4'];
+        $out = [];
+        $used = 0;
+
+        foreach ($blocks as $i => $block) {
+            $type = $block['type'] ?? '';
+
+            if (! in_array($type, $photoTypes, true)) {
+                $out[] = $block;
+                continue;
+            }
+
+            if ($used >= $rows) {
+                // Ряды набраны: всё, что дальше, кроме фото, не нужно, а наличие фото значит «есть ещё»
+                return [$out, true];
+            }
+
+            if ($type === 'image') {
+                $out[] = $block;
+                $used++;
+                continue;
+            }
+
+            $cols = (int) substr($type, -1);
+            $images = array_values(array_filter($block['data']['images'] ?? []));
+            $need = $rows - $used;
+
+            if (count($images) > $need * $cols) {
+                $block['data']['images'] = array_slice($images, 0, $need * $cols);
+                $out[] = $block;
+
+                return [$out, true];
+            }
+
+            $out[] = $block;
+            $used += (int) ceil(count($images) / $cols);
+        }
+
+        return [$out, false];
     }
 
     /** «12 фото» на трёх языках; null, если фотографий нет. @return array{ru: string, en: string, ro: string}|null */

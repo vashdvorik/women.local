@@ -114,26 +114,14 @@
                             <img src="{{ asset_v('themes/public/miro/images/bannerhero.webp') }}" alt="Women entrepreneurs collaborating around a laptop">
                         </div>
                     </div>
-                    {{-- Живой фон первого экрана: три медленных световых пятна и золотистые пылинки, которые мерцают на месте (без
-                         подъёма вверх). Только CSS (transform и opacity), слой лежит между фото и текстом и не ловит клики;
-                         «уменьшить анимацию» в системе его отключает. Положение, размер и скорость каждой пылинки заданы здесь
-                         числами, чтобы вид не менялся от загрузки к загрузке. --}}
-                    @php
-                        $dust = [
-                            // [left %, top %, размер px, период с, сдвиг с, дрейф px]
-                            [5, 22, 3, 9, 0, 14], [12, 64, 2, 11, 6, -12], [19, 38, 4, 10, 13, 16], [27, 80, 2, 12, 3, -14], [34, 18, 3, 9, 7, 12],
-                            [41, 52, 2, 11, 9, -12], [48, 30, 4, 10, 1, 16], [55, 72, 2, 12, 5, -10], [62, 14, 3, 9, 8, 14], [69, 58, 2, 11, 2, -14],
-                            [76, 34, 4, 10, 4, 12], [83, 78, 2, 12, 11, -12], [89, 20, 3, 9, 6, 14], [94, 60, 2, 11, 8, -10], [9, 46, 3, 12, 10, 10],
-                            [31, 66, 2, 10, 12, -8], [58, 46, 3, 12, 2, 12], [86, 44, 4, 10, 14, -14],
-                        ];
-                    @endphp
+                    {{-- Живой фон первого экрана: три готовых слоя с мерцающими золотистыми точками (точки нарисованы градиентами
+                         в CSS один раз, браузер лишь меняет прозрачность слоя). Раньше было 18 отдельных анимированных точек и три
+                         больших движущихся светлых пятна: на слабых устройствах это съедало процессор, а пятна выглядели грязно.
+                         «Уменьшить анимацию» в системе и режим lite (js/perf.js) слой останавливают. --}}
                     <div class="miro-hero__ambient" aria-hidden="true">
-                        <span class="miro-hero__glow miro-hero__glow--a"></span>
-                        <span class="miro-hero__glow miro-hero__glow--b"></span>
-                        <span class="miro-hero__glow miro-hero__glow--c"></span>
-                        @foreach($dust as [$x, $y, $size, $period, $delay, $drift])
-                            <span class="miro-hero__dust" style="--x: {{ $x }}%; --y: {{ $y }}%; --s: {{ $size }}px; --t: {{ $period }}s; --d: -{{ $delay }}s; --w: {{ $drift }}px"></span>
-                        @endforeach
+                        <i class="miro-hero__sparkles miro-hero__sparkles--1"></i>
+                        <i class="miro-hero__sparkles miro-hero__sparkles--2"></i>
+                        <i class="miro-hero__sparkles miro-hero__sparkles--3"></i>
                     </div>
                     <svg class="miro-hero__bottom-curve" viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true">
                         <defs>
@@ -235,59 +223,30 @@
                 </div>
                 <figure class="miro-director-note__portrait">
                     <span class="miro-director-note__accent" aria-hidden="true"></span>
-                    <img src="{{ asset_v('themes/public/miro/images/director.webp') }}" alt="Валерия Зелинская">
+                    <img src="{{ asset_v('themes/public/miro/images/director-valeria-close.webp') }}" alt="Валерия Зелинская">
                 </figure>
             </div>
         </section>
-        {{-- «Наш вклад в цифрах»: оргсхема «центр → три ветви → показатели». Цифры и подписи — App\Support\ImpactStats,
-             анимация (линии прорисовываются, цифры считаются) — js/impact.js. Без скрипта или при «уменьшить анимацию»
-             в системе показывается сразу в готовом виде: значения уже стоят в разметке. --}}
+        {{-- «Наш вклад в цифрах»: сетка из десяти цифр. Цифры и подписи — App\Support\ImpactStats, счёт от нуля — js/impact.js.
+             Без скрипта или при «уменьшить анимацию» в системе значения уже стоят в разметке готовыми. --}}
         @php
             $impactHead = \App\Support\ImpactStats::head();
             $impactTri = fn (array $text) => new \Illuminate\Support\HtmlString(collect(['ru', 'en', 'ro'])->map(fn ($l) => '<span data-lang="'.$l.'">'.e($text[$l]).'</span>')->implode(''));
         @endphp
-        <section class="miro-impact" id="impact" data-impact aria-labelledby="impact-title">
+        <section class="miro-section miro-section--tint miro-impact" id="impact" data-impact aria-labelledby="impact-title">
             <div class="miro-container">
-                <div class="miro-impact__head">
-                    <p class="miro-impact__eyebrow">{{ $impactTri($impactHead['eyebrow']) }}</p>
+                <div class="miro-section__head miro-section__head--center">
                     <h2 id="impact-title">{{ $impactTri($impactHead['title']) }}</h2>
-                    <p class="miro-impact__intro">{{ $impactTri($impactHead['intro']) }}</p>
+                    <p>{{ $impactTri($impactHead['intro']) }}</p>
                 </div>
-                <div class="miro-impact__tree">
-                    <div class="miro-impact__hub" aria-hidden="true">
-                        <img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/logo-mark-light.webp') }}" alt="" width="108" height="55" loading="lazy">
-                    </div>
-                    <span class="miro-impact__stem" aria-hidden="true"></span>
-                    <div class="miro-impact__branches">
-                        @foreach(\App\Support\ImpactStats::groups() as $b => $group)
-                            <article class="miro-impact__branch" style="--b: {{ $b }}">
-                                <h3 class="miro-impact__branch-title">{{ $impactTri($group['title']) }}</h3>
-                                <ul class="miro-impact__nodes">
-                                    @foreach($group['nodes'] as $k => $node)
-                                        @php $delay = 2000 + $b * 90 + $k * 170; @endphp
-                                        <li class="miro-impact__node" style="--delay: {{ $delay }}ms">
-                                            @if(isset($node['second']))
-                                                {{-- Две цифры в одной карточке («45 конференций | 15 форумов») с общей подписью --}}
-                                                <span class="miro-impact__pair">
-                                                    @foreach([$node, $node['second']] as $h => $half)
-                                                        <span class="miro-impact__half">
-                                                            <span class="miro-impact__value"><span data-count-to="{{ $half['value'] }}" data-count-delay="{{ $delay + 150 + $h * 120 }}">{{ \App\Support\ImpactStats::format($half['value']) }}</span>@if($half['plus'])<span class="miro-impact__plus">+</span>@endif</span>
-                                                            <span class="miro-impact__label">{{ $impactTri($half['label']) }}</span>
-                                                        </span>
-                                                    @endforeach
-                                                </span>
-                                            @else
-                                                <span class="miro-impact__value"><span data-count-to="{{ $node['value'] }}" data-count-delay="{{ $delay + 150 }}">{{ \App\Support\ImpactStats::format($node['value']) }}</span>@if($node['plus'])<span class="miro-impact__plus">+</span>@endif</span>
-                                                <span class="miro-impact__label">{{ $impactTri($node['label']) }}</span>
-                                            @endif
-                                            <span class="miro-impact__note">{{ $impactTri($node['note']) }}</span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </article>
-                        @endforeach
-                    </div>
-                </div>
+                <ul class="miro-impact__grid">
+                    @foreach(\App\Support\ImpactStats::items() as $i => $item)
+                        <li class="miro-impact__item" style="--delay: {{ $i * 70 }}ms">
+                            <span class="miro-impact__value"><span data-count-to="{{ $item['value'] }}">{{ \App\Support\ImpactStats::format($item['value']) }}</span>@if($item['plus'])<span class="miro-impact__plus">+</span>@endif</span>
+                            <span class="miro-impact__label">{{ $impactTri($item['label']) }}</span>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
         </section>
         {{-- .miro-logo-wall убран с главной (раньше жил на /about/priorities; та страница теперь написана заново по Положению). --}}

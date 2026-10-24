@@ -42,6 +42,7 @@ class SiteSetting extends Model
      */
     public const LANDING_THEMES = [
         'miro' => 'Miro',
+        'miro2' => 'Miro 2',
     ];
 
     /**

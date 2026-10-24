@@ -149,6 +149,54 @@ class AlbumWallTest extends TestCase
         return $album;
     }
 
+    public function test_the_list_shows_only_two_rows_of_photos_and_a_button_to_the_whole_album(): void
+    {
+        // Три ряда по три фото (девять снимков): в списке видны два ряда, остальное на странице альбома
+        $images = array_map(fn (int $i) => "2026/10/big{$i}.webp", range(1, 9));
+        $big = $this->album('big', 'Большой', 3, ['blocks' => [['uid' => 'g', 'type' => 'gallery_3', 'data' => ['images' => $images]]]]);
+        $small = $this->album('small', 'Маленький', 3);
+
+        $html = $this->get(route('media.photos'))->assertOk()->getContent();
+        $bigHtml = substr($html, strpos($html, 'id="album-big"'), strpos($html, 'id="album-small"') - strpos($html, 'id="album-big"'));
+
+        $this->assertSame(6, substr_count($bigHtml, '<img src="/uploads/2026/10/big'), 'два ряда по три фото');
+        $this->assertStringContainsString('Смотреть альбом', $bigHtml);
+        $this->assertStringContainsString('href="'.url('media/photos/big').'"', $bigHtml);
+        // Число фото в подписи остаётся полным
+        $this->assertStringContainsString('9 фото', $bigHtml);
+
+        // В маленьком альбоме всего один ряд: кнопка не нужна
+        $smallHtml = substr($html, strpos($html, 'id="album-small"'));
+        $this->assertStringNotContainsString('Смотреть альбом', $smallHtml);
+
+        // Страница альбома показывает все девять
+        $page = $this->get(route('media.photos.show', 'big'))->assertOk()->getContent();
+        $this->assertSame(9, substr_count($page, '<img src="/uploads/2026/10/big'));
+        $this->assertStringNotContainsString('Смотреть альбом', $page);
+    }
+
+    public function test_the_trimming_counts_rows_by_the_columns_of_each_gallery(): void
+    {
+        $img = fn (int $n) => array_map(fn (int $i) => "2026/10/p{$i}.webp", range(1, $n));
+
+        [$out, $more] = \App\Support\PublicCards::firstRows([
+            ['type' => 'text', 'data' => ['html' => '<p>Вступление</p>']],
+            ['type' => 'gallery_3', 'data' => ['images' => $img(7)]],
+            ['type' => 'gallery_4', 'data' => ['images' => $img(8)]],
+        ], 2);
+        $this->assertTrue($more);
+        $this->assertCount(2, $out, 'текст остаётся, вторая галерея отброшена');
+        $this->assertCount(6, $out[1]['data']['images']);
+
+        [$out, $more] = \App\Support\PublicCards::firstRows([['type' => 'gallery_4', 'data' => ['images' => $img(8)]]], 2);
+        $this->assertFalse($more, 'ровно два ряда: кнопка не нужна');
+        $this->assertCount(8, $out[0]['data']['images']);
+
+        [, $more] = \App\Support\PublicCards::firstRows([
+            ['type' => 'image', 'data' => ['path' => 'a']], ['type' => 'image', 'data' => ['path' => 'b']], ['type' => 'image', 'data' => ['path' => 'c']],
+        ], 2);
+        $this->assertTrue($more);
+    }
     public function test_the_photo_page_shows_albums_as_walls_not_as_cover_cards(): void
     {
         $this->album('nrc', 'NRC');

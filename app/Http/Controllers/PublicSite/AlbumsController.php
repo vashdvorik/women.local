@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 /**
  * «Медиатека → Фото»: фотоальбомы, введённые в админке. На странице списка альбомы идут один за другим готовым
- * полотном: название со ссылкой и все фото рядами, без карточек-обложек. Альбомы показываются порциями по четыре
+ * полотном: название со ссылкой и первые два ряда фото (дальше кнопка «Смотреть альбом»), без карточек-обложек. Альбомы показываются порциями по четыре
  * с кнопкой «Смотреть ещё». Страница альбома: название, число фото и то же полотно во всю ширину.
  *
  * Список и опубликованные альбомы лежат в кеше публичных страниц (App\Support\PublicCache), а не читаются из базы.
@@ -21,6 +21,9 @@ class AlbumsController extends ContentPageController
 {
     /** Сколько альбомов в одной порции. */
     public const PER_PAGE = 4;
+
+    /** Сколько рядов фото каждого альбома видно в списке; остальное на странице альбома. */
+    public const LIST_ROWS = 2;
 
     /**
      * Полная страница или, с ?partial=1 (так просит js/load-more.js), JSON: готовая разметка следующей порции
@@ -31,7 +34,7 @@ class AlbumsController extends ContentPageController
         [$albums, $paginator] = $this->cachedCards(
             'photos.list',
             fn () => Album::with('translations')->published()->ordered(),
-            fn (Album $album) => PublicCards::albumWall($album),
+            fn (Album $album) => PublicCards::albumWall($album, self::LIST_ROWS),
             self::PER_PAGE,
         );
 

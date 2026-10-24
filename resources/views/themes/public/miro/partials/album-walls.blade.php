@@ -1,4 +1,4 @@
-{{-- Альбомы на странице «Фото»: название со ссылкой, число фото и все фото рядами («полотно»). Отдельный файл, потому что
+{{-- Альбомы на странице «Фото»: название со ссылкой, число фото и первые два ряда фото («полотно»), если рядов больше, то кнопка «Смотреть альбом». Отдельный файл, потому что
      те же альбомы приходят и при подгрузке по кнопке «Смотреть ещё» (AlbumsController, ответ с ?partial=1).
      Просмотр листает фото одного альбома (data-lightbox-group) и открывает их в полном размере. --}}
 @php $locales = $locales ?? ['ru', 'en', 'ro']; @endphp
@@ -9,5 +9,8 @@
             <p class="miro-wall__count">@foreach($locales as $locale)<span data-lang="{{ $locale }}">{{ $album['count'][$locale] }}</span>@endforeach</p>
         @endif
         @include('themes.public.miro.partials.blocks', ['blocks' => $album['blocks'], 'lang' => 'ru', 'fullPhotos' => true])
+        @if(! empty($album['more']))
+            <p class="miro-wall__more"><a class="miro-button miro-button--secondary" href="{{ $album['href'] }}"><span data-lang="ru">Смотреть альбом</span><span data-lang="en">View album</span><span data-lang="ro">Vezi albumul</span></a></p>
+        @endif
     </section>
 @endforeach

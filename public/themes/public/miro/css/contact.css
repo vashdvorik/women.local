@@ -40,7 +40,7 @@
         .miro-container { width: min(1360px, calc(100% - 64px)); margin: 0 auto; }
 
         /* Shared Miro navigation and footer */
-        .miro-nav { position: sticky; top: 0; z-index: 30; min-height: 68px; border-bottom: 1px solid var(--miro-hairline-soft); background: rgba(255,255,255,.94); backdrop-filter: blur(16px); }
+        .miro-nav { position: sticky; top: 0; z-index: 30; min-height: 68px; border-bottom: 1px solid var(--miro-hairline-soft); background: rgba(255,255,255,.94); }
         .miro-nav__inner { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
         .miro-brand { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; font-size: 16px; font-weight: 600; letter-spacing: -.02em; text-decoration: none; }
         .miro-brand__logo { width: 176px; height: 52px; object-fit: contain; }

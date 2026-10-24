@@ -248,12 +248,10 @@ body { background: var(--miro-canvas) !important; color: var(--miro-ink); }
 .miro-page .miro-partners-cta,
 .miro-page .miro-about-bridge,
 .miro-page .miro-contact-form,
-.miro-page .miro-impact,
-.miro-page .miro-directions .miro-direction-card,
 .miro-page .miro-footer,
 .miro-page .miro-button--primary { color: var(--miro-text-light); }
 .miro-page .miro-landing-page .miro-nav :is(a, button, span, .miro-nav__dropdown-trigger),
-.miro-page :is(.miro-hero--image, .miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-contact-form, .miro-impact, .miro-directions .miro-direction-card, .miro-footer, .miro-button--primary) :is(h1, h2, h3, h4, h5, h6, p, li, blockquote, strong, small, label, a, button, span) { color: var(--miro-text-light); }
+.miro-page :is(.miro-hero--image, .miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-contact-form, .miro-footer, .miro-button--primary) :is(h1, h2, h3, h4, h5, h6, p, li, blockquote, strong, small, label, a, button, span) { color: var(--miro-text-light); }
 .miro-page .miro-button--brand,
 .miro-page .miro-button--accent,
 .miro-page .miro-button--pink,
@@ -266,10 +264,6 @@ body { background: var(--miro-canvas) !important; color: var(--miro-ink); }
 .miro-page .miro-contact-form .miro-contact-form__submit span { color: var(--miro-text-dark); }
 .miro-page .miro-contact-form .miro-contact-form__error,
 .miro-page .miro-contact-form .miro-contact-form__error span { color: #FFB4A8; }
-/* «Наш вклад в цифрах» (тёмный блок): знак «+» и надпись над заголовком — тёплым акцентом, остальное светлое. */
-.miro-page .miro-impact .miro-impact__plus,
-.miro-page .miro-impact .miro-impact__eyebrow,
-.miro-page .miro-impact .miro-impact__eyebrow span { color: var(--miro-orange); }
 
 /* The proof is a light card placed inside the dark hero. */
 .miro-page .miro-hero--image .miro-proof,
@@ -729,3 +723,18 @@ body.miro-landing-page .miro-nav__dropdown-menu a span { color: #F8E8DF !importa
 
 /* Разделитель в меню Gala: ссылки на сайты по годам отдельно, ниже страница сайта (Положение о премии). */
 .miro-nav__dropdown-menu .miro-nav__dropdown-sep { height: 1px; margin: 6px 12px; background: rgba(201, 154, 115, .35); }
+
+/* ---------- Производительность (js/perf.js) ----------
+   .is-offscreen — секции не видно на экране, .tab-hidden — вкладка скрыта: бесконечные анимации стоят на паузе.
+   .lite — слабое устройство или страница тормозит: бесконечные анимации выключены совсем, живой фон первого экрана убран. */
+.is-offscreen, .is-offscreen *, .is-offscreen *::before, .is-offscreen *::after,
+html.tab-hidden *, html.tab-hidden *::before, html.tab-hidden *::after { animation-play-state: paused !important; }
+html.lite *, html.lite *::before, html.lite *::after { animation: none !important; will-change: auto !important; }
+html.lite .miro-hero__ambient { display: none; }
+
+/* ---------- Переносы строк ----------
+   Заголовки: если фраза помещается в строку, она не переносится, а если не помещается, строки выравниваются по длине (на
+   второй строке не остаётся одно слово). Абзацы, пункты и подписи: браузер не оставляет на последней строке одно короткое
+   слово. Названия «Woman’s Hub» и «Женщина Года» не разрываются: неразрывные пробелы ставит app/Http/Middleware/KeepNamesTogether. */
+.miro-page :is(h1, h2, h3, h4) { text-wrap: balance; }
+.miro-page :is(p, li, blockquote, figcaption) { text-wrap: pretty; }

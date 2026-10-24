@@ -145,3 +145,8 @@
 @media (prefers-reduced-motion: reduce) {
     .miro-about__faq-item summary::after { transition: none; }
 }
+
+/* Заголовок призыва без лишнего ограничения ширины: перенос решает text-wrap: balance (navigation.css) */
+@media (min-width: 768px) {
+    .miro-page .miro-about .miro-about__cta h2 { max-width: none; }
+}
