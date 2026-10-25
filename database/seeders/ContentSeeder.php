@@ -12,6 +12,7 @@ use Illuminate\Database\Seeder;
  * Новости загружаются двумя сидерами: EventSeeder — карточки страницы «Новости», NewsArchiveSeeder — полные
  * новости организации (текст на трёх языках и фото). Второй дополняет первый, поэтому идёт после него.
  * AlbumArchiveSeeder заводит фотоальбомы организации (страница «Фото»), VideoArchiveSeeder — видео (страница «Видео»).
+ * SiteOpportunitySeeder заводит «Возможности» сайта (гранты, стажировки, курсы).
  * ExpertRosterSeeder дополняет ExpertSeeder: добавляет экспертов, которых в базе ещё нет, и меняет фото, помеченное
  * в данных (на пустой базе ExpertSeeder заводит всех сам, и дополнять нечего).
  *
@@ -29,6 +30,7 @@ class ContentSeeder extends Seeder
             ProjectSeeder::class,
             AlbumArchiveSeeder::class,
             VideoArchiveSeeder::class,
+            SiteOpportunitySeeder::class,
         ]);
 
         // Под DatabaseSeeder события моделей отключены: кеш публичных страниц сбрасываем явно.

@@ -1,0 +1,197 @@
+<?php
+
+/**
+ * «Возможности» для сайта (/opportunities): гранты, стажировки, курсы. Тексты и картинки присланы заказчиком
+ * (папка dizayn/ВОЗМОЖНОСТИ для сайта Woman Hub). Источник для SiteOpportunitySeeder.
+ *
+ * Русский текст — из документов Word; английский и румынский переведены с него, их можно править в админке.
+ * Картинки лежат в public/themes/public/miro/images/opportunities и проходят тот же конвейер, что загрузка обложки
+ * в админке (кадр 2,2:1 → WebP). 'crop' — квадрат кадра в пикселях исходного файла (иначе центр).
+ *
+ * Ключи записи:
+ *  - slug, photo, crop, published_at, deadline_at ('подать заявку до'; null у программы без срока);
+ *  - tag — [ru, en, ro, color] (тег ищется по русскому названию, нет — заводится);
+ *  - title, excerpt — на трёх языках;
+ *  - blocks — блоки страницы по порядку: type 'heading' | 'text', ru/en/ro — содержимое (для text — HTML).
+ */
+return [
+    [
+        'slug' => 'programma-podderzhki-zhenskogo-predprinimatelstva',
+        'photo' => 'opportunities/support-program.webp',
+        'published_at' => '2026-10-25 09:00:00',
+        'deadline_at' => null,
+        'tag' => ['ru' => 'Гранты', 'en' => 'Grants', 'ro' => 'Granturi', 'color' => '#E6CFC1'],
+        'title' => [
+            'ru' => 'Программа поддержки женского предпринимательства',
+            'en' => 'Support programme for women’s entrepreneurship',
+            'ro' => 'Programul de sprijin pentru antreprenoriatul feminin',
+        ],
+        'excerpt' => [
+            'ru' => 'Программа направлена на создание и развитие предприятий, управляемых женщинами: финансовая поддержка до 600 000 MDL, обучение и консультации.',
+            'en' => 'The programme supports the creation and growth of women-led businesses: financial support of up to 600,000 MDL, training and advice.',
+            'ro' => 'Programul sprijină crearea și dezvoltarea afacerilor conduse de femei: sprijin financiar de până la 600 000 MDL, instruire și consultanță.',
+        ],
+        'blocks' => [
+            ['type' => 'text', 'ru' => '<p>Программа поддержки женского предпринимательства направлена на создание и развитие предприятий, управляемых женщинами, повышение их конкурентоспособности и расширение возможностей для роста бизнеса.</p>',
+                'en' => '<p>The programme supporting women’s entrepreneurship aims to create and develop women-led enterprises, improve their competitiveness and widen their opportunities for business growth.</p>',
+                'ro' => '<p>Programul de sprijin pentru antreprenoriatul feminin vizează crearea și dezvoltarea întreprinderilor conduse de femei, creșterea competitivității lor și extinderea oportunităților de creștere a afacerii.</p>'],
+            ['type' => 'heading', 'ru' => 'Какие возможности предусмотрены?', 'en' => 'What does the programme offer?', 'ro' => 'Ce oportunități sunt prevăzute?'],
+            ['type' => 'heading', 'ru' => '1. Поддержка начинающих предпринимательниц', 'en' => '1. Support for early-stage entrepreneurs', 'ro' => '1. Sprijin pentru antreprenoarele la început de drum', 'level' => 'h3'],
+            ['type' => 'text', 'ru' => '<p>Условная безвозмездная финансовая поддержка в размере до 200 000 MDL для создания и развития начинающих предприятий, основанных и управляемых женщинами.</p>',
+                'en' => '<p>Conditional non-repayable financial support of up to 200,000 MDL for creating and developing start-up businesses founded and run by women.</p>',
+                'ro' => '<p>Sprijin financiar condiționat nerambursabil de până la 200 000 MDL pentru crearea și dezvoltarea întreprinderilor noi, fondate și conduse de femei.</p>'],
+            ['type' => 'heading', 'ru' => '2. Финансирование для развивающегося бизнеса', 'en' => '2. Funding for growing businesses', 'ro' => '2. Finanțare pentru afacerile în dezvoltare', 'level' => 'h3'],
+            ['type' => 'text', 'ru' => '<p>Условная безвозмездная финансовая поддержка в размере до 600 000 MDL для повышения конкурентоспособности и дальнейшего развития предприятий, управляемых женщинами.</p>',
+                'en' => '<p>Conditional non-repayable financial support of up to 600,000 MDL to boost the competitiveness and further development of women-led businesses.</p>',
+                'ro' => '<p>Sprijin financiar condiționat nerambursabil de până la 600 000 MDL pentru creșterea competitivității și dezvoltarea ulterioară a întreprinderilor conduse de femei.</p>'],
+            ['type' => 'heading', 'ru' => '3. Поддержка электронной коммерции', 'en' => '3. Support for e-commerce', 'ro' => '3. Sprijin pentru comerțul electronic', 'level' => 'h3'],
+            ['type' => 'text', 'ru' => '<p>Финансовая поддержка в размере до 50 000 MDL для развития электронной коммерции на предприятиях, управляемых женщинами.</p>',
+                'en' => '<p>Financial support of up to 50,000 MDL for developing e-commerce in women-led businesses.</p>',
+                'ro' => '<p>Sprijin financiar de până la 50 000 MDL pentru dezvoltarea comerțului electronic în întreprinderile conduse de femei.</p>'],
+            ['type' => 'heading', 'ru' => '4. Обучение и консультационная поддержка', 'en' => '4. Training and advisory support', 'ro' => '4. Instruire și sprijin consultativ', 'level' => 'h3'],
+            ['type' => 'text', 'ru' => '<p>Доступ к информации, обучению, консультациям и наставничеству для совершенствования управленческих навыков и повышения эффективности ведения бизнеса.</p>',
+                'en' => '<p>Access to information, training, consultations and mentoring to improve management skills and make running a business more effective.</p>',
+                'ro' => '<p>Acces la informații, instruire, consultanță și mentorat pentru îmbunătățirea abilităților de management și creșterea eficienței afacerii.</p>'],
+            ['type' => 'heading', 'ru' => '5. Продвижение женского предпринимательства', 'en' => '5. Promoting women’s entrepreneurship', 'ro' => '5. Promovarea antreprenoriatului feminin', 'level' => 'h3'],
+            ['type' => 'text', 'ru' => '<p>Меры по повышению информированности о возможностях и вкладе женщин-предпринимательниц в экономическое развитие.</p>',
+                'en' => '<p>Measures to raise awareness of the opportunities and the contribution of women entrepreneurs to economic development.</p>',
+                'ro' => '<p>Măsuri de sporire a gradului de conștientizare cu privire la oportunitățile și contribuția antreprenoarelor la dezvoltarea economică.</p>'],
+            ['type' => 'heading', 'ru' => 'Кто финансирует программу?', 'en' => 'Who funds the programme?', 'ro' => 'Cine finanțează programul?'],
+            ['type' => 'text', 'ru' => '<p>Программа финансируется Правительством Республики Молдова и Европейским союзом через Организацию по развитию предпринимательства (ODA).</p><p>Официальная информация: <a href="https://oda.md/ru/granty/programe-inactive-ru/zhenskoe-predprinimatelstvo" target="_blank" rel="noopener">oda.md</a></p>',
+                'en' => '<p>The programme is funded by the Government of the Republic of Moldova and the European Union through the Organisation for Entrepreneurship Development (ODA).</p><p>Official information: <a href="https://oda.md/ru/granty/programe-inactive-ru/zhenskoe-predprinimatelstvo" target="_blank" rel="noopener">oda.md</a></p>',
+                'ro' => '<p>Programul este finanțat de Guvernul Republicii Moldova și de Uniunea Europeană prin Organizația pentru Dezvoltarea Antreprenoriatului (ODA).</p><p>Informații oficiale: <a href="https://oda.md/ru/granty/programe-inactive-ru/zhenskoe-predprinimatelstvo" target="_blank" rel="noopener">oda.md</a></p>'],
+        ],
+    ],
+    [
+        'slug' => 'startapy-iz-moldovy-i-ukrainy-programma-star-venture-ebrr',
+        'photo' => 'opportunities/star-venture.webp',
+        'crop' => ['x' => 0, 'y' => 130, 'width' => 1920, 'height' => 873],
+        'published_at' => '2026-10-24 09:00:00',
+        'deadline_at' => '2026-10-30',
+        'tag' => ['ru' => 'Стартапы', 'en' => 'Startups', 'ro' => 'Startup-uri', 'color' => '#F1E3DA'],
+        'title' => [
+            'ru' => 'Стартапы из Молдовы и Украины могут подать заявку на участие в программе ЕБРР Star Venture',
+            'en' => 'Start-ups from Moldova and Ukraine can apply to the EBRD Star Venture programme',
+            'ro' => 'Startup-urile din Moldova și Ucraina pot aplica la programul BERD Star Venture',
+        ],
+        'excerpt' => [
+            'ru' => 'ЕБРР открыл новый набор заявок для стартапов с высоким потенциалом роста. Индивидуальная поддержка перспективных украинских стартапов составляет до 50 000 евро.',
+            'en' => 'The EBRD has opened a new call for high-growth start-ups. Individual support for promising Ukrainian start-ups is up to €50,000.',
+            'ro' => 'BERD a deschis o nouă sesiune de aplicații pentru startup-uri cu potențial ridicat de creștere. Sprijinul individual pentru startup-urile ucrainene promițătoare este de până la 50 000 de euro.',
+        ],
+        'blocks' => [
+            ['type' => 'text', 'ru' => '<p>Европейский банк реконструкции и развития (ЕБРР) открыл новый набор заявок в международную программу Star Venture для стартапов из Молдовы и Украины с высоким потенциалом роста.</p><p>В рамках набора предусмотрена индивидуальная поддержка перспективных украинских стартапов в размере до 50 000 евро. В Молдове программа софинансируется Европейским союзом.</p>',
+                'en' => '<p>The European Bank for Reconstruction and Development (EBRD) has opened a new call for applications to the international Star Venture programme for high-growth start-ups from Moldova and Ukraine.</p><p>The call provides individual support of up to €50,000 for promising Ukrainian start-ups. In Moldova, the programme is co-funded by the European Union.</p>',
+                'ro' => '<p>Banca Europeană pentru Reconstrucție și Dezvoltare (BERD) a deschis o nouă sesiune de aplicații pentru programul internațional Star Venture, destinat startup-urilor din Moldova și Ucraina cu potențial ridicat de creștere.</p><p>Sesiunea prevede sprijin individual de până la 50 000 de euro pentru startup-urile ucrainene promițătoare. În Moldova, programul este cofinanțat de Uniunea Europeană.</p>'],
+            ['type' => 'heading', 'ru' => 'Кто может участвовать', 'en' => 'Who can take part', 'ro' => 'Cine poate participa'],
+            ['type' => 'text', 'ru' => '<p>К участию приглашаются стартапы, которые ведут деятельность в одной из стран присутствия ЕБРР либо имеют там основную часть команды разработчиков или инженеров и существенную деятельность по разработке продукта. У компании должен быть запущенный и используемый инновационный технологический продукт, команда основателей, работающих на полную ставку, подтверждённый рыночный спрос, потенциал быстрого роста, чёткое конкурентное преимущество и глобальный потенциал. Преимущественными владельцами должны быть граждане Украины или Молдовы.</p>',
+                'en' => '<p>The call is open to start-ups that operate in one of the EBRD’s countries of operation, or have most of their development or engineering team there and substantial product development activity. The company must have a launched and used innovative technology product, a full-time founding team, proven market demand, rapid growth potential, a clear competitive advantage and global potential. The majority owners must be citizens of Ukraine or Moldova.</p>',
+                'ro' => '<p>Sunt invitate startup-urile care își desfășoară activitatea într-una dintre țările în care operează BERD sau care au acolo cea mai mare parte a echipei de dezvoltatori ori ingineri și o activitate substanțială de dezvoltare a produsului. Compania trebuie să aibă un produs tehnologic inovator lansat și utilizat, o echipă de fondatori care lucrează cu normă întreagă, cerere confirmată pe piață, potențial de creștere rapidă, un avantaj competitiv clar și potențial global. Proprietarii majoritari trebuie să fie cetățeni ai Ucrainei sau ai Moldovei.</p>'],
+            ['type' => 'heading', 'ru' => 'Крайний срок подачи заявок', 'en' => 'Application deadline', 'ro' => 'Termenul limită de depunere'],
+            ['type' => 'text', 'ru' => '<p><strong>30 октября 2026 года.</strong></p><p>В Украине программа софинансируется Европейским союзом и Швейцарией через Фонд воздействия на малые предприятия ЕБРР. В Молдове программа софинансируется Европейским союзом.</p><p>Подробнее: <a href="https://eu4moldova.eu/ru/стартапы-из-молдовы-и-украины-с-высоки/" target="_blank" rel="noopener">eu4moldova.eu</a></p>',
+                'en' => '<p><strong>30 October 2026.</strong></p><p>In Ukraine, the programme is co-funded by the European Union and Switzerland through the EBRD Small Business Impact Fund. In Moldova, the programme is co-funded by the European Union.</p><p>More information: <a href="https://eu4moldova.eu/ru/стартапы-из-молдовы-и-украины-с-высоки/" target="_blank" rel="noopener">eu4moldova.eu</a></p>',
+                'ro' => '<p><strong>30 octombrie 2026.</strong></p><p>În Ucraina, programul este cofinanțat de Uniunea Europeană și Elveția prin Fondul BERD pentru impactul asupra întreprinderilor mici. În Moldova, programul este cofinanțat de Uniunea Europeană.</p><p>Mai multe detalii: <a href="https://eu4moldova.eu/ru/стартапы-из-молдовы-и-украины-с-высоки/" target="_blank" rel="noopener">eu4moldova.eu</a></p>'],
+        ],
+    ],
+    [
+        'slug' => 'stazhirovki-evropejskogo-parlamenta-programma-shumana',
+        'photo' => 'opportunities/schuman-traineeships.webp',
+        'crop' => ['x' => 0, 'y' => 120, 'width' => 1920, 'height' => 873],
+        'published_at' => '2026-10-23 09:00:00',
+        'deadline_at' => '2026-10-31',
+        'tag' => ['ru' => 'Стажировки', 'en' => 'Internships', 'ro' => 'Stagii', 'color' => '#EEDDD3'],
+        'title' => [
+            'ru' => 'Европейский парламент принимает заявки на оплачиваемые стажировки по программе Шумана',
+            'en' => 'The European Parliament is accepting applications for paid Schuman traineeships',
+            'ro' => 'Parlamentul European primește cereri pentru stagii plătite în cadrul programului Schuman',
+        ],
+        'excerpt' => [
+            'ru' => 'Оплачиваемые пятимесячные стажировки в Секретариате Европейского парламента: Брюссель, Люксембург, Страсбург или представительства в странах ЕС.',
+            'en' => 'Paid five-month traineeships at the Secretariat of the European Parliament in Brussels, Luxembourg, Strasbourg or its offices in EU member states.',
+            'ro' => 'Stagii plătite de cinci luni la Secretariatul Parlamentului European, la Bruxelles, Luxemburg, Strasbourg sau în birourile din statele membre ale UE.',
+        ],
+        'blocks' => [
+            ['type' => 'text', 'ru' => '<p>Европейский парламент открыл приём заявок на стажировки в своём Секретариате. Программа направлена на профессиональное обучение молодых людей и знакомство с работой институтов Европейского союза.</p><p>Стажировки доступны в различных областях, включая внутреннюю и внешнюю политику ЕС, финансы, право, многоязычие, администрирование, инфраструктуру и логистику, коммуникации и информационные технологии.</p>',
+                'en' => '<p>The European Parliament has opened applications for traineeships at its Secretariat. The programme provides professional training for young people and an introduction to the work of the institutions of the European Union.</p><p>Traineeships are available in a range of fields, including EU internal and external policy, finance, law, multilingualism, administration, infrastructure and logistics, communications and information technology.</p>',
+                'ro' => '<p>Parlamentul European a deschis înscrierile pentru stagii la Secretariatul său. Programul vizează formarea profesională a tinerilor și cunoașterea activității instituțiilor Uniunii Europene.</p><p>Stagiile sunt disponibile în diverse domenii, inclusiv politica internă și externă a UE, finanțe, drept, multilingvism, administrație, infrastructură și logistică, comunicare și tehnologia informației.</p>'],
+            ['type' => 'heading', 'ru' => 'Условия стажировки', 'en' => 'Traineeship terms', 'ro' => 'Condițiile stagiului'],
+            ['type' => 'text', 'ru' => '<p>Стажировки оплачиваются, длятся пять месяцев и могут проходить в Брюсселе, Люксембурге, Страсбурге или в представительствах Европейского парламента в государствах-членах ЕС.</p><p>Кандидатам должно быть больше 18 лет и необходимо иметь диплом о высшем образовании, хорошо владеть одним официальным языком ЕС и очень хорошо — другим. Также требуется справка об отсутствии судимости. Кандидаты не должны работать более двух месяцев подряд в учреждении или организации ЕС и не должны проходить ознакомительную стажировку в Секретариате Европейского парламента в течение шести месяцев до начала стажировки.</p>',
+                'en' => '<p>Traineeships are paid, last five months and can take place in Brussels, Luxembourg, Strasbourg or in the European Parliament’s offices in EU member states.</p><p>Candidates must be over 18 and hold a university degree, have a good command of one official EU language and a very good command of another. A certificate of no criminal record is also required. Candidates must not have worked for more than two consecutive months in an EU institution or organisation and must not have done an introductory traineeship at the Secretariat of the European Parliament in the six months before the traineeship starts.</p>',
+                'ro' => '<p>Stagiile sunt plătite, durează cinci luni și pot avea loc la Bruxelles, Luxemburg, Strasbourg sau în birourile Parlamentului European din statele membre ale UE.</p><p>Candidații trebuie să aibă peste 18 ani și o diplomă de studii superioare, să cunoască bine o limbă oficială a UE și foarte bine o alta. Este necesar și un certificat de cazier judiciar. Candidații nu trebuie să fi lucrat mai mult de două luni consecutiv într-o instituție sau organizație a UE și nu trebuie să fi efectuat un stagiu introductiv la Secretariatul Parlamentului European în cele șase luni dinaintea începerii stagiului.</p>'],
+            ['type' => 'heading', 'ru' => 'Для кандидатов из стран, не входящих в ЕС', 'en' => 'For candidates from non-EU countries', 'ro' => 'Pentru candidații din afara UE'],
+            ['type' => 'text', 'ru' => '<p>Для кандидатов из стран, не входящих в Европейский союз, предусмотрено ограниченное количество стажировок. В случае отбора кандидат самостоятельно оформляет необходимые визы, виды на жительство и разрешения на работу; соответствующие расходы не возмещаются.</p>',
+                'en' => '<p>A limited number of traineeships is available for candidates from countries outside the European Union. If selected, the candidate arranges the necessary visas, residence and work permits themselves; the related costs are not reimbursed.</p>',
+                'ro' => '<p>Pentru candidații din țări din afara Uniunii Europene este prevăzut un număr limitat de stagii. În cazul selecției, candidatul își procură singur vizele, permisele de ședere și de muncă necesare; cheltuielile aferente nu se rambursează.</p>'],
+            ['type' => 'heading', 'ru' => 'Крайний срок подачи заявок', 'en' => 'Application deadline', 'ro' => 'Termenul limită de depunere'],
+            ['type' => 'text', 'ru' => '<p><strong>31 октября 2026 года.</strong></p><p>Подробнее: <a href="https://euneighbourseast.eu/opportunities/schuman-traineeships-at-the-european-parliament-deadline-on-31-october/" target="_blank" rel="noopener">euneighbourseast.eu</a></p>',
+                'en' => '<p><strong>31 October 2026.</strong></p><p>More information: <a href="https://euneighbourseast.eu/opportunities/schuman-traineeships-at-the-european-parliament-deadline-on-31-october/" target="_blank" rel="noopener">euneighbourseast.eu</a></p>',
+                'ro' => '<p><strong>31 octombrie 2026.</strong></p><p>Mai multe detalii: <a href="https://euneighbourseast.eu/opportunities/schuman-traineeships-at-the-european-parliament-deadline-on-31-october/" target="_blank" rel="noopener">euneighbourseast.eu</a></p>'],
+        ],
+    ],
+    [
+        'slug' => 'konkurs-na-finansirovanie-obucheniya-3d-tehnologiyam-kulturnoe-nasledie',
+        'photo' => 'opportunities/3d-heritage.webp',
+        'crop' => ['x' => 0, 'y' => 160, 'width' => 1920, 'height' => 873],
+        'published_at' => '2026-10-22 09:00:00',
+        'deadline_at' => '2026-10-29',
+        'tag' => ['ru' => 'Гранты', 'en' => 'Grants', 'ro' => 'Granturi', 'color' => '#E6CFC1'],
+        'title' => [
+            'ru' => 'Открыт конкурс на финансирование практического обучения 3D-технологиям в сфере культурного наследия',
+            'en' => 'Call open for funding of hands-on training in 3D technologies for cultural heritage',
+            'ro' => 'Concurs deschis pentru finanțarea instruirii practice în tehnologii 3D pentru patrimoniul cultural',
+        ],
+        'excerpt' => [
+            'ru' => 'Проект 3D-4CH объявил конкурс Training Synergy Call: до шести обучающих инициатив с бюджетом по 5 000 евро для сообщества культурного наследия.',
+            'en' => 'The 3D-4CH project has announced the Training Synergy Call: up to six training initiatives with a budget of €5,000 each for the cultural heritage community.',
+            'ro' => 'Proiectul 3D-4CH a anunțat apelul Training Synergy Call: până la șase inițiative de instruire cu un buget de câte 5 000 de euro pentru comunitatea patrimoniului cultural.',
+        ],
+        'blocks' => [
+            ['type' => 'text', 'ru' => '<p>Проект 3D-4CH, финансируемый Европейским союзом, объявил конкурс Training Synergy Call для поддержки практических обучающих мероприятий и обмена знаниями в европейском сообществе, работающем в сфере культурного наследия.</p><p>Планируется поддержать до шести обучающих инициатив с бюджетом 5 000 евро на каждую. Организации и специалисты смогут разработать и провести семинары в соответствии с учебной программой 3D-4CH.</p><p>Программа охватывает жизненный цикл проектов по использованию 3D-технологий в сфере культурного наследия: от планирования и оцифровки до управления данными, их сохранения и повторного использования.</p>',
+                'en' => '<p>The 3D-4CH project, funded by the European Union, has announced the Training Synergy Call to support hands-on training activities and knowledge exchange in the European cultural heritage community.</p><p>Up to six training initiatives with a budget of €5,000 each will be supported. Organisations and professionals will be able to design and deliver workshops in line with the 3D-4CH curriculum.</p><p>The curriculum covers the whole life cycle of 3D projects in cultural heritage: from planning and digitisation to data management, preservation and re-use.</p>',
+                'ro' => '<p>Proiectul 3D-4CH, finanțat de Uniunea Europeană, a anunțat apelul Training Synergy Call pentru sprijinirea activităților practice de instruire și a schimbului de cunoștințe în comunitatea europeană a patrimoniului cultural.</p><p>Vor fi susținute până la șase inițiative de instruire, cu un buget de 5 000 de euro fiecare. Organizațiile și specialiștii vor putea elabora și organiza ateliere în conformitate cu programa de instruire 3D-4CH.</p><p>Programa acoperă întregul ciclu de viață al proiectelor 3D în domeniul patrimoniului cultural: de la planificare și digitizare până la gestionarea, păstrarea și reutilizarea datelor.</p>'],
+            ['type' => 'heading', 'ru' => 'Кто может подать заявку', 'en' => 'Who can apply', 'ro' => 'Cine poate aplica'],
+            ['type' => 'text', 'ru' => '<p>Подать заявку могут организации и специалисты из стран Европейского союза и стран, ассоциированных с программой «Горизонт Европа», включая Молдову и Украину. Среди потенциальных заявителей — музеи, архивы, университеты, исследовательские институты, государственные органы, поставщики технологий и независимые специалисты.</p>',
+                'en' => '<p>Organisations and professionals from European Union countries and countries associated with Horizon Europe, including Moldova and Ukraine, can apply. Potential applicants include museums, archives, universities, research institutes, public authorities, technology providers and independent professionals.</p>',
+                'ro' => '<p>Pot aplica organizații și specialiști din țările Uniunii Europene și din țările asociate programului Orizont Europa, inclusiv Moldova și Ucraina. Printre potențialii solicitanți se numără muzee, arhive, universități, institute de cercetare, autorități publice, furnizori de tehnologii și specialiști independenți.</p>'],
+            ['type' => 'heading', 'ru' => 'Требования к обучению', 'en' => 'Training requirements', 'ro' => 'Cerințe pentru instruire'],
+            ['type' => 'text', 'ru' => '<p>Обучающие мероприятия должны включать практические очные компоненты. Они могут проходить в формате отдельного семинара, серии занятий или в рамках уже существующего мероприятия. Реализация профинансированных инициатив запланирована на период с января по октябрь 2027 года.</p>',
+                'en' => '<p>Training activities must include hands-on, in-person components. They can take the form of a stand-alone workshop, a series of sessions or part of an existing event. The funded initiatives are to be carried out between January and October 2027.</p>',
+                'ro' => '<p>Activitățile de instruire trebuie să includă componente practice, cu participare fizică. Ele pot avea forma unui atelier de sine stătător, a unei serii de sesiuni sau pot face parte dintr-un eveniment existent. Inițiativele finanțate urmează să fie realizate în perioada ianuarie–octombrie 2027.</p>'],
+            ['type' => 'heading', 'ru' => 'Крайний срок подачи заявок', 'en' => 'Application deadline', 'ro' => 'Termenul limită de depunere'],
+            ['type' => 'text', 'ru' => '<p><strong>29 октября 2026 года.</strong></p><p>Подробнее: <a href="https://euneighbourseast.eu/opportunities/new-funding-opportunities-for-hands-on-training-in-3d-cultural-heritage-open-in-horizon-europe-associated-countries/" target="_blank" rel="noopener">euneighbourseast.eu</a></p>',
+                'en' => '<p><strong>29 October 2026.</strong></p><p>More information: <a href="https://euneighbourseast.eu/opportunities/new-funding-opportunities-for-hands-on-training-in-3d-cultural-heritage-open-in-horizon-europe-associated-countries/" target="_blank" rel="noopener">euneighbourseast.eu</a></p>',
+                'ro' => '<p><strong>29 octombrie 2026.</strong></p><p>Mai multe detalii: <a href="https://euneighbourseast.eu/opportunities/new-funding-opportunities-for-hands-on-training-in-3d-cultural-heritage-open-in-horizon-europe-associated-countries/" target="_blank" rel="noopener">euneighbourseast.eu</a></p>'],
+        ],
+    ],
+    [
+        'slug' => 'onlajn-kurs-po-zelenoj-ekonomike-na-rumynskom-yazyke',
+        'photo' => 'opportunities/green-economy-course.webp',
+        'crop' => ['x' => 0, 'y' => 60, 'width' => 1920, 'height' => 873],
+        'published_at' => '2026-10-21 09:00:00',
+        'deadline_at' => '2026-12-31',
+        'tag' => ['ru' => 'Обучение', 'en' => 'Learning', 'ro' => 'Instruire', 'color' => '#DBB89B'],
+        'title' => [
+            'ru' => 'Онлайн-курс по «зелёной» экономике на румынском языке',
+            'en' => 'Online course on the green economy in Romanian',
+            'ro' => 'Curs online despre economia verde în limba română',
+        ],
+        'excerpt' => [
+            'ru' => 'Инициатива One UN Climate Change Learning Partnership предлагает пройти индивидуальный онлайн-курс по «зелёной» экономике на румынском языке.',
+            'en' => 'The One UN Climate Change Learning Partnership offers a self-paced online course on the green economy in Romanian.',
+            'ro' => 'Inițiativa One UN Climate Change Learning Partnership oferă un curs online individual despre economia verde în limba română.',
+        ],
+        'blocks' => [
+            ['type' => 'text', 'ru' => '<p>Инициатива One UN Climate Change Learning Partnership предлагает пройти индивидуальный онлайн-курс по «зелёной» экономике на румынском языке.</p><p>В ходе обучения слушатели познакомятся с основными концепциями, инструментами политики и международными структурами, связанными с инклюзивной «зелёной» экономикой. Курс состоит из пяти модулей; начать обучение можно с любого из них, в зависимости от интересов и предпочтений участника.</p>',
+                'en' => '<p>The One UN Climate Change Learning Partnership offers a self-paced online course on the green economy in Romanian.</p><p>Participants will learn the main concepts, policy tools and international frameworks related to the inclusive green economy. The course consists of five modules; you can start with any of them, depending on your interests and preferences.</p>',
+                'ro' => '<p>Inițiativa One UN Climate Change Learning Partnership oferă un curs online individual despre economia verde în limba română.</p><p>În cadrul cursului, cursanții vor face cunoștință cu principalele concepte, instrumente de politică și cadre internaționale legate de economia verde favorabilă incluziunii. Cursul are cinci module; puteți începe cu oricare dintre ele, în funcție de interese și preferințe.</p>'],
+            ['type' => 'heading', 'ru' => 'Крайний срок', 'en' => 'Deadline', 'ro' => 'Termen limită'],
+            ['type' => 'text', 'ru' => '<p><strong>31 декабря 2026 года.</strong></p>',
+                'en' => '<p><strong>31 December 2026.</strong></p>',
+                'ro' => '<p><strong>31 decembrie 2026.</strong></p>'],
+            ['type' => 'heading', 'ru' => 'Финансирование', 'en' => 'Funding', 'ro' => 'Finanțare'],
+            ['type' => 'text', 'ru' => '<p>Курс создан при финансовой поддержке Европейского союза. Его содержание не обязательно отражает точку зрения ЕС.</p><p>Подробнее: <a href="https://eu4moldova.eu/ru/eu4digital-ищет-партнеров-для-проекта-edtech-hub-помог/" target="_blank" rel="noopener">eu4moldova.eu</a></p>',
+                'en' => '<p>The course was created with the financial support of the European Union. Its content does not necessarily reflect the views of the EU.</p><p>More information: <a href="https://eu4moldova.eu/ru/eu4digital-ищет-партнеров-для-проекта-edtech-hub-помог/" target="_blank" rel="noopener">eu4moldova.eu</a></p>',
+                'ro' => '<p>Cursul a fost creat cu sprijinul financiar al Uniunii Europene. Conținutul său nu reflectă neapărat punctul de vedere al UE.</p><p>Mai multe detalii: <a href="https://eu4moldova.eu/ru/eu4digital-ищет-партнеров-для-проекта-edtech-hub-помог/" target="_blank" rel="noopener">eu4moldova.eu</a></p>'],
+        ],
+    ],
+];
