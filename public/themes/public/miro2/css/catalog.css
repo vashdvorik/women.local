@@ -26,3 +26,25 @@
     .miro-flip__bar { gap: 8px; }
     .miro-flip__btn--text { padding: 0 14px; }
 }
+
+/* Особая карточка каталога (страница «Публикации»): обложка в виде книги с корешком и стопкой листов, название, число
+   страниц и две кнопки. Ширина колонки небольшая, чтобы обложка в пропорциях страницы не вырастала на пол-экрана. */
+.miro-catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 270px)); gap: 32px 28px; justify-content: start; margin: 0 0 44px; }
+.miro-catalog-card { display: flex; flex-direction: column; min-width: 0; }
+.miro-catalog-card__cover { position: relative; display: block; padding: 6px 10px 10px 0; text-decoration: none; }
+.miro-catalog-card__book { position: relative; display: block; width: 100%; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 3px 10px 10px 3px; background: #F1E3DA; box-shadow: 5px 5px 0 -1px #fff, 5px 5px 0 0 var(--miro-hairline-strong, #D8C5BA), 10px 10px 0 -1px #fff, 10px 10px 0 0 var(--miro-hairline, #E9DCD5), 0 18px 32px rgba(33, 20, 15, .16); transition: transform .35s cubic-bezier(.22, 1, .36, 1), box-shadow .35s ease; }
+.miro-catalog-card__book::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(33, 20, 15, .28) 0, rgba(255, 255, 255, .22) 2.5%, rgba(33, 20, 15, 0) 7%); pointer-events: none; }
+.miro-catalog-card__book img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.miro-catalog-card:hover .miro-catalog-card__book { transform: translateY(-4px); }
+.miro-catalog-card__badge { position: absolute; z-index: 2; top: 18px; left: 10px; padding: 5px 11px; border-radius: 9999px; background: rgba(255, 255, 255, .94); color: #74472F; font-size: 12px; font-weight: 600; line-height: 1.2; box-shadow: 0 2px 8px rgba(33, 20, 15, .12); }
+.miro-catalog-card__body { display: flex; flex: 1; flex-direction: column; padding: 18px 4px 0; }
+.miro-catalog-card__title { margin: 0; font-size: 19px; font-weight: 600; line-height: 1.3; }
+.miro-catalog-card__title a { color: var(--miro-ink-deep, #21140F); text-decoration: none; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.miro-catalog-card__title a:hover { color: #74472F; }
+.miro-catalog-card__text { margin: 8px 0 0; color: var(--miro-slate, #756158); font-size: 14px; line-height: 1.5; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
+.miro-catalog-card__meta { margin: 10px 0 0; color: var(--miro-steel, #8C776E); font-size: 13px; font-weight: 600; }
+.miro-catalog-card__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 16px; }
+
+@media (max-width: 560px) {
+    .miro-catalog-grid { grid-template-columns: minmax(0, 300px); justify-content: center; }
+}

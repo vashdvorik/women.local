@@ -8,7 +8,21 @@
     $bareHero = $bare ?? false;
 @endphp
 
+@if(! empty($catalogs))
+    @push('styles')
+        <link rel="stylesheet" href="{{ asset_v('themes/public/'.($publicTheme ?? 'miro2').'/css/catalog.css') }}">
+    @endpush
+@endif
+
 @section('content')
+    @if(! empty($catalogs))
+        <div class="miro-catalog-grid">
+            @foreach($catalogs as $catalog)
+                @include('themes.public.miro2.partials.catalog-card', ['card' => $catalog])
+            @endforeach
+        </div>
+    @endif
+
     @if(count($cards))
         <div class="miro-events-grid">
             @foreach($cards as $card)
@@ -17,7 +31,7 @@
         </div>
 
         @include('themes.public.miro2.partials.pager', ['paginator' => $paginator])
-    @else
+    @elseif(empty($catalogs))
         <div class="miro-public-placeholder">
             <span class="miro-public-placeholder__mark">✦</span>
             <h2><span data-lang="ru">Раздел готовится</span><span data-lang="en">This section is coming soon</span><span data-lang="ro">Această secțiune este în pregătire</span></h2>

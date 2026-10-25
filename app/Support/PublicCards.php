@@ -50,6 +50,10 @@ class PublicCards
             'href' => route('media.catalogs.show', $catalog->slug),
             'external' => false,
             'play' => false,
+            // Для особой карточки каталога: число страниц, ссылка на PDF и пропорции обложки
+            'pages' => count($catalog->pagePaths()),
+            'pdf' => $catalog->pdfUrl(),
+            'ratio' => round((float) $catalog->page_ratio ?: 0.7071, 4),
         ];
     }
 

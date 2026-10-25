@@ -22,7 +22,7 @@ abstract class ContentPageController extends Controller
      * @param  array{eyebrow: array<string, string>, title: array<string, string>, intro: array<string, string>}  $hero
      * @param  list<array<string, mixed>>  $cards
      */
-    protected function listing(string $pageKey, array $hero, array $cards, ?LengthAwarePaginator $paginator = null, string $cardVariant = 'text', bool $bare = false): View
+    protected function listing(string $pageKey, array $hero, array $cards, ?LengthAwarePaginator $paginator = null, string $cardVariant = 'text', bool $bare = false, array $catalogs = []): View
     {
         return PublicThemeView::render('content-list', [
             'pageKey' => $pageKey,
@@ -32,6 +32,8 @@ abstract class ContentPageController extends Controller
             'cardVariant' => $cardVariant,
             // Без большой шапки: сразу карточки (название страницы остаётся скрытым заголовком h1).
             'bare' => $bare,
+            // Каталоги с перелистыванием (особые карточки над обычными, см. partials/catalog-card)
+            'catalogs' => $catalogs,
         ]);
     }
 

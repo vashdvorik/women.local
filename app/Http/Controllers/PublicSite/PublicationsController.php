@@ -24,14 +24,15 @@ class PublicationsController extends ContentPageController
             fn (Post $post) => PublicCards::post($post),
         );
 
-        // Каталоги с перелистыванием идут первыми на первой странице списка, дальше публикации
+        // Каталоги с перелистыванием: особые карточки над списком, только на первой странице
+        $catalogs = [];
+
         if ((int) request()->query('page', 1) <= 1) {
             $catalogs = PublicCache::remember('catalogs.cards', fn () => Catalog::with('translations')->published()->ordered()->get()
                 ->filter(fn (Catalog $catalog) => $catalog->hasPages())
                 ->map(fn (Catalog $catalog) => PublicCards::catalog($catalog))
                 ->values()
                 ->all());
-            $cards = [...$catalogs, ...$cards];
         }
 
         return $this->listing('publications', [
@@ -42,7 +43,7 @@ class PublicationsController extends ContentPageController
                 'Catalogues, brochures and other materials published by the organisation.',
                 'Cataloage, broșuri și alte materiale publicate de organizație.'
             ),
-        ], $cards, $posts);
+        ], $cards, $posts, catalogs: $catalogs);
     }
 
     public function show(Request $request, string $post): View
