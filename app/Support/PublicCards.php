@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Models\Catalog;
 use App\Models\Album;
 use App\Models\Post;
 use App\Models\Project;
@@ -31,6 +32,22 @@ class PublicCards
             'title' => self::field($post, 'title'),
             'excerpt' => self::field($post, 'excerpt'),
             'href' => url('media/publications/'.$post->slug),
+            'external' => false,
+            'play' => false,
+        ];
+    }
+
+    /** Каталог с перелистыванием: карточка в списке «Публикации», ведёт на страницу просмотра. @return array<string, mixed> */
+    public static function catalog(Catalog $catalog): array
+    {
+        return [
+            'image' => $catalog->coverUrl(),
+            'badge' => ['ru' => 'Каталог', 'en' => 'Catalogue', 'ro' => 'Catalog'],
+            'badge_style' => null,
+            'date' => null,
+            'title' => self::field($catalog, 'title'),
+            'excerpt' => self::field($catalog, 'description'),
+            'href' => route('media.catalogs.show', $catalog->slug),
             'external' => false,
             'play' => false,
         ];

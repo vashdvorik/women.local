@@ -59,7 +59,6 @@
             <div class="miro-about__grid">
                 @foreach($content['goals']['items'] as $goal)
                     <article class="miro-about__card">
-                        <span class="miro-about__card-num">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                         <span class="miro-about__icon">{!! $icon($goal['icon']) !!}</span>
                         <h3>{{ $tri($goal['title']) }}</h3>
                         <p>{{ $tri($goal['text']) }}</p>

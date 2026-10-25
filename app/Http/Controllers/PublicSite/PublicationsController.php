@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\PublicSite;
 
+use App\Models\Catalog;
 use App\Models\Post;
+use App\Support\PublicCache;
 use App\Support\Locales;
 use App\Support\PublicCards;
 use Illuminate\Contracts\View\View;
@@ -21,6 +23,16 @@ class PublicationsController extends ContentPageController
             fn () => Post::with(['translations', 'tag.translations'])->published()->orderByDesc('published_at'),
             fn (Post $post) => PublicCards::post($post),
         );
+
+        // Каталоги с перелистыванием идут первыми на первой странице списка, дальше публикации
+        if ((int) request()->query('page', 1) <= 1) {
+            $catalogs = PublicCache::remember('catalogs.cards', fn () => Catalog::with('translations')->published()->ordered()->get()
+                ->filter(fn (Catalog $catalog) => $catalog->hasPages())
+                ->map(fn (Catalog $catalog) => PublicCards::catalog($catalog))
+                ->values()
+                ->all());
+            $cards = [...$catalogs, ...$cards];
+        }
 
         return $this->listing('publications', [
             'eyebrow' => $this->tri('Медиатека', 'Media library', 'Mediatecă'),

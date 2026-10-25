@@ -1,6 +1,25 @@
 {
+  "node_modules/pdfjs-dist/build/pdf.mjs": {
+    "file": "assets/pdf-gh-BrLFn.js",
+    "name": "pdf",
+    "src": "node_modules/pdfjs-dist/build/pdf.mjs",
+    "isDynamicEntry": true
+  },
+  "node_modules/pdfjs-dist/build/pdf.worker.mjs": {
+    "file": "assets/pdf.worker-BgryrOlp.mjs",
+    "src": "node_modules/pdfjs-dist/build/pdf.worker.mjs"
+  },
+  "node_modules/pdfjs-dist/build/pdf.worker.mjs?url": {
+    "file": "assets/pdf.worker--xMKpqib.js",
+    "name": "pdf.worker",
+    "src": "node_modules/pdfjs-dist/build/pdf.worker.mjs?url",
+    "isDynamicEntry": true,
+    "assets": [
+      "assets/pdf.worker-BgryrOlp.mjs"
+    ]
+  },
   "resources/css/app.css": {
-    "file": "assets/app-Tjj28Qfw.css",
+    "file": "assets/app-CkfVVJnN.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -9,10 +28,14 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-joasAEoj.js",
+    "file": "assets/app-Bm9iP0-s.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
+    "dynamicImports": [
+      "node_modules/pdfjs-dist/build/pdf.mjs",
+      "node_modules/pdfjs-dist/build/pdf.worker.mjs?url"
+    ],
     "css": [
       "assets/app-D0aDPu-n.css"
     ]

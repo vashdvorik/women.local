@@ -191,7 +191,7 @@ final class AboutContent
                 ],
                 'links' => [
                     'regulations' => self::t('Положение о Гала Премии', 'Regulations of the Gala Award', 'Regulamentul Gala-premiului'),
-                    'photos' => self::t('Фото с церемоний', 'Photos from the ceremonies', 'Fotografii de la ceremonii'),
+                    'photos' => self::t('Фотогалерея', 'Photo gallery', 'Galerie foto'),
                 ],
             ],
 

@@ -4,6 +4,8 @@ namespace App\Support;
 
 use App\Models\Album;
 use App\Models\AlbumTranslation;
+use App\Models\Catalog;
+use App\Models\CatalogTranslation;
 use App\Models\Event;
 use App\Models\EventTranslation;
 use App\Models\Expert;
@@ -62,6 +64,7 @@ final class PublicCache
         SiteOpportunity::class, SiteOpportunityTranslation::class,
         Project::class, ProjectTranslation::class,
         Video::class, VideoTranslation::class,
+        Catalog::class, CatalogTranslation::class,
         Tag::class, TagTranslation::class,
     ];
 

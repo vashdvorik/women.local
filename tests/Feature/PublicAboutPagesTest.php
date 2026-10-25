@@ -52,7 +52,8 @@ class PublicAboutPagesTest extends TestCase
     {
         $html = $this->get(route('about.priorities'))->assertOk()->getContent();
 
-        $this->assertSame(6, substr_count($html, 'class="miro-about__card-num"'), 'шесть целей по Положению');
+        $this->assertStringNotContainsString('miro-about__card-num', $html, 'порядковых номеров у целей нет');
+        $this->assertSame(10, substr_count($html, 'class="miro-about__card"'), 'шесть целей по Положению и четыре карточки основы');
         $this->assertSame(5, substr_count($html, 'class="miro-about__principle"'), 'пять принципов из п. 1.4');
         $this->assertSame(4, substr_count($html, 'class="miro-about__card"') - 6, 'четыре карточки основы: агентство и партнёры');
         $this->assertSame(12, substr_count($html, 'miro-about__chip">'), 'шесть видов участниц (п. 1.3) и шесть форм партнёрства (п. 3.4)');

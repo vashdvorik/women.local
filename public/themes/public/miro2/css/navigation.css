@@ -827,3 +827,8 @@ html.lite .miro-directions__grid > .miro-direction-card::after { display: none; 
 
 /* Фото экспертов на главной квадратные, как на странице «Эксперты»: голова в той же позиции и не обрезается */
 .miro-member-card img { aspect-ratio: 1 / 1; object-position: center top; }
+
+/* Контакты: заголовок «Напишите туда, где вам удобно» на компьютере в одну строку */
+@media (min-width: 1024px) {
+    .miro-contact-section h2 { max-width: none; }
+}

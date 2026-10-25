@@ -86,6 +86,7 @@ Route::get('/media/photos/full/{path}', [PublicSite\AlbumPhotoController::class,
 Route::get('/media/photos/{album}', [PublicSite\AlbumsController::class, 'show'])->name('media.photos.show');
 Route::get('/media/videos', PublicSite\VideosController::class)->name('media.videos');
 Route::get('/media/publications', [PublicSite\PublicationsController::class, 'index'])->name('media.publications');
+Route::get('/media/publications/catalog/{catalog}', PublicSite\CatalogsController::class)->name('media.catalogs.show');
 Route::get('/media/publications/{post}', [PublicSite\PublicationsController::class, 'show'])->name('media.publications.show');
 
 // Форма «Связаться с нами» на странице «Контакты»: письмо на почту команды и запись в админке («Обращения»).
@@ -231,6 +232,16 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::put('videos/{video}', [Admin\VideoController::class, 'update'])->name('videos.update');
         Route::delete('videos/{video}', [Admin\VideoController::class, 'destroy'])->name('videos.destroy');
         Route::post('videos/{video}/move', [Admin\VideoController::class, 'move'])->name('videos.move');
+
+        // Каталоги с перелистыванием: страницы режет из PDF браузер администратора и присылает по одной (catalogs/page).
+        Route::get('catalogs', [Admin\CatalogController::class, 'index'])->name('catalogs.index');
+        Route::post('catalogs/reorder', [Admin\CatalogController::class, 'reorder'])->name('catalogs.reorder');
+        Route::post('catalogs/page', [Admin\CatalogController::class, 'page'])->name('catalogs.page');
+        Route::get('catalogs/create', [Admin\CatalogController::class, 'create'])->name('catalogs.create');
+        Route::post('catalogs', [Admin\CatalogController::class, 'store'])->name('catalogs.store');
+        Route::get('catalogs/{catalog}/edit', [Admin\CatalogController::class, 'edit'])->name('catalogs.edit');
+        Route::put('catalogs/{catalog}', [Admin\CatalogController::class, 'update'])->name('catalogs.update');
+        Route::delete('catalogs/{catalog}', [Admin\CatalogController::class, 'destroy'])->name('catalogs.destroy');
 
         // Карточки публичного сайта: эксперты и события (плоские карточки с переводами, как проекты).
         Route::get('experts', [Admin\ExpertController::class, 'index'])->name('experts.index');

@@ -10,6 +10,7 @@ import './video-cover';
 import './image-field';
 import './sidebar';
 import './row-reorder';
+import './catalog-pages';
 import './ai-settings';
 import './bot-messages';
 

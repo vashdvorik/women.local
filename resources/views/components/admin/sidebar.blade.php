@@ -17,7 +17,7 @@
         request()->routeIs('admin.projects.*') => 'projects',
         request()->routeIs('admin.opportunities.*') => 'opportunities',
         request()->routeIs('admin.experts.*') => 'experts',
-        request()->routeIs('admin.albums.*'), request()->routeIs('admin.videos.*'), request()->routeIs('admin.posts.*') => 'media',
+        request()->routeIs('admin.albums.*'), request()->routeIs('admin.videos.*'), request()->routeIs('admin.posts.*'), request()->routeIs('admin.catalogs.*') => 'media',
         default => null,
     };
 
@@ -169,6 +169,14 @@
                 <a href="{{ route('admin.posts.create') }}"
                    class="nav-sub @if($isCreate('admin.posts.create')) nav-sub--active @endif">
                     <x-admin.nav-icon name="plus" /><span>{{ __('Добавить публикацию') }}</span>
+                </a>
+                <a href="{{ route('admin.catalogs.index') }}"
+                   class="nav-sub @if($isList('admin.catalogs')) nav-sub--active @endif">
+                    <x-admin.nav-icon name="news" /><span>{{ __('Все каталоги') }}</span>
+                </a>
+                <a href="{{ route('admin.catalogs.create') }}"
+                   class="nav-sub @if($isCreate('admin.catalogs.create')) nav-sub--active @endif">
+                    <x-admin.nav-icon name="plus" /><span>{{ __('Добавить каталог') }}</span>
                 </a>
             </div>
 

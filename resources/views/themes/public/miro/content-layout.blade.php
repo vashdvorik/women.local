@@ -83,5 +83,6 @@
     <script defer src="{{ asset_v('themes/public/'.$theme.'/js/video-player.js') }}"></script>
     {{-- Кнопка «Смотреть ещё» (там, где есть [data-load-more], например на странице «Фото»). --}}
     <script defer src="{{ asset_v('themes/public/'.$theme.'/js/load-more.js') }}"></script>
+    @stack('scripts')
 </body>
 </html>

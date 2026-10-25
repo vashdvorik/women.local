@@ -1,0 +1,28 @@
+/* Каталог с перелистыванием (js/catalog.js). Книга растягивается по ширине колонки; под ней панель управления. */
+.miro-catalog__lead { max-width: 720px; margin: 0 0 24px; color: var(--miro-slate); font-size: 17px; line-height: 1.6; }
+
+.miro-flip { margin: 8px auto 28px; }
+.miro-flip__stage { display: flex; justify-content: center; width: 100%; padding: 8px 0 4px; }
+.miro-flip__fit { width: 100%; max-width: min(1280px, calc((100vh - 200px) * var(--r, .7071) * 2)); max-width: min(1280px, calc((100svh - 200px) * var(--r, .7071) * 2)); margin: 0 auto; }
+.miro-flip__book { width: 100%; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.miro-flip__page { overflow: hidden; background: #fff; }
+.miro-flip__page img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; background: #fff; }
+.miro-flip__first { display: block; max-width: 420px; width: 100%; margin: 0 auto; border-radius: 8px; box-shadow: 0 14px 34px rgba(33, 20, 15, .16); }
+
+.miro-flip__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; margin-top: 18px; }
+.miro-flip__bar[hidden] { display: none; }
+.miro-flip__count { min-width: 92px; text-align: center; color: var(--miro-ink-deep); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.miro-flip__btn { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 44px; padding: 0 16px; border: 1px solid var(--miro-hairline-strong, #D8C5BA); border-radius: 9999px; background: #fff; color: var(--miro-ink-deep); font: inherit; font-size: 14px; font-weight: 500; line-height: 1; cursor: pointer; text-decoration: none; transition: border-color .2s ease, background-color .2s ease; }
+.miro-flip__btn:hover { border-color: #74472F; background: #FAF2EE; }
+.miro-flip__btn:focus-visible { outline: 2px solid #74472F; outline-offset: 2px; }
+.miro-flip__btn--text { padding: 0 20px; }
+.miro-flip__btn[hidden] { display: none; }
+
+/* На весь экран: книга по центру на светлом фоне, панель остаётся под ней */
+.miro-flip:fullscreen { display: flex; flex-direction: column; justify-content: center; margin: 0; padding: 16px; background: #FAF2EE; }
+.miro-flip:fullscreen .miro-flip__fit { max-width: min(100vw - 32px, calc((100vh - 120px) * var(--r, .7071) * 2)); }
+
+@media (max-width: 767px) {
+    .miro-flip__bar { gap: 8px; }
+    .miro-flip__btn--text { padding: 0 14px; }
+}
