@@ -128,10 +128,10 @@
     }
     /* Иконки наследуют цвет пункта (muted / ink при наведении / accent на активном). */
 
-    /* Сворачивание группы: max-height подобран под самую длинную группу («Медиатека», 6 пунктов). */
+    /* Сворачивание группы: max-height подобран под самую длинную группу («Медиатека», 8 пунктов по ~2,3rem). */
     .nav-collapsible {
         overflow: hidden;
-        max-height: 14rem;
+        max-height: 20rem;
         transition: max-height 220ms ease;
     }
     .nav-collapsible--closed { max-height: 0; }
