@@ -824,3 +824,6 @@ html.lite .miro-directions__grid > .miro-direction-card::after { display: none; 
     .miro-landing-page .miro-hero--image .miro-hero__grid { display: flex; flex: 1 1 auto; flex-direction: column; justify-content: flex-end; }
     .miro-landing-page .miro-hero--image .miro-hero__content { padding-top: 40px; padding-bottom: 28px; }
 }
+
+/* Фото экспертов на главной квадратные, как на странице «Эксперты»: голова в той же позиции и не обрезается */
+.miro-member-card img { aspect-ratio: 1 / 1; object-position: center top; }

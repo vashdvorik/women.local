@@ -167,7 +167,7 @@
                 @endforeach
             </div>
 
-            <a href="https://t.me/WomenComBot?start=login" id="tg-login-btn" target="_blank"
+            <a href="https://t.me/WomenComBot?start=login" id="tg-login-btn" target="_blank" rel="noopener"
                aria-label="{{ __('account.login.open_bot') }}"
                class="account-login-button inline-flex w-full items-center justify-center gap-2.5 rounded-xl px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-px hover:shadow-md">
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m21 3-6.7 18-3.8-7.5L3 9.7 21 3Zm0 0L10.5 13.5"/></svg>

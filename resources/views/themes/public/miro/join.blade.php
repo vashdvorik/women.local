@@ -136,7 +136,7 @@
                     <h2 class="miro-about__title">{{ $tri($content['cabinet']['title']) }}</h2>
                     <p class="miro-about__lead">{{ $tri($content['cabinet']['intro']) }}</p>
                     <div class="miro-about__actions">
-                        <a href="{{ route('account.login') }}" class="miro-button miro-button--secondary">{{ $tri($content['cabinet']['login']) }}</a>
+                        <a href="{{ route('account.login') }}" target="_blank" rel="noopener" class="miro-button miro-button--secondary">{{ $tri($content['cabinet']['login']) }}</a>
                     </div>
                 </div>
                 <figure class="miro-about__figure miro-about__figure--plain">
@@ -204,7 +204,7 @@
                 <p>{{ $tri($content['cta']['text']) }}</p>
                 <div class="miro-about__actions">
                     <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button miro-button--pink">{{ $tri($content['apply']) }}</a>
-                    <a href="{{ route('account.login') }}" class="miro-button miro-about__ghost">{{ $tri($content['cabinet']['login']) }}</a>
+                    <a href="{{ route('account.login') }}" target="_blank" rel="noopener" class="miro-button miro-about__ghost">{{ $tri($content['cabinet']['login']) }}</a>
                 </div>
             </div>
         </div>

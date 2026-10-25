@@ -254,4 +254,4 @@ body.miro-lightbox-open { overflow: hidden; }
 }
 
 /* Кнопка «Смотреть альбом» под первыми рядами фото в списке альбомов */
-.miro-wall__more { margin: 24px 0 0; }
+.miro-wall__more { margin: 24px 0 0; text-align: right; }

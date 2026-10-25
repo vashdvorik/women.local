@@ -80,7 +80,7 @@
                     <div class="miro-public-cta">
                         <h2><span data-lang="ru">Готовы присоединиться?</span><span data-lang="en">Ready to join?</span><span data-lang="ro">Ești gata să te alături?</span></h2>
                         <p><span data-lang="ru">Создайте профиль и начните находить свои связи и возможности.</span><span data-lang="en">Create your profile and start finding the right connections and opportunities.</span><span data-lang="ro">Creează-ți profilul și începe să găsești conexiunile și oportunitățile potrivite.</span></p>
-                        <a href="{{ route('account.login') }}" class="miro-button miro-button--primary"><span data-lang="ru">Начать регистрацию</span><span data-lang="en">Start registration</span><span data-lang="ro">Începe înregistrarea</span></a>
+                        <a href="{{ route('account.login') }}" target="_blank" rel="noopener" class="miro-button miro-button--primary"><span data-lang="ru">Начать регистрацию</span><span data-lang="en">Start registration</span><span data-lang="ro">Începe înregistrarea</span></a>
                     </div>
                 @endif
             </div>
