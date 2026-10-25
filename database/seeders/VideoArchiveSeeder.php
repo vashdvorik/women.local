@@ -29,6 +29,9 @@ class VideoArchiveSeeder extends Seeder
     /** Ключ настройки со списком загруженных видео (идентификаторы YouTube). */
     public const MARKER_KEY = 'videos_archive';
 
+    /** Файл с перечнем видео в database/seeders/data. */
+    protected const DATA_FILE = 'videos_archive.php';
+
     public function run(): void
     {
         $items = $this->items();
@@ -60,7 +63,7 @@ class VideoArchiveSeeder extends Seeder
                 $done[] = $id;
             }
 
-            SiteSetting::write(self::MARKER_KEY, ['keys' => array_values(array_unique($done))]);
+            SiteSetting::write(static::MARKER_KEY, ['keys' => array_values(array_unique($done))]);
         });
 
         // Под DatabaseSeeder события моделей отключены, и кеш публичных страниц сам не сбросился бы.
@@ -76,13 +79,13 @@ class VideoArchiveSeeder extends Seeder
      */
     protected function items(): array
     {
-        return array_values((array) require database_path('seeders/data/videos_archive.php'));
+        return array_values((array) require database_path('seeders/data/'.static::DATA_FILE));
     }
 
     /** @return list<string> */
     private function doneKeys(): array
     {
-        $stored = SiteSetting::read(self::MARKER_KEY, []);
+        $stored = SiteSetting::read(static::MARKER_KEY, []);
 
         return is_array($stored) ? array_values(array_map('strval', (array) ($stored['keys'] ?? []))) : [];
     }

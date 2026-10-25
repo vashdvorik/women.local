@@ -224,6 +224,7 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::delete('albums/{album}', [Admin\AlbumController::class, 'destroy'])->name('albums.destroy');
 
         Route::get('videos', [Admin\VideoController::class, 'index'])->name('videos.index');
+        Route::post('videos/reorder', [Admin\VideoController::class, 'reorder'])->name('videos.reorder');
         Route::get('videos/create', [Admin\VideoController::class, 'create'])->name('videos.create');
         Route::post('videos', [Admin\VideoController::class, 'store'])->name('videos.store');
         Route::get('videos/{video}/edit', [Admin\VideoController::class, 'edit'])->name('videos.edit');

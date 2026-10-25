@@ -30,6 +30,7 @@ class ContentSeeder extends Seeder
             ProjectSeeder::class,
             AlbumArchiveSeeder::class,
             VideoArchiveSeeder::class,
+            VideoCreativeSeeder::class,
             SiteOpportunitySeeder::class,
         ]);
 

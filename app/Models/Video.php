@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasTranslations;
+use App\Support\PublicCache;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Video extends Model
 {
@@ -39,5 +41,24 @@ class Video extends Model
     public function embedUrl(): string
     {
         return "https://www.youtube-nocookie.com/embed/{$this->youtube_id}?rel=0&modestbranding=1&playsinline=1";
+    }
+    /**
+     * Ручной порядок видео: приходит списком id в новом порядке (перетаскивание в админке). Видео, которых нет в списке,
+     * встают следом в прежнем порядке.
+     *
+     * @param  list<int>  $ids
+     */
+    public static function applyOrder(array $ids): void
+    {
+        DB::transaction(function () use ($ids) {
+            $ids = array_values(array_unique(array_map('intval', $ids)));
+            $rest = static::query()->whereNotIn('id', $ids)->orderBy('position')->orderBy('id')->pluck('id')->all();
+
+            foreach ([...$ids, ...$rest] as $index => $id) {
+                static::query()->whereKey($id)->update(['position' => $index + 1]);
+            }
+        });
+
+        PublicCache::flush();
     }
 }

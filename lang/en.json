@@ -1044,5 +1044,6 @@
     "Профиль виден другим участницам. Скройте его, если человек (администратор, спонсор, партнёр) должен быть внутри платформы, но оставаться незаметным.": "The profile is visible to other participants. Hide it if the person (an administrator, sponsor or partner) should be inside the platform but stay unseen.",
     "Адрес страницы проекта": "Project page address",
     "Текст страницы проекта :language": "Project page text :language",
-    "Добавьте текст и фото, и у проекта появится своя страница на сайте. Пока блоков нет, карточка ведёт по ссылке выше.": "Add text and photos and the project gets its own page on the site. While there are no blocks, the card leads to the link above."
+    "Добавьте текст и фото, и у проекта появится своя страница на сайте. Пока блоков нет, карточка ведёт по ссылке выше.": "Add text and photos and the project gets its own page on the site. While there are no blocks, the card leads to the link above.",
+    "Перетащите видео за значок слева (или нажмите стрелки), чтобы поменять порядок на сайте.": "Drag a video by the handle on the left (or use the arrows) to change the order on the site."
 }
