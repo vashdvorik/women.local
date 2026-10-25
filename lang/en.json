@@ -1041,5 +1041,8 @@
     "Профиль скрыт от других участниц.": "The profile is now hidden from other participants.",
     "Профиль снова виден другим участницам.": "The profile is visible to other participants again.",
     "Профиль скрыт: другие участницы не видят его в каталоге, поиске, рекомендациях и ИИ-помощнике, а публиковать инициативы он не может. Рассылки он получает.": "The profile is hidden: other participants do not see it in the directory, search, recommendations or the AI assistant, and the person cannot publish initiatives. They still receive broadcasts.",
-    "Профиль виден другим участницам. Скройте его, если человек (администратор, спонсор, партнёр) должен быть внутри платформы, но оставаться незаметным.": "The profile is visible to other participants. Hide it if the person (an administrator, sponsor or partner) should be inside the platform but stay unseen."
+    "Профиль виден другим участницам. Скройте его, если человек (администратор, спонсор, партнёр) должен быть внутри платформы, но оставаться незаметным.": "The profile is visible to other participants. Hide it if the person (an administrator, sponsor or partner) should be inside the platform but stay unseen.",
+    "Адрес страницы проекта": "Project page address",
+    "Текст страницы проекта :language": "Project page text :language",
+    "Добавьте текст и фото, и у проекта появится своя страница на сайте. Пока блоков нет, карточка ведёт по ссылке выше.": "Add text and photos and the project gets its own page on the site. While there are no blocks, the card leads to the link above."
 }

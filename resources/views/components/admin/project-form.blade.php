@@ -1,12 +1,15 @@
-@props(['project', 'action', 'method'])
+@props(['project', 'editor', 'action', 'method'])
 
 @php
     $langs = ['ru' => __('по-русски'), 'ro' => __('по-румынски'), 'en' => __('по-английски')];
 @endphp
 
-<form method="POST" action="{{ $action }}" class="form-column space-y-6">
+<form method="POST" action="{{ $action }}" class="form-column space-y-6" x-data="eventEditor(@js($editor))">
     @csrf
     @if($method !== 'POST') @method($method) @endif
+    @foreach(array_keys($langs) as $l)
+        <input type="hidden" name="translations[{{ $l }}][content]" :value="serialized.{{ $l }}">
+    @endforeach
 
     <x-forms.error-summary />
 
@@ -25,6 +28,18 @@
                    placeholder="https://…"
                    :hint="__('Полный адрес сайта, где проект описан подробнее. Откроется в новой вкладке.')" />
 
+    <x-forms.field name="slug" :label="__('Адрес страницы проекта')"
+                   :value="$project->slug ?? ''" placeholder="zhenskoe-liderstvo"
+                   :hint="__('Нижний регистр, дефисы вместо пробелов. Формируется из русского названия, если не заполнить.')" />
+
+    @if($project->exists && filled($project->slug))
+        <p class="field-hint">
+            {{ __('Страница на сайте:') }}
+            <a href="{{ route('projects.show', ['project' => $project->slug]) }}" target="_blank" rel="noopener" class="table-link">/projects/{{ $project->slug }}</a>
+            @unless($project->hasPage()) {{ __('(карточка ведёт на неё, когда появится текст)') }} @endunless
+        </p>
+    @endif
+
     @foreach($langs as $code => $label)
         <section class="border-t border-hairline pt-5">
             <h3 class="form-section-title">{{ __('Карточка :language', ['language' => $label]) }}@if($code === 'ru')<span class="text-danger"> *</span>@endif</h3>
@@ -41,6 +56,16 @@
                     <textarea id="proj_text_{{ $code }}" name="translations[{{ $code }}][text]" rows="4"
                               class="field-input @error('translations.'.$code.'.text') field-input--invalid @enderror">{{ old('translations.'.$code.'.text', $project->rawTranslation($code)?->text) }}</textarea>
                     @error('translations.'.$code.'.text')<p class="field-error">{{ $message }}</p>@enderror
+                </div>
+
+                <div class="space-y-2 pt-2">
+                    <p class="field-label">{{ __('Текст страницы проекта :language', ['language' => $label]) }}</p>
+                    @if($code === 'ru')
+                        <p class="field-hint">{{ __('Добавьте текст и фото, и у проекта появится своя страница на сайте. Пока блоков нет, карточка ведёт по ссылке выше.') }}</p>
+                    @else
+                        <p class="field-hint">{{ __('Блоки и фото общие для всех языков, переводится только текст. Если оставить пусто, покажется русский.') }}</p>
+                    @endif
+                    <x-admin.block-editor :locale="$code" />
                 </div>
             </div>
         </section>

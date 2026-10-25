@@ -738,3 +738,15 @@ html.lite .miro-hero__ambient { display: none; }
    слово. Названия «Woman’s Hub» и «Женщина Года» не разрываются: неразрывные пробелы ставит app/Http/Middleware/KeepNamesTogether. */
 .miro-page :is(h1, h2, h3, h4) { text-wrap: balance; }
 .miro-page :is(p, li, blockquote, figcaption) { text-wrap: pretty; }
+
+/* ---------- Карточки новостей, событий, проектов и возможностей: одинаковая высота текста ----------
+   Название не длиннее двух строк, описание не длиннее трёх (остальное заменяет многоточие), а кнопка «Подробнее» стоит у нижнего
+   края карточки: у соседних карточек строки и кнопки лежат на одной линии. Полный текст — на странице карточки. */
+.miro-event-card { display: flex; flex-direction: column; }
+.miro-event-card__body { display: flex; flex: 1 1 auto; flex-direction: column; }
+.miro-event-card h3 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.miro-event-card__body p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
+.miro-event-card__link { margin-top: auto; align-self: flex-start; }
+.miro-event-card__body > p + .miro-event-card__link { margin-top: auto; }
+.miro-event-card__body p { margin-bottom: 20px; }
+.miro-event-card__body p:last-child { margin-bottom: 0; }

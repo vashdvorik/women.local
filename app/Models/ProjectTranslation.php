@@ -13,7 +13,15 @@ class ProjectTranslation extends Model
         'title',
         'category',
         'text',
+        'content',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'content' => 'array',
+        ];
+    }
 
     public function project(): BelongsTo
     {

@@ -182,8 +182,9 @@ class PublicCards
             'date' => null,
             'title' => self::field($project, 'title'),
             'excerpt' => self::field($project, 'text'),
-            'href' => $project->url,
-            'external' => true,
+            // Своя страница проекта важнее внешней ссылки: на ней весь рассказ и фотографии
+            'href' => $project->hasPage() ? url('projects/'.$project->slug) : $project->url,
+            'external' => ! $project->hasPage(),
             'play' => false,
         ];
     }

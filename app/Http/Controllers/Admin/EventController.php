@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Actions\ResolveSlug;
 use App\Http\Controllers\Concerns\CreatesBroadcastDraft;
 use App\Http\Controllers\Concerns\ManagesFlatCards;
+use App\Http\Controllers\Concerns\SyncsPageContent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
 use App\Models\Event;
@@ -12,7 +13,6 @@ use App\Support\Blocks;
 use App\Support\CardTone;
 use App\Support\EventEditorData;
 use App\Support\Locales;
-use App\Support\TranslationStatus;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -22,6 +22,7 @@ class EventController extends Controller
 {
     use CreatesBroadcastDraft;
     use ManagesFlatCards;
+    use SyncsPageContent;
 
     private const TEXT_FIELDS = ['type', 'date_label', 'title', 'description'];
 
@@ -118,38 +119,5 @@ class EventController extends Controller
         $title = (string) $request->validated('translations.ru.title', '');
 
         return $this->slugger->handle($event, $request->validated('slug'), mb_substr($title, 0, 80));
-    }
-
-    /**
-     * Текст страницы новости. Структура блоков и картинки берутся из русской версии, в переводах
-     * сохраняется только их текст (Blocks::mergeTranslation): так же устроены публикации.
-     *
-     * @param  array<string, array<string, mixed>>  $input  translations из запроса, по языкам
-     */
-    private function syncContent(Event $event, array $input): void
-    {
-        $event->load('translations');
-
-        $primary = Blocks::canonical($input[Locales::PRIMARY]['content'] ?? [], Blocks::ARTICLE_KINDS);
-
-        foreach (Locales::ALL as $locale) {
-            $content = $locale === Locales::PRIMARY
-                ? $primary
-                : Blocks::mergeTranslation($primary, $input[$locale]['content'] ?? []);
-
-            $row = $event->translations->firstWhere('locale', $locale);
-
-            if ($row) {
-                $row->update(['content' => $content ?: null]);
-
-                continue;
-            }
-
-            // У языка нет карточки (название и описание пустые): строку создаём, только если в блоках
-            // есть переведённый текст, иначе перевод, набранный в редакторе текста, потерялся бы.
-            if ($locale !== Locales::PRIMARY && TranslationStatus::hasText($content)) {
-                $event->translations()->create(['locale' => $locale, 'content' => $content]);
-            }
-        }
     }
 }

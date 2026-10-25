@@ -3,17 +3,17 @@
 namespace App\Support;
 
 use App\Actions\StoreUploadedFile;
-use App\Models\Event;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * Данные для редактора текста новости (Alpine `eventEditor`): блоки на трёх языках и настройки загрузки
+ * Данные для редактора текста новости и проекта (Alpine `eventEditor`): блоки на трёх языках и настройки загрузки
  * картинок и PDF. Если форма вернулась с ошибкой, блоки берутся из присланного, а не из базы, иначе всё
  * набранное пропало бы вместе с перезагрузкой страницы.
  */
 class EventEditorData
 {
     /** @return array<string, mixed> */
-    public static function make(Event $event): array
+    public static function make(Model $event): array
     {
         $saved = fn (string $locale): array => $event->exists ? ($event->rawTranslation($locale)?->content ?? []) : [];
 

@@ -281,3 +281,7 @@ html.miro-page :is(.miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, 
 html.miro-page :is(.miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-public-cta, .miro-about__cta) .miro-button:not(.miro-button--pink):not(.miro-button--accent):not(.miro-button--on-dark):not(.miro-button--primary),
 html.miro-page :is(.miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-public-cta, .miro-about__cta) .miro-button:not(.miro-button--pink):not(.miro-button--accent):not(.miro-button--on-dark):not(.miro-button--primary) span { border-color: var(--miro2-caramel-deep) !important; color: var(--miro2-ink) !important; }
 html.miro-page :is(.miro-cta, .miro-story, .miro-events-cta, .miro-members-cta, .miro-partners-cta, .miro-about-bridge, .miro-public-cta, .miro-about__cta) .miro-button:not(.miro-button--pink):not(.miro-button--accent):not(.miro-button--on-dark):not(.miro-button--primary):hover { background: rgba(255, 255, 255, .6); }
+
+/* При наведении на всю карточку события старое правило заливало кнопку «Подробнее» почти белым, и она пропадала на белой карточке.
+   Теперь кнопка остаётся карамельной и чуть темнеет. */
+html.miro-page #events .miro-event-card--linked:hover .miro-event-card__link { border-color: var(--miro2-btn-hover); background: var(--miro2-btn-hover); color: var(--miro2-ink); }

@@ -75,6 +75,7 @@ Route::get('/gala/regulations', fn () => PublicThemeView::render('document', [
 
 // Материалы из админки (тема miro): проекты, возможности, медиатека.
 Route::get('/projects', PublicSite\ProjectsController::class)->name('projects');
+Route::get('/projects/{project}', [PublicSite\ProjectsController::class, 'show'])->name('projects.show');
 Route::get('/opportunities', [PublicSite\OpportunitiesController::class, 'index'])->name('opportunities');
 Route::get('/opportunities/{opportunity}', [PublicSite\OpportunitiesController::class, 'show'])->name('opportunities.show');
 Route::get('/media/photos', [PublicSite\AlbumsController::class, 'index'])->name('media.photos');

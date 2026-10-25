@@ -17,6 +17,7 @@ class ProjectRequest extends FormRequest
         $rules = [
             'image_path' => ['nullable', 'string'],
             'url' => ['nullable', 'url', 'max:2000'],
+            'slug' => ['nullable', 'string', 'max:191', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'],
             'is_published' => ['boolean'],
             'translations' => ['array'],
         ];
@@ -25,6 +26,7 @@ class ProjectRequest extends FormRequest
             $rules["translations.$locale.title"] = ['nullable', 'string', 'max:191'];
             $rules["translations.$locale.category"] = ['nullable', 'string', 'max:120'];
             $rules["translations.$locale.text"] = ['nullable', 'string', 'max:2000'];
+            $rules["translations.$locale.content"] = ['nullable', 'array'];
         }
 
         // Русский заголовок обязателен (AGENTS.md §13).
@@ -38,11 +40,22 @@ class ProjectRequest extends FormRequest
         return [
             'translations.ru.title' => __('название по-русски'),
             'url' => __('ссылка на сайт проекта'),
+            'slug' => __('адрес страницы'),
         ];
     }
 
     protected function prepareForValidation(): void
     {
-        $this->merge(['is_published' => $this->boolean('is_published')]);
+        // Блоки текста приходят строкой JSON из скрытого поля: разбираем до валидации
+        $translations = (array) $this->input('translations', []);
+
+        foreach ($translations as $locale => $data) {
+            if (isset($data['content']) && is_string($data['content'])) {
+                $decoded = json_decode($data['content'], true);
+                $translations[$locale]['content'] = is_array($decoded) ? $decoded : [];
+            }
+        }
+
+        $this->merge(['is_published' => $this->boolean('is_published'), 'translations' => $translations]);
     }
 }
