@@ -775,20 +775,6 @@ html.lite .miro-hero__ambient { display: none; }
     .miro-direction-card--support .miro-support-hand { transition: transform .6s cubic-bezier(.22, 1, .36, 1); }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    /* Появление: карточка выезжает со сдвигом, иконка вырастает с пружинкой чуть позже карточки */
-    html.motion-ready .miro-directions__grid:not(.is-visible) .miro-direction-card__icon { scale: .45; opacity: 0; }
-    html.motion-ready .miro-directions__grid.is-visible > .miro-direction-card:nth-child(n) { --enter: 0s; transition: opacity .6s cubic-bezier(.22, 1, .36, 1) var(--enter), transform .6s cubic-bezier(.22, 1, .36, 1) var(--enter), translate .5s cubic-bezier(.22, 1, .36, 1), scale .5s cubic-bezier(.22, 1, .36, 1), box-shadow .5s ease, background-color .25s ease, border-color .25s ease; }
-    html.motion-ready .miro-directions__grid.is-visible .miro-direction-card__icon { transition: opacity .3s ease calc(var(--enter, 0s) + .2s), background-color .3s ease, color .3s ease, scale .5s cubic-bezier(.22, 1, .36, 1), box-shadow .3s ease; }
-    html.motion-ready .miro-directions__grid.is-visible > .miro-direction-card:nth-child(2) { --enter: .08s; }
-    html.motion-ready .miro-directions__grid.is-visible > .miro-direction-card:nth-child(3) { --enter: .16s; }
-    html.motion-ready .miro-directions__grid.is-visible > .miro-direction-card:nth-child(4) { --enter: .24s; }
-    html.motion-ready .miro-directions__grid.is-visible > .miro-direction-card:nth-child(5) { --enter: .32s; }
-    html.motion-ready .miro-directions__grid.is-visible > .miro-direction-card:nth-child(6) { --enter: .4s; }
-    html.motion-ready .miro-directions__grid.is-visible > .miro-direction-card:nth-child(7) { --enter: .48s; }
-    html.motion-ready .miro-directions__grid.is-visible > .miro-direction-card:nth-child(8) { --enter: .56s; }
-}
-
 @media (prefers-reduced-motion: reduce) {
     .miro-directions__grid > .miro-direction-card, .miro-directions__grid .miro-direction-card__icon, .miro-directions__grid > .miro-direction-card::after { transition: none; }
     .miro-directions__grid > .miro-direction-card:hover { translate: none; scale: none; }
@@ -830,3 +816,11 @@ html.lite .miro-directions__grid > .miro-direction-card::after { display: none; 
 
 }
 
+
+/* Телефон: первый экран занимает всю высоту окна под шапкой, текст и кнопки прижаты к нижнему краю (над волной) */
+@media (max-width: 767px) {
+    .miro-landing-page .miro-hero--image { display: flex; flex-direction: column; min-height: calc(100vh - 69px); min-height: calc(100svh - 69px); }
+    .miro-landing-page .miro-hero--image > .miro-container { display: flex; flex: 1 1 auto; flex-direction: column; }
+    .miro-landing-page .miro-hero--image .miro-hero__grid { display: flex; flex: 1 1 auto; flex-direction: column; justify-content: flex-end; }
+    .miro-landing-page .miro-hero--image .miro-hero__content { padding-top: 40px; padding-bottom: 28px; }
+}
