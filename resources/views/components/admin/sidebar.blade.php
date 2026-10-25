@@ -7,6 +7,7 @@
     // «Добавить …» подсвечивается, когда открыта форма создания; список —
     // на index и на редактировании.
     $isCreate = fn (string $name) => request()->routeIs($name);
+    $showPublications = false;
     $isList = fn (string $prefix) => request()->routeIs($prefix.'.index') || request()->routeIs($prefix.'.edit');
 
     // Группа с активной страницей раскрывается принудительно (группы есть только у «Внешнего сайта»).
@@ -162,6 +163,9 @@
                    class="nav-sub @if($isCreate('admin.videos.create')) nav-sub--active @endif">
                     <x-admin.nav-icon name="plus" /><span>{{ __('Добавить видео') }}</span>
                 </a>
+                {{-- Публикации (статьи) пока не используются на сайте: пункты скрыты, страницы /admin/news по-прежнему открываются
+                     по прямой ссылке. Чтобы вернуть пункты в меню, поставьте $showPublications = true вверху файла. --}}
+                @if($showPublications)
                 <a href="{{ route('admin.posts.index') }}"
                    class="nav-sub @if($isList('admin.posts')) nav-sub--active @endif">
                     <x-admin.nav-icon name="news" /><span>{{ __('Все публикации') }}</span>
@@ -170,6 +174,7 @@
                    class="nav-sub @if($isCreate('admin.posts.create')) nav-sub--active @endif">
                     <x-admin.nav-icon name="plus" /><span>{{ __('Добавить публикацию') }}</span>
                 </a>
+                @endif
                 <a href="{{ route('admin.catalogs.index') }}"
                    class="nav-sub @if($isList('admin.catalogs')) nav-sub--active @endif">
                     <x-admin.nav-icon name="news" /><span>{{ __('Все каталоги') }}</span>

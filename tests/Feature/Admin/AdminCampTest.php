@@ -25,7 +25,7 @@ class AdminCampTest extends TestCase
     }
 
     /** Пункты меню, которые есть только у лагеря «Внешний сайт». */
-    private const SITE_ONLY = ['Все публикации', 'Все новости', 'Все эксперты', 'Все проекты', 'Все фотоальбомы', 'Подписчики', 'Теги', 'Настройки сайта'];
+    private const SITE_ONLY = ['Все каталоги', 'Все новости', 'Все эксперты', 'Все проекты', 'Все фотоальбомы', 'Подписчики', 'Теги', 'Настройки сайта'];
 
     /** Пункты меню, которые есть только у лагеря «Кабинеты участниц». */
     private const CABINET_ONLY = ['Профили участниц', 'Посты участниц', 'Статистика', 'Настройки кабинетов'];
@@ -101,7 +101,7 @@ class AdminCampTest extends TestCase
         $this->assertDoesNotMatchRegularExpression('/camp-switch__tab--active[^>]*>\s*<span>Внешний сайт<\/span>/', $cabinets);
     }
 
-    public function test_publications_live_inside_the_media_library_group_like_on_the_public_site(): void
+    public function test_catalogues_live_inside_the_media_library_group_and_publications_are_hidden_for_now(): void
     {
         $content = $this->actingAsAdmin()->get(route('admin.dashboard'))->assertOk()->getContent();
 
@@ -112,12 +112,16 @@ class AdminCampTest extends TestCase
         $media = strpos($content, '<span>Медиатека</span>');
         $albums = strpos($content, '<span>Все фотоальбомы</span>');
         $videos = strpos($content, '<span>Все видео</span>');
-        $posts = strpos($content, '<span>Все публикации</span>');
+        $posts = strpos($content, '<span>Все каталоги</span>');
         $tags = strpos($content, '<span>Теги</span>');
 
         $this->assertNotFalse($media);
         $this->assertTrue($media < $albums && $albums < $videos && $videos < $posts && $posts < $tags,
-            'Порядок меню: Медиатека → фотоальбомы → видео → публикации → теги');
+            'Порядок меню: Медиатека → фотоальбомы → видео → каталоги → теги');
+
+        // Публикации пока не используются на сайте: пунктов меню нет, а страницы открываются по прямой ссылке
+        $this->assertStringNotContainsString('<span>Все публикации</span>', $content);
+        $this->assertStringNotContainsString('<span>Добавить публикацию</span>', $content);
     }
 
     public function test_site_menu_starts_with_news_projects_and_opportunities(): void

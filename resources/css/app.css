@@ -82,6 +82,13 @@
     }
     textarea.field-input { @apply h-auto py-2 leading-relaxed; }
 
+    /* Выбор файла: кнопка «Выберите файл» по центру строки и в стиле остальных кнопок админки. */
+    input[type="file"].field-input { @apply flex items-center py-0 text-ink-muted cursor-pointer; }
+    input[type="file"].field-input::file-selector-button {
+        @apply h-7 px-3 mr-3 text-ui text-ink bg-surface-sunken border border-hairline rounded-sm cursor-pointer;
+    }
+    input[type="file"].field-input:hover::file-selector-button { @apply border-accent; }
+
     .field-input--invalid { @apply border-danger focus:border-danger focus:ring-danger-soft; }
 
     /* Поле, содержимое которого уедет на сайт — набирается в 17px. */
