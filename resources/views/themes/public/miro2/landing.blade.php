@@ -24,7 +24,6 @@
     <link rel="stylesheet" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/css/landing.css') }}">
     <link rel="stylesheet" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/css/navigation.css') }}">
     <link rel="stylesheet" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/css/light.css') }}">
-    <link rel="stylesheet" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/css/hero-chat.css') }}">
 </head>
 <body class="miro-landing-page">
     @include('themes.public.miro2.partials.miro-header', ['miroCurrentPage' => 'home'])
@@ -116,41 +115,6 @@
                             {{-- Фото с запечённым растворением слева и цветокоррекцией (было: CSS-маска и четыре фильтра на каждом кадре) --}}
                             <img src="{{ asset_v('themes/public/miro2/images/bannerhero-light.webp') }}" alt="Women entrepreneurs collaborating around a laptop" width="1672" height="941" fetchpriority="high" decoding="async">
                         </div>
-                    </div>
-                    {{-- Переписка с Telegram-ботом поверх стола на фото: три сценария по кругу (App\Support\HeroChat, js/hero-chat.js).
-                         Стоит внизу справа, в одном ряду по высоте с текстом слева. Фона у блока нет, пузыри в стиле кабинета; без скрипта и при «уменьшить анимацию» в системе показан первый
-                         диалог целиком. Это пример, декоративный блок: для экранных дикторов он скрыт. --}}
-                    @php
-                        $chatTri = fn (array $text) => new \Illuminate\Support\HtmlString(collect(['ru', 'en', 'ro'])->map(fn ($l) => '<span data-lang="'.$l.'">'.e($text[$l]).'</span>')->implode(''));
-                    @endphp
-                    <div class="miro-hero-chat" data-hero-chat aria-hidden="true">
-                        @foreach(\App\Support\HeroChat::scenes() as $i => $scene)
-                            <div class="miro-hero-chat__scene{{ $i === 0 ? ' is-active' : '' }}">
-                                <div class="miro-hero-chat__msg miro-hero-chat__msg--you">
-                                    <div class="miro-hero-chat__bubble">
-                                        <p>{{ $chatTri($scene['question']) }}</p>
-                                    </div>
-                                </div>
-                                <div class="miro-hero-chat__msg miro-hero-chat__msg--bot">
-                                    <span class="miro-hero-chat__avatar">AI</span>
-                                    <div class="miro-hero-chat__bubble">
-                                        <p>{{ $chatTri($scene['answer']) }}</p>
-                                        <span class="miro-hero-chat__dots"><i></i><i></i><i></i></span>
-                                    </div>
-                                </div>
-                                <div class="miro-hero-chat__msg miro-hero-chat__msg--bot miro-hero-chat__msg--card">
-                                    <span class="miro-hero-chat__avatar">AI</span>
-                                    <div class="miro-hero-chat__bubble">
-                                        <span class="miro-hero-chat__person">
-                                            <strong>{{ $chatTri($scene['person']['name']) }}</strong>
-                                            <span class="miro-hero-chat__match">{{ $scene['person']['match'] }}%</span>
-                                        </span>
-                                        <span class="miro-hero-chat__role">{{ $chatTri($scene['person']['role']) }}</span>
-                                        <span class="miro-hero-chat__note">{{ $chatTri($scene['person']['note']) }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
                     </div>
                     <svg class="miro-hero__bottom-curve" viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true">
                         <defs>
@@ -252,7 +216,7 @@
                 </div>
                 <figure class="miro-director-note__portrait">
                     <span class="miro-director-note__accent" aria-hidden="true"></span>
-                    <img src="{{ asset_v('themes/public/miro/images/director-valeria-close.webp') }}" alt="Валерия Зелинская">
+                    <img src="{{ asset_v('themes/public/miro2/images/director.webp') }}" alt="Валерия Зелинская">
                 </figure>
             </div>
         </section>
@@ -542,6 +506,5 @@
 
     <script defer src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/js/participants.js') }}"></script>
     <script defer src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/js/impact.js') }}"></script>
-    <script defer src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/js/hero-chat.js') }}"></script>
 </body>
 </html>

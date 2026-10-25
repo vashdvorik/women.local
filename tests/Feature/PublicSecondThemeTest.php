@@ -48,8 +48,8 @@ class PublicSecondThemeTest extends TestCase
             $miro = $this->files(public_path("themes/public/miro/{$kind}"));
             $miro2 = $this->files(public_path("themes/public/miro2/{$kind}"));
 
-            // miro2 — те же файлы плюс свои: light.css (светлый слой поверх тёмной палитры miro) и переписка с ботом на первом экране
-            $expected = $kind === 'css' ? [...$miro, 'light.css', 'hero-chat.css'] : [...$miro, 'hero-chat.js'];
+            // miro2 — те же файлы плюс свои: light.css (светлый слой поверх тёмной палитры miro)
+            $expected = $kind === 'css' ? [...$miro, 'light.css'] : $miro;
             sort($expected);
             $this->assertSame($expected, $miro2, $kind);
         }
@@ -71,58 +71,6 @@ class PublicSecondThemeTest extends TestCase
         // Светлая тема: шапка и подвал с цветным логотипом, не со светлым вариантом для тёмного фона
         $this->assertStringContainsString('images/brand/logo-platform.webp', $html);
         $this->assertStringNotContainsString('logo-platform-light.webp', $html);
-    }
-    public function test_the_hero_shows_a_decorative_bot_chat_with_three_scenes_in_three_languages(): void
-    {
-        SiteSetting::setLandingTheme('miro2');
-
-        $html = $this->get('/')->assertOk()->getContent();
-
-        $this->assertSame(1, substr_count($html, 'data-hero-chat'));
-        $this->assertMatchesRegularExpression('#<div class="miro-hero-chat" data-hero-chat aria-hidden="true">#', $html, 'для экранных дикторов блок скрыт');
-        $this->assertSame(3, substr_count($html, 'class="miro-hero-chat__scene'));
-        $this->assertSame(3, substr_count($html, 'class="miro-hero-chat__msg miro-hero-chat__msg--you"'));
-        $this->assertSame(3, substr_count($html, 'miro-hero-chat__msg--card'));
-        // Оба сообщения помощника подписаны аватаром «AI», как в кабинете, а не случайными буквами
-        $this->assertSame(6, substr_count($html, '<span class="miro-hero-chat__avatar">AI</span>'));
-        $this->assertSame(6, substr_count($html, 'miro-hero-chat__avatar'));
-        $this->assertMatchesRegularExpression('#themes/public/miro2/css/hero-chat\.css\?v=\d+#', $html);
-        $this->assertMatchesRegularExpression('#<script defer src="[^"]*/themes/public/miro2/js/hero-chat\.js\?v=\d+"#', $html);
-        // Без скрипта показан первый диалог: «взводит» блок только скрипт
-        $this->assertStringNotContainsString('is-armed', $html);
-
-        foreach (\App\Support\HeroChat::scenes() as $scene) {
-            foreach ([$scene['question'], $scene['answer'], $scene['person']['name'], $scene['person']['role'], $scene['person']['note']] as $text) {
-                $this->assertSame(['ru', 'en', 'ro'], array_keys($text));
-                foreach ($text as $value) {
-                    $this->assertNotSame('', trim($value));
-                }
-            }
-            $this->assertStringContainsString(e($scene['question']['ro']), $html);
-            $this->assertGreaterThan(0, $scene['person']['match']);
-        }
-    }
-
-    public function test_the_original_theme_has_no_bot_chat(): void
-    {
-        SiteSetting::setLandingTheme('miro');
-
-        $this->get('/')->assertOk()->assertDontSee('data-hero-chat', false);
-    }
-
-    public function test_the_chat_has_no_background_of_its_own_and_hides_where_the_photo_is_hidden(): void
-    {
-        $css = (string) file_get_contents(public_path('themes/public/miro2/css/hero-chat.css'));
-
-        // Сам блок и сцены лежат на фото без заливки: фон только у пузырей
-        preg_match('/html\.miro-page \.miro-hero-chat \{([^}]*)\}/', $css, $root);
-        $this->assertStringNotContainsString('background', $root[1]);
-        preg_match('/html\.miro-page \.miro-hero-chat__scene \{([^}]*)\}/', $css, $scene);
-        $this->assertStringNotContainsString('background', $scene[1]);
-
-        $this->assertStringContainsString('@media (max-width: 1279px) { html.miro-page .miro-hero-chat { display: none; } }', $css);
-        $this->assertStringNotContainsString('infinite', $css, 'в переписке нет бесконечных анимаций');
-        $this->assertStringContainsString('prefers-reduced-motion', (string) file_get_contents(public_path('themes/public/miro2/js/hero-chat.js')));
     }
     public function test_the_copy_does_not_point_back_at_the_original_theme(): void
     {
@@ -146,7 +94,7 @@ class PublicSecondThemeTest extends TestCase
         $this->assertMatchesRegularExpression('#themes/public/miro2/js/impact\.js\?v=\d+#', $html);
         // Фото первого экрана у темы своё (запечённое: растворение слева и цвет уже в файле), остальные картинки общие с miro
         $this->assertMatchesRegularExpression('#themes/public/miro2/images/bannerhero-light\.webp\?v=\d+#', $html);
-        $this->assertMatchesRegularExpression('#themes/public/miro/images/director-valeria-close\.webp\?v=\d+#', $html);
+        $this->assertMatchesRegularExpression('#themes/public/miro/images/director.webp\?v=\d+#', $html);
         $this->assertDoesNotMatchRegularExpression('#themes/public/miro2/images/(?!bannerhero-light)#', $html);
         $this->assertStringNotContainsString('themes/public/miro/css/', $html);
     }

@@ -794,7 +794,3 @@
 /* Секции ниже первого экрана браузер не рисует и не считает, пока до них не докрутили (длина страницы запоминается после первого показа) */
 .miro-landing-page main > :is(#members, #participants, #events, #benefits, #how-it-works, #register-cta, #impact, #partners-strip) { content-visibility: auto; contain-intrinsic-size: auto 720px; }
 .miro-landing-page .miro-footer { content-visibility: auto; contain-intrinsic-size: auto 360px; }
-
-/* Портрет руководителя показан целиком, в пропорциях фото 3:4: раньше рамка 4:5 срезала нижнюю часть кадра вместе с руками */
-.miro-director-note__portrait { height: auto; aspect-ratio: 3 / 4; }
-.miro-director-note__portrait img { object-position: center; }

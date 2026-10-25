@@ -102,7 +102,7 @@ class ProjectSeederTest extends TestCase
 
         $html = $this->get('/projects')->assertOk()->getContent();
         $this->assertStringContainsString('/projects/zhenskoe-liderstvo', $html);
-        $this->assertSame(10, substr_count($html, 'class="miro-event-card'));
+        $this->assertSame(10, substr_count($html, '<article class="miro-event-card'));
 
         $page = $this->get('/projects/zhenskoe-liderstvo')->assertOk()->getContent();
         $this->assertStringContainsString('Школа лидерства для женщин', $page);

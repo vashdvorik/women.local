@@ -223,7 +223,7 @@
                 </div>
                 <figure class="miro-director-note__portrait">
                     <span class="miro-director-note__accent" aria-hidden="true"></span>
-                    <img src="{{ asset_v('themes/public/miro/images/director-valeria-close.webp') }}" alt="Валерия Зелинская">
+                    <img src="{{ asset_v('themes/public/miro/images/director.webp') }}" alt="Валерия Зелинская">
                 </figure>
             </div>
         </section>

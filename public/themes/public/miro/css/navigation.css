@@ -750,3 +750,83 @@ html.lite .miro-hero__ambient { display: none; }
 .miro-event-card__body > p + .miro-event-card__link { margin-top: auto; }
 .miro-event-card__body p { margin-bottom: 20px; }
 .miro-event-card__body p:last-child { margin-bottom: 0; }
+
+/* Блок направлений: карточки по очереди выезжают, иконки «вспыхивают», при наведении карточка приподнимается,
+   по ней пробегает блик, иконка темнеет и играет по-своему, соседние карточки отступают. Только переходы (transition),
+   бесконечных анимаций нет; в режиме lite и при «уменьшить анимацию» остаётся спокойное наведение без движения. */
+.miro-directions__grid > .miro-direction-card { overflow: hidden; transition: translate .5s cubic-bezier(.22, 1, .36, 1), scale .5s cubic-bezier(.22, 1, .36, 1), opacity .35s ease, box-shadow .5s ease, background-color .25s ease, border-color .25s ease; }
+.miro-directions__grid > .miro-direction-card::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, .38) 50%, transparent 62%); transform: translate3d(-130%, 0, 0); transition: transform 1s cubic-bezier(.22, 1, .36, 1); }
+.miro-directions__grid .miro-direction-card__icon { transition: background-color .3s ease, color .3s ease, scale .5s cubic-bezier(.22, 1, .36, 1), box-shadow .3s ease; }
+.miro-directions__grid .miro-direction-card__icon > .ph:not(.miro-support-hand):not(.miro-support-symbol) { transition: transform .6s cubic-bezier(.22, 1, .36, 1); }
+
+@media (hover: hover) {
+    .miro-directions__grid > .miro-direction-card:hover { translate: 0 -4px; box-shadow: 0 12px 26px rgba(33, 20, 15, .11); z-index: 1; }
+    .miro-directions__grid > .miro-direction-card:hover::after { transform: translate3d(130%, 0, 0); }
+    .miro-directions__grid:has(.miro-direction-card:hover) > .miro-direction-card:not(:hover) { scale: .99; opacity: .82; }
+    .miro-directions__grid .miro-direction-card:hover .miro-direction-card__icon { background-color: #74472F; color: #FAEEE8; scale: 1.06; box-shadow: 0 6px 12px rgba(116, 71, 47, .22); }
+    .miro-direction-card--award:hover .ph-crown { transform: translateY(-2px) rotate(-5deg); }
+    .miro-direction-card--learning:hover .ph-graduation-cap { transform: translateY(-2px) rotate(5deg); }
+    .miro-direction-card--visibility:hover .ph { transform: rotate(-8deg) scale(1.05); }
+    .miro-direction-card--partnership:hover .ph { transform: scale(1.06); }
+    .miro-direction-card--business:hover .ph { transform: translateY(-2px); }
+    .miro-direction-card--community:hover .ph { transform: scale(1.05) rotate(3deg); }
+    .miro-direction-card--support:hover .miro-support-hand--left { transform: rotate(-14deg) translateX(1px); }
+    .miro-direction-card--support:hover .miro-support-hand--right { transform: rotate(14deg) scaleX(-1) translateX(1px); }
+    .miro-direction-card--support .miro-support-hand { transition: transform .6s cubic-bezier(.22, 1, .36, 1); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    /* Появление: карточка выезжает со сдвигом, иконка вырастает с пружинкой чуть позже карточки */
+    html.motion-ready .miro-directions__grid:not(.is-visible) .miro-direction-card__icon { scale: .45; opacity: 0; }
+    html.motion-ready .miro-directions__grid.is-visible > .miro-direction-card:nth-child(n) { --enter: 0s; transition: opacity .6s cubic-bezier(.22, 1, .36, 1) var(--enter), transform .6s cubic-bezier(.22, 1, .36, 1) var(--enter), translate .5s cubic-bezier(.22, 1, .36, 1), scale .5s cubic-bezier(.22, 1, .36, 1), box-shadow .5s ease, background-color .25s ease, border-color .25s ease; }
+    html.motion-ready .miro-directions__grid.is-visible .miro-direction-card__icon { transition: opacity .3s ease calc(var(--enter, 0s) + .2s), background-color .3s ease, color .3s ease, scale .5s cubic-bezier(.22, 1, .36, 1), box-shadow .3s ease; }
+    html.motion-ready .miro-directions__grid.is-visible > .miro-direction-card:nth-child(2) { --enter: .08s; }
+    html.motion-ready .miro-directions__grid.is-visible > .miro-direction-card:nth-child(3) { --enter: .16s; }
+    html.motion-ready .miro-directions__grid.is-visible > .miro-direction-card:nth-child(4) { --enter: .24s; }
+    html.motion-ready .miro-directions__grid.is-visible > .miro-direction-card:nth-child(5) { --enter: .32s; }
+    html.motion-ready .miro-directions__grid.is-visible > .miro-direction-card:nth-child(6) { --enter: .4s; }
+    html.motion-ready .miro-directions__grid.is-visible > .miro-direction-card:nth-child(7) { --enter: .48s; }
+    html.motion-ready .miro-directions__grid.is-visible > .miro-direction-card:nth-child(8) { --enter: .56s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .miro-directions__grid > .miro-direction-card, .miro-directions__grid .miro-direction-card__icon, .miro-directions__grid > .miro-direction-card::after { transition: none; }
+    .miro-directions__grid > .miro-direction-card:hover { translate: none; scale: none; }
+    .miro-directions__grid .miro-direction-card:hover .miro-direction-card__icon { scale: none; }
+    .miro-directions__grid > .miro-direction-card::after { display: none; }
+}
+html.lite .miro-directions__grid > .miro-direction-card::after { display: none; }
+
+/* Тег в карточке по размеру текста, а не на всю ширину колонки */
+.miro-event-card__body > .miro-tag { align-self: flex-start; width: fit-content; max-width: 100%; }
+
+/* Движение при прокрутке: CSS-анимации привязаны к положению блока на экране (animation-timeline), скрипт не нужен.
+   В браузерах без поддержки (Firefox) страница остаётся спокойной; в режиме lite анимации выключены общим правилом выше,
+   при «уменьшить анимацию» — условием ниже. Двигаем только transform/opacity/clip-path готовых блоков. */
+@supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+
+        /* Первый экран: фото уходит медленнее страницы, текст чуть быстрее и гаснет */
+        .miro-hero--image .miro-hero__image img { scale: 1.12; animation: fx-hero-photo linear both; animation-timeline: view(); animation-range: exit 0% exit 100%; }
+        @keyframes fx-hero-photo { to { translate: 0 90px; } }
+        .miro-hero--image .miro-hero__content { animation: fx-hero-copy linear both; animation-timeline: view(); animation-range: exit 0% exit 70%; }
+        @keyframes fx-hero-copy { to { translate: 0 -46px; opacity: .25; } }
+
+        /* Портрет руководителя раскрывается снизу вверх, круг-акцент плывёт навстречу */
+        .miro-director-note__portrait img { animation: fx-portrait linear both; animation-timeline: view(); animation-range: entry 5% entry 75%; }
+        @keyframes fx-portrait { from { clip-path: inset(24% 0 0 0 round 24px 24px 24px 8px); scale: 1.08; } to { clip-path: inset(0 0 0 0 round 24px 24px 24px 8px); scale: 1; } }
+        .miro-director-note__accent { animation: fx-accent linear both; animation-timeline: view(); animation-range: cover 0% cover 100%; }
+        @keyframes fx-accent { from { translate: -26px -34px; } to { translate: 26px 34px; } }
+
+        /* Фото карточек «оседают»: чуть крупнее в момент появления, к середине экрана встают на место */
+        .miro-event-card__visual img { animation: fx-photo-settle linear both; animation-timeline: view(); animation-range: entry 0% entry 90%; }
+        @keyframes fx-photo-settle { from { scale: 1.16; } to { scale: 1; } }
+
+        /* «Как это работает»: кружки с номерами по очереди вырастают */
+        .miro-step__number { animation: fx-step-number cubic-bezier(.34, 1.56, .64, 1) both; animation-timeline: view(); animation-range: entry 10% entry 90%; }
+        @keyframes fx-step-number { from { scale: .55; opacity: .2; } to { scale: 1; opacity: 1; } }
+
+    }
+
+}
+

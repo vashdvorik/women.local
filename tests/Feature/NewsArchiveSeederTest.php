@@ -351,7 +351,7 @@ class NewsArchiveSeederTest extends TestCase
 
         foreach ($this->data() as $key => $item) {
             $event = $this->eventFor($item);
-            $html = $this->get(route('events.show', ['event' => $event->slug]))->assertOk()->getContent();
+            $html = str_replace(chr(194).chr(160), ' ', $this->get(route('events.show', ['event' => $event->slug]))->assertOk()->getContent());
 
             $this->assertStringContainsString(e($item['title']['ru']), $html, "{$key}: ru");
             $this->assertStringContainsString(e($item['title']['en']), $html, "{$key}: en");

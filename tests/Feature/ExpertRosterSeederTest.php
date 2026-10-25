@@ -172,14 +172,13 @@ class ExpertRosterSeederTest extends TestCase
 
     // ---------------------------------------------------------------- база, где эксперты уже есть
 
-    public function test_the_eleven_redrawn_portraits_are_marked_for_replacement(): void
+    public function test_every_portrait_is_marked_for_replacement(): void
     {
         $marked = array_map(fn (array $p) => $p['name']['ru'], array_filter($this->profiles(), fn (array $p) => array_key_exists('photo_rev', $p)));
 
-        $this->assertCount(11, $marked, 'десять перерисованных портретов и новое фото Аурелии');
+        $this->assertCount(16, $marked, 'все портреты приведены к одному размеру головы: у каждого своя версия фото');
         $this->assertContains('Каролина Бугаян', $marked);
         $this->assertContains(self::AURELIA, $marked);
-        $this->assertNotContains('Оксана Паладичук', $marked, 'новых экспертов заводят сразу с их фото, заменять нечего');
     }
 
     public function test_on_a_database_with_experts_it_adds_the_five_at_the_end_and_replaces_the_marked_photos(): void
@@ -272,7 +271,7 @@ class ExpertRosterSeederTest extends TestCase
         })->run();
 
         $this->assertNotSame($before, $vlada->fresh()->photo_path, 'новая версия фото — замена ещё раз');
-        $this->assertSame(['expert-vlada.webp'], array_map(fn (array $call) => basename($call['source']), $this->imageCalls));
+        $this->assertSame(['expert-vlada-wide.webp'], array_map(fn (array $call) => basename($call['source']), $this->imageCalls));
         $this->assertSame('2026/10/edited.webp', $this->expert('Мариана Руфа')->photo_path, 'правка в админке у других не затронута');
     }
 
@@ -282,7 +281,7 @@ class ExpertRosterSeederTest extends TestCase
 
         $this->seed(ExpertRosterSeeder::class);
 
-        $this->assertCount(5 + $this->withPhotoRevision(), $this->imageCalls, 'пять новых фото и замена помеченных');
+        $this->assertCount($this->withPhotoRevision(), $this->imageCalls, 'пять новых фото и замена помеченных (у всех шестнадцати есть версия фото)');
         $this->assertSame(['expert'], array_values(array_unique(array_column($this->imageCalls, 'slot'))));
 
         // Кадр в конвейер уходит ровно тот, что задан в данных (нет кадра — null: центр квадратного фото).
@@ -298,8 +297,8 @@ class ExpertRosterSeederTest extends TestCase
             $this->assertSame($expected[$file], $crop, $file);
         }
         $this->assertArrayHasKey('expert-aurelia-portrait.webp', $bySource);
-        $this->assertArrayHasKey('expert-vlada.webp', $bySource, 'перерисованный портрет уходит в тот же конвейер');
-        $this->assertArrayHasKey('expert-oxana.webp', $bySource);
+        $this->assertArrayHasKey('expert-vlada-wide.webp', $bySource, 'перерисованный портрет уходит в тот же конвейер');
+        $this->assertArrayHasKey('expert-oxana-wide.webp', $bySource);
     }
 
     public function test_a_crop_set_in_the_data_is_passed_to_the_pipeline(): void
@@ -374,7 +373,7 @@ class ExpertRosterSeederTest extends TestCase
 
         $this->assertSame(1, Expert::query()->whereHas('translations', fn ($q) => $q->where('name', 'Инна Барышникова'))->count());
         $this->assertSame('Своя подпись', $this->expert('Инна Барышникова')->field('role', 'ru'));
-        $this->assertSame('2026/10/own.webp', $this->expert('Инна Барышникова')->photo_path);
+        $this->assertNotSame('2026/10/own.webp', $this->expert('Инна Барышникова')->photo_path, 'у портрета новая версия: фото заменяется один раз');
         $this->assertSame(16, Expert::count());
     }
 

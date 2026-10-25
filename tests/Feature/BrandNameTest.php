@@ -50,12 +50,12 @@ class BrandNameTest extends TestCase
 
     public function test_the_public_site_uses_the_new_name_in_titles_and_footer(): void
     {
-        $landing = $this->get('/')->assertOk()->getContent();
+        $landing = str_replace(chr(194).chr(160), ' ', $this->get('/')->assertOk()->getContent()); // неразрывные пробелы в названиях — для глаза, текст тот же
 
         $this->assertStringContainsString("<title>Women's hub</title>", $landing);
         $this->assertStringContainsString("© ".date('Y')." Women's hub", $landing);
 
-        $this->get('/about')->assertOk()->assertSee("Women's hub — About", false);
+        $this->assertStringContainsString("Women's hub — About", str_replace(chr(194).chr(160), ' ', $this->get('/about')->assertOk()->getContent()));
     }
 
     public function test_the_bot_messages_use_the_new_name_in_every_language(): void

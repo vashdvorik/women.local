@@ -36,11 +36,6 @@ class Project extends Model
             && \App\Support\TranslationStatus::hasContent($this->rawTranslation(\App\Support\Locales::PRIMARY)?->content ?? []);
     }
 
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
-
     public function imageUrl(): ?string
     {
         return $this->image_path ? '/uploads/'.$this->image_path : null;

@@ -276,7 +276,7 @@ class ImageUploadTest extends TestCase
             route('admin.albums.create') => 3,     // обложка, картинка и ячейка галереи
             route('admin.videos.create') => 1,
             route('admin.experts.create') => 1,
-            route('admin.projects.create') => 1,
+            route('admin.projects.create') => 7,   // как у новостей: обложка и блоки текста на трёх языках
         ];
 
         foreach ($forms as $url => $buttons) {
