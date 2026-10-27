@@ -22,7 +22,7 @@ class MatchingService
         $ttl = (int) config('ai.matches_cache_ttl', 86400);
 
         return Cache::remember(
-            "matches:{$user->telegram_id}",
+            "matches:{$user->id}",
             $ttl,
             fn () => $this->compute($user, $n)
         );
@@ -34,7 +34,7 @@ class MatchingService
      */
     public function invalidate(BotUser $user): void
     {
-        Cache::forget("matches:{$user->telegram_id}");
+        Cache::forget("matches:{$user->id}");
     }
 
     /**
@@ -52,9 +52,9 @@ class MatchingService
 
         // Load all other approved users that have an embedding (hidden members are never recommended)
         $candidates = BotUser::discoverable()
-            ->where('telegram_id', '!=', $user->telegram_id)
+            ->whereKeyNot($user->getKey())
             ->whereNotNull('embedding')
-            ->get(['id', 'telegram_id', 'telegram_username', 'full_name',
+            ->get(['id', 'phone', 'telegram_username', 'full_name',
                    'description', 'expectation', 'avatar_path', 'embedding']);
 
         return $candidates
@@ -101,9 +101,9 @@ class MatchingService
         $minScore = SiteSetting::searchMinScore();
 
         $candidates = BotUser::discoverable()
-            ->where('telegram_id', '!=', $exclude->telegram_id)
+            ->whereKeyNot($exclude->getKey())
             ->whereNotNull('embedding')
-            ->get(['id', 'telegram_id', 'telegram_username', 'full_name',
+            ->get(['id', 'phone', 'telegram_username', 'full_name',
                    'description', 'expectation', 'avatar_path', 'embedding']);
 
         return $candidates

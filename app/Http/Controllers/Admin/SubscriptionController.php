@@ -6,6 +6,7 @@ use App\Enums\Plan;
 use App\Http\Controllers\Controller;
 use App\Models\BotUser;
 use App\Models\SiteSetting;
+use App\Services\Subscriptions\PlanPurchase;
 use App\Services\Subscriptions\SubscriptionNotifier;
 use App\Services\Subscriptions\SubscriptionService;
 use Illuminate\Contracts\View\View;
@@ -22,8 +23,8 @@ use Illuminate\Validation\Rule;
  */
 class SubscriptionController extends Controller
 {
-    /** Фильтры списка: все, по тарифу, заканчиваются в ближайшие 30 дней. */
-    private const FILTERS = ['open', 'community', 'private', 'expiring'];
+    /** Фильтры списка: все, без тарифа, по тарифу, заканчиваются в ближайшие 30 дней. */
+    private const FILTERS = ['none', 'open', 'community', 'private', 'expiring'];
 
     public function index(Request $request): View
     {
@@ -31,18 +32,21 @@ class SubscriptionController extends Controller
         $filter = in_array($filter, self::FILTERS, true) ? $filter : '';
         $search = trim($request->string('q')->toString());
 
+        // Все, кто зарегистрировался по почте: тариф можно купить до одобрения анкеты.
         $profiles = BotUser::query()
-            ->approved()
-            ->when($filter === 'open', fn ($q) => $q->where(fn ($w) => $w
-                ->where('plan', Plan::Open->value)
+            ->whereNotNull('email')
+            ->when($filter === 'none', fn ($q) => $q->where(fn ($w) => $w
+                ->where('plan', Plan::None->value)
                 ->orWhereNull('plan_ends_at')
                 ->orWhere('plan_ends_at', '<=', now())))
-            ->when(in_array($filter, ['community', 'private'], true), fn ($q) => $q->withPlan(Plan::from($filter))->where('plan', $filter))
-            ->when($filter === 'expiring', fn ($q) => $q->where('plan', '!=', Plan::Open->value)
+            ->when(in_array($filter, ['open', 'community', 'private'], true), fn ($q) => $q->withPlan(Plan::from($filter))->where('plan', $filter))
+            ->when($filter === 'expiring', fn ($q) => $q->where('plan', '!=', Plan::None->value)
                 ->where('plan_ends_at', '>', now())
                 ->where('plan_ends_at', '<=', now()->addDays(30)))
             ->when($search !== '', fn ($q) => $q->where(fn ($w) => $w
                 ->where('full_name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('phone', 'like', "%{$search}%")
                 ->orWhere('telegram_username', 'like', "%{$search}%")))
             ->orderByRaw('plan_ends_at is null')
             ->orderBy('plan_ends_at')
@@ -50,23 +54,27 @@ class SubscriptionController extends Controller
             ->paginate(25)
             ->withQueryString();
 
-        $approved = BotUser::approved();
+        $registered = BotUser::query()->whereNotNull('email');
 
         return view('admin.subscriptions.index', [
             'profiles' => $profiles,
             'filter' => $filter,
             'search' => $search,
             'prices' => [
+                Plan::Open->value => Plan::Open->price(),
                 Plan::Community->value => Plan::Community->price(),
                 Plan::Private->value => Plan::Private->price(),
             ],
             'priceMax' => SiteSetting::SUBSCRIPTION_PRICE_MAX,
+            'closed' => SiteSetting::closedPlans(),
+            'managerEmail' => SiteSetting::planRequestEmail(),
             'counts' => [
-                '' => (clone $approved)->count(),
-                'open' => (clone $approved)->count() - (clone $approved)->withPlan(Plan::Community)->count(),
-                'community' => (clone $approved)->withPlan(Plan::Community)->where('plan', Plan::Community->value)->count(),
-                'private' => (clone $approved)->withPlan(Plan::Private)->where('plan', Plan::Private->value)->count(),
-                'expiring' => (clone $approved)->where('plan', '!=', Plan::Open->value)->where('plan_ends_at', '>', now())->where('plan_ends_at', '<=', now()->addDays(30))->count(),
+                '' => (clone $registered)->count(),
+                'none' => (clone $registered)->count() - (clone $registered)->withPlan(Plan::Open)->count(),
+                'open' => (clone $registered)->withPlan(Plan::Open)->where('plan', Plan::Open->value)->count(),
+                'community' => (clone $registered)->withPlan(Plan::Community)->where('plan', Plan::Community->value)->count(),
+                'private' => (clone $registered)->withPlan(Plan::Private)->where('plan', Plan::Private->value)->count(),
+                'expiring' => (clone $registered)->where('plan', '!=', Plan::None->value)->where('plan_ends_at', '>', now())->where('plan_ends_at', '<=', now()->addDays(30))->count(),
             ],
         ]);
     }
@@ -78,6 +86,8 @@ class SubscriptionController extends Controller
             'current' => $profile->currentPlan(),
             'history' => $profile->subscriptions()->with('payment')->latest('id')->get(),
             'payments' => $profile->payments()->latest('id')->limit(10)->get(),
+            'closedPlans' => array_values(array_filter(Plan::paid(), fn (Plan $plan): bool => app(PlanPurchase::class)->isClosed($plan))),
+            'unlocked' => collect(Plan::paid())->mapWithKeys(fn (Plan $plan): array => [$plan->value => app(PlanPurchase::class)->unlockedRequest($profile, $plan) !== null]),
         ]);
     }
 
@@ -90,26 +100,73 @@ class SubscriptionController extends Controller
         $max = SiteSetting::SUBSCRIPTION_PRICE_MAX;
 
         $data = $request->validate([
-            'community' => ['required', 'integer', 'min:1', "max:{$max}"],
+            'open' => ['required', 'integer', 'min:1', "max:{$max}"],
+            'community' => ['required', 'integer', 'min:1', "max:{$max}", 'gte:open'],
             'private' => ['required', 'integer', 'min:1', "max:{$max}", 'gte:community'],
         ], [
-            'private.gte' => __('Private включает всё из Community, поэтому не может стоить дешевле. Проверьте обе цены.'),
+            'community.gte' => __('Community включает всё из Open, поэтому не может стоить дешевле. Проверьте цены.'),
+            'private.gte' => __('Private включает всё из Community, поэтому не может стоить дешевле. Проверьте цены.'),
         ], [
+            'open' => __('цена Open'),
             'community' => __('цена Community'),
             'private' => __('цена Private'),
         ]);
 
-        $before = [Plan::Community->value => Plan::Community->price(), Plan::Private->value => Plan::Private->price()];
+        $before = [Plan::Open->value => Plan::Open->price(), Plan::Community->value => Plan::Community->price(), Plan::Private->value => Plan::Private->price()];
+        $after = ['open' => (int) $data['open'], 'community' => (int) $data['community'], 'private' => (int) $data['private']];
 
-        SiteSetting::setSubscriptionPrices(['community' => (int) $data['community'], 'private' => (int) $data['private']]);
+        SiteSetting::setSubscriptionPrices($after);
 
-        Log::info('Цены подписки изменены в админке', [
-            'было' => $before,
-            'стало' => ['community' => (int) $data['community'], 'private' => (int) $data['private']],
-        ]);
+        Log::info('Цены подписки изменены в админке', ['было' => $before, 'стало' => $after]);
 
         return redirect()->route('admin.subscriptions.index')
             ->with('success', __('Цены сохранены. Новая цена действует для новых платежей; уже оплаченные подписки не меняются.'));
+    }
+
+    /**
+     * «Покупка тарифов»: какие тарифы закрыты (вместо «Купить» — «Оставить заявку») и на какую почту писать менеджеру
+     * о новых заявках. Закрытие не действует на тех, кому менеджер уже открыл покупку лично.
+     */
+    public function updatePurchase(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'closed' => ['nullable', 'array'],
+            'closed.*' => ['string', Rule::in(array_map(fn (Plan $plan): string => $plan->value, Plan::paid()))],
+            'manager_email' => ['nullable', 'string', 'email', 'max:191'],
+        ], [
+            'manager_email.email' => __('Проверьте адрес почты менеджера.'),
+        ], [
+            'manager_email' => __('почта менеджера'),
+        ]);
+
+        $closed = array_values(array_unique($data['closed'] ?? []));
+
+        SiteSetting::setClosedPlans($closed);
+        SiteSetting::setPlanRequestEmail((string) ($data['manager_email'] ?? ''));
+
+        Log::info('Покупка тарифов изменена в админке', ['закрыты' => $closed, 'почта менеджера' => $data['manager_email'] ?? '']);
+
+        $notice = __('Сохранено.');
+
+        if ($closed !== [] && blank($data['manager_email'] ?? null)) {
+            $notice .= ' '.__('Почта менеджера не указана: заявки будут видны только в разделе «Заявки на тариф», письма не придут.');
+        }
+
+        return redirect()->route('admin.subscriptions.index')->with('success', $notice);
+    }
+
+    /** Открыть участнице покупку закрытого тарифа без заявки (например, она позвонила сама). */
+    public function unlock(Request $request, BotUser $profile, PlanPurchase $purchase): RedirectResponse
+    {
+        $data = $request->validate([
+            'plan' => ['required', Rule::in(array_map(fn (Plan $plan): string => $plan->value, Plan::paid()))],
+        ], [], ['plan' => __('тариф')]);
+
+        $plan = Plan::from($data['plan']);
+        $purchase->unlockFor($profile, $plan, $request->boolean('notify'));
+
+        return redirect()->route('admin.subscriptions.edit', $profile)
+            ->with('success', __('Покупка тарифа :plan открыта: у участницы появилась кнопка «Купить».', ['plan' => $plan->shortTitle()]));
     }
 
     /**
@@ -172,12 +229,12 @@ class SubscriptionController extends Controller
             ->with('success', __('Тариф :plan включён до :date.', ['plan' => $plan->shortTitle(), 'date' => $subscription->ends_at->format('d.m.Y')]));
     }
 
-    /** Вернуть участницу на Open немедленно. Оплаченные деньги этим не возвращаются: возврат делается в банке. */
+    /** Закрыть платный доступ немедленно: тарифа больше нет. Оплаченные деньги этим не возвращаются: возврат делается в банке. */
     public function revoke(BotUser $profile, SubscriptionService $subscriptions): RedirectResponse
     {
         $subscriptions->revoke($profile);
 
         return redirect()->route('admin.subscriptions.edit', $profile)
-            ->with('success', __('Платный доступ закрыт: участница переведена на Open.'));
+            ->with('success', __('Платный доступ закрыт: у участницы больше нет тарифа.'));
     }
 }

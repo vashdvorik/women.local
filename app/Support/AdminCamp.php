@@ -29,6 +29,7 @@ final class AdminCamp
         'admin.member-posts.*',
         'admin.statistics.*',
         'admin.subscriptions.*',
+        'admin.plan-requests.*',
         'admin.payments.*',
         'admin.broadcasts.*',
     ];

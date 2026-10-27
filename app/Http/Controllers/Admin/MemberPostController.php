@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\NotifyOpportunity;
 use App\Models\Opportunity;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -56,11 +55,9 @@ class MemberPostController extends Controller
     {
         if (! $post->isApproved()) {
             $post->update(['status' => Opportunity::STATUS_APPROVED, 'moderated_at' => now()]);
-
-            NotifyOpportunity::dispatch($post);
         }
 
-        return back()->with('success', __('Публикация одобрена. Участницы получат уведомление в Telegram.'));
+        return back()->with('success', __('Публикация одобрена и появилась в кабинете.'));
     }
 
     public function reject(Opportunity $post): RedirectResponse

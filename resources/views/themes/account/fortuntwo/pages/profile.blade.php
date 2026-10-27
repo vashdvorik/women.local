@@ -34,16 +34,28 @@
             <p class="fortun-profile-identity__label">{{ __('account.profile.contact_info') }}</p>
             <h2 class="fortun-profile-identity__name">{{ $accountUser->full_name ?: __('account.not_specified') }}</h2>
 
-            @if($accountUser->telegram_username)
-                <a href="https://t.me/{{ $accountUser->telegram_username }}" target="_blank" rel="noopener" class="fortun-profile-telegram">
-                    <svg class="fortun-profile-telegram__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m21 3-7.2 18-3.4-7.4L3 10.2 21 3Zm0 0-10.6 10.6" />
-                    </svg>
-                    {{ '@' . $accountUser->telegram_username }}
-                </a>
-            @else
-                <p class="fortun-profile-identity__empty">{{ __('account.profile.telegram_empty') }}</p>
+            <p class="fortun-profile-identity__empty">{{ $accountUser->email }}</p>
+            @if($accountUser->phone)
+                <a href="tel:{{ preg_replace('/[^0-9+]/', '', $accountUser->phone) }}" class="fortun-profile-telegram">{{ $accountUser->phone }}</a>
             @endif
+
+            {{-- Telegram нужен только для уведомлений: входа через него нет --}}
+            <div class="mt-6 w-full border-t border-[#E9DCD5] pt-5 text-left">
+                <p class="fortun-profile-identity__label">{{ __('participant.telegram.title') }}</p>
+                @if($accountUser->hasTelegram())
+                    <p class="mt-2 text-sm font-medium text-[#526B5A]">{{ __('participant.telegram.connected') }}@if($accountUser->telegram_username) · {{ '@' . $accountUser->telegram_username }}@endif</p>
+                    <form action="{{ route('account.telegram.disconnect') }}" method="POST" class="mt-3">
+                        @csrf
+                        <button type="submit" class="miro-button miro-button--outline w-full">{{ __('participant.telegram.disconnect') }}</button>
+                    </form>
+                @else
+                    <p class="mt-2 text-sm leading-6 text-[#756158]">{{ __('participant.telegram.text') }}</p>
+                    <form action="{{ route('account.telegram.connect') }}" method="POST" class="mt-3">
+                        @csrf
+                        <button type="submit" class="miro-button miro-button--dark w-full">{{ __('participant.telegram.connect') }}</button>
+                    </form>
+                @endif
+            </div>
         </aside>
 
         <div class="fortun-profile-content">

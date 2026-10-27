@@ -27,6 +27,12 @@ class SiteSetting extends Model
 
     public const SUBSCRIPTION_PRICES_KEY = 'subscription_prices';
 
+    /** Тарифы, покупка которых закрыта: вместо «Купить» стоит «Оставить заявку» (менеджер откроет покупку лично). */
+    public const SUBSCRIPTION_CLOSED_KEY = 'subscription_closed';
+
+    /** Почта менеджера, на которую приходят заявки на закрытые тарифы. */
+    public const PLAN_REQUEST_EMAIL_KEY = 'plan_request_email';
+
     /** Самая большая цена подписки, которую принимает админка (в рублях): защита от лишнего нуля. */
     public const SUBSCRIPTION_PRICE_MAX = 1_000_000;
 
@@ -141,7 +147,7 @@ class SiteSetting extends Model
     }
 
     /**
-     * Цены подписки, заданные в админке, в целых рублях: ['community' => 600, 'private' => 20000]. Чего здесь нет,
+     * Цены подписки, заданные в админке, в целых рублях: ['open' => 600, 'community' => 5000, 'private' => 19000]. Чего здесь нет,
      * берётся из config/subscription.php (см. Plan::price()). Читается на каждой странице тарифов, поэтому кешируется.
      *
      * @return array<string, int>
@@ -152,7 +158,7 @@ class SiteSetting extends Model
             $stored = self::settingValue(self::SUBSCRIPTION_PRICES_KEY);
             $prices = [];
 
-            foreach (['community', 'private'] as $plan) {
+            foreach (['open', 'community', 'private'] as $plan) {
                 $price = $stored[$plan] ?? null;
 
                 if (is_int($price) && $price >= 1 && $price <= self::SUBSCRIPTION_PRICE_MAX) {
@@ -164,15 +170,52 @@ class SiteSetting extends Model
         });
     }
 
-    /** @param array{community: int, private: int} $prices */
+    /** @param array{open: int, community: int, private: int} $prices */
     public static function setSubscriptionPrices(array $prices): void
     {
         self::updateOrCreate(['key' => self::SUBSCRIPTION_PRICES_KEY], ['value' => [
+            'open' => (int) $prices['open'],
             'community' => (int) $prices['community'],
             'private' => (int) $prices['private'],
         ]]);
 
         Cache::forget(self::SUBSCRIPTION_PRICES_KEY);
+    }
+
+    /**
+     * Тарифы, покупка которых закрыта («Оставить заявку» вместо «Купить»): ключи 'open', 'community', 'private'.
+     * По умолчанию все три открыты. Читается на каждой странице тарифов, поэтому кешируется.
+     *
+     * @return list<string>
+     */
+    public static function closedPlans(): array
+    {
+        return Cache::rememberForever(self::SUBSCRIPTION_CLOSED_KEY, function (): array {
+            $stored = self::settingValue(self::SUBSCRIPTION_CLOSED_KEY);
+
+            return array_values(array_intersect(['open', 'community', 'private'], is_array($stored) ? $stored : []));
+        });
+    }
+
+    /** @param list<string> $plans */
+    public static function setClosedPlans(array $plans): void
+    {
+        self::updateOrCreate(['key' => self::SUBSCRIPTION_CLOSED_KEY], ['value' => array_values(array_intersect(['open', 'community', 'private'], $plans))]);
+
+        Cache::forget(self::SUBSCRIPTION_CLOSED_KEY);
+    }
+
+    /** Почта менеджера для заявок на закрытые тарифы; пока не задана, пусто. */
+    public static function planRequestEmail(): string
+    {
+        $stored = self::settingValue(self::PLAN_REQUEST_EMAIL_KEY)['email'] ?? '';
+
+        return is_string($stored) ? trim($stored) : '';
+    }
+
+    public static function setPlanRequestEmail(string $email): void
+    {
+        self::updateOrCreate(['key' => self::PLAN_REQUEST_EMAIL_KEY], ['value' => ['email' => trim($email)]]);
     }
 
     /** @return array{base_url: string, model: string, timeout: int, api_key_configured: bool} */

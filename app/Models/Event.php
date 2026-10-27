@@ -6,12 +6,13 @@ use App\Models\Concerns\HasTranslations;
 use App\Support\CardTone;
 use App\Support\Locales;
 use App\Support\TranslationStatus;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Новость: карточка на странице /events («Новости» в меню сайта) и в превью на главной, а также своя
- * страница /events/{slug}. Карточка: обложка, цвет, дата начала, ссылка, порядок и переводимые тексты
+ * страница /events/{slug}. Карточка: обложка, цвет, дата публикации (колонка starts_at), ссылка, порядок и переводимые тексты
  * (EventTranslation). Страница: текст из блоков на каждом языке (EventTranslation::content), тот же
  * формат, что у публикаций. Раздел «Новости» в админке. Историческое имя модели — Event.
  */
@@ -21,6 +22,9 @@ class Event extends Model
 
     /** Формат даты по языку: «18 июня», «June 18», «18 iunie». */
     private const DATE_FORMATS = ['ru' => 'D MMMM', 'ro' => 'D MMMM', 'en' => 'MMMM D'];
+
+    /** Формат даты с годом, каким сидеры архива новостей пишут подпись: «27 октября 2026», «October 27, 2026». */
+    private const DATE_FORMATS_WITH_YEAR = ['ru' => 'D MMMM YYYY', 'ro' => 'D MMMM YYYY', 'en' => 'MMMM D, YYYY'];
 
     protected $fillable = [
         'slug',
@@ -93,7 +97,7 @@ class Event extends Model
 
     /**
      * Подпись даты на карточке: плашка редактора («Открыт набор») главнее,
-     * иначе дата начала, отформатированная на языке карточки.
+     * иначе дата публикации, отформатированная на языке карточки.
      */
     public function dateLabel(string $locale): string
     {
@@ -110,5 +114,31 @@ class Event extends Model
         $format = self::DATE_FORMATS[$locale] ?? self::DATE_FORMATS['ru'];
 
         return $this->starts_at->copy()->locale($locale)->isoFormat($format);
+    }
+
+    /** Подпись «27 октября 2026» на языке: так она записана у новостей архива, и из неё видно год. */
+    public static function dateLabelWithYear(CarbonInterface $date, string $locale): string
+    {
+        return $date->copy()->locale($locale)->isoFormat(self::DATE_FORMATS_WITH_YEAR[$locale] ?? self::DATE_FORMATS_WITH_YEAR['ru']);
+    }
+
+    /**
+     * Подпись — просто дата («27 октября», «27 октября 2026», «October 27, 2026», «20.05.2026»), а не свой текст
+     * редактора («Открыт набор», «30 мая — 2 июня»). Такую подпись при смене даты публикации обновляют вместе с ней,
+     * иначе на сайте осталась бы старая дата (подпись главнее даты). Подпись может и не совпадать с прежней датой
+     * новости: у старых карточек она вписана вручную.
+     */
+    public static function isPlainDateLabel(string $label): bool
+    {
+        $months = implode('|', [
+            'января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря',
+            'ianuarie|februarie|martie|aprilie|mai|iunie|iulie|august|septembrie|octombrie|noiembrie|decembrie',
+            'January|February|March|April|May|June|July|August|September|October|November|December',
+        ]);
+
+        return (bool) preg_match(
+            '~^(?:\d{1,2}\s+(?:'.$months.')(?:\s+\d{4})?(?:\s*г\.)?|(?:'.$months.')\s+\d{1,2}(?:,\s*\d{4})?|\d{1,2}[./-]\d{1,2}[./-]\d{2,4})$~iu',
+            preg_replace('~\s+~u', ' ', trim($label)) ?? '',
+        );
     }
 }

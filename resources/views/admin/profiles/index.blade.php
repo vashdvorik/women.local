@@ -58,7 +58,7 @@
                                        class="rounded border-hairline text-accent focus:ring-accent-soft">
                             </th>
                             <th class="min-w-[11rem]"><x-admin.sort-link column="full_name" :label="__('Имя')" /></th>
-                            <th class="whitespace-nowrap">Username</th>
+                            <th class="whitespace-nowrap">{{ __('Почта и телефон') }}</th>
                             <th class="whitespace-nowrap"><x-admin.sort-link column="status" :label="__('Статус')" /></th>
                             <th class="whitespace-nowrap"><x-admin.sort-link column="created_at" :label="__('Дата заявки')" /></th>
                             <th></th>
@@ -80,8 +80,8 @@
                                         <span class="badge badge--draft ml-2" title="{{ __('Другие участницы этот профиль не видят и не находят.') }}">{{ __('Скрыт') }}</span>
                                     @endif
                                 </td>
-                                <td class="whitespace-nowrap text-ink-muted">
-                                    {{ $profile->telegram_username ? '@'.$profile->telegram_username : '—' }}
+                                <td class="text-ink-muted">
+                                    {{ $profile->email }}@if($profile->phone)<br>{{ $profile->phone }}@endif
                                 </td>
                                 <td><x-admin.profile-status-badge :status="$profile->status" /></td>
                                 <td class="whitespace-nowrap text-ink-muted">{{ $profile->created_at?->format('d.m.Y H:i') }}</td>
@@ -92,7 +92,7 @@
                                                 :action="route('admin.profiles.approve', $profile)"
                                                 :label="__('Одобрить')"
                                                 :title="__('Одобрить профиль?')"
-                                                :message="__(':name получит уведомление в боте и доступ к личному кабинету.', ['name' => $profile->full_name ?: __('Участница')])" />
+                                                :message="__(':name получит уведомление, и другие участницы начнут её видеть.', ['name' => $profile->full_name ?: __('Участница')])" />
                                         @endunless
                                         @unless($profile->isRejected())
                                             <x-admin.confirm-button
@@ -100,8 +100,8 @@
                                                 :label="__('Отклонить')"
                                                 :title="__('Отклонить профиль?')"
                                                 :message="$profile->isApproved()
-                                                    ? __('Доступ к платформе будет закрыт, участница получит уведомление в боте.')
-                                                    : __('Участница получит уведомление об отказе в боте.')"
+                                                    ? __('Доступ к платформе будет закрыт, участница получит уведомление.')
+                                                    : __('Участница получит уведомление об отказе.')"
                                                 :danger="true" />
                                         @endunless
                                         {{-- Быстрое скрытие: человек остаётся внутри, но другие его не видят и не находят. --}}

@@ -18,10 +18,7 @@ trait SubscriptionHelpers
 {
     protected function sessionFor(BotUser $user): array
     {
-        return [
-            'account_telegram_id' => $user->telegram_id,
-            '_account_expires' => now()->addDays(7)->timestamp,
-        ];
+        return $this->participantSession($user);
     }
 
     protected function asParticipant(BotUser $user): static

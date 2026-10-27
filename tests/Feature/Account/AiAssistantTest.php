@@ -37,8 +37,8 @@ class AiAssistantTest extends TestCase
         ]);
 
         $response = $this->withSession([
-            'account_telegram_id' => $user->telegram_id,
-            '_account_expires' => now()->addDay()->timestamp,
+            ...$this->participantSession($user),
+'_account_expires' => now()->addDay()->timestamp,
         ])->postJson(route('account.assistant.message'), ['message' => 'Find a marketing expert']);
 
         $response->assertOk()

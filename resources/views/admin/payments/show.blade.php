@@ -16,7 +16,7 @@
             </div>
 
             <dl class="grid gap-x-6 gap-y-1 text-ui sm:grid-cols-2">
-                <div class="flex gap-2"><dt class="text-ink-muted">{{ __('Участница:') }}</dt><dd>{{ $payment->botUser?->full_name ?: __('удалена (Telegram ID :id)', ['id' => $payment->telegram_id]) }}</dd></div>
+                <div class="flex gap-2"><dt class="text-ink-muted">{{ __('Участница:') }}</dt><dd>{{ $payment->botUser?->full_name ?: ($payment->botUser?->email ?: ($payment->telegram_id ? __('удалена (Telegram ID :id)', ['id' => $payment->telegram_id]) : __('Участница удалена'))) }}</dd></div>
                 <div class="flex gap-2"><dt class="text-ink-muted">{{ __('Тариф:') }}</dt><dd>{{ $payment->planEnum()->title('ru') }}, {{ __(':count мес.', ['count' => $payment->months]) }}</dd></div>
                 <div class="flex gap-2"><dt class="text-ink-muted">{{ __('Сумма:') }}</dt><dd>{{ __(':sum (код валюты :currency; в банк ушло :kopecks коп.)', ['sum' => number_format($payment->rubles(), 2, ',', ' '), 'currency' => $payment->currency, 'kopecks' => $payment->amount]) }}</dd></div>
                 <div class="flex gap-2"><dt class="text-ink-muted">{{ __('Создан:') }}</dt><dd>{{ $payment->created_at->format('d.m.Y H:i:s') }}</dd></div>

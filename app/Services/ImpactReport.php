@@ -78,7 +78,7 @@ class ImpactReport
         $loginTokensIssued = LoginToken::count();
         $loginTokensIssuedLast30 = LoginToken::where('created_at', '>=', now()->subDays(30))->count();
         $loginTokensUsed = LoginToken::whereNotNull('used_at')->count();
-        $activeCabinetUsers = LoginToken::whereNotNull('used_at')->distinct('telegram_id')->count('telegram_id');
+        $activeCabinetUsers = BotUser::approved()->whereNotNull('cabinet_opened_at')->count();
 
         $newApplicationsLast30 = BotUser::where('created_at', '>=', now()->subDays(30))->count();
         $approvedLast30 = BotUser::approved()->where('approved_at', '>=', now()->subDays(30))->count();

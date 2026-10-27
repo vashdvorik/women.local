@@ -18,7 +18,6 @@ class BotCommandSync
     /** Команда бота → ключ её описания в bot_messages.php. */
     public const COMMANDS = [
         'start' => 'menu_command_start',
-        'login' => 'menu_command_login',
     ];
 
     /** Токена бота нет (локальная разработка, тесты): синхронизировать некуда. */

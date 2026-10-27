@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    // Быстрый вход и регистрация через Google (кабинет участницы). Ключи создаются в Google Cloud Console
+    // («APIs & Services → Credentials → OAuth client ID», тип «Web application»); в разрешённые адреса возврата нужно
+    // добавить https://<домен>/app/account/google/callback. Пока ключей нет, кнопка Google на страницах входа скрыта.
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+    ],
+
 ];

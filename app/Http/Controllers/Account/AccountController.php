@@ -8,105 +8,26 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Account\ProfileUpdateRequest;
 use App\Jobs\ComputeUserEmbedding;
 use App\Models\BotUser;
-use App\Models\LoginToken;
 use App\Services\AvatarStore;
 use App\Services\EmbeddingService;
 use App\Services\AiAssistantService;
 use App\Services\MatchingService;
-use App\Support\BotMessages;
 use App\Support\CabinetHome;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class AccountController extends Controller
 {
-    public function login(): View
-    {
-        return view('account.login');
-    }
-
-    public function sendLink(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'username' => ['required', 'string', 'regex:/^[a-zA-Z0-9_]{3,32}$/'],
-        ], [
-            'username.required' => __('account.validation.username_required'),
-            'username.regex'    => __('account.validation.username_regex'),
-        ]);
-
-        $username = ltrim($request->input('username'), '@');
-
-        $user = BotUser::where('telegram_username', $username)
-            ->where('status', BotUser::STATUS_APPROVED)
-            ->first();
-
-        if (! $user) {
-            return redirect()->route('account.login')->with('sent', true);
-        }
-
-        $token = LoginToken::generateFor((int) $user->telegram_id);
-        $url   = url('/go/' . substr($token->token, 0, 8));
-
-        // Язык Telegram участницы, а если он ещё не известен — язык, на котором открыт сайт.
-        $locale = BotMessages::locale($user->locale ?? app()->getLocale());
-
-        Http::post('https://api.telegram.org/bot' . config('nutgram.token') . '/sendMessage', [
-            'chat_id'      => $user->telegram_id,
-            'text'         => BotMessages::text('login_site_message', $locale, ['name' => BotMessages::firstName($user->full_name)]),
-            'parse_mode'   => 'HTML',
-            'reply_markup' => json_encode([
-                'inline_keyboard' => [[
-                    ['text' => BotMessages::text('login_site_button', $locale), 'url' => $url],
-                ]],
-            ]),
-        ]);
-
-        return redirect()->route('account.login')->with('sent', true);
-    }
-
-    public function auth(Request $request): RedirectResponse
-    {
-        $token = (string) $request->query('token', '');
-
-        if ($token === '') {
-            return redirect()->route('account.login')
-                ->with('error', __('account.messages.invalid_link'));
-        }
-
-        $loginToken = LoginToken::where('token', $token)->first();
-
-        if (! $loginToken || ! $loginToken->isValid()) {
-            return redirect()->route('account.login')
-                ->with('error', __('account.messages.expired_link'));
-        }
-
-        $user = BotUser::where('telegram_id', $loginToken->telegram_id)
-            ->where('status', BotUser::STATUS_APPROVED)
-            ->first();
-
-        if (! $user) {
-            return redirect()->route('account.login')
-                ->with('error', __('account.messages.access_closed'));
-        }
-
-        $request->session()->regenerate();
-        session(['account_telegram_id' => $user->telegram_id]);
-        session()->put('_account_expires', now()->addDays(7)->timestamp);
-        $user->markCabinetOpened();
-
-        return redirect()->route('account.index');
-    }
-
     public function index(): View
     {
         /** @var BotUser $user */
         $user = view()->shared('accountUser');
 
         // Главная — навигационная для всех тарифов: список «С чего начать», плитки разделов (закрытые для Open с замком),
-        // «Что нового». У Open вместо «Что нового» — материалы публичного сайта и предложение подписаться.
+        // «Что нового». У Open вместо «Что нового» — материалы публичного сайта и предложение перейти на Community.
         return view('account.home', ['user' => $user] + CabinetHome::build($user, app()->getLocale()));
     }
 
@@ -162,17 +83,17 @@ class AccountController extends Controller
         $accountUser = view()->shared('accountUser');
 
         $people = BotUser::discoverable()
-            ->where('telegram_id', '!=', $accountUser->telegram_id)
+            ->whereKeyNot($accountUser->getKey())
             ->orderBy('full_name')
-            ->get(['id', 'full_name', 'telegram_username', 'description', 'expectation', 'avatar_path']);
+            ->get(['id', 'full_name', 'phone', 'telegram_username', 'description', 'expectation', 'avatar_path']);
 
         return $this->themedView('people', compact('people'));
     }
 
     public function showPerson(BotUser $botUser): View
     {
-        // В каталоге видны только участницы с действующим тарифом Community или Private и не скрытые администратором:
-        // остальных открыть нельзя (скрытый открывает только свою страницу).
+        // В каталоге видны только одобренные участницы с действующим платным тарифом, не скрытые администратором:
+        // остальных открыть нельзя (скрытый открывает только свою страницу). Раздел открыт с тарифа Community.
         /** @var BotUser $accountUser */
         $accountUser = view()->shared('accountUser');
 
@@ -270,39 +191,14 @@ class AccountController extends Controller
         /** @var BotUser $user */
         $user = view()->shared('accountUser');
 
-        $locale = BotMessages::locale($user->locale ?? app()->getLocale());
-
-        Http::post('https://api.telegram.org/bot' . config('nutgram.token') . '/sendMessage', [
-            'chat_id'      => $user->telegram_id,
-            'text'         => BotMessages::text('site_profile_deleted', $locale),
-            'parse_mode'   => 'HTML',
-            'reply_markup' => json_encode([
-                'remove_keyboard' => true,
-                'inline_keyboard' => [[
-                    ['text' => BotMessages::text('site_profile_deleted_button', $locale), 'callback_data' => 'restart'],
-                ]],
-            ]),
-        ]);
-
+        Auth::guard('participant')->logout();
         $user->delete();
 
-        session()->forget('account_telegram_id');
-        session()->forget('_account_expires');
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         return redirect()->route('account.login')
             ->with('success', __('account.messages.profile_deleted'));
-    }
-
-    public function logout(Request $request): RedirectResponse
-    {
-        session()->forget('account_telegram_id');
-        session()->forget('_account_expires');
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('account.login', ['logout' => '1']);
     }
 
     /**

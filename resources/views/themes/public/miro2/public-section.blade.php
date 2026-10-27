@@ -1,5 +1,5 @@
 @php
-    $botUrl = 'https://t.me/WomenComBot';
+    $botUrl = route('account.register');
     $managerUrl = 'https://t.me/lesnichenkoP';
     $communityUrl = config('nutgram.community_url', $botUrl);
     $placeholder = $placeholder ?? false;

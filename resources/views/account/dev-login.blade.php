@@ -38,8 +38,8 @@
                             <input type="hidden" name="user_id" value="{{ $user->id }}">
                             <button type="submit">
                                 {{ $user->full_name ?: 'Участница #' . $user->id }}
-                                @if ($user->telegram_username)
-                                    <small>@&#8203;{{ $user->telegram_username }}</small>
+                                @if ($user->email)
+                                    <small>{{ $user->email }} · {{ $user->currentPlan()->shortTitle() }}</small>
                                 @endif
                             </button>
                         </form>

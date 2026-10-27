@@ -1,5 +1,5 @@
 @php
-    $botUrl = 'https://t.me/WomenComBot';
+    $botUrl = route('account.register');
     $communityUrl = config('nutgram.community_url', $botUrl);
     $partnerGroups = \App\Support\PartnerLogos::groups();
 @endphp

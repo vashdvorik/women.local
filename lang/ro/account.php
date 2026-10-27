@@ -39,18 +39,6 @@ return [
         'open' => 'Deschide',
     ],
 
-    'login' => [
-        'title' => 'Autentificare',
-        'loading' => 'Se face autentificarea…',
-        'subtitle' => 'Cabinetul participantei',
-        'closed_title' => 'Accesul nu este încă deschis',
-        'closed_text' => 'Cererea dvs. nu a fost aprobată sau depusă. Deschideți @WomenComBot și trimiteți /start pentru a aplica.',
-        'telegram_title' => 'Autentificare prin Telegram',
-        'step_1' => 'Deschideți botul platformei prin butonul de mai jos',
-        'step_2' => 'Accesați linkul securizat din mesajul botului',
-        'open_bot' => 'Deschide @WomenComBot',
-        'approved_only' => 'Accesul este disponibil doar pentru participantele aprobate',
-    ],
 
     'dashboard' => [
         'title' => 'Asistent AI',
@@ -84,7 +72,7 @@ return [
         'eyebrow' => 'Spațiul dvs.',
         'hello' => 'Bună ziua, :name!',
         'intro' => 'Aici este tot ce are nevoie o membră Women’s hub. Începeți cu pașii de mai jos sau alegeți o secțiune.',
-        'intro_open' => 'Aveți acces deschis. Mai jos sunt toate secțiunile cabinetului: ce este disponibil acum și ce se deschide cu abonamentul.',
+        'intro_open' => 'Aveți tariful Open: oportunități, instruire și materiale. Mai jos sunt toate secțiunile cabinetului: ce este disponibil acum și ce se deschide cu tariful Community.',
         'hint_title' => 'Cum este organizat totul',
         'hint_mobile' => 'Meniul este mereu în partea de jos a ecranului: secțiunile principale și butonul „Mai mult” cu toate celelalte. Cardurile de mai jos sunt aceleași secțiuni, cu o explicație ce conțin și cum se folosesc.',
         'hint_desktop' => 'Meniul este mereu în stânga. Cardurile de mai jos sunt aceleași secțiuni, cu o explicație ce conțin și cum se folosesc.',
@@ -139,7 +127,7 @@ return [
             ],
             'people' => [
                 'what' => 'Catalogul tuturor membrelor platformei.',
-                'how' => 'Parcurgeți lista și deschideți profiluri: acolo sunt descrierea și un link pentru a scrie în Telegram.',
+                'how' => 'Parcurgeți lista și deschideți profiluri: acolo sunt descrierea, telefonul și Telegram pentru contact.',
             ],
             'opportunities' => [
                 'what' => 'Cereri, parteneriate și evenimente publicate chiar de membre.',
@@ -165,7 +153,6 @@ return [
         'fresh_all_members' => 'Toate membrele',
         'fresh_empty' => 'Deocamdată nimic.',
         'no_description' => 'Descrierea nu este completată încă.',
-        'bot_help' => 'Nu găsiți răspunsul? Întrebați „Asistentul AI” din botul Telegram: explică cum se folosește totul.',
     ],
 
     'profile' => [
@@ -252,7 +239,7 @@ return [
         'empty_text' => 'Cereri, oferte, întâlniri și evenimente noi ale membrelor vor apărea aici.',
         'publish_first' => 'Publică prima →',
         'new_title' => 'Inițiativă nouă',
-        'new_subtitle' => 'Publicați o cerere, ofertă, întâlnire sau eveniment. După verificarea moderatorului, participantele vor primi notificare în Telegram.',
+        'new_subtitle' => 'Publicați o cerere, ofertă, întâlnire sau eveniment. După verificarea moderatorului, publicația va apărea în cabinet.',
         'status_pending' => 'În moderare: va fi vizibilă tuturor după aprobare',
         'status_rejected' => 'Respinsă de moderator și ascunsă celorlalte participante',
         'type' => 'Tip',
@@ -278,18 +265,11 @@ return [
     'messages' => [
         'profile_updated' => 'Profilul a fost actualizat. Alte participante vor înțelege mai bine afacerea și nevoile dvs.',
         'profile_deleted' => 'Profilul dvs. a fost șters.',
-        'opportunity_created' => 'Publicația a fost trimisă la moderare. După aprobare va apărea în catalog, iar participantele vor fi notificate în Telegram.',
+        'opportunity_created' => 'Publicația a fost trimisă la moderare. După aprobare va apărea în cabinet.',
         'opportunity_deleted' => 'Publicația a fost ștearsă.',
-        'invalid_link' => 'Linkul nu este valid.',
-        'expired_link' => 'Linkul a expirat. Solicitați unul nou prin @WomenComBot cu /login.',
-        'session_expired' => 'Sesiunea a expirat. Autentificați-vă din nou prin Telegram.',
-        'access_closed' => 'Acces închis. Cererea dvs. nu a fost aprobată sau a fost revocată.',
-        'short_link_invalid' => 'Linkul nu este valid sau a expirat.',
     ],
 
     'validation' => [
-        'username_required' => 'Introduceți Telegram username.',
-        'username_regex' => 'Username poate conține doar litere, cifre și _. Fără @.',
         'full_name_required' => 'Introduceți numele și prenumele.',
         'full_name_max' => 'Numele nu trebuie să depășească 120 de caractere.',
         'description_max' => 'Descrierea afacerii nu trebuie să depășească 1000 de caractere.',

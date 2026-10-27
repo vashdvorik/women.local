@@ -44,7 +44,7 @@ class AccountCabinetTest extends TestCase
         // Session exists but user is pending (not approved)
         $user = BotUser::factory()->pending()->create();
 
-        $this->withSession(['account_telegram_id' => $user->telegram_id])
+        $this->withSession($this->participantSession($user))
             ->get(route('account.index'))
             ->assertRedirect(route('account.login'))
             ->assertSessionHas('error');
@@ -58,15 +58,15 @@ class AccountCabinetTest extends TestCase
     private function sessionFor(BotUser $user): array
     {
         return [
-            'account_telegram_id' => $user->telegram_id,
-            '_account_expires'    => now()->addDays(7)->timestamp,
+            ...$this->participantSession($user),
+'_account_expires'    => now()->addDays(7)->timestamp,
         ];
     }
 
     private function actingAsApproved(): BotUser
     {
         $user = BotUser::factory()->community()->create();
-        session(['account_telegram_id' => $user->telegram_id]);
+        session($this->participantSession($user));
         session(['_account_expires' => now()->addDays(7)->timestamp]);
 
         return $user;
@@ -264,9 +264,9 @@ class AccountCabinetTest extends TestCase
 
         $this->withSession($this->sessionFor($user))
             ->post(route('account.logout'))
-            ->assertRedirect(route('account.login', ['logout' => '1']));
+            ->assertRedirect(route('account.login'));
 
-        $this->assertNull(session('account_telegram_id'));
+        $this->assertGuest('participant');
     }
 
     // ──────────────────────────────────────────────
@@ -301,11 +301,10 @@ class AccountCabinetTest extends TestCase
 
         $this->withSession($this->sessionFor($user))
             ->post(route('account.logout'))
-            ->assertRedirect(route('account.login', ['logout' => '1']));
+            ->assertRedirect(route('account.login'));
 
         // Both session keys must be removed
-        $this->assertNull(session('account_telegram_id'));
-        $this->assertNull(session('_account_expires'));
+        $this->assertGuest('participant');
     }
 
     public function test_logout_blocks_subsequent_protected_requests(): void

@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Account\OpportunityRequest;
-use App\Jobs\NotifyOpportunity;
 use App\Models\BotUser;
 use App\Models\Opportunity;
 use Illuminate\Http\RedirectResponse;
@@ -50,8 +49,6 @@ class OpportunityController extends Controller
             'status' => Opportunity::STATUS_PENDING,
             ...$request->validated(),
         ]);
-
-        // Уведомление участницам уходит только после одобрения (ProfileModeration / админка).
 
         return redirect()->route('account.opportunities.index')
             ->with('success', __('account.messages.opportunity_created'));

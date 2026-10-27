@@ -28,7 +28,7 @@ class ProfilePhotoTest extends TestCase
     /** @return array<string, mixed> */
     private function sessionOf(BotUser $user): array
     {
-        return ['account_telegram_id' => $user->telegram_id, '_account_expires' => now()->addDays(7)->timestamp];
+        return $this->participantSession($user);
     }
 
     /** @return array<string, string> поля формы, которые нужны всегда */

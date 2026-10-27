@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 /**
- * Отправка одного сообщения рассылки в Telegram (Bot API напрямую, как в NotifyOpportunity): текст или фото с подписью,
+ * Отправка одного сообщения рассылки в Telegram (Bot API напрямую): текст или фото с подписью,
  * кнопки-ссылки на языке получательницы. Фото загружается один раз, дальше уходит по file_id, который вернул Telegram.
  */
 class TelegramBroadcaster

@@ -157,6 +157,9 @@ class CommunitySeeder extends Seeder
             $user = BotUser::updateOrCreate(
                 ['telegram_id' => $data['telegram_id']],
                 array_merge($data, [
+                    // Демо-участницы входят как настоящие: почта, телефон и заполненная анкета (подключённый Telegram у них есть).
+                    'email'                => $data['telegram_username'].'@women.test',
+                    'phone'                => sprintf('+373 69 %06d', $data['telegram_id'] % 1000000),
                     'status'               => BotUser::STATUS_APPROVED,
                     'approved_at'          => now()->subDays(($index + 1) * 2),
                     'embedding'            => null,
@@ -164,9 +167,18 @@ class CommunitySeeder extends Seeder
                 ])
             );
 
-            // Демо-участницам оплачен Community на год: иначе кабинет на Open почти пустой. Сидер работает только вне боевого сервера.
-            if (! $user->hasPlan(Plan::Community)) {
-                app(SubscriptionService::class)->grant($user, Plan::Community, 12, note: 'Демо-данные');
+            $user->forceFill(['email_verified_at' => now(), 'profile_completed_at' => now()])->save();
+
+            // Демо-участницам оплачен тариф на год, чтобы в кабинете было что смотреть: большинству Community, каждой
+            // четвёртой Open, каждой шестой Private. Сидер работает только вне боевого сервера.
+            $plan = match (true) {
+                $index % 6 === 5 => Plan::Private,
+                $index % 4 === 3 => Plan::Open,
+                default => Plan::Community,
+            };
+
+            if (! $user->hasPlan($plan)) {
+                app(SubscriptionService::class)->grant($user, $plan, 12, note: 'Демо-данные');
             }
         }
 

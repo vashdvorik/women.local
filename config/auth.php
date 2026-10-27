@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\BotUser;
 use App\Models\User;
 
 return [
@@ -42,6 +43,12 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        // Участницы платформы (кабинет): отдельный вход, не пересекающийся с админкой (guard «web»).
+        'participant' => [
+            'driver' => 'session',
+            'provider' => 'participants',
+        ],
     ],
 
     /*
@@ -65,6 +72,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', User::class),
+        ],
+
+        'participants' => [
+            'driver' => 'eloquent',
+            'model' => BotUser::class,
         ],
 
         // 'users' => [
@@ -96,6 +108,14 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        // Сброс пароля участницы: своя таблица токенов, чтобы почта участницы не пересекалась с почтой администратора.
+        'participants' => [
+            'provider' => 'participants',
+            'table' => 'participant_password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
         ],

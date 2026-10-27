@@ -10,10 +10,10 @@
                 <h1 class="miro-page-title">{{ __('account.opportunities.title') }}</h1>
                 <p class="miro-page-description">{{ __('account.opportunities.subtitle') }}</p>
             </div>
-            {{-- Скрытый участник только читает: публиковать он не может. --}}
-            @unless($accountUser->is_hidden)
+            {{-- Читают все тарифы; публикуют с Community. Скрытый участник только читает: публиковать он не может. --}}
+            @if(! $accountUser->is_hidden && $accountUser->canSeeContacts())
                 <a href="{{ route('account.opportunities.create') }}" class="miro-button miro-button--dark">{{ __('account.opportunities.add') }}</a>
-            @endunless
+            @endif
         </header>
 
         @if($opportunities->isEmpty())
@@ -21,9 +21,9 @@
                 <span class="miro-empty__mark"><svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 5v14m-7-7h14"/></svg></span>
                 <h2>{{ __('account.opportunities.empty_title') }}</h2>
                 <p>{{ __('account.opportunities.empty_text') }}</p>
-                @unless($accountUser->is_hidden)
+                @if(! $accountUser->is_hidden && $accountUser->canSeeContacts())
                     <a href="{{ route('account.opportunities.create') }}" class="miro-button miro-button--pink mt-6">{{ __('account.opportunities.publish_first') }}</a>
-                @endunless
+                @endif
             </div>
         @else
             <div class="space-y-5">

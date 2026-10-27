@@ -6,8 +6,8 @@ namespace App\Support;
  * Тексты двух страниц раздела «О нас» и «Люди» на трёх языках: «Приоритеты» (/about/priorities) и «Как стать участницей»
  * (/members/join). Оба написаны заново на основании Положения о платформе Woman’s Hub (App\Support\Regulations): цели,
  * принципы, партнёры, членство, Комиссия, права и обязанности, пакеты, Gala. Остальное взято из того, как платформа
- * работает на самом деле: регистрация в Telegram-боте, оплата в кабинете картой Агропромбанка на 12 месяцев, что открыто
- * на тарифе Open и что входит в Community и Private (docs/SUBSCRIPTIONS.md, docs/PROJECT_MAP.md).
+ * работает на самом деле: регистрация по почте, оплата в кабинете картой Агропромбанка на 12 месяцев, что открыто
+ * на тарифе Open (600) и что входит в Community и Private (docs/SUBSCRIPTIONS.md, docs/PROJECT_MAP.md).
  *
  * Тексты пакетов (перечни возможностей) здесь не дублируются: страница берёт их из lang/{ru,en,ro}/subscription.php, как
  * и страница «Подписка» в кабинете, а цены из App\Enums\Plan (админка «Подписки → Цена подписки»).
@@ -198,9 +198,9 @@ final class AboutContent
             'cta' => [
                 'title' => self::t('Присоединяйтесь к Woman’s Hub', 'Join Woman’s Hub', 'Alătură-te Woman’s Hub'),
                 'text' => self::t(
-                    'Подайте заявку, выберите пакет участия и откройте личный кабинет.',
-                    'Submit an application, choose a participation package and open your personal cabinet.',
-                    'Depune o cerere, alege un pachet de participare și deschide cabinetul personal.',
+                    'Зарегистрируйтесь, выберите тариф и откройте личный кабинет.',
+                    'Sign up, choose a plan and open your personal cabinet.',
+                    'Înregistrează-te, alege un tarif și deschide cabinetul personal.',
                 ),
                 'join' => self::t('Как стать участницей', 'How to become a member', 'Cum să devii membră'),
                 'regulations' => self::t('Положение', 'Regulations', 'Regulament'),
@@ -215,11 +215,11 @@ final class AboutContent
             'eyebrow' => self::t('Люди', 'People', 'Oameni'),
             'title' => self::t('Как стать участницей', 'How to become a member', 'Cum să devii membră'),
             'intro' => self::t(
-                'Участницей может стать женщина, которая разделяет цели и ценности платформы. Подайте заявку в Telegram, выберите пакет участия и откройте личный кабинет.',
-                'A woman who shares the goals and values of the platform can become a member. Submit an application in Telegram, choose a participation package and open your personal cabinet.',
-                'Poate deveni participantă orice femeie care împărtășește scopurile și valorile platformei. Depune o cerere în Telegram, alege un pachet de participare și deschide cabinetul personal.',
+                'Участницей может стать женщина, которая разделяет цели и ценности платформы. Зарегистрируйтесь по почте, заполните анкету, выберите тариф и откройте личный кабинет.',
+                'A woman who shares the goals and values of the platform can become a member. Sign up by email, fill in your profile, choose a plan and open your personal cabinet.',
+                'Poate deveni participantă orice femeie care împărtășește scopurile și valorile platformei. Înregistrează-te prin e-mail, completează profilul, alege un tarif și deschide cabinetul personal.',
             ),
-            'apply' => self::t('Подать заявку в Telegram', 'Apply in Telegram', 'Depune cererea în Telegram'),
+            'apply' => self::t('Зарегистрироваться', 'Sign up', 'Înregistrează-te'),
             'regulations' => self::t('Читать Положение', 'Read the Regulations', 'Citește Regulamentul'),
 
             'steps' => [
@@ -227,20 +227,20 @@ final class AboutContent
                 'title' => self::t('Ваш путь в сообщество Women’s Hub', 'Your path to the Women’s Hub community', 'Drumul tău în comunitatea Women’s Hub'),
                 'items' => [
                     self::card('telegram',
-                        'Подайте заявку', 'Submit an application', 'Depune cererea',
-                        'Откройте Telegram-бота Women’s hub, пройдите короткую регистрацию и расскажите о себе: чем вы занимаетесь и чего ждёте от сообщества.',
-                        'Open the Women’s hub Telegram bot, complete a short registration and tell us about yourself: what you do and what you expect from the community.',
-                        'Deschide botul Telegram Women’s hub, parcurge o înregistrare scurtă și spune-ne despre tine: cu ce te ocupi și ce aștepți de la comunitate.'),
+                        'Зарегистрируйтесь', 'Sign up', 'Înregistrează-te',
+                        'Зарегистрируйтесь по почте (или в одно нажатие через Google), подтвердите адрес и заполните анкету: имя, телефон, чем вы занимаетесь и чего ждёте от сообщества.',
+                        'Sign up by email (or in one tap with Google), confirm your address and fill in your profile: name, phone, what you do and what you expect from the community.',
+                        'Înregistrează-te prin e-mail (sau dintr-o atingere cu Google), confirmă adresa și completează profilul: nume, telefon, cu ce te ocupi și ce aștepți de la comunitate.'),
                     self::card('users',
                         'Заявку рассматривает Комиссия', 'The Committee reviews your application', 'Cererea este examinată de Comisie',
-                        'Комиссия по отбору участниц из шести человек (трёх представителей Агентства и трёх представителей партнёров) решает, соответствует ли заявка целям и ценностям платформы. Ответ приходит в Telegram.',
-                        'The Member Selection Committee of six people (three representatives of the Agency and three of the partners) decides whether the application matches the goals and values of the platform. The answer comes in Telegram.',
-                        'Comisia de selecție a participantelor, formată din șase persoane (trei reprezentanți ai Agenției și trei ai partenerilor), decide dacă cererea corespunde scopurilor și valorilor platformei. Răspunsul vine în Telegram.'),
+                        'Комиссия по отбору участниц из шести человек (трёх представителей Агентства и трёх представителей партнёров) решает, соответствует ли заявка целям и ценностям платформы. Ответ приходит на почту, а если вы подключили Telegram, то и туда.',
+                        'The Member Selection Committee of six people (three representatives of the Agency and three of the partners) decides whether the application matches the goals and values of the platform. The answer comes by email, and in Telegram too if you have connected it.',
+                        'Comisia de selecție a participantelor, formată din șase persoane (trei reprezentanți ai Agenției și trei ai partenerilor), decide dacă cererea corespunde scopurilor și valorilor platformei. Răspunsul vine prin e-mail, iar dacă ai conectat Telegram, și acolo.'),
                     self::card('card',
-                        'Выберите пакет и оплатите', 'Choose a package and pay', 'Alege pachetul și plătește',
-                        'После одобрения войдите в личный кабинет через Telegram и откройте раздел «Подписка»: выберите Community или Private на 12 месяцев и оплатите картой на защищённой странице банка. Данные карты платформа не получает.',
-                        'After approval, sign in to your personal cabinet through Telegram and open the “Subscription” section: choose Community or Private for 12 months and pay by card on the bank’s secure page. The platform never receives your card details.',
-                        'După aprobare, intră în cabinetul personal prin Telegram și deschide secțiunea „Abonament”: alege Community sau Private pentru 12 luni și plătește cu cardul pe pagina securizată a băncii. Platforma nu primește datele cardului.'),
+                        'Выберите тариф и оплатите', 'Choose a plan and pay', 'Alege tariful și plătește',
+                        'Сразу после анкеты вам предложат тарифы Open, Community и Private на 12 месяцев: оплатите картой на защищённой странице банка. Некоторые тарифы могут открываться по заявке: менеджер позвонит и откроет покупку. Данные карты платформа не получает.',
+                        'Right after the profile you will be offered the Open, Community and Private plans for 12 months: pay by card on the bank’s secure page. Some plans may open by request: a manager will call you and open the purchase. The platform never receives your card details.',
+                        'Imediat după profil ți se propun tarifele Open, Community și Private pe 12 luni: plătește cu cardul pe pagina securizată a băncii. Unele tarife se pot deschide la cerere: un manager te va suna și va deschide achiziția. Platforma nu primește datele cardului.'),
                     self::card('key',
                         'Пользуйтесь возможностями', 'Use the opportunities', 'Folosește oportunitățile',
                         'Закрытое сообщество, каталог участниц, подбор контактов, мероприятия и обучение открываются сразу после оплаты и работают, пока действует членство.',
@@ -258,9 +258,9 @@ final class AboutContent
                     'Calitatea de membră este individuală și se acordă pentru 12 luni. Statutul de rezidentă este valabil pe durata perioadei achitate.',
                 ),
                 'open_note' => self::t(
-                    'Открытый доступ не даёт статуса резидента: это бесплатные материалы платформы.',
-                    'Open access does not give resident status: these are the platform’s free materials.',
-                    'Accesul deschis nu oferă statutul de rezidentă: sunt materiale gratuite ale platformei.',
+                    'Тариф Open открывает кабинет с материалами и возможностями, но не включает поиск участниц и подбор контактов.',
+                    'The Open plan opens the cabinet with materials and opportunities but does not include member search and contact matching.',
+                    'Tariful Open deschide cabinetul cu materiale și oportunități, dar nu include căutarea participantelor și selecția de contacte.',
                 ),
                 'note' => self::t(
                     'Полный перечень возможностей пакетов — в разделе 6 Положения.',
@@ -316,9 +316,9 @@ final class AboutContent
                 'eyebrow' => self::t('Личный кабинет', 'Personal cabinet', 'Cabinet personal'),
                 'title' => self::t('Что вы получаете в кабинете', 'What you get in the cabinet', 'Ce primești în cabinet'),
                 'intro' => self::t(
-                    'Кабинет открывается через Telegram. Часть возможностей доступна сразу после одобрения заявки, остальные открываются с пакетом Community или Private.',
-                    'The cabinet opens through Telegram. Some features are available right after your application is approved, the rest open with the Community or Private package.',
-                    'Cabinetul se deschide prin Telegram. Unele funcții sunt disponibile imediat după aprobarea cererii, restul se deschid odată cu pachetul Community sau Private.',
+                    'Кабинет открывается после регистрации по почте и выбора тарифа. Open даёт возможности и обучающие материалы; поиск участниц, подбор контактов и ИИ-помощник входят в Community и Private.',
+                    'The cabinet opens after you sign up by email and choose a plan. Open gives opportunities and learning materials; member search, contact matching and the AI assistant are part of Community and Private.',
+                    'Cabinetul se deschide după înregistrarea prin e-mail și alegerea unui tarif. Open oferă oportunități și materiale de instruire; căutarea participantelor, selecția de contacte și asistentul AI fac parte din Community și Private.',
                 ),
                 'login' => self::t('Войти в кабинет', 'Sign in to the cabinet', 'Intră în cabinet'),
                 'groups' => [
@@ -376,10 +376,10 @@ final class AboutContent
                                 'Educational materials and meetings for members.',
                                 'Materiale și întâlniri educaționale pentru participante.'),
                             self::card('telegram',
-                                'Telegram-бот', 'Telegram bot', 'Bot Telegram',
-                                'Вход в кабинет в одно касание, сообщения о возможностях и напоминания о сроке подписки.',
-                                'One-tap sign-in to the cabinet, messages about opportunities and subscription reminders.',
-                                'Intrare în cabinet dintr-o atingere, mesaje despre oportunități și memento-uri despre termenul abonamentului.'),
+                                'Уведомления в Telegram', 'Telegram notifications', 'Notificări în Telegram',
+                                'Подключаются в профиле: сообщения об оплате и сроке тарифа, подходящие знакомства и рассылки платформы.',
+                                'Connected in your profile: messages about payments and your plan term, matching contacts and platform newsletters.',
+                                'Se conectează în profil: mesaje despre plată și termenul tarifului, contacte potrivite și newslettere ale platformei.'),
                         ],
                     ],
                 ],
@@ -409,9 +409,9 @@ final class AboutContent
                     [
                         'q' => self::t('Что будет, когда срок закончится?', 'What happens when the term ends?', 'Ce se întâmplă când se încheie termenul?'),
                         'a' => self::t(
-                            'Закрытые разделы кабинета закроются, а профиль и бесплатные материалы останутся. За 14 и за 3 дня до окончания мы напомним в Telegram. Автоплатежей нет: продлить можно по ссылке из сообщения.',
-                            'The closed sections of the cabinet will close, while your profile and the free materials remain. We will remind you in Telegram 14 and 3 days before the end. There are no automatic payments: you can renew using the link in the message.',
-                            'Secțiunile închise ale cabinetului se vor închide, iar profilul și materialele gratuite rămân. Te vom anunța în Telegram cu 14 și cu 3 zile înainte de sfârșit. Nu există plăți automate: poți prelungi prin linkul din mesaj.',
+                            'Кабинет закроется, а профиль сохранится. За 14 и за 3 дня до окончания мы напомним в Telegram (если вы его подключили) или по почте. Автоплатежей нет: продлить можно по ссылке из сообщения.',
+                            'The cabinet will close, while your profile remains. We will remind you 14 and 3 days before the end, in Telegram (if you have connected it) or by email. There are no automatic payments: you can renew using the link in the message.',
+                            'Cabinetul se va închide, iar profilul rămâne. Te vom anunța cu 14 și cu 3 zile înainte de sfârșit, în Telegram (dacă l-ai conectat) sau prin e-mail. Nu există plăți automate: poți prelungi prin linkul din mesaj.',
                         ),
                     ],
                     [
@@ -452,9 +452,9 @@ final class AboutContent
             'cta' => [
                 'title' => self::t('Готовы присоединиться?', 'Ready to join?', 'Ești gata să te alături?'),
                 'text' => self::t(
-                    'Подайте заявку в Telegram, и о решении мы сообщим там же.',
-                    'Submit your application in Telegram, and we will tell you the decision there.',
-                    'Depune cererea în Telegram, iar decizia ți-o comunicăm tot acolo.',
+                    'Зарегистрируйтесь по почте, заполните анкету и выберите тариф.',
+                    'Sign up by email, fill in your profile and choose a plan.',
+                    'Înregistrează-te prin e-mail, completează profilul și alege un tarif.',
                 ),
             ],
         ];

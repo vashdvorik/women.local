@@ -13,7 +13,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Prata&display=swap" rel="stylesheet">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
@@ -42,9 +41,7 @@
                     @endif
                     <div class="min-w-0 flex-1">
                         <p class="truncate text-sm font-medium text-[#21140F]">{{ explode(' ', (string) $accountUser->full_name)[0] }}</p>
-                        @if($accountUser->telegram_username)
-                            <p class="mt-0.5 truncate text-xs font-medium text-brand-600">{{ '@' . $accountUser->telegram_username }}</p>
-                        @endif
+                        <p class="mt-0.5 truncate text-xs font-medium text-brand-600">{{ $accountUser->currentPlan()->isPaid() ? $accountUser->currentPlan()->shortTitle() : $accountUser->email }}</p>
                     </div>
                 </div>
             </div>
@@ -101,6 +98,9 @@
                         <div class="account-flash account-flash--{{ $key === 'success' ? 'success' : 'error' }} mb-6 rounded-xl border border-{{ $color }}-200 bg-{{ $color }}-50 px-4 py-3 text-sm text-{{ $color }}-800">{{ session($key) }}</div>
                     @endif
                 @endforeach
+                @if(! $accountUser->isApproved())
+                    <div class="account-flash mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">{{ __('participant.banner.pending') }}</div>
+                @endif
                 @yield('content')
             </main>
         </div>

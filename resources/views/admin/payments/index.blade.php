@@ -47,7 +47,7 @@
                         @foreach($payments as $payment)
                             <tr>
                                 <td class="whitespace-nowrap"><a href="{{ route('admin.payments.show', $payment) }}" class="table-link">{{ $payment->invoice_id }}</a></td>
-                                <td>{{ $payment->botUser?->full_name ?: ('Telegram ID '.$payment->telegram_id) }}</td>
+                                <td>{{ $payment->botUser?->full_name ?: ($payment->botUser?->email ?: ($payment->telegram_id ? 'Telegram ID '.$payment->telegram_id : __('Участница удалена'))) }}</td>
                                 <td class="whitespace-nowrap">{{ $payment->planEnum()->shortTitle() }}</td>
                                 <td class="whitespace-nowrap">{{ number_format($payment->rubles(), 0, ',', ' ') }}</td>
                                 <td class="whitespace-nowrap">

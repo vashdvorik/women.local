@@ -126,9 +126,9 @@ final class Checkout
      */
     public function description(Payment $payment): string
     {
-        // Telegram ID плательщицы виден в выписке банка: если база потеряется (авария, откат к старой копии), по выписке
+        // Номер участницы (u123) виден в выписке банка: если база потеряется (авария, откат к старой копии), по выписке
         // можно будет понять, кому из участниц вернуть тариф. Двоеточия нет: оно разделяет поля строки подписи.
-        return 'Womens Hub '.$payment->planEnum()->shortTitle().' membership '.$payment->invoice_id.' tg'.$payment->telegram_id;
+        return 'Womens Hub '.$payment->planEnum()->shortTitle().' membership '.$payment->invoice_id.' u'.$payment->bot_user_id;
     }
 
     /**

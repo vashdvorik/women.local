@@ -39,7 +39,7 @@ class PerformanceTest extends TestCase
 
         DB::enableQueryLog();
 
-        $this->withSession(['account_telegram_id' => $user->telegram_id, '_account_expires' => now()->addDays(7)->timestamp])
+        $this->withSession($this->participantSession($user))
             ->get(route('account.index'))
             ->assertOk();
 
@@ -76,7 +76,7 @@ class PerformanceTest extends TestCase
 
         DB::enableQueryLog();
 
-        $this->withSession(['account_telegram_id' => $user->telegram_id, '_account_expires' => now()->addDays(7)->timestamp])
+        $this->withSession($this->participantSession($user))
             ->get(route('account.index'))
             ->assertOk();
 
@@ -109,7 +109,7 @@ class PerformanceTest extends TestCase
 
         DB::enableQueryLog();
 
-        $this->withSession(['account_telegram_id' => $user->telegram_id, '_account_expires' => now()->addDays(7)->timestamp])
+        $this->withSession($this->participantSession($user))
             ->get(route('account.people'))
             ->assertOk();
 
@@ -136,7 +136,7 @@ class PerformanceTest extends TestCase
 
         $start = microtime(true);
 
-        $response = $this->withSession(['account_telegram_id' => $user->telegram_id, '_account_expires' => now()->addDays(7)->timestamp])
+        $response = $this->withSession($this->participantSession($user))
             ->get(route('account.people'));
 
         $elapsed = (microtime(true) - $start) * 1000; // в мс
@@ -166,7 +166,7 @@ class PerformanceTest extends TestCase
 
         DB::enableQueryLog();
 
-        $this->withSession(['account_telegram_id' => $user->telegram_id, '_account_expires' => now()->addDays(7)->timestamp])
+        $this->withSession($this->participantSession($user))
             ->get(route('account.people'))
             ->assertOk();
 
@@ -252,7 +252,7 @@ class PerformanceTest extends TestCase
 
         foreach ($routes as $url) {
             DB::enableQueryLog();
-            $this->withSession(['account_telegram_id' => $user->telegram_id, '_account_expires' => now()->addDays(7)->timestamp])
+            $this->withSession($this->participantSession($user))
                 ->get($url)
                 ->assertOk();
             $totalQueries += count(DB::getQueryLog());
@@ -290,7 +290,7 @@ class PerformanceTest extends TestCase
             DB::enableQueryLog();
             DB::flushQueryLog();
 
-            $this->withSession(['account_telegram_id' => $user->telegram_id, '_account_expires' => now()->addDays(7)->timestamp])
+            $this->withSession($this->participantSession($user))
                 ->get(route('account.index'))
                 ->assertOk();
 
@@ -380,7 +380,7 @@ class PerformanceTest extends TestCase
 
         DB::enableQueryLog();
 
-        $this->withSession(['account_telegram_id' => $user->telegram_id, '_account_expires' => now()->addDays(7)->timestamp])
+        $this->withSession($this->participantSession($user))
             ->get(route('account.people'))
             ->assertOk();
 
@@ -423,7 +423,7 @@ class PerformanceTest extends TestCase
         DB::enableQueryLog();
         $start = microtime(true);
 
-        $response = $this->withSession(['account_telegram_id' => $currentUser->telegram_id, '_account_expires' => now()->addDays(7)->timestamp])
+        $response = $this->withSession($this->participantSession($currentUser))
             ->get(route('account.people'));
 
         $elapsedMs  = (microtime(true) - $start) * 1000;

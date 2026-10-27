@@ -10,8 +10,10 @@ use App\Models\BotUser;
 use App\Services\Subscriptions\SubscriptionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
+/** Вход в кабинет одной кнопкой для разработки интерфейса. Существует только при APP_ENV=local. */
 class DevAccountLoginController extends Controller
 {
     public function index(): View
@@ -27,13 +29,10 @@ class DevAccountLoginController extends Controller
     {
         $this->ensureLocalEnvironment();
 
-        $user = BotUser::approved()->findOrFail((int) $request->input('user_id'));
+        $user = BotUser::query()->whereNotNull('email')->findOrFail((int) $request->input('user_id'));
 
+        Auth::guard('participant')->login($user);
         $request->session()->regenerate();
-        $request->session()->put([
-            'account_telegram_id' => $user->telegram_id,
-            '_account_expires' => now()->addDays(7)->timestamp,
-        ]);
 
         return redirect()->route('account.index');
     }
@@ -45,9 +44,10 @@ class DevAccountLoginController extends Controller
 
     private function loginUsers()
     {
-        $users = BotUser::approved()
+        $users = BotUser::query()
+            ->whereNotNull('email')
             ->orderBy('full_name')
-            ->get(['id', 'telegram_id', 'full_name', 'telegram_username']);
+            ->get(['id', 'full_name', 'email', 'plan', 'plan_ends_at']);
 
         if ($users->isNotEmpty()) {
             return $users;
@@ -55,23 +55,24 @@ class DevAccountLoginController extends Controller
 
         // Keep the local project immediately usable even when its database is empty.
         $demoUser = BotUser::updateOrCreate(
-            ['telegram_id' => 9876543210],
+            ['email' => 'demo@women.test'],
             [
-                'telegram_username' => 'local_demo',
                 'first_name' => 'Демо',
                 'full_name' => 'Демо участница',
+                'phone' => '+373 600 00 000',
                 'description' => 'Локальный профиль для разработки интерфейса кабинета.',
                 'expectation' => 'Тестирование возможностей платформы.',
                 'status' => BotUser::STATUS_APPROVED,
                 'approved_at' => now(),
             ],
         );
+        $demoUser->forceFill(['email_verified_at' => now(), 'profile_completed_at' => now()])->save();
 
         // Локальный вход нужен для разработки интерфейса: демо-участнице сразу оплачен Community.
         if (! $demoUser->hasPlan(Plan::Community)) {
             app(SubscriptionService::class)->grant($demoUser, Plan::Community, 12, note: 'Локальная демо-участница');
         }
 
-        return collect([$demoUser]);
+        return collect([$demoUser->fresh()]);
     }
 }

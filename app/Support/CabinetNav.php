@@ -11,7 +11,7 @@ use App\Models\BotUser;
  * Меню кабинета: один список разделов для боковой панели, нижней панели на телефоне и плиток на главной, одинаковый во
  * всех темах (тема только оформляет его). У каждого раздела — маршрут, подпись, иконка и тариф, с которого он открыт.
  *
- * Закрытые для Open разделы участницам Open не прячем: они ведут на страницу с объяснением, что откроет подписка
+ * Закрытые для Open (600) разделы участницам Open не прячем: они ведут на страницу с объяснением, что откроет подписка
  * (RequirePlan), а на главной помечены замком.
  */
 final class CabinetNav
@@ -38,6 +38,7 @@ final class CabinetNav
     public static function items(?BotUser $user): array
     {
         $paid = $user !== null && $user->hasPlan(Plan::Community);
+        $anyPlan = $user !== null && $user->currentPlan()->isPaid();
 
         $definitions = [
             ['home', 'account.index', 'account.nav.home', null],
@@ -46,10 +47,15 @@ final class CabinetNav
             ['search', 'account.search', 'account.nav.search', Plan::Community],
             ['people', 'account.people', 'account.nav.people', Plan::Community],
             ['opportunities', 'account.opportunities.index', 'account.nav.opportunities', Plan::Community],
-            ['knowledge', 'account.knowledge', 'account.nav.knowledge', Plan::Community],
+            ['knowledge', 'account.knowledge', 'account.nav.knowledge', Plan::Open],
             ['profile', 'account.profile', 'account.nav.profile', null],
             ['subscription', 'account.subscription', 'subscription.nav.subscription', null],
         ];
+
+        // Тарифа нет: кабинета ещё нет, доступны только профиль и страница тарифов.
+        if (! $anyPlan) {
+            $definitions = array_values(array_filter($definitions, fn (array $d): bool => in_array($d[0], ['profile', 'subscription'], true)));
+        }
 
         return array_map(fn (array $d): array => [
             'key' => $d[0],
@@ -57,7 +63,7 @@ final class CabinetNav
             'label' => __($d[2]),
             'path' => self::ICONS[$d[0]],
             'min' => $d[3],
-            'locked' => $d[3] !== null && ! $paid,
+            'locked' => $d[3] === Plan::Community && ! $paid,
         ], $definitions);
     }
 

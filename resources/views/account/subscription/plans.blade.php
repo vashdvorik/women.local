@@ -15,26 +15,29 @@
         <p class="mt-3 text-sm leading-6 text-gray-600">{{ __('subscription.page.intro') }}</p>
     </header>
 
-    <div class="mb-8 flex flex-col gap-3 rounded-2xl border border-brand-100 bg-brand-50 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-            <p class="text-xs font-semibold uppercase tracking-widest text-brand-700">{{ __('subscription.page.your_plan') }}</p>
-            <p class="mt-1 text-lg font-semibold">{{ $current->title() }}</p>
-        </div>
-        <p class="text-sm text-gray-600">
-            @if($current->isPaid() && $user->plan_ends_at)
-                {{ __('subscription.page.until', ['date' => $user->plan_ends_at->format('d.m.Y')]) }}
-            @else
-                {{ __('subscription.page.no_expiry') }}
+    @if($current->isPaid())
+        <div class="mb-8 flex flex-col gap-3 rounded-2xl border border-brand-100 bg-brand-50 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <p class="text-xs font-semibold uppercase tracking-widest text-brand-700">{{ __('subscription.page.your_plan') }}</p>
+                <p class="mt-1 text-lg font-semibold">{{ $current->title() }}</p>
+            </div>
+            @if($user->plan_ends_at)
+                <p class="text-sm text-gray-600">{{ __('subscription.page.until', ['date' => $user->plan_ends_at->format('d.m.Y')]) }}</p>
             @endif
-        </p>
-    </div>
+        </div>
+    @else
+        <div class="mb-8 rounded-2xl border border-brand-100 bg-brand-50 px-5 py-4">
+            <p class="text-lg font-semibold">{{ __('participant.plans.choose_heading') }}</p>
+            <p class="mt-1 text-sm leading-6 text-gray-600">{{ __('participant.plans.choose_text') }}</p>
+        </div>
+    @endif
 
     @if($testMode)
         <p class="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">{{ __('subscription.page.test_mode') }}</p>
     @endif
 
     <div class="grid gap-6 lg:grid-cols-3">
-        @foreach(Plan::cases() as $plan)
+        @foreach(Plan::paid() as $plan)
             @php $isCurrent = $current === $plan; @endphp
             <section class="flex flex-col rounded-3xl border bg-white p-6 shadow-sm {{ $isCurrent ? 'border-brand-400 ring-2 ring-brand-100' : 'border-gray-200' }}" aria-labelledby="plan-{{ $plan->value }}">
                 <div class="flex items-start justify-between gap-3">
@@ -49,7 +52,7 @@
 
                 <p class="mt-5 text-3xl font-semibold tracking-tight">
                     {{ $plan->priceLabel() }}
-                    @if($plan->isPaid())<span class="text-sm font-medium text-gray-500"> {{ __('subscription.per_year') }}</span>@endif
+                    <span class="text-sm font-medium text-gray-500"> {{ __('subscription.per_year') }}</span>
                 </p>
 
                 <div class="mt-5 flex-1">
@@ -57,11 +60,7 @@
                 </div>
 
                 <div class="mt-6">
-                    @if($plan->isPaid())
-                        @include('account.subscription._buy', ['plan' => $plan, 'current' => $current, 'user' => $user])
-                    @elseif($isCurrent)
-                        <p class="rounded-xl bg-gray-50 px-4 py-3 text-center text-sm font-medium text-gray-500">{{ __('subscription.page.included') }}</p>
-                    @endif
+                    @include('account.subscription._buy', ['plan' => $plan, 'current' => $current, 'user' => $user])
                 </div>
             </section>
         @endforeach

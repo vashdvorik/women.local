@@ -16,11 +16,11 @@
                    :hint="__('watch?v=…, youtu.be/…, /shorts/…, /embed/… или /live/…')" />
 
     <div class="space-y-1">
-        <label for="event_date" class="field-label">{{ __('Дата события') }}</label>
+        <label for="event_date" class="field-label">{{ __('Дата публикации') }}</label>
         <input id="event_date" type="date" name="event_date"
                value="{{ old('event_date', $video->event_date?->format('Y-m-d')) }}"
                class="field-input @error('event_date') field-input--invalid @enderror">
-        @error('event_date')<p class="field-error">{{ $message }}</p>@enderror
+        @error('event_date')<p class="field-error">{{ $message }}</p>@else<p class="field-hint">{{ __('Показывается на карточке видео на сайте. Если оставить пустой, даты на карточке не будет.') }}</p>@enderror
     </div>
 
     <section>

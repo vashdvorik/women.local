@@ -68,6 +68,74 @@ class EventTest extends TestCase
         $this->assertNull($event->rawTranslation('ro'));
     }
 
+    public function test_changing_the_publication_date_updates_a_label_that_only_repeated_the_old_date(): void
+    {
+        // Так подпись записана у новостей архива: она повторяет дату и главнее неё на карточке.
+        $event = Event::create(['slug' => 'novost', 'tone' => 'blue', 'position' => 1, 'is_published' => true, 'starts_at' => '2026-10-27']);
+        $event->translations()->create(['locale' => 'ru', 'title' => 'Новость', 'date_label' => '27 октября 2026']);
+        $event->translations()->create(['locale' => 'en', 'title' => 'News', 'date_label' => 'October 27, 2026']);
+        $event->translations()->create(['locale' => 'ro', 'title' => 'Știre', 'date_label' => 'Se deschide înscrierea']);
+
+        $this->actingAsAdmin()->put(route('admin.events.update', $event), $this->payload([
+            'starts_at' => '2026-11-03',
+            'translations' => [
+                'ru' => ['title' => 'Новость', 'date_label' => '27 октября 2026'],
+                'en' => ['title' => 'News', 'date_label' => 'October 27, 2026'],
+                'ro' => ['title' => 'Știre', 'date_label' => 'Se deschide înscrierea'],
+            ],
+        ]))->assertRedirect();
+
+        $event = $event->fresh();
+        $this->assertSame('2026-11-03', $event->starts_at->toDateString());
+        $this->assertSame('3 ноября 2026', $event->dateLabel('ru'), 'подпись, повторявшая дату, обновилась');
+        $this->assertSame('November 3, 2026', $event->dateLabel('en'));
+        $this->assertSame('Se deschide înscrierea', $event->dateLabel('ro'), 'свой текст редактора остался');
+
+        $this->get(route('events'))->assertOk()->assertSee('3 ноября 2026');
+    }
+
+    public function test_an_old_hand_written_date_label_follows_the_new_date_but_a_range_or_text_does_not(): void
+    {
+        // У старых карточек подпись вписана вручную и не совпадает с датой новости: «20.05.2026» при другой дате.
+        $event = Event::create(['slug' => 'staraya', 'tone' => 'blue', 'position' => 1, 'is_published' => true, 'starts_at' => '2026-06-18']);
+        $event->translations()->create(['locale' => 'ru', 'title' => 'Старая', 'date_label' => '20.05.2026']);
+        $event->translations()->create(['locale' => 'en', 'title' => 'Old', 'date_label' => 'May 30 — June 2']);
+
+        $this->actingAsAdmin()->put(route('admin.events.update', $event), $this->payload([
+            'starts_at' => '2026-12-01',
+            'translations' => [
+                'ru' => ['title' => 'Старая', 'date_label' => '20.05.2026'],
+                'en' => ['title' => 'Old', 'date_label' => 'May 30 — June 2'],
+            ],
+        ]))->assertRedirect();
+
+        $event = $event->fresh();
+        $this->assertSame('1 декабря 2026', $event->dateLabel('ru'));
+        $this->assertSame('May 30 — June 2', $event->dateLabel('en'), 'диапазон дат — это свой текст редактора');
+    }
+
+    public function test_saving_without_changing_the_date_keeps_every_label_and_removing_the_date_drops_the_repeating_one(): void
+    {
+        $event = Event::create(['slug' => 'novost', 'tone' => 'blue', 'position' => 1, 'is_published' => true, 'starts_at' => '2026-10-27']);
+        $event->translations()->create(['locale' => 'ru', 'title' => 'Новость', 'date_label' => '27 октября 2026']);
+
+        $this->actingAsAdmin()->put(route('admin.events.update', $event), $this->payload([
+            'starts_at' => '2026-10-27',
+            'translations' => ['ru' => ['title' => 'Новость', 'date_label' => '27 октября 2026']],
+        ]))->assertRedirect();
+
+        $this->assertSame('27 октября 2026', $event->fresh()->rawTranslation('ru')->date_label);
+
+        $this->actingAsAdmin()->put(route('admin.events.update', $event), $this->payload([
+            'starts_at' => '',
+            'translations' => ['ru' => ['title' => 'Новость', 'date_label' => '27 октября 2026']],
+        ]))->assertRedirect();
+
+        $fresh = $event->fresh();
+        $this->assertNull($fresh->starts_at);
+        $this->assertNull($fresh->rawTranslation('ru')->date_label);
+    }
+
     public function test_russian_title_is_required_and_url_must_be_valid(): void
     {
         $this->actingAsAdmin()->post(route('admin.events.store'), $this->payload([

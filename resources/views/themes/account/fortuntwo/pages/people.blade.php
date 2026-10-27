@@ -122,7 +122,11 @@
                             </div>
                         </div>
 
-                        @if($person->telegram_username)
+                        @if($person->phone)
+                            <a href="tel:{{ preg_replace('/[^0-9+]/', '', $person->phone) }}" class="miro-directory-card__contact">
+                                {{ $person->phone }}
+                            </a>
+                        @elseif($person->telegram_username)
                             <a href="https://t.me/{{ $person->telegram_username }}" target="_blank" rel="noopener" class="miro-directory-card__contact">
                                 {{ $contactLabel }}
                             </a>

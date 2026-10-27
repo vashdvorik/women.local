@@ -109,11 +109,11 @@
         </div>
     </section>
 
-    @if($paid)
-        {{-- Что нового --}}
-        <section class="mb-10" aria-labelledby="home-fresh-title">
-            <h2 id="home-fresh-title" class="mb-4 text-base font-semibold">{{ __('account.home.fresh_title') }}</h2>
-            <div class="grid gap-6 lg:grid-cols-2">
+    {{-- Что нового: возможности участниц видят все тарифы, новых участниц и каталог — Community и Private --}}
+    <section class="mb-10" aria-labelledby="home-fresh-title">
+        <h2 id="home-fresh-title" class="mb-4 text-base font-semibold">{{ __('account.home.fresh_title') }}</h2>
+        <div class="grid gap-6 {{ $paid ? 'lg:grid-cols-2' : '' }}">
+            @if(true)
                 <div class="flex flex-col rounded-3xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
                     <h3 class="text-sm font-semibold">{{ __('account.home.fresh_opportunities') }}</h3>
                     @forelse($opportunities as $item)
@@ -127,6 +127,8 @@
                     <a href="{{ route('account.opportunities.index') }}" class="mt-auto pt-5 text-sm font-medium text-brand-700 hover:underline">{{ __('account.home.fresh_all_opportunities') }} →</a>
                 </div>
 
+            @endif
+            @if($paid)
                 <div class="flex flex-col rounded-3xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
                     <h3 class="text-sm font-semibold">{{ __('account.home.fresh_members') }}</h3>
                     @forelse($members as $member)
@@ -146,10 +148,12 @@
                     @endforelse
                     <a href="{{ route('account.people') }}" class="mt-auto pt-5 text-sm font-medium text-brand-700 hover:underline">{{ __('account.home.fresh_all_members') }} →</a>
                 </div>
-            </div>
-        </section>
-    @else
-        {{-- Открытый доступ: то, что есть на публичном сайте --}}
+            @endif
+        </div>
+    </section>
+
+    @unless($paid)
+        {{-- Тариф Open: то, что есть на публичном сайте --}}
         @php
             $sections = [
                 ['key' => 'news', 'title' => __('subscription.open_home.news'), 'all' => route('events')],
@@ -182,8 +186,6 @@
                 </section>
             @endforeach
         </div>
-    @endif
-
-    <p class="mb-4 rounded-2xl bg-gray-50 px-4 py-3 text-sm leading-6 text-gray-600">{{ __('account.home.bot_help') }}</p>
+    @endunless
 </div>
 @endsection

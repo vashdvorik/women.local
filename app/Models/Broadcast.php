@@ -20,7 +20,11 @@ class Broadcast extends Model
     public const STATUS_SENT = 'sent';
     public const STATUS_CANCELLED = 'cancelled';
 
-    /** Все одобренные участницы / платные (Community и Private) / только бесплатные (Open). */
+    /**
+     * Все одобренные участницы / с действующим тарифом (Open, Community, Private) / без тарифа. Значение 'open' у
+     * последней группы осталось от прежнего бесплатного тарифа: рассылки, сохранённые с ним, продолжают работать.
+     * Рассылка идёт в Telegram, поэтому получают её только те, кто подключил бота.
+     */
     public const AUDIENCE_APPROVED = 'approved';
     public const AUDIENCE_MEMBERS = 'members';
     public const AUDIENCE_OPEN = 'open';
@@ -56,11 +60,13 @@ class Broadcast extends Model
     /** Получательницы выбранной группы. */
     public static function audienceQuery(string $audience): Builder
     {
-        return match ($audience) {
+        $query = match ($audience) {
             self::AUDIENCE_MEMBERS => BotUser::members(),
             self::AUDIENCE_OPEN => BotUser::approved()->whereNotIn('bot_users.id', BotUser::members()->select('bot_users.id')),
             default => BotUser::approved(),
         };
+
+        return $query->whereNotNull('bot_users.telegram_id');
     }
 
     public function recipients(): Builder
@@ -159,8 +165,8 @@ class Broadcast extends Model
     public static function audienceTitle(string $audience): string
     {
         return match ($audience) {
-            self::AUDIENCE_MEMBERS => __('Платные подписчицы (Community и Private)'),
-            self::AUDIENCE_OPEN => __('Только бесплатный тариф (Open)'),
+            self::AUDIENCE_MEMBERS => __('Участницы с тарифом (Open, Community, Private)'),
+            self::AUDIENCE_OPEN => __('Без тарифа (зарегистрированы, но ещё не купили)'),
             default => __('Все одобренные участницы'),
         };
     }

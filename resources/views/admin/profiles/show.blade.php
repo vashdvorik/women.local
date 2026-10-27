@@ -27,6 +27,27 @@
 
                     <dl class="grid gap-x-6 gap-y-1 text-ui sm:grid-cols-2">
                         <div class="flex gap-2">
+                            <dt class="text-ink-muted">{{ __('Почта:') }}</dt>
+                            <dd>
+                                @if($profile->email)
+                                    <a href="mailto:{{ $profile->email }}" class="text-accent">{{ $profile->email }}</a>
+                                    @unless($profile->hasVerifiedEmail()) <span class="badge badge--draft">{{ __('не подтверждена') }}</span> @endunless
+                                @else
+                                    —
+                                @endif
+                            </dd>
+                        </div>
+                        <div class="flex gap-2">
+                            <dt class="text-ink-muted">{{ __('Телефон:') }}</dt>
+                            <dd>
+                                @if($profile->phone)
+                                    <a href="tel:{{ preg_replace('/[^0-9+]/', '', $profile->phone) }}" class="text-accent">{{ $profile->phone }}</a>
+                                @else
+                                    —
+                                @endif
+                            </dd>
+                        </div>
+                        <div class="flex gap-2">
                             <dt class="text-ink-muted">Telegram:</dt>
                             <dd>
                                 @if($profile->telegram_username)
@@ -39,7 +60,7 @@
                         </div>
                         <div class="flex gap-2">
                             <dt class="text-ink-muted">Telegram ID:</dt>
-                            <dd>{{ $profile->telegram_id }}</dd>
+                            <dd>{{ $profile->telegram_id ?? '—' }}</dd>
                         </div>
                         <div class="flex gap-2">
                             <dt class="text-ink-muted">{{ __('Заявка:') }}</dt>

@@ -5,7 +5,7 @@
     use Illuminate\Support\HtmlString;
 
     $locales = ['ru', 'en', 'ro'];
-    $botUrl = config('site.bot_url');
+    $botUrl = route('account.register');
     // Название и описание нужны вкладке браузера и поисковикам (<head> каркаса), а также шапке страницы.
     $heroEyebrow = $content['eyebrow'];
     $heroTitle = $content['title'];
@@ -76,12 +76,8 @@
                         <h3 class="miro-about__plan-name">{{ $plan->title('ru') }}</h3>
                         <p class="miro-about__plan-tag">{{ $lang("subscription.plans.{$plan->value}.tagline") }}</p>
                         <div class="miro-about__plan-price">
-                            @if($plan->isPaid())
-                                <span class="miro-about__plan-amount">{{ number_format($plan->price(), 0, ',', "\u{00A0}") }}</span>
-                                <span class="miro-about__plan-unit">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ __('subscription.currency', [], $l) }} / {{ __('subscription.per_year', [], $l) }}</span>@endforeach</span>
-                            @else
-                                <span class="miro-about__plan-amount">{{ $lang('subscription.free') }}</span>
-                            @endif
+                            <span class="miro-about__plan-amount">{{ number_format($plan->price(), 0, ',', "\u{00A0}") }}</span>
+                            <span class="miro-about__plan-unit">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ __('subscription.currency', [], $l) }} / {{ __('subscription.per_year', [], $l) }}</span>@endforeach</span>
                         </div>
                         <p class="miro-about__plan-lead">{{ $lang("subscription.plans.{$plan->value}.lead") }}</p>
                         <ul class="miro-about__plan-list">
@@ -89,11 +85,7 @@
                                 <li>{{ $feature($plan->value, $i) }}</li>
                             @endforeach
                         </ul>
-                        @if($plan->isPaid())
-                            <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button {{ $plan === Plan::Private ? 'miro-button--pink' : 'miro-button--primary' }}">{{ $tri($content['apply']) }}</a>
-                        @else
-                            <p class="miro-about__plan-note">{{ $tri($content['plans']['open_note']) }}</p>
-                        @endif
+                        <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button {{ $plan === Plan::Private ? 'miro-button--pink' : 'miro-button--primary' }}">{{ $tri($content['apply']) }}</a>
                     </article>
                 @endforeach
             </div>

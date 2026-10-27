@@ -12,12 +12,41 @@
                 <span class="badge {{ $current->isPaid() ? 'badge--published' : 'badge--draft' }}">{{ $current->shortTitle() }}</span>
             </div>
             <dl class="grid gap-x-6 gap-y-1 text-ui sm:grid-cols-2">
-                <div class="flex gap-2"><dt class="text-ink-muted">Telegram:</dt><dd>{{ $profile->telegram_username ? '@'.$profile->telegram_username : '—' }}</dd></div>
+                <div class="flex gap-2"><dt class="text-ink-muted">{{ __('Почта:') }}</dt><dd>{{ $profile->email ?: '—' }}</dd></div>
+                <div class="flex gap-2"><dt class="text-ink-muted">{{ __('Телефон:') }}</dt><dd>{{ $profile->phone ?: '—' }}</dd></div>
+                <div class="flex gap-2"><dt class="text-ink-muted">Telegram:</dt><dd>{{ $profile->telegram_username ? '@'.$profile->telegram_username : ($profile->hasTelegram() ? __('подключён') : '—') }}</dd></div>
                 <div class="flex gap-2"><dt class="text-ink-muted">{{ __('Статус профиля:') }}</dt><dd><x-admin.profile-status-badge :status="$profile->status" /></dd></div>
                 <div class="flex gap-2"><dt class="text-ink-muted">{{ __('Тариф сейчас:') }}</dt><dd>{{ $current->title('ru') }}</dd></div>
                 <div class="flex gap-2"><dt class="text-ink-muted">{{ __('Действует до:') }}</dt><dd>{{ $current->isPaid() ? $profile->plan_ends_at->format('d.m.Y H:i') : '—' }}</dd></div>
             </dl>
         </div>
+
+        @if($closedPlans !== [])
+            <div class="card space-y-4">
+                <div>
+                    <h2 class="text-section font-semibold">{{ __('Открыть покупку закрытого тарифа') }}</h2>
+                    <p class="field-hint mt-1">
+                        {{ __('Эти тарифы закрыты для всех: участница видит «Оставить заявку». Когда вы поговорили и договорились, откройте покупку ей лично: на этом тарифе появится кнопка «Купить». Покупка закрывается снова, когда она оплатит.') }}
+                    </p>
+                </div>
+                @foreach($closedPlans as $closedPlan)
+                    <form method="POST" action="{{ route('admin.subscriptions.unlock', $profile) }}" class="flex flex-wrap items-center gap-3">
+                        @csrf
+                        <input type="hidden" name="plan" value="{{ $closedPlan->value }}">
+                        <span class="min-w-[12rem] text-ui font-semibold">{{ $closedPlan->title('ru') }}</span>
+                        @if($unlocked[$closedPlan->value] ?? false)
+                            <span class="badge badge--published">{{ __('покупка открыта') }}</span>
+                        @else
+                            <button type="submit" class="btn-primary">{{ __('Открыть покупку') }}</button>
+                            <label class="flex items-center gap-2 text-ui text-ink-muted">
+                                <input type="checkbox" name="notify" value="1" class="rounded border-hairline" checked>
+                                {{ __('Сообщить участнице письмом') }}
+                            </label>
+                        @endif
+                    </form>
+                @endforeach
+            </div>
+        @endif
 
         @if($profile->isApproved())
             <x-forms.error-summary />
@@ -103,12 +132,12 @@
 
             @if($current->isPaid())
                 <div class="card flex flex-wrap items-center justify-between gap-3">
-                    <p class="text-ui text-ink-muted">{{ __('Закрыть платный доступ сейчас: участница сразу вернётся на Open. Деньги этим не возвращаются, возврат делается в банке.') }}</p>
+                    <p class="text-ui text-ink-muted">{{ __('Закрыть платный доступ сейчас: у участницы сразу не станет тарифа, кабинет закроется. Деньги этим не возвращаются, возврат делается в банке.') }}</p>
                     <x-admin.confirm-button
                         :action="route('admin.subscriptions.revoke', $profile)"
                         :label="__('Закрыть доступ')"
-                        :title="__('Вернуть на Open?')"
-                        :message="__(':name потеряет каталог участниц, поиск и ИИ-помощника сразу.', ['name' => $profile->full_name ?: __('Участница')])"
+                        :title="__('Закрыть платный доступ?')"
+                        :message="__(':name потеряет доступ к кабинету сразу.', ['name' => $profile->full_name ?: __('Участница')])"
                         :confirm="__('Закрыть доступ')"
                         trigger="btn-danger"
                         :danger="true" />

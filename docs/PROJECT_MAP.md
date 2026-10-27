@@ -4,15 +4,55 @@
 > раздел про админку и публичные материалы обновлён 20.09.2026 после переноса админки из education3 (см. docs/ADMIN_MIGRATION.md).
 > Это карта фактически подключённых механизмов, а не список планируемых разделов из маркетингового лендинга.
 
+## 0. Что изменилось: регистрация по почте, тарифы, бот (28.10.2026)
+
+> Это актуальное описание. Ниже в документе разделы про вход через Telegram (`/go/{code}`, `account.auth`,
+> `tma-auth`, `LoginToken`), про диалоги бота (`RegistrationConversation`, `HelpConversation`,
+> `SearchConversation`, `BotReplies`, `TelegramKeyboards`, меню бота), «AI помощник» бота, напоминание о кабинете
+> и рассылку `NotifyOpportunity` описывают прежнюю схему: этих файлов и маршрутов больше нет.
+
+**Участница и вход.** Участница — по-прежнему `BotUser` (таблица `bot_users`), но теперь она регистрируется по почте
+и входит через отдельный guard `participant` (`config/auth.php`, провайдер `participants`). Админка остаётся на guard
+`web` и модели `User`; обе авторизации живут в одной сессии независимо. `telegram_id` необязателен.
+
+Путь участницы (`App\Http\Middleware\RequireAccountAuth` ведёт по шагам, лишние страницы перенаправляет):
+
+1. `/app/account/register` (почта + пароль + согласие) или кнопка «Продолжить через Google» (`GoogleController`, OAuth
+   без пакетов; ключи `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`, без них кнопка скрыта). Вход — `/app/account/login`,
+   «Забыли пароль» — `PasswordResetController` (брокер паролей `participants`, таблица `participant_password_reset_tokens`).
+2. Подтверждение почты: письмо со ссылкой (`account.verification.verify`, подписанный адрес на сутки) — `EmailVerificationController`.
+   Через Google почта подтверждена сразу.
+3. Анкета `/app/account/onboarding` (`OnboardingController`): имя, **телефон (обязателен)**, «о себе», «чего ждёте». После неё
+   `profile_completed_at`, анкета уходит на проверку администратору (status `pending`), одобрение от покупки тарифа не зависит.
+4. Выбор тарифа `/app/account/subscription`. Пока тарифа нет, доступны только эта страница, профиль и подключение Telegram.
+
+**Тарифы** (`App\Enums\Plan`): `None` (нет тарифа, кабинета нет), `Open` 600, `Community` 5000, `Private` 19000, все на год.
+Open: возможности участниц (чтение), обучение, материалы, профиль. Community и Private: каталог участниц **с телефонами и
+Telegram**, поиск, подбор, ИИ-помощник, публикация собственных возможностей (маршруты под `plan:community`). Профили всех
+платных тарифов (в том числе Open) видны участницам Community и Private (`BotUser::members()`/`discoverable()`).
+Подробности и оплата — docs/SUBSCRIPTIONS.md.
+
+**Закрытая покупка.** В «Подписках → Покупка тарифов» тариф можно закрыть (`SiteSetting::closedPlans()`): вместо «Купить» —
+«Оставить заявку» (`PlanRequestController`, таблица `plan_requests`, письмо менеджеру на `SiteSetting::planRequestEmail()`).
+Менеджер звонит и в «Заявках на тариф» (`Admin\PlanRequestController`) или в карточке участницы открывает покупку лично
+(`App\Services\Subscriptions\PlanPurchase`); оплата закрывает заявку.
+
+**Бот** только присылает уведомления и рассылки. Подключение: «Мой профиль → Подключить Telegram» (`TelegramLinkController`,
+таблица `telegram_links`, ссылка `t.me/<бот>?start=link_<токен>`), обработчик — `routes/telegram.php`. Сообщения бота —
+`resources/data/bot_messages.php` (подключение, решение по анкете, подписка). Без Telegram то же приходит письмом
+(`ModerationNoticeMail`, `SubscriptionNoticeMail`). Рассылки админа идут только подключившим Telegram.
+
+**Команды:** `participants:purge-legacy` (одноразово удаляет анкеты без почты, созданные через бота).
+
 ## 1. Коротко о проекте
 
 Проект — Laravel-приложение с тремя пользовательскими контурами:
 
 1. публичный лендинг;
-2. кабинет одобренной участницы, связанный с Telegram;
+2. кабинет участницы (регистрация по почте, тариф обязателен);
 3. закрытая админ-панель (Blade, Alpine.js, Tailwind; перенесена из education3).
 
-Telegram одновременно используется как канал регистрации и уведомлений, источник идентичности участницы и точка запуска AI-поиска. Кабинет работает через обычную web-сессию, которую можно создать magic-link из Telegram или через Telegram Mini App.
+Telegram используется только для уведомлений и рассылок: входа и регистрации через него нет (см. раздел 0).
 
 Стек:
 

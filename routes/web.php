@@ -1,16 +1,21 @@
 <?php
 
 use App\Http\Controllers\Account\AccountController;
+use App\Http\Controllers\Account\AuthController;
 use App\Http\Controllers\Account\DevAccountLoginController;
+use App\Http\Controllers\Account\EmailVerificationController;
+use App\Http\Controllers\Account\GoogleController;
+use App\Http\Controllers\Account\OnboardingController;
 use App\Http\Controllers\Account\OpportunityController;
+use App\Http\Controllers\Account\PasswordResetController;
+use App\Http\Controllers\Account\PlanRequestController;
 use App\Http\Controllers\Account\SubscriptionController;
-use App\Http\Controllers\Account\TmaAuthController;
+use App\Http\Controllers\Account\TelegramLinkController;
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\Dev\FakeBankController;
 use App\Http\Controllers\Payments\WebPaymentController;
 use App\Http\Controllers\PublicSite;
 use App\Http\Middleware\RequireAccountAuth;
-use App\Models\LoginToken;
 use App\Services\PublicThemeView;
 use App\Support\AboutContent;
 use App\Support\GalaRegulations;
@@ -113,10 +118,20 @@ Route::post('/telegram/webhook', function (Nutgram $bot) {
     $bot->run();
 })->name('telegram.webhook');
 
-// Account: magic-link auth (no middleware)
-Route::get('/app/account/auth', [AccountController::class, 'auth'])->middleware('throttle:20,1')->name('account.auth');
-Route::get('/app/account/login', [AccountController::class, 'login'])->name('account.login');
-Route::post('/app/account/tma-auth', [TmaAuthController::class, 'auth'])->middleware('throttle:20,1')->name('account.tma-auth');
+// Кабинет: регистрация и вход по почте (guard «participant»), быстрый вход через Google, восстановление пароля.
+// Входа через Telegram нет: бот только присылает уведомления.
+Route::get('/app/account/login', [AuthController::class, 'showLogin'])->name('account.login');
+Route::post('/app/account/login', [AuthController::class, 'login'])->middleware('throttle:20,1')->name('account.login.submit');
+Route::get('/app/account/register', [AuthController::class, 'showRegister'])->name('account.register');
+Route::post('/app/account/register', [AuthController::class, 'register'])->middleware('throttle:10,1')->name('account.register.submit');
+Route::get('/app/account/forgot-password', [PasswordResetController::class, 'forgotForm'])->name('account.password.forgot');
+Route::post('/app/account/forgot-password', [PasswordResetController::class, 'forgotSend'])->middleware('throttle:5,1')->name('account.password.email');
+Route::get('/app/account/reset-password/{token}', [PasswordResetController::class, 'resetForm'])->name('account.password.reset');
+Route::post('/app/account/reset-password', [PasswordResetController::class, 'resetStore'])->middleware('throttle:10,1')->name('account.password.update');
+Route::get('/app/account/google', [GoogleController::class, 'redirect'])->middleware('throttle:20,1')->name('account.google');
+Route::get('/app/account/google/callback', [GoogleController::class, 'callback'])->middleware('throttle:20,1')->name('account.google.callback');
+// Ссылка из письма: подписана Laravel, действует сутки, работает и в другом браузере.
+Route::get('/app/account/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->middleware(['signed', 'throttle:20,1'])->name('account.verification.verify');
 
 // Local-only account shortcut for visual development: one click logs in as any approved participant.
 // The routes exist only when APP_ENV=local, so on a production server (or one whose .env was copied
@@ -126,17 +141,6 @@ if (app()->environment('local')) {
     Route::get('/dev/account-login', [DevAccountLoginController::class, 'index'])->name('dev.account.login');
     Route::post('/dev/account-login', [DevAccountLoginController::class, 'login'])->name('dev.account.login.submit');
 }
-
-// Short-link redirect: /go/{code} — hides the full token from Telegram dialog
-Route::get('/go/{code}', function (string $code) {
-    $token = LoginToken::where('token', 'like', $code . '%')->first();
-
-    if (! $token || ! $token->isValid()) {
-        return redirect()->route('account.login')->with('error', __('account.messages.short_link_invalid'));
-    }
-
-    return redirect()->route('account.auth', ['token' => $token->token]);
-})->middleware('throttle:20,1')->where('code', '[0-9a-f]{8}')->name('account.go');
 
 // Web-платёж Агропромбанка: ResultURL, который банк вызывает сам (GET или POST), без сессии и CSRF-токена.
 // Этот адрес и страницы возврата /app/account/subscription/success|fail регистрируются в банке (docs/SUBSCRIPTIONS.md).
@@ -155,35 +159,50 @@ Route::middleware(RequireAccountAuth::class)
     ->prefix('app/account')
     ->name('account.')
     ->group(function (): void {
+        // Шаги до кабинета: подтверждение почты и анкета (RequireAccountAuth пускает сюда, пока они не пройдены).
+        Route::get('/email/verify', [EmailVerificationController::class, 'notice'])->name('verification.notice');
+        Route::post('/email/verify/resend', [EmailVerificationController::class, 'resend'])->middleware('throttle:3,1')->name('verification.resend');
+        Route::get('/onboarding', [OnboardingController::class, 'show'])->name('onboarding');
+        Route::post('/onboarding', [OnboardingController::class, 'store'])->name('onboarding.store');
+
         Route::get('/', [AccountController::class, 'index'])->name('index');
         Route::get('/profile', [AccountController::class, 'profile'])->name('profile');
         Route::get('/profile/edit', [AccountController::class, 'profileEdit'])->name('profile.edit');
         Route::post('/profile', [AccountController::class, 'updateProfile'])->name('profile.update');
         Route::delete('/profile', [AccountController::class, 'deleteProfile'])->name('profile.delete');
 
-        // Подписка: тарифы и оплата. Доступно на любом тарифе, в том числе на Open.
+        // Подключение Telegram для уведомлений (входа через Telegram нет).
+        Route::post('/telegram/connect', [TelegramLinkController::class, 'connect'])->middleware('throttle:10,1')->name('telegram.connect');
+        Route::post('/telegram/disconnect', [TelegramLinkController::class, 'disconnect'])->name('telegram.disconnect');
+
+        // Подписка: тарифы и оплата. Доступна и тем, у кого тарифа ещё нет: с неё начинается кабинет.
+        Route::post('/plan-request', [PlanRequestController::class, 'store'])->middleware('throttle:6,1')->name('plan-request.store');
         Route::get('/subscription', [SubscriptionController::class, 'show'])->name('subscription');
         Route::post('/subscription/checkout', [SubscriptionController::class, 'checkout'])->middleware('throttle:8,1')->name('subscription.checkout');
         // SuccessURL и FailURL банка: он возвращает участницу сюда запросом GET или POST (CSRF-исключение — в bootstrap/app.php).
         Route::match(['GET', 'POST'], '/subscription/success', [SubscriptionController::class, 'result'])->name('subscription.success');
         Route::match(['GET', 'POST'], '/subscription/fail', [SubscriptionController::class, 'result'])->name('subscription.fail');
 
-        // Закрыто для тарифа Open: видимость других участниц, подбор и поиск контактов, ИИ-помощник, публикации
-        // возможностей и «Обучение» входят в Community и Private. На месте раздела RequirePlan показывает сообщение
-        // и кнопку «Купить подписку» (запись и запросы ИИ он отклоняет редиректом и ответом 403).
+        // Тариф Open (600) читает: возможности участниц и обучение. Поиск, подбор, каталог участниц с контактами,
+        // ИИ-помощник и публикация собственных возможностей входят в Community и Private. На месте закрытого раздела
+        // RequirePlan показывает сообщение и кнопку «Купить подписку» (запись и запросы ИИ он отклоняет редиректом и 403).
+        Route::middleware('plan:open')->group(function (): void {
+            Route::get('/knowledge', [AccountController::class, 'knowledge'])->name('knowledge');
+            Route::get('/opportunities', [OpportunityController::class, 'index'])->name('opportunities.index');
+        });
+
         Route::middleware('plan:community')->group(function (): void {
             Route::get('/assistant', [AccountController::class, 'assistant'])->name('assistant');
-            Route::get('/knowledge', [AccountController::class, 'knowledge'])->name('knowledge');
             Route::get('/matches', [AccountController::class, 'matches'])->name('matches');
             Route::get('/people', [AccountController::class, 'people'])->name('people');
             Route::get('/people/{botUser}', [AccountController::class, 'showPerson'])->name('people.show');
             Route::get('/search', [AccountController::class, 'search'])->name('search');
             Route::post('/assistant/messages', [AccountController::class, 'assistantMessage'])->middleware('throttle:20,1')->name('assistant.message');
             Route::post('/assistant/profile-update', [AccountController::class, 'assistantProfileUpdate'])->middleware('throttle:10,1')->name('assistant.profile-update');
-            Route::resource('opportunities', OpportunityController::class)->only(['index', 'create', 'store', 'destroy']);
+            Route::resource('opportunities', OpportunityController::class)->only(['create', 'store', 'destroy']);
         });
 
-        Route::post('/logout', [AccountController::class, 'logout'])->name('logout');
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     });
 
 /*
@@ -320,8 +339,6 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::get('cabinets/settings', [Admin\CabinetSettingController::class, 'edit'])->name('cabinets.settings');
         Route::put('cabinets/settings/theme', [Admin\ThemeSettingController::class, 'cabinet'])->name('cabinets.settings.theme');
         Route::put('cabinets/settings/knowledge', [Admin\AssistantKnowledgeController::class, 'update'])->name('cabinets.settings.knowledge');
-        Route::put('cabinets/settings/bot-help', [Admin\BotHelpController::class, 'update'])->name('cabinets.settings.bot-help');
-        Route::post('cabinets/settings/bot-help/reset', [Admin\BotHelpController::class, 'reset'])->name('cabinets.settings.bot-help.reset');
         Route::put('cabinets/settings/ai', [Admin\AiSettingController::class, 'update'])->name('cabinets.settings.ai.update');
         Route::post('cabinets/settings/ai/test/{provider}', [Admin\AiSettingController::class, 'test'])->name('cabinets.settings.ai.test');
 
@@ -329,6 +346,15 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::get('subscriptions', [Admin\SubscriptionController::class, 'index'])->name('subscriptions.index');
         Route::get('subscriptions/{profile}', [Admin\SubscriptionController::class, 'edit'])->name('subscriptions.edit');
         Route::put('subscriptions/prices', [Admin\SubscriptionController::class, 'updatePrices'])->name('subscriptions.prices');
+        Route::put('subscriptions/purchase', [Admin\SubscriptionController::class, 'updatePurchase'])->name('subscriptions.purchase');
+        Route::post('subscriptions/{profile}/unlock', [Admin\SubscriptionController::class, 'unlock'])->name('subscriptions.unlock');
+
+        // Заявки на закрытые тарифы («Оставить заявку»): менеджер звонит и открывает покупку лично.
+        Route::get('plan-requests', [Admin\PlanRequestController::class, 'index'])->name('plan-requests.index');
+        Route::post('plan-requests/{planRequest}/contacted', [Admin\PlanRequestController::class, 'contacted'])->name('plan-requests.contacted');
+        Route::post('plan-requests/{planRequest}/unlock', [Admin\PlanRequestController::class, 'unlock'])->name('plan-requests.unlock');
+        Route::post('plan-requests/{planRequest}/decline', [Admin\PlanRequestController::class, 'decline'])->name('plan-requests.decline');
+        Route::post('plan-requests/{planRequest}/note', [Admin\PlanRequestController::class, 'note'])->name('plan-requests.note');
         Route::post('subscriptions/{profile}/gift', [Admin\SubscriptionController::class, 'gift'])->name('subscriptions.gift');
         Route::post('subscriptions/{profile}/grant', [Admin\SubscriptionController::class, 'grant'])->name('subscriptions.grant');
         Route::post('subscriptions/{profile}/revoke', [Admin\SubscriptionController::class, 'revoke'])->name('subscriptions.revoke');

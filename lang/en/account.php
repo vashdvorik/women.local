@@ -39,18 +39,6 @@ return [
         'open' => 'Open',
     ],
 
-    'login' => [
-        'title' => 'Log in',
-        'loading' => 'Signing in…',
-        'subtitle' => 'Participant account',
-        'closed_title' => 'Access is not open yet',
-        'closed_text' => 'Your application has not been approved or submitted yet. Open @WomenComBot and send /start to apply.',
-        'telegram_title' => 'Log in via Telegram',
-        'step_1' => 'Open the platform bot using the button below',
-        'step_2' => 'Follow the secure link from the bot message',
-        'open_bot' => 'Open @WomenComBot',
-        'approved_only' => 'Access is available only to approved platform participants',
-    ],
 
     'dashboard' => [
         'title' => 'AI Assistant',
@@ -84,7 +72,7 @@ return [
         'eyebrow' => 'Your space',
         'hello' => 'Hello, :name!',
         'intro' => 'Everything a Women’s hub member needs is here. Start with the steps below or pick a section.',
-        'intro_open' => 'You have open access. Below are all the sections of your account: what is available now and what unlocks with a subscription.',
+        'intro_open' => 'You are on the Open plan: opportunities, learning and materials. Below are all the sections of your account: what is available now and what unlocks with the Community plan.',
         'hint_title' => 'How everything is arranged',
         'hint_mobile' => 'The menu is always at the bottom of the screen: the main sections and a “More” button with all the rest. The cards below are the same sections, with a note on what is in them and how to use them.',
         'hint_desktop' => 'The menu is always on the left. The cards below are the same sections, with a note on what is in them and how to use them.',
@@ -139,7 +127,7 @@ return [
             ],
             'people' => [
                 'what' => 'The directory of all platform members.',
-                'how' => 'Scroll the list and open profiles: there is a description and a link to write in Telegram.',
+                'how' => 'Scroll the list and open profiles: there is a description, a phone number and Telegram to get in touch.',
             ],
             'opportunities' => [
                 'what' => 'Requests, partnerships and events published by members themselves.',
@@ -165,7 +153,6 @@ return [
         'fresh_all_members' => 'All members',
         'fresh_empty' => 'Nothing here yet.',
         'no_description' => 'No description yet.',
-        'bot_help' => 'Cannot find an answer? Ask the “AI assistant” in the Telegram bot: it explains how to use everything.',
     ],
 
     'profile' => [
@@ -252,7 +239,7 @@ return [
         'empty_text' => 'New requests, offers, meetups and events from members will appear here.',
         'publish_first' => 'Publish the first one →',
         'new_title' => 'New initiative',
-        'new_subtitle' => 'Publish a request, offer, meeting or event. After moderator review, participants will receive a Telegram notification.',
+        'new_subtitle' => 'Publish a request, offer, meeting or event. After moderator review the post will appear in the account.',
         'status_pending' => 'Under review: visible to everyone once approved',
         'status_rejected' => 'Rejected by a moderator and hidden from other participants',
         'type' => 'Type',
@@ -278,18 +265,11 @@ return [
     'messages' => [
         'profile_updated' => 'Profile updated. Other participants can better understand your business and needs.',
         'profile_deleted' => 'Your profile has been deleted.',
-        'opportunity_created' => 'Publication submitted for review. Once approved it will appear in the catalogue and participants will be notified in Telegram.',
+        'opportunity_created' => 'Publication submitted for review. Once approved it will appear in your account.',
         'opportunity_deleted' => 'Publication deleted.',
-        'invalid_link' => 'The link is invalid.',
-        'expired_link' => 'The link has expired. Request a new one via @WomenComBot with /login.',
-        'session_expired' => 'The session has expired. Log in again via Telegram.',
-        'access_closed' => 'Access is closed. Your application has not been approved or was revoked.',
-        'short_link_invalid' => 'The link is invalid or has expired.',
     ],
 
     'validation' => [
-        'username_required' => 'Enter your Telegram username.',
-        'username_regex' => 'Username may contain only letters, numbers and _. Do not include @.',
         'full_name_required' => 'Enter your full name.',
         'full_name_max' => 'The name must not be longer than 120 characters.',
         'description_max' => 'Business description must not be longer than 1000 characters.',

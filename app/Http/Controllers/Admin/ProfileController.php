@@ -34,17 +34,21 @@ class ProfileController extends Controller
             : 'created_at';
         $dir = $request->string('dir', $sort === 'created_at' ? 'desc' : 'asc')->toString() === 'asc' ? 'asc' : 'desc';
 
+        // В списке только те, кто заполнил анкету: пока человек не прошёл регистрацию до конца, проверять нечего.
         $profiles = BotUser::query()
+            ->whereNotNull('profile_completed_at')
             ->when($status !== '', fn ($q) => $q->where('status', $status))
             ->when($onlyHidden, fn ($q) => $q->where('is_hidden', true))
             ->when($search !== '', fn ($q) => $q->where(fn ($w) => $w
                 ->where('full_name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('phone', 'like', "%{$search}%")
                 ->orWhere('telegram_username', 'like', "%{$search}%")))
             ->orderBy($sort, $dir)
             ->paginate(25)
             ->withQueryString();
 
-        $counts = BotUser::query()->selectRaw('status, count(*) as total')->groupBy('status')->pluck('total', 'status');
+        $counts = BotUser::query()->whereNotNull('profile_completed_at')->selectRaw('status, count(*) as total')->groupBy('status')->pluck('total', 'status');
 
         return view('admin.profiles.index', [
             'profiles' => $profiles,
@@ -52,7 +56,7 @@ class ProfileController extends Controller
             'search' => $search,
             'counts' => $counts,
             'onlyHidden' => $onlyHidden,
-            'hiddenCount' => BotUser::query()->where('is_hidden', true)->count(),
+            'hiddenCount' => BotUser::query()->whereNotNull('profile_completed_at')->where('is_hidden', true)->count(),
         ]);
     }
 

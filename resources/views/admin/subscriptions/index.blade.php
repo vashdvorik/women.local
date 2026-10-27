@@ -1,9 +1,10 @@
 @php
     $tabs = [
         '' => [__('Все'), $counts['']],
-        'community' => ['Community', $counts['community']],
         'private' => ['Private', $counts['private']],
+        'community' => ['Community', $counts['community']],
         'open' => ['Open', $counts['open']],
+        'none' => [__('Без тарифа'), $counts['none']],
         'expiring' => [__('Заканчиваются (30 дней)'), $counts['expiring']],
     ];
 @endphp
@@ -12,7 +13,7 @@
     <div class="space-y-4">
         <div class="card space-y-1 text-ui text-ink-muted">
             <p>
-                {!! __('Тарифы одобренных участниц: <b class="text-ink">Open</b> бесплатный, <b class="text-ink">Community</b> и <b class="text-ink">Private</b> платные, на год. Оплата проходит через банк сама; здесь тариф можно выдать вручную (перевод, подарок, исправление) или закрыть. Платежи банка смотрите в разделе «Платежи».') !!}
+                {!! __('Тарифы зарегистрированных участниц. Бесплатного тарифа нет: <b class="text-ink">Open</b>, <b class="text-ink">Community</b> и <b class="text-ink">Private</b> платные, на год. Оплата проходит через банк сама; здесь тариф можно выдать вручную (перевод, подарок, исправление) или закрыть. Платежи банка смотрите в разделе «Платежи».') !!}
             </p>
         </div>
 
@@ -28,8 +29,8 @@
                 </p>
             </div>
 
-            <div class="grid gap-4 sm:grid-cols-2">
-                @foreach(['community' => 'WOMEN’S HUB COMMUNITY', 'private' => 'WOMEN’S HUB PRIVATE'] as $key => $label)
+            <div class="grid gap-4 sm:grid-cols-3">
+                @foreach(['open' => 'WOMEN’S HUB OPEN', 'community' => 'WOMEN’S HUB COMMUNITY', 'private' => 'WOMEN’S HUB PRIVATE'] as $key => $label)
                     <div class="space-y-1">
                         <label for="price-{{ $key }}" class="field-label">{{ $label }}</label>
                         <div class="flex items-center gap-2">
@@ -44,6 +45,35 @@
             <button type="submit" class="btn-primary">{{ __('Сохранить цены') }}</button>
         </form>
 
+        <form method="POST" action="{{ route('admin.subscriptions.purchase') }}" class="card space-y-4">
+            @csrf
+            @method('PUT')
+
+            <div>
+                <h2 class="text-section font-semibold">{{ __('Покупка тарифов') }}</h2>
+                <p class="field-hint mt-1">
+                    {{ __('Отметьте тарифы, которые нельзя купить сразу: вместо «Купить» участница увидит «Оставить заявку». Вы позвоните ей и откроете покупку лично (раздел «Заявки на тариф» или карточка участницы). Так в начале работы платформы никто не купит большой тариф, пока в ней ещё никого нет.') }}
+                </p>
+            </div>
+
+            <div class="grid gap-3 sm:grid-cols-3">
+                @foreach(['open' => 'WOMEN’S HUB OPEN', 'community' => 'WOMEN’S HUB COMMUNITY', 'private' => 'WOMEN’S HUB PRIVATE'] as $key => $label)
+                    <label class="flex items-center gap-2 rounded-lg border border-hairline px-3 py-2 text-ui">
+                        <input type="checkbox" name="closed[]" value="{{ $key }}" class="rounded border-hairline" @checked(in_array($key, old('closed', $closed), true))>
+                        <span><b class="text-ink">{{ $label }}</b><br><span class="text-ink-muted">{{ __('закрыть покупку, только по заявке') }}</span></span>
+                    </label>
+                @endforeach
+            </div>
+
+            <div class="space-y-1">
+                <label for="manager-email" class="field-label">{{ __('Почта менеджера для заявок') }}</label>
+                <input id="manager-email" type="email" name="manager_email" value="{{ old('manager_email', $managerEmail) }}" maxlength="191" class="field-input !max-w-sm" placeholder="manager@example.com">
+                <p class="field-hint">{{ __('Сюда приходит письмо с именем, телефоном и тарифом, когда участница оставляет заявку. Если оставить пустым, заявки видны только в разделе «Заявки на тариф».') }}</p>
+            </div>
+
+            <button type="submit" class="btn-primary">{{ __('Сохранить') }}</button>
+        </form>
+
         <div class="tabs overflow-x-auto no-scrollbar">
             @foreach($tabs as $key => [$label, $count])
                 <a href="{{ route('admin.subscriptions.index', array_filter(['filter' => $key, 'q' => $search])) }}"
@@ -55,13 +85,13 @@
 
         <form method="GET" class="flex w-full max-w-sm gap-2">
             @if($filter !== '') <input type="hidden" name="filter" value="{{ $filter }}"> @endif
-            <input type="search" name="q" value="{{ $search }}" placeholder="{{ __('Поиск по имени или @username') }}" class="field-input">
+            <input type="search" name="q" value="{{ $search }}" placeholder="{{ __('Поиск по имени, почте или телефону') }}" class="field-input">
             <button type="submit" class="btn-secondary">{{ __('Найти') }}</button>
         </form>
 
         @if($profiles->isEmpty())
             <div class="card text-center">
-                <p class="text-reading text-ink-muted">{{ ($search !== '' || $filter !== '') ? __('Ничего не найдено.') : __('Одобренных участниц пока нет.') }}</p>
+                <p class="text-reading text-ink-muted">{{ ($search !== '' || $filter !== '') ? __('Ничего не найдено.') : __('Участниц пока нет.') }}</p>
             </div>
         @else
             <div class="overflow-x-auto">
@@ -69,7 +99,7 @@
                     <thead>
                         <tr>
                             <th class="min-w-[11rem]">{{ __('Участница') }}</th>
-                            <th class="whitespace-nowrap">Username</th>
+                            <th class="whitespace-nowrap">{{ __('Почта и телефон') }}</th>
                             <th class="whitespace-nowrap">{{ __('Тариф') }}</th>
                             <th class="whitespace-nowrap">{{ __('Действует до') }}</th>
                             <th></th>
@@ -82,7 +112,7 @@
                                 <td>
                                     <a href="{{ route('admin.subscriptions.edit', $profile) }}" class="table-link">{{ $profile->full_name ?: __('Без имени') }}</a>
                                 </td>
-                                <td class="whitespace-nowrap text-ink-muted">{{ $profile->telegram_username ? '@'.$profile->telegram_username : '—' }}</td>
+                                <td class="text-ink-muted">{{ $profile->email }}@if($profile->phone)<br>{{ $profile->phone }}@endif</td>
                                 <td class="whitespace-nowrap">
                                     <span class="badge {{ $plan->isPaid() ? 'badge--published' : 'badge--draft' }}">{{ $plan->shortTitle() }}</span>
                                 </td>

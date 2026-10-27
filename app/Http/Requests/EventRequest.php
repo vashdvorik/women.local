@@ -49,7 +49,7 @@ class EventRequest extends FormRequest
         return [
             'translations.ru.title' => __('название по-русски'),
             'slug' => __('адрес страницы'),
-            'starts_at' => __('дата начала'),
+            'starts_at' => __('дата публикации'),
             'url' => __('ссылка «Подробнее»'),
             'tone' => __('цвет карточки'),
         ];

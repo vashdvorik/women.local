@@ -16,5 +16,3 @@ Schedule::command('subscriptions:notify')->dailyAt('09:00')->withoutOverlapping(
 // Рассылки сообщений участницам из админки: наступило время запланированной — запускаем, зависшую — возобновляем.
 Schedule::command('broadcasts:dispatch-due')->everyMinute()->withoutOverlapping();
 
-// Одобрена, но не открыла кабинет: через два дня один раз мягко напоминаем и предлагаем помощника (bot:remind-cabinet).
-Schedule::command('bot:remind-cabinet')->dailyAt('07:00')->withoutOverlapping();

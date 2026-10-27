@@ -41,7 +41,7 @@ class PaymentController extends Controller
             ->when($search !== '', fn ($q) => $q->where(fn ($w) => $w
                 ->where('invoice_id', 'like', "%{$search}%")
                 ->orWhere('rrn', 'like', "%{$search}%")
-                ->orWhereHas('botUser', fn ($u) => $u->where('full_name', 'like', "%{$search}%")->orWhere('telegram_username', 'like', "%{$search}%"))))
+                ->orWhereHas('botUser', fn ($u) => $u->where('full_name', 'like', "%{$search}%")->orWhere('email', 'like', "%{$search}%")->orWhere('telegram_username', 'like', "%{$search}%"))))
             ->latest('id')
             ->paginate(25)
             ->withQueryString();

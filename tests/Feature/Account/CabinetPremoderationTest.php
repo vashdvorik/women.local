@@ -21,10 +21,7 @@ class CabinetPremoderationTest extends TestCase
 
     private function actingAsParticipant(BotUser $user): static
     {
-        return $this->withSession([
-            'account_telegram_id' => $user->telegram_id,
-            '_account_expires' => now()->addDays(7)->timestamp,
-        ]);
+        return $this->withSession($this->participantSession($user));
     }
 
     public function test_new_post_is_created_pending_and_does_not_notify_anyone(): void

@@ -2,7 +2,7 @@
      шапка сайта, «герой» с заголовком, содержимое, подвал. Наследники задают $heroEyebrow,
      $heroTitle (по трём языкам), необязательный $heroIntro и секцию `content`. --}}
 @php
-    $botUrl = 'https://t.me/WomenComBot';
+    $botUrl = route('account.register');
     $managerUrl = 'https://t.me/lesnichenkoP';
     $communityUrl = config('nutgram.community_url', $botUrl);
     $locales = ['ru', 'en', 'ro'];

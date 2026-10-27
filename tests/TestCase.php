@@ -2,8 +2,10 @@
 
 namespace Tests;
 
+use App\Models\BotUser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 abstract class TestCase extends BaseTestCase
@@ -28,6 +30,16 @@ abstract class TestCase extends BaseTestCase
         }
 
         return $this->admin;
+    }
+
+    /**
+     * Сессия, в которой участница уже вошла (guard «participant»): withSession($this->participantSession($user)).
+     *
+     * @return array<string, int>
+     */
+    protected function participantSession(BotUser $user): array
+    {
+        return [Auth::guard('participant')->getName() => $user->getKey()];
     }
 
     protected function actingAsAdmin(): static

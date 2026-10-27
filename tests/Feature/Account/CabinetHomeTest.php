@@ -19,7 +19,7 @@ class CabinetHomeTest extends TestCase
 
     private function as(BotUser $user): static
     {
-        return $this->withSession(['account_telegram_id' => $user->telegram_id, '_account_expires' => now()->addDays(7)->timestamp]);
+        return $this->withSession($this->participantSession($user));
     }
 
     private function community(array $attributes = []): BotUser

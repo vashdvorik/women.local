@@ -10,6 +10,7 @@ use App\Models\BotUser;
 use App\Services\Payments\WebPayment\Checkout;
 use App\Services\Payments\WebPayment\PaymentReconciler;
 use App\Services\Payments\WebPayment\PaymentsUnavailable;
+use App\Services\Subscriptions\PlanPurchase;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -25,6 +26,7 @@ class SubscriptionController extends Controller
     public function __construct(
         private readonly Checkout $checkout,
         private readonly PaymentReconciler $reconciler,
+        private readonly PlanPurchase $purchase,
     ) {}
 
     /** «Подписка»: три тарифа, текущий отмечен, ниже история оплат. */
@@ -53,8 +55,15 @@ class SubscriptionController extends Controller
             'plan.in' => __('subscription.errors.invalid_plan'),
         ]);
 
+        $plan = Plan::from($data['plan']);
+
+        // Покупка закрытого тарифа — только после того, как менеджер открыл её лично (иначе «Оставить заявку»).
+        if (! $this->purchase->canBuy($this->user(), $plan)) {
+            return redirect()->route('account.subscription')->with('error', __('participant.plans.request_hint'));
+        }
+
         try {
-            $payment = $this->checkout->begin($this->user(), Plan::from($data['plan']));
+            $payment = $this->checkout->begin($this->user(), $plan);
         } catch (PaymentsUnavailable $e) {
             return redirect()->route('account.subscription')->with('error', $e->getMessage());
         }

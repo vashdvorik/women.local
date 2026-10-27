@@ -1,5 +1,5 @@
 @php
-    $botUrl = 'https://t.me/WomenComBot';
+    $botUrl = route('account.register');
     $managerUrl = 'https://t.me/lesnichenkoP';
 @endphp
 <!doctype html>
@@ -31,9 +31,9 @@
                     <div class="miro-contact-cards">
                         <article class="miro-contact-card">
                             <div class="miro-contact-card__icon" aria-hidden="true">@</div>
-                            <h3><span data-lang="ru">Telegram-бот</span><span data-lang="en">Telegram bot</span><span data-lang="ro">Bot Telegram</span></h3>
-                            <p><span data-lang="ru">Регистрация, вход и уведомления платформы.</span><span data-lang="en">Registration, access and platform notifications.</span><span data-lang="ro">Înregistrare, acces și notificări ale platformei.</span></p>
-                            <a href="{{ $botUrl }}" target="_blank" rel="noopener">@WomenComBot&nbsp;→</a>
+                            <h3><span data-lang="ru">Личный кабинет</span><span data-lang="en">Member account</span><span data-lang="ro">Cabinet personal</span></h3>
+                            <p><span data-lang="ru">Регистрация по почте, анкета и тарифы. Уведомления в Telegram подключаются в профиле.</span><span data-lang="en">Sign-up by email, your profile and plans. Telegram notifications are connected in your profile.</span><span data-lang="ro">Înregistrare prin e-mail, profil și tarife. Notificările în Telegram se conectează în profil.</span></p>
+                            <a href="{{ route('account.login') }}" target="_blank" rel="noopener"><span data-lang="ru">Войти&nbsp;→</span><span data-lang="en">Log in&nbsp;→</span><span data-lang="ro">Intră&nbsp;→</span></a>
                         </article>
                         <article class="miro-contact-card">
                             <div class="miro-contact-card__icon" aria-hidden="true">@</div>

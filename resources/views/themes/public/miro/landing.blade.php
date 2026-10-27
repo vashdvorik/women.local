@@ -1,5 +1,5 @@
 @php
-    $botUrl = 'https://t.me/WomenComBot';
+    $botUrl = route('account.register');
     $managerUrl = 'https://t.me/lesnichenkoP';
     $communityUrl = config('nutgram.community_url', $botUrl);
     $locales = ['ru', 'en', 'ro'];
@@ -336,8 +336,7 @@
                     <p><span data-lang="ru">Создайте профиль за несколько минут и получите доступ к сообществу, знаниям и новым возможностям.</span><span data-lang="en">Create your profile in minutes and get access to the community, resources and new opportunities.</span><span data-lang="ro">Creează-ți profilul în câteva minute și obții acces la comunitate, resurse și oportunități noi.</span></p>
                 </div>
                 <div class="miro-register-cta__actions">
-                    <a href="{{ route('account.login') }}" target="_blank" rel="noopener" class="miro-button miro-button--primary"><span data-lang="ru">Зарегистрироваться&nbsp;→</span><span data-lang="en">Register now&nbsp;→</span><span data-lang="ro">Înregistrează-te acum&nbsp;→</span></a>
-                    <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button" style="border: 1px solid var(--miro-hairline-strong); color: var(--miro-ink-deep);"><span data-lang="ru">Начать в Telegram</span><span data-lang="en">Start in Telegram</span><span data-lang="ro">Începe în Telegram</span></a>
+                    <a href="{{ route('account.register') }}" target="_blank" rel="noopener" class="miro-button miro-button--primary"><span data-lang="ru">Зарегистрироваться&nbsp;→</span><span data-lang="en">Register now&nbsp;→</span><span data-lang="ro">Înregistrează-te acum&nbsp;→</span></a>
                 </div>
             </div>
         </section>
@@ -503,8 +502,8 @@
                 </div>
                 <div><h4><span data-lang="ru">Платформа</span><span data-lang="en">Platform</span><span data-lang="ro">Platformă</span></h4><ul><li><a href="#about">About</a></li><li><a href="#features">AI matching</a></li><li><a href="{{ route('members') }}">Members</a></li></ul></div>
                 <div><h4><span data-lang="ru">Ресурсы</span><span data-lang="en">Resources</span><span data-lang="ro">Resurse</span></h4><ul><li><a href="#learning">Learning</a></li><li><a href="{{ route('events') }}">Events</a></li><li><a href="#stories">Stories</a></li></ul></div>
-                <div><h4><span data-lang="ru">Контакты</span><span data-lang="en">Contact</span><span data-lang="ro">Contact</span></h4><ul><li><a href="{{ $botUrl }}" target="_blank" rel="noopener">@WomenComBot</a></li><li><a href="{{ $managerUrl }}" target="_blank" rel="noopener">Project team</a></li><li><a href="{{ $communityUrl }}" target="_blank" rel="noopener">Community</a></li></ul></div>
-                <div><h4><span data-lang="ru">Вход</span><span data-lang="en">Access</span><span data-lang="ro">Acces</span></h4><ul><li><a href="{{ route('account.login') }}" target="_blank" rel="noopener"><span data-lang="ru">Кабинет участницы</span><span data-lang="en">Participant cabinet</span><span data-lang="ro">Cabinetul membrei</span></a></li><li><a href="{{ $botUrl }}" target="_blank" rel="noopener">Telegram</a></li></ul></div>
+                <div><h4><span data-lang="ru">Контакты</span><span data-lang="en">Contact</span><span data-lang="ro">Contact</span></h4><ul><li><a href="{{ $managerUrl }}" target="_blank" rel="noopener">Project team</a></li><li><a href="{{ $communityUrl }}" target="_blank" rel="noopener">Community</a></li></ul></div>
+                <div><h4><span data-lang="ru">Вход</span><span data-lang="en">Access</span><span data-lang="ro">Acces</span></h4><ul><li><a href="{{ route('account.login') }}" target="_blank" rel="noopener"><span data-lang="ru">Кабинет участницы</span><span data-lang="en">Participant cabinet</span><span data-lang="ro">Cabinetul membrei</span></a></li></ul></div>
             </div>
             <div class="miro-footer__bottom"><span>© {{ date('Y') }} Women's hub</span><span><span data-lang="ru">Сделано для роста через связи</span><span data-lang="en">Made for growth through connection</span><span data-lang="ro">Creat pentru creștere prin conexiuni</span></span></div>
         </div>

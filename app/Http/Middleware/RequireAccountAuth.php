@@ -4,61 +4,70 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Enums\Plan;
 use App\Models\BotUser;
+use App\Models\SiteSetting;
 use Closure;
 use Illuminate\Http\Request;
-use App\Models\SiteSetting;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Кабинет участницы. Пускает только вошедшую по почте (guard «participant») и ведёт её по шагам:
+ *
+ *  1. почта не подтверждена → «Подтвердите почту»;
+ *  2. анкета не заполнена → «Расскажите о себе» (имя, телефон и остальное);
+ *  3. тарифа нет → «Выберите тариф» (кабинета без тарифа нет, бесплатного доступа тоже);
+ *  4. иначе — кабинет; разделы выше Open закрывает RequirePlan.
+ *
+ * Одобрение анкеты администратором в шаги не входит: тариф можно купить сразу, а другие участницы увидят анкету
+ * после одобрения. Отклонённая анкета доступ закрывает.
+ */
 class RequireAccountAuth
 {
+    /** Страницы, которые нужны до тарифа: выбор тарифа, заявка, свой профиль, подключение Telegram, выход. */
+    private const BEFORE_PLAN = [
+        'account.subscription', 'account.subscription.*', 'account.plan-request.*', 'account.profile', 'account.profile.*',
+        'account.telegram.*', 'account.logout', 'account.onboarding', 'account.onboarding.*', 'account.verification.*',
+    ];
+
     public function handle(Request $request, Closure $next): Response
     {
-        $telegramId = session('account_telegram_id');
+        $guard = Auth::guard('participant');
 
-        if (! $telegramId) {
-            return redirect()->route('account.login');
+        /** @var BotUser|null $user */
+        $user = $guard->user();
+
+        if ($user === null) {
+            return redirect()->guest(route('account.login'));
         }
 
-        $expires = session('_account_expires');
-        if (! $expires || time() > (int) $expires) {
-            session()->forget('account_telegram_id');
-            session()->forget('_account_expires');
+        if ($user->isRejected()) {
+            $guard->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
 
-            return redirect()->route('account.login')
-                ->with('error', __('account.messages.session_expired'));
+            return redirect()->route('account.login')->with('error', __('participant.login.access_closed'));
         }
-
-        $user = BotUser::query()
-            ->where('bot_users.telegram_id', $telegramId)
-            ->where('bot_users.status', BotUser::STATUS_APPROVED)
-            ->select('bot_users.*')
-            ->selectSub(
-                SiteSetting::query()
-                    ->select('value')
-                    ->where('key', SiteSetting::ACCOUNT_THEME_KEY)
-                    ->limit(1),
-                'account_theme_setting'
-            )
-            ->first();
-
-        if (! $user) {
-            session()->forget('account_telegram_id');
-            session()->forget('_account_expires');
-
-            return redirect()->route('account.login')
-                ->with('error', __('account.messages.access_closed'));
-        }
-
-        $themeValue = $user->getAttribute('account_theme_setting');
-        $themeValue = is_string($themeValue) ? json_decode($themeValue, true) : $themeValue;
-        $accountTheme = is_array($themeValue) ? ($themeValue['theme'] ?? null) : null;
-        $accountTheme = is_string($accountTheme) && array_key_exists($accountTheme, SiteSetting::ACCOUNT_THEMES)
-            ? $accountTheme
-            : SiteSetting::DEFAULT_ACCOUNT_THEME;
 
         view()->share('accountUser', $user);
-        view()->share('accountTheme', $accountTheme);
+        view()->share('accountTheme', SiteSetting::accountTheme());
+
+        if (! $user->hasVerifiedEmail()) {
+            return $request->routeIs('account.verification.*', 'account.logout')
+                ? $next($request)
+                : redirect()->route('account.verification.notice');
+        }
+
+        if (! $user->isProfileComplete()) {
+            return $request->routeIs('account.onboarding', 'account.onboarding.*', 'account.logout', 'account.verification.*')
+                ? $next($request)
+                : redirect()->route('account.onboarding');
+        }
+
+        if ($user->currentPlan() === Plan::None && ! $request->routeIs(...self::BEFORE_PLAN)) {
+            return redirect()->route('account.subscription');
+        }
 
         return $next($request);
     }

@@ -40,7 +40,8 @@ final class CabinetHome
             'doneCount' => count(array_filter($steps, fn (array $step): bool => $step['done'])),
             // Плитки — те же разделы, что в меню, кроме самой главной.
             'tiles' => array_values(array_filter(CabinetNav::items($user), fn (array $item): bool => $item['key'] !== 'home')),
-            'opportunities' => $paid ? self::latestOpportunities($user) : collect(),
+            // Возможности участниц видны с тарифа Open (600), новые участницы и каталог — с Community.
+            'opportunities' => self::latestOpportunities($user),
             'members' => $paid ? self::newestMembers($user) : collect(),
             'feed' => $paid ? null : OpenFeed::build($locale),
         ];
@@ -59,6 +60,7 @@ final class CabinetHome
         if (! $paid) {
             return [
                 ['key' => 'profile', 'route' => 'account.profile.edit', 'done' => $profileDone],
+                ['key' => 'opportunities', 'route' => 'account.opportunities.index', 'done' => $user->hasSeen('opportunities')],
                 ['key' => 'subscription', 'route' => 'account.subscription', 'done' => false],
             ];
         }

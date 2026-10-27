@@ -13,6 +13,7 @@ use App\Support\Blocks;
 use App\Support\CardTone;
 use App\Support\EventEditorData;
 use App\Support\Locales;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -78,7 +79,7 @@ class EventController extends Controller
     public function update(EventRequest $request, Event $event): RedirectResponse
     {
         DB::transaction(function () use ($request, $event) {
-            $translations = $request->validated('translations', []);
+            $translations = $this->refreshDateLabels($event, $request->validated('starts_at'), $request->validated('translations', []));
 
             $event->update([
                 'slug' => $this->slugFor($event, $request),
@@ -94,6 +95,35 @@ class EventController extends Controller
         });
 
         return redirect()->route('admin.events.index')->with('success', trim(__('Новость сохранена.').' '.$this->broadcastDraftNote($request, $event)));
+    }
+
+    /**
+     * Дата публикации поменялась: подпись, которая сама является датой («27 октября 2026», так её пишут сидеры, или
+     * «20.05.2026»), становится подписью новой даты. Свой текст редактора («Открыт набор», «30 мая — 2 июня») не
+     * трогается; если дату убрали, такая подпись тоже убирается. Без этого новая дата в форме ничего бы не меняла:
+     * подпись главнее даты.
+     *
+     * @param  array<string, array<string, mixed>>  $translations
+     * @return array<string, array<string, mixed>>
+     */
+    private function refreshDateLabels(Event $event, ?string $newDate, array $translations): array
+    {
+        $old = $event->starts_at;
+        $new = filled($newDate) ? Carbon::parse($newDate) : null;
+
+        if ($old === null || $old->toDateString() === $new?->toDateString()) {
+            return $translations;
+        }
+
+        foreach (Locales::ALL as $locale) {
+            $label = trim((string) ($translations[$locale]['date_label'] ?? ''));
+
+            if ($label !== '' && Event::isPlainDateLabel($label)) {
+                $translations[$locale]['date_label'] = $new === null ? null : Event::dateLabelWithYear($new, $locale);
+            }
+        }
+
+        return $translations;
     }
 
     public function destroy(Event $event): RedirectResponse

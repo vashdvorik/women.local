@@ -22,7 +22,7 @@ class NotifySubscriptions extends Command
 {
     protected $signature = 'subscriptions:notify';
 
-    protected $description = 'Напоминания об окончании подписки в Telegram и перевод закончившихся подписок на Open';
+    protected $description = 'Напоминания об окончании подписки в Telegram и перевод закончившихся подписок в «тарифа нет»';
 
     public function handle(SubscriptionNotifier $notifier, SubscriptionService $subscriptions): int
     {
@@ -32,8 +32,7 @@ class NotifySubscriptions extends Command
         $expired = 0;
 
         BotUser::query()
-            ->approved()
-            ->where('plan', '!=', Plan::Open->value)
+            ->where('plan', '!=', Plan::None->value)
             ->whereNotNull('plan_ends_at')
             ->where('plan_ends_at', '<=', now()->addDays(max($first, $last)))
             ->orderBy('id')
@@ -46,7 +45,7 @@ class NotifySubscriptions extends Command
                     $subscriptions->refresh($user);
                     $user->refresh();
 
-                    if ($user->plan === Plan::Open->value) {
+                    if ($user->plan === Plan::None->value) {
                         if ($stage < 3) {
                             $notifier->expired($user, $ended);
                             $expired++;

@@ -35,7 +35,7 @@ final class SubscriptionService
         ?string $note = null,
     ): Subscription {
         if (! $plan->isPaid()) {
-            throw new InvalidArgumentException('Open — бесплатный уровень, выдавать его подпиской не нужно.');
+            throw new InvalidArgumentException('None — это «тарифа нет», выдавать его подпиской не нужно.');
         }
 
         if ($months < 1) {
@@ -66,6 +66,9 @@ final class SubscriptionService
             $user->forceFill(['plan_notified_stage' => 0])->save();
             $this->refresh($user);
 
+            // Заявки на этот тариф и ниже стоящие закрыты: человек его получил.
+            app(PlanPurchase::class)->markPurchased($user, $plan);
+
             return $subscription;
         });
     }
@@ -77,7 +80,7 @@ final class SubscriptionService
     public function setUntil(BotUser $user, Plan $plan, CarbonInterface $endsAt, ?string $note = null): Subscription
     {
         if (! $plan->isPaid()) {
-            throw new InvalidArgumentException('Для Open срок не задаётся.');
+            throw new InvalidArgumentException('Для «тарифа нет» срок не задаётся.');
         }
 
         if ($endsAt->lte(now())) {
@@ -102,7 +105,7 @@ final class SubscriptionService
         });
     }
 
-    /** Закрывает все действующие периоды: участница возвращается на Open немедленно. */
+    /** Закрывает все действующие периоды: у участницы больше нет тарифа, кабинет закрывается немедленно. */
     public function revoke(BotUser $user): void
     {
         DB::transaction(function () use ($user): void {
@@ -120,7 +123,7 @@ final class SubscriptionService
         $active = $user->subscriptions()->active()->get();
 
         if ($active->isEmpty()) {
-            $user->forceFill(['plan' => Plan::Open->value, 'plan_ends_at' => null])->save();
+            $user->forceFill(['plan' => Plan::None->value, 'plan_ends_at' => null])->save();
 
             return;
         }
