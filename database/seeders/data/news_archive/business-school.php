@@ -1,0 +1,81 @@
+<?php
+
+// Новость из архива постов (business-school): тексты на трёх языках. Фото — public/themes/public/miro/images/news/archive/business-school/.
+// Загружает NewsArchiveSeeder. Абзацы на всех языках идут в одном порядке и в одном числе: структура страницы общая.
+// Абзацы с дефисом — пункты списка (направления обучения), на всех языках они стоят на одних и тех же местах.
+// 01.webp — афиша (обложка новости), 02.webp — панель с логотипами партнёров (картинка на странице).
+
+return [
+    'date' => '2026-10-27',
+    'type' => 'training',
+    'merge' => null,
+    'title' => [
+        'ru' => 'Открыт набор в Женскую бизнес-школу',
+        'ro' => 'Înscrierea la Școala de Afaceri pentru Femei este deschisă',
+        'en' => 'Applications are open for the Women’s Business School',
+    ],
+    'description' => [
+        'ru' => 'Бесплатное обучение для 21 предпринимательницы: 7 модулей и 7 семинаров. Заявки принимаются до 2 ноября 2026 года.',
+        'ro' => 'Instruire gratuită pentru 21 de antreprenoare: 7 module și 7 seminare practice. Cererile se primesc până la 2 noiembrie 2026.',
+        'en' => 'Free training for 21 women entrepreneurs: 7 modules and 7 practical workshops. Applications close on 2 November 2026.',
+    ],
+    'body' => [
+        'ru' => [
+            'От локального бизнеса — к новым рынкам и международным партнёрствам!',
+            'Платформа женщин предпринимателей открывает 21 место для женщин в программе Women’s Business School в рамках проекта «Cross-River Women Business Platform». Обучение организуется в партнёрстве с European Business Association Moldova (EBA Moldova) при финансовой поддержке Правительства Королевства Нидерландов.',
+            '7 теоретических модулей, 7 практических семинаров, онлайн и офлайн.',
+            'Эта школа — для тех, кто хочет не просто развивать бизнес, а сделать следующий шаг: расширить продажи, найти партнёров на рынке ЕС. Вас ждут профильные эксперты EBA Moldova, реальные бизнес-кейсы, практические задания и полезные деловые контакты.',
+            'Основные направления обучения:',
+            '- Регистрация и ведение бизнеса: правовые требования и возможности.',
+            '- Финансы, налоги и бухгалтерский учёт для устойчивого роста компании.',
+            '- Таможенные процедуры и экспорт: первые шаги к рынку Европейского союза.',
+            '- Европейские стандарты, сертификация и требования к продукции.',
+            '- Рынок ЕС: потребительские тренды, конкуренция и выбор перспективных ниш.',
+            '- Маркетинг, продажи и цифровые инструменты привлечения клиентов.',
+            '- Деловые партнёрства и практическая стратегия выхода на новые рынки.',
+            'Кто может подать заявку: женщины, которые уже ведут бизнес, заинтересованы в расширении деятельности и готовы активно участвовать во всех занятиях. Отбор проводится на конкурсной основе с учётом мотивации и потенциала развития бизнеса.',
+            'Первый модуль — 10 ноября 2026 года. Приём заявок — до 2 ноября 2026 года.',
+            'Участие бесплатное. Количество мест ограничено — 21.',
+            'Подать заявку: https://events-businesshub.lovable.app/r/business-school',
+            'Проект «Cross-River Women Business Platform» реализуется Агентством инноваций и развития при финансовой поддержке Правительства Королевства Нидерландов.',
+        ],
+        'ro' => [
+            'De la afacerea locală — spre noi piețe și parteneriate internaționale!',
+            'Platforma femeilor antreprenoare deschide 21 de locuri pentru femei în programul Women’s Business School, în cadrul proiectului „Cross-River Women Business Platform”. Instruirea este organizată în parteneriat cu European Business Association Moldova (EBA Moldova), cu sprijinul financiar al Guvernului Regatului Țărilor de Jos.',
+            '7 module teoretice, 7 seminare practice, online și offline.',
+            'Această școală este pentru cele care vor nu doar să-și dezvolte afacerea, ci să facă pasul următor: să-și extindă vânzările și să găsească parteneri pe piața UE. Vă așteaptă experți de profil ai EBA Moldova, cazuri de afaceri reale, teme practice și contacte de afaceri utile.',
+            'Principalele direcții de instruire:',
+            '- Înregistrarea și gestionarea afacerii: cerințe legale și oportunități.',
+            '- Finanțe, impozite și contabilitate pentru creșterea sustenabilă a companiei.',
+            '- Proceduri vamale și export: primii pași spre piața Uniunii Europene.',
+            '- Standarde europene, certificare și cerințe pentru produse.',
+            '- Piața UE: tendințele consumatorilor, concurența și alegerea nișelor promițătoare.',
+            '- Marketing, vânzări și instrumente digitale de atragere a clienților.',
+            '- Parteneriate de afaceri și strategie practică de intrare pe piețe noi.',
+            'Cine poate aplica: femeile care au deja o afacere, sunt interesate să-și extindă activitatea și sunt gata să participe activ la toate sesiunile. Selecția se face pe bază de concurs, ținând cont de motivație și de potențialul de dezvoltare a afacerii.',
+            'Primul modul — 10 noiembrie 2026. Cererile se primesc până la 2 noiembrie 2026.',
+            'Participarea este gratuită. Numărul de locuri este limitat — 21.',
+            'Depune cererea: https://events-businesshub.lovable.app/r/business-school',
+            'Proiectul „Cross-River Women Business Platform” este implementat de Agenția pentru Inovare și Dezvoltare, cu sprijinul financiar al Guvernului Regatului Țărilor de Jos.',
+        ],
+        'en' => [
+            'From local business to new markets and international partnerships!',
+            'The Women’s Business Platform is opening 21 places for women in the Women’s Business School programme, part of the “Cross-River Women Business Platform” project. The training is organised in partnership with the European Business Association Moldova (EBA Moldova) and with financial support from the Government of the Kingdom of the Netherlands.',
+            '7 theoretical modules, 7 practical workshops, online and offline.',
+            'This school is for women who want not just to grow their business but to take the next step: expand sales and find partners in the EU market. You can expect EBA Moldova’s subject experts, real business cases, practical assignments and useful business contacts.',
+            'Main areas of training:',
+            '- Business registration and management: legal requirements and opportunities.',
+            '- Finance, taxes and accounting for sustainable company growth.',
+            '- Customs procedures and export: first steps towards the European Union market.',
+            '- European standards, certification and product requirements.',
+            '- The EU market: consumer trends, competition and choosing promising niches.',
+            '- Marketing, sales and digital tools for attracting customers.',
+            '- Business partnerships and a practical strategy for entering new markets.',
+            'Who can apply: women who already run a business, want to expand it and are ready to take an active part in all sessions. Selection is competitive and takes into account motivation and the business’s growth potential.',
+            'The first module is on 10 November 2026. Applications are accepted until 2 November 2026.',
+            'Participation is free. Places are limited to 21.',
+            'Apply: https://events-businesshub.lovable.app/r/business-school',
+            'The “Cross-River Women Business Platform” project is implemented by the Agency for Innovation and Development with financial support from the Government of the Kingdom of the Netherlands.',
+        ],
+    ],
+];
