@@ -6,20 +6,20 @@
     "isDynamicEntry": true
   },
   "node_modules/pdfjs-dist/build/pdf.worker.mjs": {
-    "file": "assets/pdf.worker-BgryrOlp.mjs",
+    "file": "assets/pdf.worker-BgryrOlp.js",
     "src": "node_modules/pdfjs-dist/build/pdf.worker.mjs"
   },
   "node_modules/pdfjs-dist/build/pdf.worker.mjs?url": {
-    "file": "assets/pdf.worker--xMKpqib.js",
+    "file": "assets/pdf.worker-DItagXvN.js",
     "name": "pdf.worker",
     "src": "node_modules/pdfjs-dist/build/pdf.worker.mjs?url",
     "isDynamicEntry": true,
     "assets": [
-      "assets/pdf.worker-BgryrOlp.mjs"
+      "assets/pdf.worker-BgryrOlp.js"
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app-Cb9HQ8cm.css",
+    "file": "assets/app-DQLBne5O.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -28,7 +28,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-Bm9iP0-s.js",
+    "file": "assets/app-BFUKyM0D.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
