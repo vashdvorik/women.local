@@ -5,8 +5,15 @@
    целиком помещалась по высоте экрана. Приближение растягивает книгу в --z раз, а видимая область (viewport) прокручивается. */
 .miro-flip { --z: 1; --unit-h: 100vh; --base: min(1280px, calc((var(--unit-h) - 200px) * var(--r, .7071) * 2)); margin: 8px auto 28px; }
 @supports (height: 100svh) { .miro-flip { --unit-h: 100svh; } }
+/* Одна страница (телефон): ширина листа считается так, чтобы лист и панель под ним помещались на первом экране вместе с шапкой
+   страницы, а по бокам оставались поля: за них (и за панель) можно взяться пальцем и прокрутить сайт. Разворот (планшет,
+   компьютер) считается как раньше. */
+.miro-flip.is-portrait { --base: min(1280px, max(260px, calc((var(--unit-h) - 380px) * var(--r, .7071)))); }
 .miro-flip__stage { display: flex; justify-content: center; width: 100%; padding: 8px 0 4px; }
-.miro-flip__viewport { width: 100%; }
+/* touch-action без pinch-zoom: щипок двумя пальцами внутри рамки не масштабирует сайт (им управляет скрипт и приближает лист) */
+.miro-flip__viewport { width: 100%; touch-action: pan-y; }
+.miro-flip__viewport.is-pinching { overflow: hidden; }
+.miro-flip { scroll-margin-top: 72px; }
 .miro-flip__fit { width: calc(100% * var(--z)); max-width: calc(var(--base) * var(--z)); margin: 0 auto; }
 .miro-flip__book { width: 100%; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
 .miro-flip__page { overflow: hidden; background: #fff; }
@@ -15,6 +22,8 @@
 
 .miro-flip__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; margin-top: 18px; }
 .miro-flip__bar[hidden] { display: none; }
+.miro-flip__hint { max-width: 420px; margin: 14px auto 0; color: var(--miro-steel, #8C776E); font-size: 13px; line-height: 1.5; text-align: center; }
+.miro-flip__hint[hidden] { display: none; }
 .miro-flip__count { min-width: 92px; text-align: center; color: var(--miro-ink-deep); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .miro-flip__btn { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 44px; padding: 0 16px; border: 1px solid var(--miro-hairline-strong, #D8C5BA); border-radius: 9999px; background: #fff; color: var(--miro-ink-deep); font: inherit; font-size: 14px; font-weight: 500; line-height: 1; cursor: pointer; text-decoration: none; transition: border-color .2s ease, background-color .2s ease; }
 .miro-flip__btn:hover { border-color: #74472F; background: #FAF2EE; }
@@ -25,7 +34,7 @@
 
 /* Приближено: видимая область прокручивается (колесом, пальцем или перетаскиванием мышью), листание по касанию и клику
    отключено, чтобы не мешало, — листают кнопками и стрелками */
-.miro-flip.is-zoomed .miro-flip__viewport { overflow: auto; max-height: calc(var(--unit-h) - 150px); overscroll-behavior: contain; touch-action: pan-x pan-y; -webkit-overflow-scrolling: touch; cursor: grab; }
+.miro-flip.is-zoomed .miro-flip__viewport { overflow: auto; max-height: calc(var(--unit-h) - 150px); touch-action: pan-x pan-y; -webkit-overflow-scrolling: touch; cursor: grab; }
 .miro-flip.is-zoomed .miro-flip__viewport.is-dragging { cursor: grabbing; user-select: none; -webkit-user-select: none; }
 .miro-flip.is-zoomed .miro-flip__book { pointer-events: none; }
 

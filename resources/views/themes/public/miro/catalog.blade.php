@@ -64,6 +64,11 @@
                     </a>
                 @endif
             </div>
+            <p class="miro-flip__hint" data-flip-hint hidden>@foreach($locales as $l)<span data-lang="{{ $l }}">{{ [
+                'ru' => 'Листайте страницы пальцем влево или вправо. Чтобы прокрутить сайт, проведите вверх или вниз по полям рядом с листом.',
+                'en' => 'Swipe left or right to turn pages. To scroll the site, swipe up or down on the margins beside the page.',
+                'ro' => 'Trageți spre stânga sau spre dreapta pentru a întoarce pagina. Pentru a derula site-ul, trageți în sus sau în jos pe marginile de lângă pagină.',
+            ][$l] }}</span>@endforeach</p>
         </div>
 
         <a href="{{ $catalog['back']['href'] }}" class="miro-article__back miro-article__back--wall">←&nbsp;@foreach($locales as $l)<span data-lang="{{ $l }}">{{ $catalog['back']['label'][$l] }}</span>@endforeach</a>
