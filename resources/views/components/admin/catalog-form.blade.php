@@ -14,7 +14,9 @@
           'pages' => $initialPages,
           'ratio' => (float) old('page_ratio', $catalog->page_ratio ?: 0.7071),
           'uploadUrl' => route('admin.catalogs.page'),
+          'maxBytes' => \App\Http\Requests\CatalogRequest::maxPdfBytes(),
           'labels' => [
+              'tooBig' => __('PDF весит :size МБ, а принять можно не больше :limit МБ. Сожмите PDF (сохраните его «для веб» или сожмите онлайн) и выберите файл снова.'),
               'progress' => __('Страница :done из :total'),
               'failed' => __('Не удалось разобрать PDF. Проверьте файл и попробуйте ещё раз.'),
               'tooMany' => __('В каталоге не может быть больше 300 страниц.'),
@@ -51,6 +53,7 @@
         <div class="space-y-1">
             <label for="pdf" class="field-label">{{ __('PDF-файл') }}</label>
             <p class="field-hint">{{ __('Выберите PDF: браузер сам превратит его страницы в лёгкие картинки и отправит на сайт, посетителям PDF не отдаётся и ничего не считается на их устройстве. Это занимает около секунды на страницу, не закрывайте вкладку.') }}</p>
+            <p class="field-hint">{{ __('Не больше :limit МБ и :pages страниц.', ['limit' => (int) floor(\App\Http\Requests\CatalogRequest::maxPdfBytes() / 1048576), 'pages' => \App\Http\Requests\CatalogRequest::MAX_PAGES]) }}</p>
             <input id="pdf" type="file" name="pdf" accept="application/pdf" class="field-input" :disabled="busy" @change="convert($event)">
             @error('pdf')<p class="field-error">{{ $message }}</p>@enderror
         </div>

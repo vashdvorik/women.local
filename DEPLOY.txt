@@ -31,7 +31,8 @@
   - PHP 8.3 с расширениями pdo_mysql, mbstring, openssl, tokenizer, xml, ctype, json, bcmath,
     fileinfo, curl, gd;
   - корень домена = папка public/ внутри проекта;
-  - upload_max_filesize и post_max_size не меньше 25M (PDF в публикациях).
+  - upload_max_filesize и post_max_size не меньше 64M (PDF каталогов до 60 МБ уходит вместе с формой; при меньшем
+    лимите сохранение каталога отвечает «413 Content Too Large»). cPanel → MultiPHP INI Editor.
 
   git clone <репозиторий> .
   cp .env.example .env

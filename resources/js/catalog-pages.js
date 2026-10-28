@@ -16,6 +16,7 @@ Alpine.data('catalogPages', (initial) => ({
     pages: initial.pages || [],
     ratio: initial.ratio || 0.7071,
     uploadUrl: initial.uploadUrl,
+    maxBytes: initial.maxBytes || 0,
     labels: initial.labels || {},
     busy: false,
     done: 0,
@@ -38,6 +39,16 @@ Alpine.data('catalogPages', (initial) => ({
         const file = event.target.files[0];
 
         if (!file) {
+            return;
+        }
+
+        // Слишком тяжёлый PDF отклоняется сразу, а не после долгого разбора и не ответом «413» при сохранении
+        if (this.maxBytes && file.size > this.maxBytes) {
+            const mb = (bytes) => (bytes / 1048576).toFixed(1).replace('.0', '').replace('.', ',');
+
+            this.error = (this.labels.tooBig || '').replace(':size', mb(file.size)).replace(':limit', mb(this.maxBytes));
+            event.target.value = '';
+
             return;
         }
 

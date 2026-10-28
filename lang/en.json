@@ -991,5 +991,7 @@
     "Необязательно: «Открыт набор». Если пусто, покажется дата публикации.": "Optional: “Applications open”. If empty, the publication date is shown.",
     "дата публикации": "publication date",
     "Дата новости на сайте: на карточке и на странице новости. Подпись ниже, если она просто дата, обновится вместе с ней; свой текст вместо даты («Открыт набор») останется как есть. Порядок новостей в ленте меняется стрелками в списке.": "The date of the news on the site: on the card and on the news page. The label below, if it is just a date, is updated together with it; your own text instead of a date (“Applications open”) stays as it is. The order of news in the list is changed with the arrows in the list.",
-    "Показывается на карточке видео на сайте. Если оставить пустой, даты на карточке не будет.": "Shown on the video card on the site. If left empty, the card has no date."
+    "Показывается на карточке видео на сайте. Если оставить пустой, даты на карточке не будет.": "Shown on the video card on the site. If left empty, the card has no date.",
+    "PDF весит :size МБ, а принять можно не больше :limit МБ. Сожмите PDF (сохраните его «для веб» или сожмите онлайн) и выберите файл снова.": "The PDF weighs :size MB, but the maximum accepted is :limit MB. Compress the PDF (save it “for web” or compress it online) and choose the file again.",
+    "Не больше :limit МБ и :pages страниц.": "No more than :limit MB and :pages pages."
 }

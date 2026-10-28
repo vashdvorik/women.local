@@ -30,7 +30,9 @@
 
         <div class="miro-flip" data-flip style="--r: {{ $catalog['ratio'] }}" data-ratio="{{ $catalog['ratio'] }}" data-pages="{{ json_encode($catalog['pages']) }}">
             <div class="miro-flip__stage">
-                <div class="miro-flip__fit"><div class="miro-flip__book" data-flip-book></div></div>
+                <div class="miro-flip__viewport" data-flip-viewport>
+                    <div class="miro-flip__fit"><div class="miro-flip__book" data-flip-book></div></div>
+                </div>
                 <noscript><a href="{{ $catalog['pages'][0] }}"><img src="{{ $catalog['pages'][0] }}" alt="" class="miro-flip__first"></a></noscript>
             </div>
 
@@ -44,8 +46,17 @@
                     <span aria-hidden="true">→</span>
                     <span class="miro-visually-hidden">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ ['ru' => 'Вперёд', 'en' => 'Next', 'ro' => 'Înainte'][$l] }}</span>@endforeach</span>
                 </button>
-                <button type="button" class="miro-flip__btn miro-flip__btn--text" data-flip-full>
-                    @foreach($locales as $l)<span data-lang="{{ $l }}">{{ ['ru' => 'На весь экран', 'en' => 'Full screen', 'ro' => 'Ecran complet'][$l] }}</span>@endforeach
+                <button type="button" class="miro-flip__btn miro-flip__btn--text" data-flip-zoom-in>
+                    <span class="miro-flip__icon" aria-hidden="true">+</span>
+                    @foreach($locales as $l)<span data-lang="{{ $l }}">{{ ['ru' => 'Приблизить', 'en' => 'Zoom in', 'ro' => 'Mărește'][$l] }}</span>@endforeach
+                </button>
+                <button type="button" class="miro-flip__btn miro-flip__btn--text" data-flip-zoom-out hidden>
+                    <span class="miro-flip__icon" aria-hidden="true">−</span>
+                    @foreach($locales as $l)<span data-lang="{{ $l }}">{{ ['ru' => 'Уменьшить', 'en' => 'Zoom out', 'ro' => 'Micșorează'][$l] }}</span>@endforeach
+                </button>
+                <button type="button" class="miro-flip__btn miro-flip__btn--text" data-flip-full aria-pressed="false">
+                    <span data-flip-full-label="enter">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ ['ru' => 'На весь экран', 'en' => 'Full screen', 'ro' => 'Ecran complet'][$l] }}</span>@endforeach</span>
+                    <span data-flip-full-label="exit" hidden>@foreach($locales as $l)<span data-lang="{{ $l }}">{{ ['ru' => 'Свернуть', 'en' => 'Exit full screen', 'ro' => 'Restrânge'][$l] }}</span>@endforeach</span>
                 </button>
                 @if(! empty($catalog['pdf']))
                     <a class="miro-flip__btn miro-flip__btn--text" href="{{ $catalog['pdf'] }}" download>

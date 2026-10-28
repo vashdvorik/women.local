@@ -45,6 +45,14 @@ return Application::configure(basePath: dirname(__DIR__))
         // Ключи ИИ-провайдеров не должны возвращаться в форму после ошибки валидации.
         $exceptions->dontFlash(['gemini_api_key', 'openrouter_api_key', 'deepseek_api_key']);
 
+        // Слишком большой запрос (PDF каталога больше post_max_size): понятная страница вместо «Oops! An Error Occurred».
+        // Сессия здесь ещё не запущена (проверка размера идёт раньше), поэтому это страница, а не возврат с сообщением.
+        $exceptions->render(function (HttpExceptionInterface $e, $request) {
+            if ($e->getStatusCode() === 413 && $request->is('admin', 'admin/*')) {
+                return response()->view('errors.413', [], 413);
+            }
+        });
+
         // Собственный экран 404 внутри админки; публичные ошибки не подменяются.
         $exceptions->render(function (HttpExceptionInterface $e, $request) {
             $isAdmin = $request->user()?->email === config('admin.email');
