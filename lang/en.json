@@ -993,5 +993,10 @@
     "Участница получит уведомление (в Telegram или письмом), а её профиль станет виден другим участницам.": "The participant will get a notification (in Telegram or by email), and her profile will become visible to other members.",
     "Доступ к платформе будет закрыт, участница получит уведомление (в Telegram или письмом).": "Access to the platform will be closed, and the participant will get a notification (in Telegram or by email).",
     "Участница получит уведомление об отказе (в Telegram или письмом).": "The participant will get a rejection notification (in Telegram or by email).",
-    "Сообщить участнице: в Telegram или письмом (по умолчанию тариф включается молча)": "Notify the participant: in Telegram or by email (by default the plan is switched on silently)"
+    "Сообщить участнице: в Telegram или письмом (по умолчанию тариф включается молча)": "Notify the participant: in Telegram or by email (by default the plan is switched on silently)",
+    "Метка «Самый популярный»": "The “Most popular” badge",
+    "Какому тарифу показывать метку и обводку на странице «Подписка» в кабинете участницы. Можно выбрать любой тариф или никому.": "Which plan gets the badge and outline on the “Subscription” page in the member area. You can pick any plan or none.",
+    "Никому": "None",
+    "метка": "badge",
+    "Метка «Самый популярный» сохранена.": "The “Most popular” badge has been saved."
 }

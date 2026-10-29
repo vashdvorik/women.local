@@ -60,7 +60,6 @@
                 @foreach($content['steps']['items'] as $step)
                     <article class="miro-about__card miro-about__step">
                         <span class="miro-about__step-num">{{ $loop->iteration }}</span>
-                        <span class="miro-about__icon">{!! $icon($step['icon']) !!}</span>
                         <h3>{{ $tri($step['title']) }}</h3>
                         <p>{{ $tri($step['text']) }}</p>
                     </article>

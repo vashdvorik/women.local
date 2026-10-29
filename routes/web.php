@@ -347,6 +347,7 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::get('subscriptions/{profile}', [Admin\SubscriptionController::class, 'edit'])->name('subscriptions.edit');
         Route::put('subscriptions/prices', [Admin\SubscriptionController::class, 'updatePrices'])->name('subscriptions.prices');
         Route::put('subscriptions/purchase', [Admin\SubscriptionController::class, 'updatePurchase'])->name('subscriptions.purchase');
+        Route::put('subscriptions/popular', [Admin\SubscriptionController::class, 'updatePopular'])->name('subscriptions.popular');
         Route::post('subscriptions/{profile}/unlock', [Admin\SubscriptionController::class, 'unlock'])->name('subscriptions.unlock');
 
         // Заявки на закрытые тарифы («Оставить заявку»): менеджер звонит и открывает покупку лично.

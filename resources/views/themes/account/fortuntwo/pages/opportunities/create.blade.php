@@ -7,7 +7,6 @@
         <header class="miro-page-header">
             <div class="miro-page-header__copy">
                 <a href="{{ route('account.opportunities.index') }}" class="miro-button miro-button--text mb-3">← {{ __('account.back') }}</a>
-                <p class="miro-eyebrow">{{ __('account.nav.opportunities') }}</p>
                 <h1 class="miro-page-title">{{ __('account.opportunities.new_title') }}</h1>
                 <p class="miro-page-description">{{ __('account.opportunities.new_subtitle') }}</p>
             </div>

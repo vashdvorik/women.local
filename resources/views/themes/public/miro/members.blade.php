@@ -44,7 +44,7 @@
                     <p><span data-lang="ru">Предпринимательницы, которые уже развивают собственное дело при поддержке платформы — от пищевого производства до туризма и ремёсел.</span><span data-lang="en">Entrepreneurs already growing their businesses with the platform’s support — from food production to tourism and crafts.</span><span data-lang="ro">Antreprenoare care își dezvoltă deja afacerea cu sprijinul platformei — de la producție alimentară la turism și meșteșuguri.</span></p>
                 </div>
 
-                <div class="miro-participants-grid" id="miro-participants-grid" data-image-base="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images') }}/" data-page-size="{{ $participantsPageSize }}">
+                <div class="miro-participants-grid" id="miro-participants-grid" data-image-base="{{ asset_v('themes/public/miro/images') }}/" data-page-size="{{ $participantsPageSize }}">
                     @foreach($participantsVisible as $participant)
                         <article class="miro-participant-card">
                             @if($participant['photo'])

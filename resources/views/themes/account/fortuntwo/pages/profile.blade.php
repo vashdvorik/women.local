@@ -5,9 +5,11 @@
 <div class="fortun-profile-page">
     <header class="fortun-profile-header">
         <div class="fortun-profile-header__copy">
-            <p class="miro-eyebrow">{{ __('account.nav.profile') }}</p>
             <h1 class="fortun-profile-header__title">{{ __('account.profile.title') }}</h1>
             <p class="fortun-profile-header__description">{{ __('account.profile.subtitle') }}</p>
+            @if($accountUser->status === \App\Models\BotUser::STATUS_PENDING)
+                <p class="fortun-profile-note"><span aria-hidden="true"></span>{{ __('participant.banner.pending') }}</p>
+            @endif
         </div>
         <a href="{{ route('account.profile.edit') }}" class="miro-button miro-button--dark fortun-profile-header__action">
             {{ __('account.profile.edit') }}
@@ -61,14 +63,7 @@
         <div class="fortun-profile-content">
             <section class="fortun-profile-panel">
                 <div class="fortun-profile-panel__header">
-                    <div>
-                        <p class="fortun-profile-panel__eyebrow">{{ __('account.profile.business_profile') }}</p>
-                        <h2 class="fortun-profile-panel__title">{{ __('account.profile.title') }}</h2>
-                    </div>
-                    <a href="{{ route('account.profile.edit') }}" class="fortun-profile-panel__link">
-                        {{ __('account.profile.edit') }}
-                        <span aria-hidden="true">→</span>
-                    </a>
+                    <h2 class="fortun-profile-panel__title">{{ __('account.profile.business_profile') }}</h2>
                 </div>
 
                 <div class="fortun-profile-fields">

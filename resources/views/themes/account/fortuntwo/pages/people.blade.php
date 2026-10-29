@@ -57,7 +57,6 @@
 @section('content')
     <div class="miro-directory-page">
         <header class="miro-directory-header">
-            <p class="miro-directory-header__eyebrow">{{ __('account.nav.people') }}</p>
             <h1>{{ __('account.people.title') }}</h1>
             <p>{{ __('account.people.subtitle') }}</p>
         </header>

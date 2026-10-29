@@ -6,7 +6,6 @@
     <div class="miro-page">
         <header class="miro-page-header">
             <div class="miro-page-header__copy">
-                <p class="miro-eyebrow">{{ __('account.nav.opportunities') }}</p>
                 <h1 class="miro-page-title">{{ __('account.opportunities.title') }}</h1>
                 <p class="miro-page-description">{{ __('account.opportunities.subtitle') }}</p>
             </div>

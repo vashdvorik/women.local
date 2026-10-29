@@ -39,6 +39,7 @@ class SubscriptionController extends Controller
             'current' => $user->currentPlan(),
             'payments' => $user->payments()->latest('id')->limit(10)->get(),
             'testMode' => (bool) config('webpayment.is_test'),
+            'popular' => \App\Models\SiteSetting::popularPlan(),
         ]);
     }
 

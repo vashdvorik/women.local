@@ -7,7 +7,7 @@ return [
     'open_menu' => 'Deschide meniul',
     'nav_title' => 'Navigare',
     'logout' => 'Ieșire',
-    'back_to_site' => '← Înapoi la site',
+    'back_to_site' => 'Înapoi la site',
     'back' => 'Înapoi',
     'not_specified' => 'Nu este indicat',
     'not_filled' => 'Nu este completat încă.',

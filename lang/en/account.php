@@ -7,7 +7,7 @@ return [
     'open_menu' => 'Open menu',
     'nav_title' => 'Navigation',
     'logout' => 'Log out',
-    'back_to_site' => '← Back to website',
+    'back_to_site' => 'Back to website',
     'back' => 'Back',
     'not_specified' => 'Not specified',
     'not_filled' => 'Not filled yet.',

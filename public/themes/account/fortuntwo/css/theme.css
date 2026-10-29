@@ -1,4 +1,5 @@
 body { font-family: "Manrope", Inter, system-ui, sans-serif; }
+body.account-theme-fortuntwo ::placeholder { color: #86716A; opacity: 1; }
 :focus-visible { outline: 2px solid var(--fortun-brand-purple); outline-offset: 2px; border-radius: 8px; }
 @media (max-width: 1023px) { [x-cloak] { display: none !important; } }
 
@@ -44,16 +45,16 @@ body.account-theme-fortuntwo {
     --fortun-surface-soft: #FCF8F6;
     --fortun-surface-cream: #F1E3DA;
     --fortun-surface-pricing: #FAEEE8;
-    --fortun-hairline: #E9DCD5;
-    --fortun-hairline-soft: #F2E8E3;
-    --fortun-hairline-strong: #D8C5BA;
+    --fortun-hairline: #DDCBC1;
+    --fortun-hairline-soft: #E8DAD2;
+    --fortun-hairline-strong: #C7B1A4;
     --fortun-ink-deep: #21140F;
     --fortun-ink: #34231F;
     --fortun-charcoal: #49342B;
-    --fortun-slate: #756158;
-    --fortun-steel: #8C776E;
-    --fortun-stone: #9C887F;
-    --fortun-muted: #B8A8A0;
+    --fortun-slate: #65524A;
+    --fortun-steel: #6F5B52;
+    --fortun-stone: #7F6A61;
+    --fortun-muted: #9A857C;
     --fortun-success: #526B5A;
     --fortun-footer-bg: #21140F;
     --fortun-display-font: "Prata", Georgia, "Times New Roman", serif;
@@ -280,7 +281,7 @@ body.account-theme-fortuntwo .miro-mobile-close { display: none; }
 body.account-theme-fortuntwo .account-flash { border-radius: 16px; padding: 14px 18px; font-size: 14px; line-height: 1.5; }
 body.account-theme-fortuntwo .account-flash--success { border: 1px solid var(--fortun-success); background: var(--fortun-success); color: var(--fortun-on-primary); }
 body.account-theme-fortuntwo .account-flash--error { border: 1px solid var(--fortun-brand-red-dark); background: var(--fortun-brand-red); color: var(--fortun-brand-red-dark); }
-body.account-theme-fortuntwo .account-site-link { display: flex; align-items: center; gap: 10px; margin: 0 12px 12px; border-radius: 12px; padding: 10px 12px; color: var(--fortun-steel); font-size: 13px; font-weight: 500; transition: background .18s ease, color .18s ease; }
+body.account-theme-fortuntwo .account-site-link { display: flex; align-items: center; gap: 10px; margin: 0 0 4px; border-radius: 12px; padding: 10px 12px; color: var(--fortun-steel); font-size: 14px; font-weight: 500; transition: background .18s ease, color .18s ease; }
 body.account-theme-fortuntwo .account-site-link:hover { background: var(--fortun-brand-teal-soft); color: var(--fortun-brand-teal-dark); }
 
 body.account-theme-fortuntwo input,
@@ -304,7 +305,7 @@ body.account-theme-fortuntwo .miro-directory-header__eyebrow { margin: 0 0 14px;
 body.account-theme-fortuntwo .miro-directory-header h1 { margin: 0; color: var(--fortun-ink-deep); font-family: var(--fortun-display-font); font-size: clamp(30px, 5vw, 44px); font-weight: 400; line-height: 1.18; letter-spacing: -.015em; }
 body.account-theme-fortuntwo .miro-directory-header p:last-child { margin: 16px 0 0; color: var(--fortun-slate); font-size: 18px; line-height: 1.5; }
 body.account-theme-fortuntwo .miro-directory-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-body.account-theme-fortuntwo .miro-directory-card { padding: 24px; border: 1px solid var(--fortun-hairline-soft); border-radius: 16px; background: var(--fortun-canvas); box-shadow: 0 4px 12px rgba(5, 0, 56, .06); }
+body.account-theme-fortuntwo .miro-directory-card { display: flex; flex-direction: column; padding: 24px; border: 1px solid var(--fortun-hairline-soft); border-radius: 16px; background: var(--fortun-canvas); box-shadow: 0 4px 12px rgba(5, 0, 56, .06); }
 body.account-theme-fortuntwo .miro-directory-card__profile { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 18px; align-items: start; }
 body.account-theme-fortuntwo .miro-directory-card__avatar { width: 112px; height: 112px; overflow: hidden; border: 1px solid rgba(7, 136, 144, .2); border-radius: 20px; background: var(--fortun-brand-teal-soft); }
 body.account-theme-fortuntwo .miro-directory-card__avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -322,12 +323,12 @@ body.account-theme-fortuntwo .miro-directory-card__tag--rose { background: var(-
 body.account-theme-fortuntwo .miro-directory-card__tag--coral { background: var(--fortun-coral-light); }
 body.account-theme-fortuntwo .miro-directory-card__tag--blue { background: var(--fortun-brand-purple-soft); color: var(--fortun-brand-purple); }
 body.account-theme-fortuntwo .miro-directory-card__description { margin: 18px 0 0; color: var(--fortun-slate); font-size: 14px; line-height: 1.55; }
-body.account-theme-fortuntwo .miro-directory-card__details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+body.account-theme-fortuntwo .miro-directory-card__details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 18px 0; }
 body.account-theme-fortuntwo .miro-directory-card__detail { padding: 16px; border-radius: 12px; background: var(--fortun-surface-soft); }
 body.account-theme-fortuntwo .miro-directory-card__detail--offer { border: 1px solid rgba(241,206,145,.72); background: var(--fortun-brand-purple-soft); }
 body.account-theme-fortuntwo .miro-directory-card__detail-label { display: block; margin-bottom: 6px; color: var(--fortun-steel); font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
 body.account-theme-fortuntwo .miro-directory-card__detail p { margin: 0; color: var(--fortun-ink-deep); font-size: 13px; line-height: 1.45; }
-body.account-theme-fortuntwo .miro-directory-card__contact { display: inline-flex; align-items: center; margin-top: 18px; padding: 10px 16px; border-radius: 9999px; background: var(--fortun-primary); color: var(--fortun-on-primary); font-size: 13px; font-weight: 500; transition: transform .18s ease, background .18s ease; }
+body.account-theme-fortuntwo .miro-directory-card__contact { display: inline-flex; align-items: center; align-self: flex-start; margin-top: auto; padding: 10px 16px; border-radius: 9999px; background: var(--fortun-primary); color: var(--fortun-on-primary); font-size: 13px; font-weight: 500; transition: transform .18s ease, background .18s ease; }
 body.account-theme-fortuntwo .miro-directory-card__contact:hover { background: var(--fortun-charcoal); transform: translateY(-1px); }
 body.account-theme-fortuntwo .miro-directory-empty { padding: 40px; border: 1px dashed var(--fortun-hairline-strong); border-radius: 28px; background: var(--fortun-canvas); text-align: center; }
 
@@ -341,6 +342,9 @@ body.account-theme-fortuntwo .fortun-profile-header__action { flex: 0 0 auto; }
 body.account-theme-fortuntwo .fortun-profile-layout { display: grid; grid-template-columns: minmax(260px, .78fr) minmax(0, 1.22fr); gap: 24px; align-items: start; }
 body.account-theme-fortuntwo .fortun-profile-identity { min-height: 100%; border-radius: 28px; background: var(--fortun-brand-purple-soft); padding: 32px; }
 body.account-theme-fortuntwo .fortun-profile-identity__topline { display: flex; justify-content: flex-end; margin-bottom: 28px; }
+/* Спокойное напоминание, пока анкета на проверке: без рамки и фона, с маленькой точкой */
+body.account-theme-fortuntwo .fortun-profile-note { display: flex; align-items: center; gap: 8px; max-width: 680px; margin: 12px 0 0; color: var(--fortun-slate); font-size: 14px; line-height: 1.5; }
+body.account-theme-fortuntwo .fortun-profile-note span { flex: none; width: 7px; height: 7px; border-radius: 9999px; background: #E0A93B; }
 body.account-theme-fortuntwo .fortun-profile-badge { display: inline-flex; align-items: center; gap: 8px; border-radius: 9999px; background: var(--fortun-brand-teal-soft); padding: 6px 10px; color: var(--fortun-brand-teal-dark); font-size: 12px; font-weight: 600; line-height: 1.4; }
 body.account-theme-fortuntwo .fortun-profile-badge__dot { width: 7px; height: 7px; border-radius: 9999px; background: var(--fortun-success); }
 body.account-theme-fortuntwo .fortun-profile-avatar { width: 112px; height: 112px; overflow: hidden; border: 3px solid var(--fortun-canvas); border-radius: 20px; background: var(--fortun-brand-teal-soft); box-shadow: 0 4px 12px rgba(5, 0, 56, .06); }
@@ -442,8 +446,9 @@ body.account-theme-fortuntwo .fortun-dashboard-profile__warning span { display: 
     body.account-theme-fortuntwo .miro-profile-hero { grid-template-columns: 1fr; }
     body.account-theme-fortuntwo .miro-directory-grid { grid-template-columns: 1fr; }
     body.account-theme-fortuntwo .fortun-profile-layout { grid-template-columns: 1fr; }
-    body.account-theme-fortuntwo .fortun-profile-header { align-items: flex-start; flex-direction: column; gap: 20px; }
-    body.account-theme-fortuntwo .fortun-profile-header__action { width: fit-content; }
+    /* Телефон: кнопка «Редактировать» стоит справа вверху, на одной линии с заголовком, а не под текстом */
+    body.account-theme-fortuntwo .fortun-profile-header { align-items: flex-start; flex-direction: row; gap: 12px; margin-bottom: 24px; }
+    body.account-theme-fortuntwo .fortun-profile-header__action { width: fit-content; margin-top: 6px; padding: 9px 16px; font-size: 13px; }
     body.account-theme-fortuntwo .fortun-profile-fields { grid-template-columns: 1fr; }
     body.account-theme-fortuntwo .fortun-dashboard-section-heading { align-items: flex-start; flex-direction: column; }
     body.account-theme-fortuntwo .fortun-dashboard-profile__card { align-items: flex-start; flex-direction: column; }
@@ -488,4 +493,53 @@ body.account-theme-fortuntwo .fortun-dashboard-profile__warning span { display: 
     body.account-theme-fortuntwo .fortun-dashboard-profile { margin-top: 36px; }
     body.account-theme-fortuntwo .fortun-dashboard-section-heading h2 { font-size: 28px; }
     body.account-theme-fortuntwo .fortun-dashboard-profile__card { padding: 20px; }
+}
+
+/* ---------- Страница «Подписка»: тариф участницы и карточки тарифов выше ----------
+   Карточка: цветная шапка (название и слоган), ниже цена, пункты и кнопка. Шапка у каждого тарифа своего тона:
+   Community светлая кремовая, Active розово-бежевая, Private насыщенная карамельная: оттенок темнеет от тарифа к тарифу. */
+body.account-theme-fortuntwo .sub-current { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 28px; padding: 20px 24px; border: 1px solid var(--fortun-hairline-strong); border-radius: 20px; background: var(--fortun-surface-cream); }
+body.account-theme-fortuntwo .sub-current__label { margin: 0; color: var(--fortun-brand-teal-dark); font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+body.account-theme-fortuntwo .sub-current__name { margin: 4px 0 0; color: var(--fortun-ink-deep); font-size: 20px; font-weight: 600; }
+body.account-theme-fortuntwo .sub-current__until { margin: 4px 0 0; color: var(--fortun-slate); font-size: 14px; }
+body.account-theme-fortuntwo .sub-current__action { width: 100%; max-width: 260px; }
+body.account-theme-fortuntwo .sub-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
+body.account-theme-fortuntwo .sub-card { position: relative; display: flex; flex-direction: column; border: 1px solid var(--fortun-hairline-strong); border-radius: 24px; background: var(--fortun-canvas); box-shadow: 0 6px 18px rgba(33, 20, 15, .06); }
+body.account-theme-fortuntwo .sub-card--popular { border-color: var(--fortun-secondary); box-shadow: 0 0 0 3px rgba(142, 91, 61, .14), 0 6px 18px rgba(33, 20, 15, .06); }
+body.account-theme-fortuntwo .sub-card__badge { position: absolute; z-index: 1; top: -12px; left: 24px; padding: 4px 12px; border-radius: 9999px; background: var(--fortun-secondary-hover); color: var(--fortun-on-primary); font-size: 11px; font-weight: 600; letter-spacing: .04em; line-height: 1.3; }
+body.account-theme-fortuntwo .sub-card__head { padding: 28px 24px 22px; border-radius: 23px 23px 0 0; background: var(--fortun-surface-cream); }
+body.account-theme-fortuntwo .sub-card--active .sub-card__head { background: var(--fortun-coral-light); }
+body.account-theme-fortuntwo .sub-card--private .sub-card__head { background: var(--fortun-brand-gold-light); }
+body.account-theme-fortuntwo .sub-card__name { margin: 0; color: var(--fortun-brand-teal-dark); font-size: 12px; font-weight: 700; letter-spacing: .1em; line-height: 1.3; text-transform: uppercase; }
+body.account-theme-fortuntwo .sub-card--private .sub-card__name { color: var(--fortun-ink); }
+body.account-theme-fortuntwo .sub-card__tagline { margin: 12px 0 0; color: var(--fortun-ink-deep); font-family: var(--fortun-display-font); font-size: 19px; font-weight: 400; line-height: 1.35; }
+body.account-theme-fortuntwo .sub-card__tagline span { display: block; }
+body.account-theme-fortuntwo .sub-card__body { display: flex; flex: 1; flex-direction: column; padding: 22px 24px 24px; }
+body.account-theme-fortuntwo .sub-card__price { margin: 0; color: var(--fortun-ink-deep); font-size: 34px; font-weight: 600; line-height: 1.1; letter-spacing: -.01em; }
+body.account-theme-fortuntwo .sub-card__price span { color: var(--fortun-slate); font-size: 14px; font-weight: 500; letter-spacing: 0; }
+body.account-theme-fortuntwo .sub-card__month { align-self: flex-start; margin: 10px 0 0; padding: 4px 12px; border-radius: 9999px; background: var(--fortun-brand-teal-soft); color: var(--fortun-brand-teal-dark); font-size: 13px; font-weight: 600; }
+body.account-theme-fortuntwo .sub-card__lead { margin: 20px 0 14px; padding-top: 18px; border-top: 1px solid var(--fortun-hairline); color: var(--fortun-slate); font-size: 13px; font-weight: 600; line-height: 1.45; }
+body.account-theme-fortuntwo .sub-card__list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+body.account-theme-fortuntwo .sub-card__list li { display: flex; align-items: flex-start; gap: 12px; color: var(--fortun-ink); font-size: 14px; line-height: 1.5; }
+body.account-theme-fortuntwo .sub-card__list svg { flex: none; box-sizing: border-box; width: 22px; height: 22px; padding: 5px; border-radius: 9999px; background: var(--fortun-surface-cream); color: var(--fortun-brand-teal-dark); }
+body.account-theme-fortuntwo .sub-card__more { margin-top: 18px; }
+body.account-theme-fortuntwo .sub-card__more summary { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--fortun-hairline-strong); border-radius: 9999px; color: var(--fortun-ink-deep); font-size: 13px; font-weight: 600; cursor: pointer; list-style: none; transition: background .18s ease; }
+body.account-theme-fortuntwo .sub-card__more summary:hover { background: var(--fortun-surface); }
+body.account-theme-fortuntwo .sub-card__more summary::-webkit-details-marker { display: none; }
+body.account-theme-fortuntwo .sub-card__more summary::after { content: ""; width: 6px; height: 6px; margin-top: -3px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); transition: transform .18s ease; }
+body.account-theme-fortuntwo .sub-card__more[open] summary::after { margin-top: 3px; transform: rotate(-135deg); }
+body.account-theme-fortuntwo .sub-card__more-body { display: grid; gap: 16px; margin-top: 16px; }
+body.account-theme-fortuntwo .sub-card__audience { margin: 0; padding: 12px 14px; border-radius: 14px; background: var(--fortun-surface); color: var(--fortun-slate); font-size: 14px; line-height: 1.55; }
+body.account-theme-fortuntwo .sub-card__closing { margin: 0; color: var(--fortun-ink-deep); font-size: 14px; font-weight: 600; line-height: 1.5; }
+body.account-theme-fortuntwo .sub-card__buy { margin-top: auto; padding-top: 24px; }
+@media (min-width: 1024px) {
+    body.account-theme-fortuntwo .sub-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    body.account-theme-fortuntwo .sub-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 780px; }
+    body.account-theme-fortuntwo .sub-grid--1 { max-width: 380px; }
+}
+/* Шапки карточек одной высоты (по самой высокой), чтобы цены, списки и кнопки стояли на одном уровне */
+@supports (grid-template-rows: subgrid) {
+    @media (min-width: 1024px) {
+        body.account-theme-fortuntwo .sub-card { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 0; }
+    }
 }

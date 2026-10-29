@@ -6,8 +6,11 @@
 
 @section('title', $section ?? __('subscription.locked.title'))
 
+@section('notices_inline', '1')
+
 @section('content')
 <div class="mx-auto max-w-xl py-6 sm:py-10">
+    @include('account.partials.notices')
     <section class="rounded-3xl border border-gray-200 bg-white p-8 text-center shadow-sm sm:p-10" aria-labelledby="locked-title">
         <span class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-50 text-brand-700" aria-hidden="true">
             <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">

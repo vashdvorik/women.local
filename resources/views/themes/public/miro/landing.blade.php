@@ -286,7 +286,7 @@
                     <article class="miro-benefit-card miro-benefit-card--orange">
                         <div class="miro-benefit-card__icon" aria-hidden="true"><i class="ph ph-hand-heart"></i></div>
                         <h3><span data-lang="ru">Менторство</span><span data-lang="en">Mentorship</span><span data-lang="ro">Mentorat</span></h3>
-                        <p><span data-lang="ru">Получайте советы от опытных предпринимательниц и эксперток.</span><span data-lang="en">Access advice from experienced women entrepreneurs.</span><span data-lang="ro">Primește sfaturi de la antreprenoare cu experiență.</span></p>
+                        <p><span data-lang="ru">Получайте советы от опытных предпринимательниц и экспертов.</span><span data-lang="en">Access advice from experienced women entrepreneurs.</span><span data-lang="ro">Primește sfaturi de la antreprenoare cu experiență.</span></p>
                     </article>
                     <article class="miro-benefit-card miro-benefit-card--surface">
                         <div class="miro-benefit-card__icon" aria-hidden="true"><i class="ph ph-bell-ringing"></i></div>

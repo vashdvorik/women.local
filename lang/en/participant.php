@@ -79,7 +79,6 @@ return [
         'step_profile' => 'Profile',
         'step_plan' => 'Plan',
         'heading' => 'Tell us about yourself',
-        'subtitle' => 'An administrator will review your profile, after which other members of the platform will see you. We need your phone number to contact you.',
         'full_name' => 'Full name',
         'phone' => 'Phone',
         'phone_hint' => 'For example, +373 600 00 000',
@@ -110,7 +109,7 @@ return [
         'choose_text' => 'There is no free access: a plan opens your account. Your profile is saved, one last step remains.',
         'buy' => 'Buy',
         'request' => 'Leave a request',
-        'request_hint' => 'This plan is currently issued by a manager. Leave a request and they will call you and open the purchase.',
+        'request_hint' => 'A manager opens this plan for now. Leave a request: they will call, explain the terms and open the payment.',
         'comment' => 'Comment for the manager (optional)',
         'request_sent' => 'Request sent',
         'request_sent_text' => 'A manager will call you at :phone and open the purchase.',
@@ -130,7 +129,7 @@ return [
     ],
 
     'banner' => [
-        'pending' => 'Your profile is under review: other members will see you once an administrator approves it.',
+        'pending' => 'Your profile is being reviewed. Once it is approved, other members will be able to find you.',
         'rejected' => 'Your profile was declined. If this is a mistake, write to us through the Contacts page.',
     ],
 

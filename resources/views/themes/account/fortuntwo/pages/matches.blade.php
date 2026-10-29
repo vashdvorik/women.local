@@ -6,13 +6,9 @@
     <div class="miro-page">
         <header class="miro-page-header">
             <div class="miro-page-header__copy">
-                <p class="miro-eyebrow">{{ __('account.nav.matches') }}</p>
                 <h1 class="miro-page-title">{{ __('account.matches.title') }}</h1>
                 <p class="miro-page-description">{{ __('account.matches.subtitle') }}</p>
             </div>
-            <span class="miro-icon-tile miro-icon-tile--teal hidden sm:inline-grid">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/></svg>
-            </span>
         </header>
     </div>
 

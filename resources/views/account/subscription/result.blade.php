@@ -13,8 +13,11 @@
     @endpush
 @endif
 
+@section('notices_inline', '1')
+
 @section('content')
 <div class="mx-auto max-w-xl py-6">
+    @include('account.partials.notices')
     <div class="rounded-3xl border bg-white p-8 text-center shadow-sm {{ $state === 'paid' ? 'border-emerald-200' : ($state === 'failed' || $state === 'unknown' ? 'border-red-200' : 'border-gray-200') }}">
         @if($state === 'paid')
             <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">

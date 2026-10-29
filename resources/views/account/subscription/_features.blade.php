@@ -1,11 +1,31 @@
-{{-- Список возможностей тарифа. $plan — App\Enums\Plan. Тексты берутся из lang/*/subscription.php (описания заказчика): вводная фраза, пункты, заключительная фраза. --}}
-<p class="text-sm font-medium text-gray-700">{{ __('subscription.plans.'.$plan->value.'.lead') }}</p>
-<ul class="mt-3 space-y-2">
-    @foreach(__('subscription.plans.'.$plan->value.'.features') as $feature)
-        <li class="flex items-start gap-2.5 text-sm leading-6 text-gray-600">
-            <svg class="mt-1 h-4 w-4 shrink-0 text-brand-600" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-            <span>{{ $feature }}</span>
-        </li>
+{{--
+    Возможности тарифа в карточке. $plan — App\Enums\Plan. Тексты — из lang/*/subscription.php (описания заказчика, без правок):
+    вводная фраза и три первых пункта видны сразу, остальное (для кого, остальные пункты, заключительная фраза) — по клику.
+--}}
+@php
+    $features = __('subscription.plans.'.$plan->value.'.features');
+    $main = array_slice($features, 0, 3);
+    $rest = array_slice($features, 3);
+    $check = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>';
+@endphp
+<p class="sub-card__lead">{{ __('subscription.plans.'.$plan->value.'.lead') }}</p>
+<ul class="sub-card__list">
+    @foreach($main as $feature)
+        <li>{!! $check !!}<span>{{ $feature }}</span></li>
     @endforeach
 </ul>
-<p class="mt-4 text-sm font-medium leading-6 text-gray-700">{{ __('subscription.plans.'.$plan->value.'.closing') }}</p>
+
+<details class="sub-card__more">
+    <summary>{{ __('subscription.page.more') }}</summary>
+    <div class="sub-card__more-body">
+        <p class="sub-card__audience">{{ __('subscription.plans.'.$plan->value.'.audience') }}</p>
+        @if($rest !== [])
+            <ul class="sub-card__list">
+                @foreach($rest as $feature)
+                    <li>{!! $check !!}<span>{{ $feature }}</span></li>
+                @endforeach
+            </ul>
+        @endif
+        <p class="sub-card__closing">{{ __('subscription.plans.'.$plan->value.'.closing') }}</p>
+    </div>
+</details>

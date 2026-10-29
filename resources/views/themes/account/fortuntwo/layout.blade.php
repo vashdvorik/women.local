@@ -93,13 +93,9 @@
             </header>
 
             <main class="account-main flex-1 overflow-y-auto px-4 pb-28 pt-6 sm:px-6 lg:px-10 lg:pb-8 lg:pt-8">
-                @foreach(['success' => 'emerald', 'error' => 'red'] as $key => $color)
-                    @if(session($key))
-                        <div class="account-flash account-flash--{{ $key === 'success' ? 'success' : 'error' }} mb-6 rounded-xl border border-{{ $color }}-200 bg-{{ $color }}-50 px-4 py-3 text-sm text-{{ $color }}-800">{{ session($key) }}</div>
-                    @endif
-                @endforeach
-                @if(! $accountUser->isApproved())
-                    <div class="account-flash mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">{{ __('participant.banner.pending') }}</div>
+                {{-- Страницы с центрированной колонкой (@section('notices_inline')) выводят сообщения сами, внутри колонки --}}
+                @if(trim($__env->yieldContent('notices_inline')) === '')
+                    @include('account.partials.notices')
                 @endif
                 @yield('content')
             </main>

@@ -67,6 +67,7 @@ class SubscriptionController extends Controller
             ],
             'priceMax' => SiteSetting::SUBSCRIPTION_PRICE_MAX,
             'closed' => SiteSetting::closedPlans(),
+            'popular' => SiteSetting::popularPlan(),
             'managerEmail' => SiteSetting::planRequestEmail(),
             'counts' => [
                 '' => (clone $registered)->count(),
@@ -153,6 +154,20 @@ class SubscriptionController extends Controller
         }
 
         return redirect()->route('admin.subscriptions.index')->with('success', $notice);
+    }
+
+    /** Метка «Самый популярный» на странице «Подписка»: любому тарифу или никому. */
+    public function updatePopular(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'popular' => ['nullable', 'string', Rule::in(array_map(fn (Plan $plan): string => $plan->value, Plan::paid()))],
+        ], [], ['popular' => __('метка')]);
+
+        SiteSetting::setPopularPlan($data['popular'] ?? null);
+
+        Log::info('Метка «Самый популярный» изменена в админке', ['тариф' => $data['popular'] ?? 'никому']);
+
+        return redirect()->route('admin.subscriptions.index')->with('success', __('Метка «Самый популярный» сохранена.'));
     }
 
     /** Открыть участнице покупку закрытого тарифа без заявки (например, она позвонила сама). */

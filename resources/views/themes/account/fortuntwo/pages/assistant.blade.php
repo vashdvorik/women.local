@@ -5,9 +5,9 @@
     $locale = app()->getLocale();
     $copy = [
         'ru' => [
-            'label' => 'Fortun AI',
+            'label' => 'Women’s hub AI',
             'status' => 'Онлайн',
-            'role' => 'AI-помощник платформы',
+            'role' => 'ИИ-помощник платформы',
             'title' => 'Найдите партнёров и возможности с помощью ИИ',
             'subtitle' => 'Помогу заполнить профиль, найти подходящих партнёров и экспертов, а также подобрать возможности для вашего бизнеса',
             'welcome' => 'Здравствуйте! Я помогу найти партнёров, экспертов и возможности для вашего бизнеса.',
@@ -28,7 +28,7 @@
             'profile_public' => 'Виден участницам',
         ],
         'en' => [
-            'label' => 'Fortun AI',
+            'label' => 'Women’s hub AI',
             'status' => 'Online',
             'role' => 'AI platform assistant',
             'title' => 'Find partners and opportunities with AI',
@@ -51,7 +51,7 @@
             'profile_public' => 'Visible to participants',
         ],
         'ro' => [
-            'label' => 'Fortun AI',
+            'label' => 'Women’s hub AI',
             'status' => 'Online',
             'role' => 'Asistentul AI al platformei',
             'title' => 'Găsiți parteneri și oportunități cu ajutorul AI',

@@ -6,13 +6,9 @@
 <div class="miro-page">
     <header class="miro-page-header">
         <div class="miro-page-header__copy">
-            <p class="miro-eyebrow">{{ __('account.nav.search') }}</p>
             <h1 class="miro-page-title">{{ __('account.search.title') }}</h1>
             <p class="miro-page-description">{{ __('account.search.subtitle') }}</p>
         </div>
-        <span class="miro-icon-tile miro-icon-tile--pink hidden sm:inline-grid">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m21 21-4.35-4.35m2.1-5.4a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"/></svg>
-        </span>
     </header>
 
     <form method="GET" action="{{ route('account.search') }}" class="miro-card p-4">
@@ -33,8 +29,8 @@
 
     <div class="mt-6">
         @if($results === null)
-            <div class="miro-alert miro-alert--success">
-                <span class="miro-icon-tile miro-icon-tile--teal shrink-0"><svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 17h.01M12 7v6m9 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
+            <div class="miro-alert miro-alert--cream">
+                <span class="miro-icon-tile miro-icon-tile--coral shrink-0"><svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 17h.01M12 7v6m9 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
                 <div><h2 class="text-base font-medium">{{ __('account.search.hint_title') }}</h2><p class="mt-1 text-sm leading-6 opacity-80">{{ __('account.search.hint_text') }}</p></div>
             </div>
         @elseif($results->isEmpty())

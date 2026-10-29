@@ -6,7 +6,6 @@
     <header class="miro-page-header">
         <div class="miro-page-header__copy">
             <a href="{{ route('account.profile') }}" class="miro-button miro-button--text mb-3">← {{ __('account.back') }}</a>
-            <p class="miro-eyebrow">{{ __('account.nav.profile') }}</p>
             <h1 class="miro-page-title">{{ __('account.profile_edit.title') }}</h1>
             <p class="miro-page-description">{{ __('account.profile_edit.subtitle') }}</p>
         </div>

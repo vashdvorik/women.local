@@ -13,28 +13,17 @@
     $allDone = $doneCount === count($steps);
 @endphp
 
+@section('notices_inline', '1')
+
 @section('content')
 <div class="account-home mx-auto max-w-6xl">
+    @include('account.partials.notices')
 
     <header class="mb-6 max-w-3xl">
         <p class="text-xs font-semibold uppercase tracking-widest text-brand-600">{{ __('account.home.eyebrow') }}</p>
         <h1 class="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">{{ __('account.home.hello', ['name' => $name]) }}</h1>
         <p class="mt-3 text-sm leading-6 text-gray-600">{{ $paid ? __('account.home.intro') : __('account.home.intro_community') }}</p>
     </header>
-
-    {{-- Как тут всё устроено: закрывается и больше не показывается на этом устройстве --}}
-    <section x-data="{ open: (() => { try { return ! localStorage.getItem('cabinetHintClosed'); } catch (e) { return true; } })() }"
-             x-show="open" x-cloak
-             class="account-home-hint mb-6 flex items-start gap-3 rounded-2xl border border-brand-100 bg-brand-50 p-4 sm:p-5" aria-labelledby="home-hint-title">
-        <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-semibold text-white" aria-hidden="true">i</span>
-        <div class="min-w-0 flex-1">
-            <h2 id="home-hint-title" class="text-sm font-semibold">{{ __('account.home.hint_title') }}</h2>
-            <p class="mt-1 text-sm leading-6 text-gray-700 lg:hidden">{{ __('account.home.hint_mobile') }}</p>
-            <p class="mt-1 hidden text-sm leading-6 text-gray-700 lg:block">{{ __('account.home.hint_desktop') }}</p>
-            <button type="button" class="mt-3 rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-brand-700 shadow-sm ring-1 ring-brand-100 transition hover:bg-brand-50"
-                    @click="open = false; try { localStorage.setItem('cabinetHintClosed', '1'); } catch (e) {}">{{ __('account.home.hint_close') }}</button>
-        </div>
-    </section>
 
     {{-- Открыть сообщество: только у тарифа Open --}}
     @unless($paid)
@@ -79,6 +68,20 @@
                 @endforeach
             </ol>
         @endif
+    </section>
+
+    {{-- Как тут всё устроено (после «С чего начать», чтобы главное действие было на первом экране): закрывается и больше не показывается на этом устройстве --}}
+    <section x-data="{ open: (() => { try { return ! localStorage.getItem('cabinetHintClosed'); } catch (e) { return true; } })() }"
+             x-show="open" x-cloak
+             class="account-home-hint mb-6 flex items-start gap-3 rounded-2xl border border-brand-100 bg-brand-50 p-4 sm:p-5" aria-labelledby="home-hint-title">
+        <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-semibold text-white" aria-hidden="true">i</span>
+        <div class="min-w-0 flex-1">
+            <h2 id="home-hint-title" class="text-sm font-semibold">{{ __('account.home.hint_title') }}</h2>
+            <p class="mt-1 text-sm leading-6 text-gray-700 lg:hidden">{{ __('account.home.hint_mobile') }}</p>
+            <p class="mt-1 hidden text-sm leading-6 text-gray-700 lg:block">{{ __('account.home.hint_desktop') }}</p>
+            <button type="button" class="mt-3 rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-brand-700 shadow-sm ring-1 ring-brand-100 transition hover:bg-brand-50"
+                    @click="open = false; try { localStorage.setItem('cabinetHintClosed', '1'); } catch (e) {}">{{ __('account.home.hint_close') }}</button>
+        </div>
     </section>
 
     {{-- Разделы кабинета: то же, что в меню, с пояснением --}}

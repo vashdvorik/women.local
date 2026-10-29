@@ -79,7 +79,6 @@ return [
         'step_profile' => 'Profil',
         'step_plan' => 'Tarif',
         'heading' => 'Povestiți-ne despre dumneavoastră',
-        'subtitle' => 'Profilul va fi verificat de administrator, după care celelalte participante ale platformei vă vor vedea. Telefonul ne trebuie pentru a vă contacta.',
         'full_name' => 'Nume și prenume',
         'phone' => 'Telefon',
         'phone_hint' => 'De exemplu, +373 600 00 000',
@@ -110,7 +109,7 @@ return [
         'choose_text' => 'Nu există acces gratuit: tariful deschide contul. Profilul este salvat, a mai rămas un ultim pas.',
         'buy' => 'Cumpără',
         'request' => 'Lasă o cerere',
-        'request_hint' => 'Acest tarif îl acordă deocamdată un manager. Lăsați o cerere, vă va suna și va deschide achiziția.',
+        'request_hint' => 'Acest tarif este deschis deocamdată de manager. Lăsați o cerere: vă sună, explică condițiile și deschide plata.',
         'comment' => 'Comentariu pentru manager (opțional)',
         'request_sent' => 'Cererea a fost trimisă',
         'request_sent_text' => 'Un manager vă va suna la :phone și va deschide achiziția.',
@@ -130,7 +129,7 @@ return [
     ],
 
     'banner' => [
-        'pending' => 'Profilul este în curs de verificare: celelalte participante vă vor vedea după aprobarea de către administrator.',
+        'pending' => 'Profilul dvs. este în curs de verificare. După aprobare, celelalte participante vă vor putea găsi.',
         'rejected' => 'Profilul a fost respins. Dacă este o greșeală, scrieți-ne prin pagina „Contacte”.',
     ],
 

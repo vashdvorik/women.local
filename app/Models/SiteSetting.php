@@ -33,6 +33,9 @@ class SiteSetting extends Model
     /** Почта менеджера, на которую приходят заявки на закрытые тарифы. */
     public const PLAN_REQUEST_EMAIL_KEY = 'plan_request_email';
 
+    /** Какому тарифу показывать метку «Самый популярный» на странице «Подписка»; пока не выбрано, это Active. */
+    public const SUBSCRIPTION_POPULAR_KEY = 'subscription_popular';
+
     /** Самая большая цена подписки, которую принимает админка (в рублях): защита от лишнего нуля. */
     public const SUBSCRIPTION_PRICE_MAX = 1_000_000;
 
@@ -203,6 +206,32 @@ class SiteSetting extends Model
         self::updateOrCreate(['key' => self::SUBSCRIPTION_CLOSED_KEY], ['value' => array_values(array_intersect(['community', 'active', 'private'], $plans))]);
 
         Cache::forget(self::SUBSCRIPTION_CLOSED_KEY);
+    }
+
+    /**
+     * Тариф с меткой «Самый популярный» (ключ 'community', 'active' или 'private'); null — метка никому не показывается.
+     * Пока админ ничего не выбирал, метка стоит у Active. Читается на странице тарифов, поэтому кешируется.
+     */
+    public static function popularPlan(): ?string
+    {
+        return Cache::rememberForever(self::SUBSCRIPTION_POPULAR_KEY, function (): ?string {
+            $stored = self::settingValue(self::SUBSCRIPTION_POPULAR_KEY);
+
+            if (! array_key_exists('plan', $stored)) {
+                return 'active';
+            }
+
+            return in_array($stored['plan'], ['community', 'active', 'private'], true) ? $stored['plan'] : null;
+        });
+    }
+
+    public static function setPopularPlan(?string $plan): void
+    {
+        self::updateOrCreate(['key' => self::SUBSCRIPTION_POPULAR_KEY], ['value' => [
+            'plan' => in_array($plan, ['community', 'active', 'private'], true) ? $plan : '',
+        ]]);
+
+        Cache::forget(self::SUBSCRIPTION_POPULAR_KEY);
     }
 
     /** Почта менеджера для заявок на закрытые тарифы; пока не задана, пусто. */

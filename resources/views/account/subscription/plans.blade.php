@@ -1,75 +1,88 @@
 {{--
-    «Подписка» — три тарифа кабинета. Общая для всех тем: подключает макет текущей темы кабинета и использует её палитру brand-*.
-    Переменные: $user (BotUser), $current (Plan), $payments, $testMode.
+    «Подписка». Общая для всех тем: подключает макет текущей темы кабинета.
+    Переменные: $user (BotUser), $current (Plan), $payments, $testMode, $popular (ключ тарифа с меткой «Самый популярный» или null).
+
+    Страница зависит от состояния участницы:
+      - тарифа нет: «Выберите тариф» и все три карточки;
+      - тариф есть: «Ваша подписка» (тариф, срок, «Продлить») и карточки только тех тарифов, что выше текущего;
+      - самый высокий тариф: только «Ваша подписка».
+    В карточке коротко (цена, три главных пункта), полный список заказчика — в раскрывающемся «Что входит в тариф».
 --}}
 @extends('themes.account.'.($accountTheme ?? \App\Models\SiteSetting::DEFAULT_ACCOUNT_THEME).'.layout')
 
 @section('title', __('subscription.page.title'))
 
-@section('content')
-@php use App\Enums\Plan; @endphp
-<div class="mx-auto max-w-6xl">
-    <header class="mb-8 max-w-3xl">
-        <p class="text-xs font-semibold uppercase tracking-widest text-brand-600">{{ __('subscription.page.eyebrow') }}</p>
-        <h1 class="mt-2 text-3xl font-semibold tracking-tight">{{ __('subscription.page.heading') }}</h1>
-        <p class="mt-3 text-sm leading-6 text-gray-600">{{ __('subscription.page.intro') }}</p>
-    </header>
+@section('notices_inline', '1')
 
-    @if($current->isPaid())
-        <div class="mb-8 flex flex-col gap-3 rounded-2xl border border-brand-100 bg-brand-50 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-                <p class="text-xs font-semibold uppercase tracking-widest text-brand-700">{{ __('subscription.page.your_plan') }}</p>
-                <p class="mt-1 text-lg font-semibold">{{ $current->title() }}</p>
-            </div>
-            @if($user->plan_ends_at)
-                <p class="text-sm text-gray-600">{{ __('subscription.page.until', ['date' => $user->plan_ends_at->format('d.m.Y')]) }}</p>
-            @endif
-        </div>
-    @else
-        <div class="mb-8 rounded-2xl border border-brand-100 bg-brand-50 px-5 py-4">
-            <p class="text-lg font-semibold">{{ __('participant.plans.choose_heading') }}</p>
-            <p class="mt-1 text-sm leading-6 text-gray-600">{{ __('participant.plans.choose_text') }}</p>
-        </div>
-    @endif
+@section('content')
+@php
+    use App\Enums\Plan;
+
+    $hasPlan = $current->isPaid();
+    $offers = array_values(array_filter(Plan::paid(), fn (Plan $plan): bool => $plan->rank() > $current->rank()));
+@endphp
+<div class="mx-auto max-w-6xl">
+    @include('account.partials.notices')
+
+    <header class="mb-6 max-w-3xl">
+        <h1 class="text-3xl font-semibold tracking-tight">{{ $hasPlan ? __('subscription.page.heading_current') : __('subscription.page.heading_choose') }}</h1>
+        @if(! $hasPlan)
+            <p class="mt-3 text-sm leading-6 text-gray-600">{{ __('subscription.page.intro_choose') }}</p>
+        @elseif($offers !== [])
+            <p class="mt-3 text-sm leading-6 text-gray-600">{{ __('subscription.page.intro_upgrade') }}</p>
+        @endif
+    </header>
 
     @if($testMode)
         <p class="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">{{ __('subscription.page.test_mode') }}</p>
     @endif
 
-    <div class="grid gap-6 lg:grid-cols-3">
-        @foreach(Plan::paid() as $plan)
-            @php $isCurrent = $current === $plan; @endphp
-            <section class="flex flex-col rounded-3xl border bg-white p-6 shadow-sm {{ $isCurrent ? 'border-brand-400 ring-2 ring-brand-100' : 'border-gray-200' }}" aria-labelledby="plan-{{ $plan->value }}">
-                <div class="flex items-start justify-between gap-3">
-                    <div>
-                        <h2 id="plan-{{ $plan->value }}" class="text-base font-semibold leading-tight">{{ $plan->title() }}</h2>
-                        <p class="mt-1 text-xs font-medium text-brand-700">{{ __('subscription.plans.'.$plan->value.'.tagline') }}</p>
-                    </div>
-                    @if($isCurrent)
-                        <span class="shrink-0 rounded-full bg-brand-600 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white">{{ __('subscription.page.open_badge') }}</span>
-                    @endif
-                </div>
-
-                <p class="mt-4 text-sm leading-6 text-gray-600">{{ __('subscription.plans.'.$plan->value.'.audience') }}</p>
-
-                <p class="mt-5 text-3xl font-semibold tracking-tight">
-                    {{ $plan->priceLabel() }}
-                    <span class="text-sm font-medium text-gray-500"> {{ __('subscription.per_year') }}</span>
-                </p>
-                @if(\Illuminate\Support\Facades\Lang::has('subscription.plans.'.$plan->value.'.monthly'))
-                    <p class="mt-1 text-sm font-medium text-brand-700">{{ __('subscription.plans.'.$plan->value.'.monthly', ['price' => $plan->pricePerMonth()]) }}</p>
+    @if($hasPlan)
+        <section class="sub-current" aria-labelledby="current-plan">
+            <div>
+                <p class="sub-current__label">{{ __('subscription.page.your_plan') }}</p>
+                <h2 id="current-plan" class="sub-current__name">{{ $current->title() }}</h2>
+                @if($user->plan_ends_at)
+                    <p class="sub-current__until">{{ __('subscription.page.until', ['date' => $user->plan_ends_at->format('d.m.Y')]) }}</p>
                 @endif
+            </div>
+            <div class="sub-current__action">
+                @include('account.subscription._buy', ['plan' => $current, 'current' => $current, 'user' => $user])
+            </div>
+        </section>
+    @endif
 
-                <div class="mt-5 flex-1">
-                    @include('account.subscription._features', ['plan' => $plan])
-                </div>
+    @if($offers !== [])
+        <div class="sub-grid sub-grid--{{ count($offers) }}">
+            @foreach($offers as $plan)
+                <section class="sub-card sub-card--{{ $plan->value }}{{ $plan->value === $popular ? ' sub-card--popular' : '' }}" aria-labelledby="plan-{{ $plan->value }}">
+                    @if($plan->value === $popular)
+                        <span class="sub-card__badge">{{ __('subscription.page.popular') }}</span>
+                    @endif
+                    <div class="sub-card__head">
+                        <h2 id="plan-{{ $plan->value }}" class="sub-card__name">{{ $plan->title() }}</h2>
+                        <p class="sub-card__tagline">@foreach(preg_split('/(?<=[.!?])\s+/u', trim(__('subscription.plans.'.$plan->value.'.tagline'))) as $sentence)<span>{{ $sentence }}</span>@endforeach</p>
+                    </div>
 
-                <div class="mt-6">
-                    @include('account.subscription._buy', ['plan' => $plan, 'current' => $current, 'user' => $user])
-                </div>
-            </section>
-        @endforeach
-    </div>
+                    <div class="sub-card__body">
+                        <p class="sub-card__price">
+                            {{ $plan->priceLabel() }}
+                            <span>{{ __('subscription.per_year') }}</span>
+                        </p>
+                        @if(\Illuminate\Support\Facades\Lang::has('subscription.plans.'.$plan->value.'.monthly'))
+                            <p class="sub-card__month">{{ __('subscription.plans.'.$plan->value.'.monthly', ['price' => $plan->pricePerMonth()]) }}</p>
+                        @endif
+
+                        @include('account.subscription._features', ['plan' => $plan])
+
+                        <div class="sub-card__buy">
+                            @include('account.subscription._buy', ['plan' => $plan, 'current' => $current, 'user' => $user])
+                        </div>
+                    </div>
+                </section>
+            @endforeach
+        </div>
+    @endif
 
     <p class="mt-6 text-xs text-gray-500">{{ __('subscription.page.pay_note') }}</p>
 

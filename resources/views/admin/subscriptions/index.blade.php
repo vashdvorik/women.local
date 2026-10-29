@@ -74,6 +74,27 @@
             <button type="submit" class="btn-primary">{{ __('Сохранить') }}</button>
         </form>
 
+        <form method="POST" action="{{ route('admin.subscriptions.popular') }}" class="card space-y-4">
+            @csrf
+            @method('PUT')
+
+            <div>
+                <h2 class="text-section font-semibold">{{ __('Метка «Самый популярный»') }}</h2>
+                <p class="field-hint mt-1">{{ __('Какому тарифу показывать метку и обводку на странице «Подписка» в кабинете участницы. Можно выбрать любой тариф или никому.') }}</p>
+            </div>
+
+            <div class="grid gap-3 sm:grid-cols-4">
+                @foreach(['' => __('Никому'), 'community' => 'WOMEN’S HUB COMMUNITY', 'active' => 'WOMEN’S HUB ACTIVE', 'private' => 'WOMEN’S HUB PRIVATE'] as $key => $label)
+                    <label class="flex items-center gap-2 rounded-lg border border-hairline px-3 py-2 text-ui">
+                        <input type="radio" name="popular" value="{{ $key }}" class="border-hairline" @checked((string) old('popular', $popular ?? '') === (string) $key)>
+                        <b class="text-ink">{{ $label }}</b>
+                    </label>
+                @endforeach
+            </div>
+
+            <button type="submit" class="btn-primary">{{ __('Сохранить') }}</button>
+        </form>
+
         <div class="tabs overflow-x-auto no-scrollbar">
             @foreach($tabs as $key => [$label, $count])
                 <a href="{{ route('admin.subscriptions.index', array_filter(['filter' => $key, 'q' => $search])) }}"

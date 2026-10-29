@@ -7,7 +7,6 @@
 
 <div class="account-login-card p-7">
     <h1 class="account-login-heading mb-2 text-center text-xl">{{ __('participant.onboarding.heading') }}</h1>
-    <p class="account-login-muted mb-6 text-center text-sm leading-6">{{ __('participant.onboarding.subtitle') }}</p>
 
     <form method="POST" action="{{ route('account.onboarding.store') }}" class="space-y-4" novalidate>
         @csrf
