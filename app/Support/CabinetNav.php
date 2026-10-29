@@ -57,9 +57,10 @@ final class CabinetNav
             ['subscription', 'account.subscription', 'subscription.nav.subscription', null],
         ];
 
-        // Тарифа нет: кабинета ещё нет, доступны только профиль и страница тарифов.
+        // Тарифа нет: кабинета ещё нет, в меню только страница тарифов. Профиль до покупки в меню не показываем
+        // (анкета уже заполнена при регистрации), но его адрес по-прежнему открывается.
         if (! $anyPlan) {
-            $definitions = array_values(array_filter($definitions, fn (array $d): bool => in_array($d[0], ['profile', 'subscription'], true)));
+            $definitions = array_values(array_filter($definitions, fn (array $d): bool => $d[0] === 'subscription'));
         }
 
         $items = array_map(fn (array $d): array => [

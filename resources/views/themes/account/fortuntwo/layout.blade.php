@@ -104,9 +104,11 @@
 
     {{-- Нижняя панель на телефоне: главные разделы всегда под рукой, «Ещё» открывает полное меню. --}}
     @php
-        $barKeys = ['home', 'search', 'opportunities', 'profile'];
+        $barKeys = ['home', 'possibilities', 'search', 'profile'];
         $barItems = array_values(array_filter($navItems, fn ($item) => in_array($item['key'], $barKeys, true)));
     @endphp
+    {{-- Одна страница в меню (тарифа ещё нет): нижняя панель не нужна, «Подписка» открывается из верхней полосы --}}
+    @if(count($navItems) > 1)
     <nav class="account-bottom-nav fixed inset-x-0 bottom-0 z-20 border-t border-gray-200 bg-white lg:hidden" aria-label="{{ __('account.nav_title') }}">
         <div class="mx-auto flex max-w-lg items-stretch justify-around pb-[env(safe-area-inset-bottom)]">
             @foreach($barItems as $item)
@@ -124,6 +126,7 @@
             </button>
         </div>
     </nav>
+    @endif
 
 <script>
     (function () {
