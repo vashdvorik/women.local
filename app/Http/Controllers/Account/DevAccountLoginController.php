@@ -68,9 +68,9 @@ class DevAccountLoginController extends Controller
         );
         $demoUser->forceFill(['email_verified_at' => now(), 'profile_completed_at' => now()])->save();
 
-        // Локальный вход нужен для разработки интерфейса: демо-участнице сразу оплачен Community.
-        if (! $demoUser->hasPlan(Plan::Community)) {
-            app(SubscriptionService::class)->grant($demoUser, Plan::Community, 12, note: 'Локальная демо-участница');
+        // Локальный вход нужен для разработки интерфейса: демо-участнице сразу оплачен Active.
+        if (! $demoUser->hasPlan(Plan::Active)) {
+            app(SubscriptionService::class)->grant($demoUser, Plan::Active, 12, note: 'Локальная демо-участница');
         }
 
         return collect([$demoUser->fresh()]);

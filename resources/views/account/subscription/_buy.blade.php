@@ -18,7 +18,7 @@
         ? __('subscription.page.renew', ['price' => $price])
         : ($current->isPaid()
             ? __('subscription.page.upgrade', ['plan' => $plan->shortTitle(), 'price' => $price])
-            : __('subscription.page.subscribe', ['price' => $price]));
+            : __('subscription.plans.'.$plan->value.'.cta', ['price' => number_format($plan->price(), 0, ',', "\u{00A0}"), 'currency' => __('subscription.currency')]));
 @endphp
 
 @if($higher)
@@ -51,7 +51,7 @@
     <form method="POST" action="{{ route('account.subscription.checkout') }}">
         @csrf
         <input type="hidden" name="plan" value="{{ $plan->value }}">
-        <button type="submit" class="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2">
+        <button type="submit" class="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold uppercase tracking-wide text-white shadow-sm transition hover:bg-brand-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2">
             {{ $label }}
         </button>
     </form>

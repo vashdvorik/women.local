@@ -13,7 +13,6 @@
 /* touch-action без pinch-zoom: щипок двумя пальцами внутри рамки не масштабирует сайт (им управляет скрипт и приближает лист) */
 .miro-flip__viewport { width: 100%; touch-action: pan-y; }
 .miro-flip__viewport.is-pinching { overflow: hidden; }
-.miro-flip { scroll-margin-top: 72px; }
 .miro-flip__fit { width: calc(100% * var(--z)); max-width: calc(var(--base) * var(--z)); margin: 0 auto; }
 .miro-flip__book { width: 100%; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
 .miro-flip__page { overflow: hidden; background: #fff; }
@@ -30,23 +29,35 @@
 .miro-flip__btn:focus-visible { outline: 2px solid #74472F; outline-offset: 2px; }
 .miro-flip__btn--text { padding: 0 20px; }
 .miro-flip__btn[hidden] { display: none; }
+.miro-flip__btn:disabled { opacity: .4; cursor: default; }
+.miro-flip__btn:disabled:hover { border-color: var(--miro-hairline-strong, #D8C5BA); background: #fff; }
 .miro-flip__icon { margin-right: 8px; font-size: 20px; font-weight: 400; line-height: 1; }
 
 /* Приближено: видимая область прокручивается (колесом, пальцем или перетаскиванием мышью), листание по касанию и клику
-   отключено, чтобы не мешало, — листают кнопками и стрелками */
-.miro-flip.is-zoomed .miro-flip__viewport { overflow: auto; max-height: calc(var(--unit-h) - 150px); touch-action: pan-x pan-y; -webkit-overflow-scrolling: touch; cursor: grab; }
+   отключено, чтобы не мешало, — листают кнопками и стрелками. Рамка остаётся такой высоты, какой была без приближения
+   (--frame-h запоминает скрипт): растёт только лист внутри неё. */
+.miro-flip.is-zoomed .miro-flip__viewport { overflow: auto; height: var(--frame-h, auto); touch-action: pan-x pan-y; -webkit-overflow-scrolling: touch; cursor: grab; }
 .miro-flip.is-zoomed .miro-flip__viewport.is-dragging { cursor: grabbing; user-select: none; -webkit-user-select: none; }
 .miro-flip.is-zoomed .miro-flip__book { pointer-events: none; }
 
 /* На весь экран (настоящий или, где браузер не умеет, во всё окно): книга по центру на светлом фоне, панель под ней */
 .miro-flip.is-full { --base: min(calc(100vw - 32px), calc((var(--unit-h) - 120px) * var(--r, .7071) * 2)); display: flex; flex-direction: column; justify-content: center; margin: 0; padding: 16px; background: #FAF2EE; }
-.miro-flip.is-full.is-zoomed .miro-flip__viewport { max-height: calc(var(--unit-h) - 110px); }
+/* Одна страница на экране (телефон): лист во всю ширину экрана, без полей, подсказка про прокрутку сайта не нужна */
+.miro-flip.is-full.is-portrait { --base: min(100vw, calc((var(--unit-h) - 150px) * var(--r, .7071))); padding: 12px 0; }
+.miro-flip.is-full.is-portrait .miro-flip__bar { padding: 0 12px; }
+.miro-flip.is-full .miro-flip__hint { display: none; }
 .miro-flip.is-pseudo-full { position: fixed; inset: 0; z-index: 9999; overflow: auto; }
 html.miro-flip-lock, html.miro-flip-lock body { overflow: hidden; }
 
 @media (max-width: 767px) {
     .miro-flip__bar { gap: 8px; }
     .miro-flip__btn--text { padding: 0 14px; }
+    /* Телефон: «Приблизить» и «Уменьшить» — круглые кнопки «+» и «−» без подписи (подпись остаётся для чтения с экрана),
+       чтобы обе помещались в один ряд со стрелками и панель не меняла высоту при приближении */
+    .miro-flip__btn--zoom { padding: 0; min-width: 44px; }
+    .miro-flip__btn--zoom .miro-flip__icon { margin-right: 0; font-size: 24px; }
+    .miro-flip__btn--zoom .miro-flip__label { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+    .miro-flip__count { min-width: 64px; }
 }
 
 /* Особая карточка каталога (страница «Публикации»): обложка в виде книги с корешком и стопкой листов, название, число

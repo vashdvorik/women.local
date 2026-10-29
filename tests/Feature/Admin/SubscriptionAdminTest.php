@@ -31,7 +31,7 @@ class SubscriptionAdminTest extends TestCase
     public function test_guests_and_non_admins_cannot_reach_subscriptions_or_payments(): void
     {
         $user = BotUser::factory()->approved()->create();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $payment = $this->checkoutFor($user, Plan::Active);
 
         $targets = [
             ['get', route('admin.subscriptions.index')],
@@ -56,7 +56,7 @@ class SubscriptionAdminTest extends TestCase
             $this->asParticipant($user)->{$method}($url)->assertRedirect(route('login'));
         }
 
-        $this->assertSame(Plan::Open, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
         $this->assertSame(Payment::STATUS_PENDING, $payment->fresh()->status);
     }
 
@@ -73,7 +73,7 @@ class SubscriptionAdminTest extends TestCase
     public function test_the_list_shows_plans_and_filters_by_them(): void
     {
         BotUser::factory()->approved()->create(['full_name' => 'Анна Открытая']);
-        BotUser::factory()->community()->create(['full_name' => 'Белла Комьюнити']);
+        BotUser::factory()->active()->create(['full_name' => 'Белла Комьюнити']);
         BotUser::factory()->private()->create(['full_name' => 'Вера Приват']);
         BotUser::factory()->pending()->create(['full_name' => 'Галина Новая']);
 
@@ -93,8 +93,8 @@ class SubscriptionAdminTest extends TestCase
 
     public function test_the_expiring_filter_lists_plans_ending_within_30_days(): void
     {
-        $soon = BotUser::factory()->community()->create(['full_name' => 'Скоро Закончится']);
-        $later = BotUser::factory()->community()->create(['full_name' => 'Нескоро Закончится']);
+        $soon = BotUser::factory()->active()->create(['full_name' => 'Скоро Закончится']);
+        $later = BotUser::factory()->active()->create(['full_name' => 'Нескоро Закончится']);
         $soon->forceFill(['plan_ends_at' => now()->addDays(10)])->save();
 
         $this->actingAsAdmin()->get(route('admin.subscriptions.index', ['filter' => 'expiring']))
@@ -103,7 +103,7 @@ class SubscriptionAdminTest extends TestCase
 
     public function test_the_manage_page_shows_the_state_the_history_and_the_payments(): void
     {
-        $user = BotUser::factory()->community()->create(['full_name' => 'Дарья Платная']);
+        $user = BotUser::factory()->active()->create(['full_name' => 'Дарья Платная']);
         $this->checkoutFor($user, Plan::Private);
 
         $this->actingAsAdmin()->get(route('admin.subscriptions.edit', $user))
@@ -126,7 +126,7 @@ class SubscriptionAdminTest extends TestCase
         ])->assertRedirect(route('admin.subscriptions.edit', $user))->assertSessionHas('success');
 
         $user->refresh();
-        $this->assertSame(Plan::Community, $user->currentPlan());
+        $this->assertSame(Plan::Active, $user->currentPlan());
         $this->assertTrue($user->plan_ends_at->equalTo(now()->addMonthsNoOverflow(6)));
         $this->assertSame('перевод на счёт', $user->subscriptions()->first()->note);
         $this->assertSame(Subscription::SOURCE_ADMIN, $user->subscriptions()->first()->source);
@@ -167,7 +167,7 @@ class SubscriptionAdminTest extends TestCase
             $this->actingAsAdmin()->post(route('admin.subscriptions.grant', $user), $payload)->assertSessionHasErrors();
         }
 
-        $this->assertSame(Plan::Open, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
         $this->assertSame(0, Subscription::count());
 
         // Неодобренной участнице тариф не выдаётся.
@@ -182,7 +182,7 @@ class SubscriptionAdminTest extends TestCase
 
         $this->actingAsAdmin()->post(route('admin.subscriptions.revoke', $user))->assertSessionHas('success');
 
-        $this->assertSame(Plan::Open, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
         $this->asParticipant($user)->get(route('account.people'))->assertOk()->assertSee('Купить подписку');
     }
 
@@ -192,7 +192,7 @@ class SubscriptionAdminTest extends TestCase
     {
         $anna = BotUser::factory()->approved()->create(['full_name' => 'Анна Платит']);
         $vera = BotUser::factory()->approved()->create(['full_name' => 'Вера Платит']);
-        $paid = $this->checkoutFor($anna, Plan::Community);
+        $paid = $this->checkoutFor($anna, Plan::Active);
         $paid->update(['status' => Payment::STATUS_PAID, 'rrn' => '5550001']);
         $open = $this->checkoutFor($vera, Plan::Private);
 
@@ -209,7 +209,7 @@ class SubscriptionAdminTest extends TestCase
     public function test_the_payment_page_shows_details_and_never_the_signature_or_the_password(): void
     {
         $user = BotUser::factory()->approved()->create(['full_name' => 'Ирина Деталь']);
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $payment = $this->checkoutFor($user, Plan::Active);
         $payment->update(['payload' => ['result' => ['status' => 'paid', 'rrn' => '77'], 'anomaly' => 'сумма: у нас 60000, у банка 100']]);
 
         $html = $this->actingAsAdmin()->get(route('admin.payments.show', $payment))->assertOk()->getContent();
@@ -225,7 +225,7 @@ class SubscriptionAdminTest extends TestCase
     public function test_the_administrator_can_recheck_a_payment_in_the_bank(): void
     {
         $user = BotUser::factory()->approved()->create();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $payment = $this->checkoutFor($user, Plan::Active);
         $payment->update(['payload' => ['fake' => ['state' => 1, 'sum' => 60000, 'currency' => '000', 'istest' => true, 'rrn' => '9']]]);
 
         $this->actingAsAdmin()->post(route('admin.payments.recheck', $payment))
@@ -233,13 +233,13 @@ class SubscriptionAdminTest extends TestCase
             ->assertSessionHas('success');
 
         $this->assertSame(Payment::STATUS_PAID, $payment->fresh()->status);
-        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Active, $user->fresh()->currentPlan());
     }
 
     public function test_when_the_bank_answers_in_an_unexpected_way_the_admin_sees_what_it_sent_and_the_payment_stays_open(): void
     {
         $user = BotUser::factory()->approved()->create();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $payment = $this->checkoutFor($user, Plan::Active);
         config(['webpayment.driver' => 'bank', 'webpayment.merchant_login' => '000123', 'webpayment.merchant_pass' => 'secret-pass']);
 
         $soap = fn (string $result) => '<?xml version="1.0"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body>'
@@ -256,7 +256,7 @@ class SubscriptionAdminTest extends TestCase
         $payment->refresh();
         $this->assertSame(Payment::STATUS_PENDING, $payment->status, 'непонятный ответ не должен ни оплачивать, ни закрывать счёт');
         $this->assertNull($payment->bank_state);
-        $this->assertSame(Plan::Open, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
         $this->assertStringContainsString('Merchant 000123 is not allowed to use GetState', $payment->payload['last_error']);
 
         $page = $this->actingAsAdmin()->get(route('admin.payments.show', $payment))->assertOk()->getContent();
@@ -274,14 +274,14 @@ class SubscriptionAdminTest extends TestCase
         $payment->refresh();
         $this->assertSame(Payment::STATUS_PAID, $payment->status);
         $this->assertArrayNotHasKey('last_error', $payment->payload);
-        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Active, $user->fresh()->currentPlan());
     }
 
     // ---------------------------------------------------------------- удаление счетов
 
     private function paymentWith(string $status, bool $test): Payment
     {
-        $payment = $this->checkoutFor(BotUser::factory()->approved()->create(), Plan::Community);
+        $payment = $this->checkoutFor(BotUser::factory()->approved()->create(), Plan::Active);
         $payment->update(['status' => $status, 'is_test' => $test]);
 
         return $payment;
@@ -327,18 +327,18 @@ class SubscriptionAdminTest extends TestCase
     public function test_deleting_a_paid_test_invoice_keeps_the_members_plan_and_history(): void
     {
         $user = BotUser::factory()->approved()->create();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $payment = $this->checkoutFor($user, Plan::Active);
         $payment->update(['payload' => ['fake' => ['state' => 1, 'sum' => 60000, 'currency' => '000', 'istest' => true, 'rrn' => '9']]]);
         $this->actingAsAdmin()->post(route('admin.payments.recheck', $payment));
 
-        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Active, $user->fresh()->currentPlan());
         $subscription = $user->subscriptions()->firstOrFail();
         $this->assertSame($payment->id, $subscription->payment_id);
 
         $this->actingAsAdmin()->delete(route('admin.payments.destroy', $payment->fresh()))->assertSessionHas('success');
 
         $this->assertNull(Payment::find($payment->id));
-        $this->assertSame(Plan::Community, $user->fresh()->currentPlan(), 'тариф остаётся: его снимают отдельно');
+        $this->assertSame(Plan::Active, $user->fresh()->currentPlan(), 'тариф остаётся: его снимают отдельно');
         $this->assertNull($subscription->fresh()->payment_id, 'запись истории подписки сохранилась, ссылка на счёт пропала');
     }
 
@@ -363,7 +363,7 @@ class SubscriptionAdminTest extends TestCase
 
     public function test_recheck_with_nothing_new_from_the_bank_explains_the_status(): void
     {
-        $payment = $this->checkoutFor(BotUser::factory()->approved()->create(), Plan::Community);
+        $payment = $this->checkoutFor(BotUser::factory()->approved()->create(), Plan::Active);
 
         $this->actingAsAdmin()->post(route('admin.payments.recheck', $payment))->assertSessionHas('error');
 
@@ -393,7 +393,7 @@ class SubscriptionAdminTest extends TestCase
     public function test_manual_confirmation_for_a_deleted_participant_is_refused(): void
     {
         $user = BotUser::factory()->approved()->create();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $payment = $this->checkoutFor($user, Plan::Active);
         $user->delete();
 
         $this->actingAsAdmin()->post(route('admin.payments.confirm', $payment))->assertStatus(422);
@@ -403,7 +403,7 @@ class SubscriptionAdminTest extends TestCase
 
     public function test_the_menu_counter_shows_payments_stuck_in_verification(): void
     {
-        $payment = $this->checkoutFor(BotUser::factory()->approved()->create(), Plan::Community);
+        $payment = $this->checkoutFor(BotUser::factory()->approved()->create(), Plan::Active);
         $payment->forceFill(['status' => Payment::STATUS_VERIFYING])->save();
 
         // Только что — ещё не проблема (банк может успеть подтвердить); через 15 минут — требует внимания.
@@ -418,9 +418,9 @@ class SubscriptionAdminTest extends TestCase
         $user = BotUser::factory()->approved()->create();
         $service = app(SubscriptionService::class);
 
-        $service->grant($user, Plan::Community, 12);
+        $service->grant($user, Plan::Active, 12);
         $this->actingAsAdmin()->post(route('admin.subscriptions.revoke', $user));
-        $service->grant($user->fresh(), Plan::Community, 3);
+        $service->grant($user->fresh(), Plan::Active, 3);
 
         $this->assertSame(2, $user->subscriptions()->count(), 'закрытый период остаётся в истории');
         $this->actingAsAdmin()->get(route('admin.subscriptions.edit', $user))->assertSee('Выдано вручную');

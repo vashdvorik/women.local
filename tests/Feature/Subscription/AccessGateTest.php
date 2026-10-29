@@ -53,7 +53,7 @@ class AccessGateTest extends TestCase
     public function test_open_participant_sees_the_locked_message_with_a_buy_button_in_every_closed_section(): void
     {
         $open = BotUser::factory()->approved()->create();
-        $other = BotUser::factory()->community()->create(['full_name' => 'Закрытая Участница']);
+        $other = BotUser::factory()->active()->create(['full_name' => 'Закрытая Участница']);
 
         foreach ($this->closedForOpen($other) as $name => [$method, $url]) {
             $html = $this->asParticipant($open)->call($method, $url)
@@ -136,9 +136,9 @@ class AccessGateTest extends TestCase
 
     public function test_community_and_private_participants_open_everything(): void
     {
-        $other = BotUser::factory()->community()->create();
+        $other = BotUser::factory()->active()->create();
 
-        foreach ([BotUser::factory()->community()->create(), BotUser::factory()->private()->create()] as $user) {
+        foreach ([BotUser::factory()->active()->create(), BotUser::factory()->private()->create()] as $user) {
             foreach ($this->closedForOpen($other) as $name => [$method, $url]) {
                 $this->asParticipant($user)->call($method, $url)->assertOk();
                 $this->assertTrue(true, $name);
@@ -148,13 +148,13 @@ class AccessGateTest extends TestCase
 
     public function test_access_closes_the_moment_the_subscription_ends(): void
     {
-        $user = BotUser::factory()->community()->create();
+        $user = BotUser::factory()->active()->create();
         $this->asParticipant($user)->get(route('account.people'))->assertOk();
 
         $this->travel(13)->months();
 
         $this->asParticipant($user)->get(route('account.people'))->assertOk()->assertSee(self::LOCKED_MESSAGE)->assertSee('Купить подписку');
-        $this->asParticipant($user)->get(route('account.index'))->assertOk()->assertSee(__('subscription.open_home.upgrade_cta'));
+        $this->asParticipant($user)->get(route('account.index'))->assertOk()->assertSee(__('subscription.community_home.upgrade_cta'));
     }
 
     public function test_open_home_shows_only_published_public_site_material_and_an_invitation_to_subscribe(): void
@@ -180,7 +180,7 @@ class AccessGateTest extends TestCase
         $this->assertStringNotContainsString('Публикация из будущего', $html);
         // Приглашение подписаться; закрытые разделы (каталог, поиск, ИИ-помощник) показаны с замком и ведут на страницу
         // с объяснением, а их данных на главной нет.
-        $this->assertStringContainsString(__('subscription.open_home.upgrade_cta'), $html);
+        $this->assertStringContainsString(__('subscription.community_home.upgrade_cta'), $html);
         $this->assertStringContainsString(route('account.subscription'), $html);
         $this->assertStringContainsString(__('account.home.tile_locked'), $html, 'закрытые разделы помечены замком');
         $this->assertStringNotContainsString(__('account.home.fresh_members'), $html, '«Что нового» с участницами — только у платных');
@@ -188,23 +188,23 @@ class AccessGateTest extends TestCase
 
     public function test_community_home_is_the_full_cabinet_not_the_open_feed(): void
     {
-        $user = BotUser::factory()->community()->create();
+        $user = BotUser::factory()->active()->create();
 
         $this->asParticipant($user)->get(route('account.index'))
             ->assertOk()
-            ->assertDontSee(__('subscription.open_home.upgrade_cta'));
+            ->assertDontSee(__('subscription.community_home.upgrade_cta'));
     }
 
     // ---------------------------------------------------------------- кто виден в каталоге
 
     public function test_the_directory_lists_only_participants_with_a_live_paid_plan(): void
     {
-        $viewer = BotUser::factory()->community()->create();
-        $community = BotUser::factory()->community()->create(['full_name' => 'Видимая Платная']);
+        $viewer = BotUser::factory()->active()->create();
+        $community = BotUser::factory()->active()->create(['full_name' => 'Видимая Платная']);
         $private = BotUser::factory()->private()->create(['full_name' => 'Видимая Приватная']);
         $open = BotUser::factory()->approved()->create(['full_name' => 'Скрытая Открытая']);
         $pending = BotUser::factory()->pending()->create(['full_name' => 'Скрытая Новая']);
-        $expired = BotUser::factory()->community()->create(['full_name' => 'Скрытая Просроченная']);
+        $expired = BotUser::factory()->active()->create(['full_name' => 'Скрытая Просроченная']);
         app(SubscriptionService::class)->revoke($expired);
 
         $html = $this->asParticipant($viewer)->get(route('account.people'))->assertOk()->getContent();
@@ -226,8 +226,8 @@ class AccessGateTest extends TestCase
     public function test_matching_and_ai_search_never_offer_open_participants(): void
     {
         $vector = array_fill(0, 8, 0.5);
-        $me = BotUser::factory()->community()->create(['embedding' => $vector]);
-        $paid = BotUser::factory()->community()->create(['embedding' => $vector, 'full_name' => 'Платная Совпавшая']);
+        $me = BotUser::factory()->active()->create(['embedding' => $vector]);
+        $paid = BotUser::factory()->active()->create(['embedding' => $vector, 'full_name' => 'Платная Совпавшая']);
         $open = BotUser::factory()->approved()->create(['embedding' => $vector, 'full_name' => 'Открытая Совпавшая']);
 
         $matcher = app(\App\Services\MatchingService::class);
@@ -254,7 +254,7 @@ class AccessGateTest extends TestCase
             $this->assertStringContainsString(route('account.assistant'), $open, "{$theme}: пункт «ИИ-помощник» виден и Open (ведёт на объяснение подписки)");
             $this->assertMatchesRegularExpression('~href="'.preg_quote(route('account.index'), '~').'"[^>]*>(?:(?!</a>).)*Главная~su', $open, "{$theme}: у Open первый пункт — «Главная»");
 
-            foreach ([BotUser::factory()->community()->create(), BotUser::factory()->private()->create()] as $paid) {
+            foreach ([BotUser::factory()->active()->create(), BotUser::factory()->private()->create()] as $paid) {
                 $html = $this->asParticipant($paid)->get(route('account.subscription'))->assertOk()->getContent();
                 $this->assertStringNotContainsString('/account/private', $html, "{$theme}: вкладки Private нет и у платных");
                 $this->assertStringContainsString('ИИ-помощник', $html, "{$theme}: у платных остаётся «ИИ-помощник»");
@@ -264,7 +264,7 @@ class AccessGateTest extends TestCase
 
     public function test_the_plans_page_renders_in_all_themes_and_languages_with_the_customers_descriptions(): void
     {
-        $user = BotUser::factory()->community()->create();
+        $user = BotUser::factory()->active()->create();
 
         foreach (array_keys(SiteSetting::ACCOUNT_THEMES) as $theme) {
             SiteSetting::setAccountTheme($theme);
@@ -284,7 +284,7 @@ class AccessGateTest extends TestCase
 
     public function test_the_plans_page_marks_the_current_plan_and_offers_the_right_buttons(): void
     {
-        $community = BotUser::factory()->community()->create();
+        $community = BotUser::factory()->active()->create();
         $html = $this->asParticipant($community)->get(route('account.subscription'))->getContent();
 
         // Community: «Продлить»; Private: «Перейти»; Open: просто «входит в ваш тариф».
@@ -305,7 +305,7 @@ class AccessGateTest extends TestCase
 
     public function test_there_is_no_separate_private_page_and_private_is_sold_on_the_subscription_page(): void
     {
-        $community = BotUser::factory()->community()->create();
+        $community = BotUser::factory()->active()->create();
         $private = BotUser::factory()->private()->create();
 
         // Отдельной страницы Private нет ни у кого: ни у платных, ни у Open.
@@ -334,7 +334,7 @@ class AccessGateTest extends TestCase
 
         $open->refresh();
         $this->assertSame('Хитрая Участница', $open->full_name);
-        $this->assertSame(Plan::Open, $open->currentPlan());
+        $this->assertSame(Plan::Community, $open->currentPlan());
         $this->assertSame('open', $open->plan);
     }
 

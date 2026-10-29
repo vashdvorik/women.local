@@ -112,10 +112,10 @@ class BotUser extends Model implements AuthenticatableContract, CanResetPassword
         Mail::to($this->email)->send(new ResetParticipantPasswordMail($this, $url, app()->getLocale()));
     }
 
-    /** Видит ли она контакты (телефон, Telegram) участниц: с тарифа Community. */
+    /** Видит ли она контакты (телефон, Telegram) участниц: с тарифа Active. */
     public function canSeeContacts(): bool
     {
-        return $this->hasPlan(Plan::Community);
+        return $this->hasPlan(Plan::Active);
     }
 
     /** Участница вошла в кабинет: запоминаем первый вход (по нему бот понимает, что напоминать о кабинете не нужно). */
@@ -166,20 +166,20 @@ class BotUser extends Model implements AuthenticatableContract, CanResetPassword
         return $this->plan_ends_at !== null && $this->plan_ends_at->isFuture() ? $plan : Plan::None;
     }
 
-    /** Входит ли в действующий тариф всё, что даёт $min (Open, Community, Private). */
+    /** Входит ли в действующий тариф всё, что даёт $min (Community, Active, Private). */
     public function hasPlan(Plan $min): bool
     {
         return $this->currentPlan()->includes($min);
     }
 
     /**
-     * Участницы платформы: одобренные с любым действующим платным тарифом (Open, Community, Private). Каталог, подбор
-     * контактов, ИИ-помощник и рассылки работают только по ним. Профили Open видны участницам Community и Private
-     * (самим Open поиск закрыт), поэтому в каталог попадают все платные тарифы.
+     * Участницы платформы: одобренные с любым действующим платным тарифом (Community, Active, Private). Каталог, подбор
+     * контактов, ИИ-помощник и рассылки работают только по ним. Профили Community видны участницам Active и Private
+     * (самим Community поиск закрыт), поэтому в каталог попадают все платные тарифы.
      */
     public function scopeMembers(Builder $query): Builder
     {
-        return $query->approved()->withPlan(Plan::Open);
+        return $query->approved()->withPlan(Plan::Community);
     }
 
     /**

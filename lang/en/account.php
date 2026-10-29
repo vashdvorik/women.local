@@ -72,7 +72,7 @@ return [
         'eyebrow' => 'Your space',
         'hello' => 'Hello, :name!',
         'intro' => 'Everything a Women’s hub member needs is here. Start with the steps below or pick a section.',
-        'intro_open' => 'You are on the Open plan: opportunities, learning and materials. Below are all the sections of your account: what is available now and what unlocks with the Community plan.',
+        'intro_community' => 'You are on the Community plan: opportunities, learning and materials. Below are all the sections of your account: what is available now and what unlocks with the Active plan.',
         'hint_title' => 'How everything is arranged',
         'hint_mobile' => 'The menu is always at the bottom of the screen: the main sections and a “More” button with all the rest. The cards below are the same sections, with a note on what is in them and how to use them.',
         'hint_desktop' => 'The menu is always on the left. The cards below are the same sections, with a note on what is in them and how to use them.',
@@ -110,7 +110,7 @@ return [
         ],
         'tiles_title' => 'Sections of your account',
         'tile_go' => 'Open →',
-        'tile_locked' => 'In the Community subscription',
+        'tile_locked' => 'In the Active subscription',
         'tile_how' => 'How to use it:',
         'tiles' => [
             'assistant' => [

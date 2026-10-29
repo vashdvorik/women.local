@@ -43,17 +43,22 @@
                 <div class="flex items-start justify-between gap-3">
                     <div>
                         <h2 id="plan-{{ $plan->value }}" class="text-base font-semibold leading-tight">{{ $plan->title() }}</h2>
-                        <p class="mt-1 text-xs text-gray-500">{{ __('subscription.plans.'.$plan->value.'.tagline') }}</p>
+                        <p class="mt-1 text-xs font-medium text-brand-700">{{ __('subscription.plans.'.$plan->value.'.tagline') }}</p>
                     </div>
                     @if($isCurrent)
                         <span class="shrink-0 rounded-full bg-brand-600 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-white">{{ __('subscription.page.open_badge') }}</span>
                     @endif
                 </div>
 
+                <p class="mt-4 text-sm leading-6 text-gray-600">{{ __('subscription.plans.'.$plan->value.'.audience') }}</p>
+
                 <p class="mt-5 text-3xl font-semibold tracking-tight">
                     {{ $plan->priceLabel() }}
                     <span class="text-sm font-medium text-gray-500"> {{ __('subscription.per_year') }}</span>
                 </p>
+                @if(\Illuminate\Support\Facades\Lang::has('subscription.plans.'.$plan->value.'.monthly'))
+                    <p class="mt-1 text-sm font-medium text-brand-700">{{ __('subscription.plans.'.$plan->value.'.monthly', ['price' => $plan->pricePerMonth()]) }}</p>
+                @endif
 
                 <div class="mt-5 flex-1">
                     @include('account.subscription._features', ['plan' => $plan])

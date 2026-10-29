@@ -9,11 +9,11 @@ use App\Models\Post;
 use App\Models\SiteOpportunity;
 
 /**
- * Лента для главной кабинета на тарифе Open: «только та информация, которая есть на публичном сайте».
+ * Лента для главной кабинета на тарифе Community: «только та информация, которая есть на публичном сайте».
  * Берёт последние опубликованные материалы тех же разделов, что показывает сайт (новости, публикации, возможности), и
  * отдаёт карточки с готовыми ссылками на публичные страницы. Ничего из закрытой части сюда не попадает.
  */
-final class OpenFeed
+final class CommunityFeed
 {
     /**
      * @return array{news: list<array<string, mixed>>, publications: list<array<string, mixed>>, opportunities: list<array<string, mixed>>}

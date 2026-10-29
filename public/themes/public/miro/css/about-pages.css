@@ -68,10 +68,33 @@
 .miro-page .miro-about .miro-about__plan-list li { position: relative; margin: 0 0 10px; padding-left: 26px; color: var(--miro-ink, #2A1913); font-size: 15px; line-height: 1.55; }
 .miro-about__plan-list li::before { content: ""; position: absolute; top: .35em; left: 2px; width: 12px; height: 7px; border-bottom: 2px solid var(--miro-blue, #74472F); border-left: 2px solid var(--miro-blue, #74472F); transform: rotate(-45deg); }
 .miro-page .miro-about .miro-about__plan-note { margin: 0 0 18px; color: var(--miro-slate, #6B5750); font-size: 14px; line-height: 1.55; }
+.miro-page .miro-about .miro-about__plan-month { margin: 0 0 4px; color: var(--miro-blue, #74472F); font-size: 15px; font-weight: 600; }
+.miro-page .miro-about .miro-about__plan-closing { margin: 0 0 24px; color: var(--miro-ink, #2A1913); font-size: 15px; font-weight: 600; line-height: 1.5; }
+.miro-about__plan-cta { text-align: center; text-transform: uppercase; letter-spacing: .03em; line-height: 1.35; white-space: normal; }
+.miro-page .miro-about .miro-about__plan-tag + .miro-about__plan-note { margin-top: 12px; }
+/* Три карточки в ряд: строки (название, слоган, «для кого», цена, цена в месяц, список, заключение, кнопка) общие, поэтому
+   цены, списки и кнопки стоят на одном уровне, сколько бы текста ни было в слогане. Без subgrid карточки просто растягиваются. */
+@media (min-width: 1024px) {
+    @supports (grid-template-rows: subgrid) {
+        .miro-about__plan { display: grid; grid-row: span 9; grid-template-rows: subgrid; row-gap: 0; }
+        .miro-about__plan > .miro-about__plan-name { grid-row: 1; }
+        .miro-about__plan > .miro-about__plan-tag { grid-row: 2; }
+        .miro-about__plan > .miro-about__plan-note { grid-row: 3; }
+        .miro-about__plan > .miro-about__plan-price { grid-row: 4; align-self: end; }
+        .miro-about__plan > .miro-about__plan-month { grid-row: 5; }
+        .miro-about__plan > .miro-about__plan-lead { grid-row: 6; }
+        .miro-about__plan > .miro-about__plan-list { grid-row: 7; }
+        .miro-about__plan > .miro-about__plan-closing { grid-row: 8; }
+        .miro-about__plan > .miro-about__plan-cta { grid-row: 9; align-self: end; }
+    }
+}
 .miro-about__plan--private { border-color: transparent; background: var(--miro-ink-deep, #21140F); box-shadow: 0 24px 56px rgba(33, 20, 15, .28); }
 .miro-page .miro-about .miro-about__plan--private .miro-about__plan-name,
 .miro-page .miro-about .miro-about__plan--private .miro-about__plan-amount { color: #FFF9F5; }
-.miro-page .miro-about .miro-about__plan--private .miro-about__plan-tag { color: var(--miro-coral, #E6CFC1); }
+.miro-page .miro-about .miro-about__plan--private .miro-about__plan-tag,
+.miro-page .miro-about .miro-about__plan--private .miro-about__plan-month { color: var(--miro-coral, #E6CFC1); }
+.miro-page .miro-about .miro-about__plan--private .miro-about__plan-note,
+.miro-page .miro-about .miro-about__plan--private .miro-about__plan-closing { color: #F8E8DF; }
 .miro-page .miro-about .miro-about__plan--private .miro-about__plan-unit,
 .miro-page .miro-about .miro-about__plan--private .miro-about__plan-lead,
 .miro-page .miro-about .miro-about__plan--private .miro-about__plan-list li { color: #F8E8DF; }

@@ -162,7 +162,7 @@ class PublicAboutPagesTest extends TestCase
         }
         $this->assertStringContainsString('href="'.route('about.regulations').'#packages"', $html);
 
-        // Возможности кабинета: три доступны после одобрения (Open), семь с Community и Private (как в routes: plan:community).
+        // Возможности кабинета: три доступны после одобрения (Open), семь с Community и Private (как в routes: plan:active).
         preg_match_all('#<div class="miro-about__group[^"]*">(.*?)</div>\s*</div>#s', $html, $groups);
         $this->assertCount(2, $groups[1]);
         $this->assertSame([3, 7], array_map(fn (string $group) => substr_count($group, 'class="miro-about__card"'), $groups[1]));

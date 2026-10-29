@@ -65,7 +65,7 @@
                     <label for="gift-plan" class="field-label">{{ __('Тариф') }}</label>
                     <select id="gift-plan" name="plan" class="field-input">
                         @foreach(\App\Enums\Plan::paid() as $plan)
-                            <option value="{{ $plan->value }}" @selected(old('plan', 'community') === $plan->value)>
+                            <option value="{{ $plan->value }}" @selected(old('plan', 'active') === $plan->value)>
                                 {{ $plan->title('ru') }}
                             </option>
                         @endforeach
@@ -94,7 +94,7 @@
                     <label for="plan" class="field-label">{{ __('Тариф') }}</label>
                     <select id="plan" name="plan" class="field-input">
                         @foreach(\App\Enums\Plan::paid() as $plan)
-                            <option value="{{ $plan->value }}" @selected(old('plan', 'community') === $plan->value)>
+                            <option value="{{ $plan->value }}" @selected(old('plan', 'active') === $plan->value)>
                                 {{ $plan->title() }} — {{ __(':price в год', ['price' => $plan->priceLabel()]) }}
                             </option>
                         @endforeach
@@ -123,7 +123,7 @@
 
                 <label class="flex items-center gap-2 text-ui">
                     <input type="checkbox" name="notify" value="1" class="rounded border-hairline text-accent focus:ring-accent-soft">
-                    <span>{{ __('Сообщить участнице в Telegram (по умолчанию тариф включается молча)') }}</span>
+                    <span>{{ __('Сообщить участнице: в Telegram или письмом (по умолчанию тариф включается молча)') }}</span>
                 </label>
 
                 <button type="submit" class="btn-secondary">{{ __('Выдать тариф') }}</button>

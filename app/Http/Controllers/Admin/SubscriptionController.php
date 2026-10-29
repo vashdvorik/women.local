@@ -24,7 +24,7 @@ use Illuminate\Validation\Rule;
 class SubscriptionController extends Controller
 {
     /** Фильтры списка: все, без тарифа, по тарифу, заканчиваются в ближайшие 30 дней. */
-    private const FILTERS = ['none', 'open', 'community', 'private', 'expiring'];
+    private const FILTERS = ['none', 'community', 'active', 'private', 'expiring'];
 
     public function index(Request $request): View
     {
@@ -39,7 +39,7 @@ class SubscriptionController extends Controller
                 ->where('plan', Plan::None->value)
                 ->orWhereNull('plan_ends_at')
                 ->orWhere('plan_ends_at', '<=', now())))
-            ->when(in_array($filter, ['open', 'community', 'private'], true), fn ($q) => $q->withPlan(Plan::from($filter))->where('plan', $filter))
+            ->when(in_array($filter, ['community', 'active', 'private'], true), fn ($q) => $q->withPlan(Plan::from($filter))->where('plan', $filter))
             ->when($filter === 'expiring', fn ($q) => $q->where('plan', '!=', Plan::None->value)
                 ->where('plan_ends_at', '>', now())
                 ->where('plan_ends_at', '<=', now()->addDays(30)))
@@ -61,8 +61,8 @@ class SubscriptionController extends Controller
             'filter' => $filter,
             'search' => $search,
             'prices' => [
-                Plan::Open->value => Plan::Open->price(),
                 Plan::Community->value => Plan::Community->price(),
+                Plan::Active->value => Plan::Active->price(),
                 Plan::Private->value => Plan::Private->price(),
             ],
             'priceMax' => SiteSetting::SUBSCRIPTION_PRICE_MAX,
@@ -70,9 +70,9 @@ class SubscriptionController extends Controller
             'managerEmail' => SiteSetting::planRequestEmail(),
             'counts' => [
                 '' => (clone $registered)->count(),
-                'none' => (clone $registered)->count() - (clone $registered)->withPlan(Plan::Open)->count(),
-                'open' => (clone $registered)->withPlan(Plan::Open)->where('plan', Plan::Open->value)->count(),
+                'none' => (clone $registered)->count() - (clone $registered)->withPlan(Plan::Community)->count(),
                 'community' => (clone $registered)->withPlan(Plan::Community)->where('plan', Plan::Community->value)->count(),
+                'active' => (clone $registered)->withPlan(Plan::Active)->where('plan', Plan::Active->value)->count(),
                 'private' => (clone $registered)->withPlan(Plan::Private)->where('plan', Plan::Private->value)->count(),
                 'expiring' => (clone $registered)->where('plan', '!=', Plan::None->value)->where('plan_ends_at', '>', now())->where('plan_ends_at', '<=', now()->addDays(30))->count(),
             ],
@@ -100,20 +100,20 @@ class SubscriptionController extends Controller
         $max = SiteSetting::SUBSCRIPTION_PRICE_MAX;
 
         $data = $request->validate([
-            'open' => ['required', 'integer', 'min:1', "max:{$max}"],
-            'community' => ['required', 'integer', 'min:1', "max:{$max}", 'gte:open'],
-            'private' => ['required', 'integer', 'min:1', "max:{$max}", 'gte:community'],
+            'community' => ['required', 'integer', 'min:1', "max:{$max}"],
+            'active' => ['required', 'integer', 'min:1', "max:{$max}", 'gte:community'],
+            'private' => ['required', 'integer', 'min:1', "max:{$max}", 'gte:active'],
         ], [
-            'community.gte' => __('Community включает всё из Open, поэтому не может стоить дешевле. Проверьте цены.'),
-            'private.gte' => __('Private включает всё из Community, поэтому не может стоить дешевле. Проверьте цены.'),
+            'active.gte' => __('Active включает всё из Community, поэтому не может стоить дешевле. Проверьте цены.'),
+            'private.gte' => __('Private включает всё из Active, поэтому не может стоить дешевле. Проверьте цены.'),
         ], [
-            'open' => __('цена Open'),
             'community' => __('цена Community'),
+            'active' => __('цена Active'),
             'private' => __('цена Private'),
         ]);
 
-        $before = [Plan::Open->value => Plan::Open->price(), Plan::Community->value => Plan::Community->price(), Plan::Private->value => Plan::Private->price()];
-        $after = ['open' => (int) $data['open'], 'community' => (int) $data['community'], 'private' => (int) $data['private']];
+        $before = [Plan::Community->value => Plan::Community->price(), Plan::Active->value => Plan::Active->price(), Plan::Private->value => Plan::Private->price()];
+        $after = ['community' => (int) $data['community'], 'active' => (int) $data['active'], 'private' => (int) $data['private']];
 
         SiteSetting::setSubscriptionPrices($after);
 

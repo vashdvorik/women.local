@@ -14,7 +14,7 @@ class BotUserFactory extends Factory
 {
     /**
      * Участница, которая прошла регистрацию до конца: почта подтверждена, анкета (с телефоном) заполнена, Telegram
-     * подключён. Тарифа и одобрения у неё нет, их добавляют состояния approved(), openPlan(), community(), private().
+     * подключён. Тарифа и одобрения у неё нет, их добавляют состояния approved(), community(), active(), private().
      *
      * @return array<string, mixed>
      */
@@ -61,19 +61,19 @@ class BotUserFactory extends Factory
         return $this->state(fn () => ['telegram_id' => null, 'telegram_username' => null]);
     }
 
-    /** Одобренная участница с оплаченным тарифом Open (600, на год). */
-    public function openPlan(): static
-    {
-        return $this->approved()->afterCreating(function (BotUser $user): void {
-            app(SubscriptionService::class)->grant($user, Plan::Open, 12, note: 'Фабрика');
-        });
-    }
-
-    /** Одобренная участница с оплаченным Community (на год). */
+    /** Одобренная участница с оплаченным тарифом Community (600, на год). */
     public function community(): static
     {
         return $this->approved()->afterCreating(function (BotUser $user): void {
             app(SubscriptionService::class)->grant($user, Plan::Community, 12, note: 'Фабрика');
+        });
+    }
+
+    /** Одобренная участница с оплаченным Active (5000, на год). */
+    public function active(): static
+    {
+        return $this->approved()->afterCreating(function (BotUser $user): void {
+            app(SubscriptionService::class)->grant($user, Plan::Active, 12, note: 'Фабрика');
         });
     }
 

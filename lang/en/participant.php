@@ -136,7 +136,7 @@ return [
 
     'contacts' => [
         'phone' => 'Phone',
-        'locked' => 'Members’ contacts are open from the Community plan.',
+        'locked' => 'Members’ contacts are open from the Active plan.',
     ],
 
     'mail' => [

@@ -31,7 +31,7 @@ class ClosedPurchaseTest extends TestCase
 
         Queue::fake();
         Mail::fake();
-        SiteSetting::setClosedPlans([Plan::Community->value, Plan::Private->value]);
+        SiteSetting::setClosedPlans([Plan::Active->value, Plan::Private->value]);
         SiteSetting::setPlanRequestEmail('manager@example.test');
     }
 
@@ -50,10 +50,10 @@ class ClosedPurchaseTest extends TestCase
             $this->assertTrue($purchase->canBuy($user, $plan), $plan->value);
         }
 
-        SiteSetting::setClosedPlans([Plan::Community->value]);
+        SiteSetting::setClosedPlans([Plan::Active->value]);
 
-        $this->assertTrue($purchase->canBuy($user, Plan::Open));
-        $this->assertFalse($purchase->canBuy($user, Plan::Community));
+        $this->assertTrue($purchase->canBuy($user, Plan::Community));
+        $this->assertFalse($purchase->canBuy($user, Plan::Active));
         $this->assertTrue($purchase->canBuy($user, Plan::Private));
     }
 
@@ -132,11 +132,11 @@ class ClosedPurchaseTest extends TestCase
         $other = $this->newcomer();
         $purchase = app(PlanPurchase::class);
 
-        $request = $purchase->request($user, Plan::Community);
+        $request = $purchase->request($user, Plan::Active);
         $purchase->unlock($request, notify: true);
 
-        $this->assertTrue($purchase->canBuy($user, Plan::Community));
-        $this->assertFalse($purchase->canBuy($other, Plan::Community));
+        $this->assertTrue($purchase->canBuy($user, Plan::Active));
+        $this->assertFalse($purchase->canBuy($other, Plan::Active));
         $this->assertFalse($purchase->canBuy($user, Plan::Private), 'другой закрытый тариф по-прежнему закрыт');
 
         Mail::assertSent(PlanPurchaseOpenedMail::class, fn (PlanPurchaseOpenedMail $mail) => $mail->hasTo($user->email));
@@ -155,11 +155,11 @@ class ClosedPurchaseTest extends TestCase
         $user = $this->newcomer();
         $purchase = app(PlanPurchase::class);
 
-        $purchase->unlock($purchase->request($user, Plan::Community));
-        app(SubscriptionService::class)->grant($user, Plan::Community, 12, note: 'Оплата');
+        $purchase->unlock($purchase->request($user, Plan::Active));
+        app(SubscriptionService::class)->grant($user, Plan::Active, 12, note: 'Оплата');
 
         $this->assertSame(PlanRequest::STATUS_PURCHASED, PlanRequest::firstOrFail()->status);
-        $this->assertTrue($user->fresh()->hasPlan(Plan::Community));
+        $this->assertTrue($user->fresh()->hasPlan(Plan::Active));
     }
 
     public function test_the_admin_can_close_plans_set_the_manager_email_and_open_a_purchase(): void
@@ -207,7 +207,7 @@ class ClosedPurchaseTest extends TestCase
 
     public function test_prices_default_to_600_5000_and_19000_and_must_not_decrease(): void
     {
-        $this->assertSame([600, 5000, 19000], [Plan::Open->price(), Plan::Community->price(), Plan::Private->price()]);
+        $this->assertSame([600, 5000, 19000], [Plan::Community->price(), Plan::Active->price(), Plan::Private->price()]);
 
         $this->actingAsAdmin()->put(route('admin.subscriptions.prices'), ['open' => 6000, 'community' => 5000, 'private' => 19000])
             ->assertSessionHasErrors('community');
@@ -215,6 +215,6 @@ class ClosedPurchaseTest extends TestCase
         $this->actingAsAdmin()->put(route('admin.subscriptions.prices'), ['open' => 700, 'community' => 5500, 'private' => 20000])
             ->assertRedirect(route('admin.subscriptions.index'));
 
-        $this->assertSame([700, 5500, 20000], [Plan::Open->price(), Plan::Community->price(), Plan::Private->price()]);
+        $this->assertSame([700, 5500, 20000], [Plan::Community->price(), Plan::Active->price(), Plan::Private->price()]);
     }
 }

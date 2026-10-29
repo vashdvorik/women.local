@@ -147,7 +147,7 @@ class SiteSetting extends Model
     }
 
     /**
-     * Цены подписки, заданные в админке, в целых рублях: ['open' => 600, 'community' => 5000, 'private' => 19000]. Чего здесь нет,
+     * Цены подписки, заданные в админке, в целых рублях: ['community' => 600, 'active' => 5000, 'private' => 19000]. Чего здесь нет,
      * берётся из config/subscription.php (см. Plan::price()). Читается на каждой странице тарифов, поэтому кешируется.
      *
      * @return array<string, int>
@@ -158,7 +158,7 @@ class SiteSetting extends Model
             $stored = self::settingValue(self::SUBSCRIPTION_PRICES_KEY);
             $prices = [];
 
-            foreach (['open', 'community', 'private'] as $plan) {
+            foreach (['community', 'active', 'private'] as $plan) {
                 $price = $stored[$plan] ?? null;
 
                 if (is_int($price) && $price >= 1 && $price <= self::SUBSCRIPTION_PRICE_MAX) {
@@ -170,12 +170,12 @@ class SiteSetting extends Model
         });
     }
 
-    /** @param array{open: int, community: int, private: int} $prices */
+    /** @param array{community: int, active: int, private: int} $prices */
     public static function setSubscriptionPrices(array $prices): void
     {
         self::updateOrCreate(['key' => self::SUBSCRIPTION_PRICES_KEY], ['value' => [
-            'open' => (int) $prices['open'],
             'community' => (int) $prices['community'],
+            'active' => (int) $prices['active'],
             'private' => (int) $prices['private'],
         ]]);
 
@@ -183,7 +183,7 @@ class SiteSetting extends Model
     }
 
     /**
-     * Тарифы, покупка которых закрыта («Оставить заявку» вместо «Купить»): ключи 'open', 'community', 'private'.
+     * Тарифы, покупка которых закрыта («Оставить заявку» вместо «Купить»): ключи 'community', 'active', 'private'.
      * По умолчанию все три открыты. Читается на каждой странице тарифов, поэтому кешируется.
      *
      * @return list<string>
@@ -193,14 +193,14 @@ class SiteSetting extends Model
         return Cache::rememberForever(self::SUBSCRIPTION_CLOSED_KEY, function (): array {
             $stored = self::settingValue(self::SUBSCRIPTION_CLOSED_KEY);
 
-            return array_values(array_intersect(['open', 'community', 'private'], is_array($stored) ? $stored : []));
+            return array_values(array_intersect(['community', 'active', 'private'], is_array($stored) ? $stored : []));
         });
     }
 
     /** @param list<string> $plans */
     public static function setClosedPlans(array $plans): void
     {
-        self::updateOrCreate(['key' => self::SUBSCRIPTION_CLOSED_KEY], ['value' => array_values(array_intersect(['open', 'community', 'private'], $plans))]);
+        self::updateOrCreate(['key' => self::SUBSCRIPTION_CLOSED_KEY], ['value' => array_values(array_intersect(['community', 'active', 'private'], $plans))]);
 
         Cache::forget(self::SUBSCRIPTION_CLOSED_KEY);
     }

@@ -1,4 +1,4 @@
-{{-- Список возможностей тарифа. $plan — App\Enums\Plan. Тексты берутся из lang/*/subscription.php (описания заказчика). --}}
+{{-- Список возможностей тарифа. $plan — App\Enums\Plan. Тексты берутся из lang/*/subscription.php (описания заказчика): вводная фраза, пункты, заключительная фраза. --}}
 <p class="text-sm font-medium text-gray-700">{{ __('subscription.plans.'.$plan->value.'.lead') }}</p>
 <ul class="mt-3 space-y-2">
     @foreach(__('subscription.plans.'.$plan->value.'.features') as $feature)
@@ -8,3 +8,4 @@
         </li>
     @endforeach
 </ul>
+<p class="mt-4 text-sm font-medium leading-6 text-gray-700">{{ __('subscription.plans.'.$plan->value.'.closing') }}</p>

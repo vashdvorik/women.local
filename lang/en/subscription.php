@@ -10,6 +10,67 @@ return [
         'subscription' => 'Subscription',
     ],
 
+    // Package descriptions: translation of the customer's Russian texts ("2026 САйт Пакеты ЖЕНЩИНЫ"; draft, to be proofread). lead introduces the list, closing ends the package.
+    'plans' => [
+        'community' => [
+            'title' => 'WOMEN’S HUB COMMUNITY',
+            'tagline' => 'Your community. New connections. New opportunities.',
+            'audience' => 'For women who want to be among like-minded people, grow, and be the first to hear about new opportunities.',
+            'monthly' => 'Just :price roubles a month!',
+            'lead' => 'The package includes:',
+            'features' => [
+                'Membership of the Women’s hub women’s business community.',
+                'New connections, conversation and networking.',
+                'Information on grants, competitions, business programmes and training.',
+                'The chance to take part in the nominations of the “Woman of the Year” gala awards.',
+                'Invitations to Women’s hub events.',
+                'Discounts and special offers from partners.',
+            ],
+            'closing' => 'Be among women who inspire and support each other!',
+            'cta' => 'Choose COMMUNITY — :price :currency/year',
+        ],
+        'active' => [
+            'title' => 'WOMEN’S HUB ACTIVE',
+            'tagline' => 'Grow your business. Widen your connections. Open new markets.',
+            'audience' => 'For women who want to promote their business, find partners and use new opportunities for growth.',
+            'monthly' => 'Just :price roubles a month!',
+            'lead' => 'All the benefits of COMMUNITY, plus:',
+            'features' => [
+                'A closed business community and direct communication with members.',
+                'Personal networking: matching with partners, clients and experts.',
+                'Business promotion: an extended profile, publications and priority announcements.',
+                'Information on grants, competitions, business programmes and training.',
+                'The chance to take part in the nominations of the “Woman of the Year” gala awards.',
+                '3 legal consultations a year.',
+                '3 financial and economic consultations a year.',
+                'Priority registration for educational and business programmes.',
+                'Special prices for Women’s hub events and programmes.',
+                'The chance to take part in joint business projects.',
+            ],
+            'closing' => 'ACTIVE: turn connections into business opportunities!',
+            'cta' => 'Choose ACTIVE — :price :currency/year',
+        ],
+        'private' => [
+            'title' => 'WOMEN’S HUB PRIVATE',
+            'tagline' => 'Your personal circle of influence. Personal solutions. New horizons.',
+            'audience' => 'Exclusive membership for women who value their time, an individual approach and a strong business environment.',
+            'lead' => 'All the benefits of COMMUNITY and ACTIVE, plus:',
+            'features' => [
+                'PRIVATE CIRCLE: access to a closed circle of women leaders and entrepreneurs.',
+                'A personal curator: individual guidance and support.',
+                'Business strategy: a personal strategy session and expert consultations.',
+                'Business connections: individual matching with partners, experts and useful contacts.',
+                'Closed events: exclusive business meetings and a Private Dinner.',
+                'International opportunities: priority consideration for international projects and delegations.',
+                'Personal promotion: individual support in promoting your business.',
+                'Your own initiatives: the chance to propose a joint project with Women’s hub.',
+                'Special privileges: special terms from Women’s hub and its partners.',
+            ],
+            'closing' => 'PRIVATE is more than membership. Your personal space for growth and influence.',
+            'cta' => 'Choose PRIVATE — :price :currency/year',
+        ],
+    ],
+
     // Plan descriptions: translation of the customer's Russian texts (draft; to be proofread).
     'plans' => [
         'open' => [
@@ -113,14 +174,14 @@ return [
         'buy' => 'Buy a subscription',
     ],
 
-    'open_home' => [
+    'community_home' => [
         'title' => 'Home',
-        'eyebrow' => 'WOMEN’S HUB OPEN',
+        'eyebrow' => 'WOMEN’S HUB COMMUNITY',
         'hello' => 'Hello, :name!',
-        'intro' => 'You are on the Open plan: opportunities, learning materials and platform information. Contact search, matching and the AI assistant unlock with the Community plan.',
-        'upgrade_title' => 'Open the community',
-        'upgrade_text' => 'WOMEN’S HUB COMMUNITY: the members directory, networking, the closed community, partner discounts and participation in the Gala.',
-        'upgrade_cta' => 'Get Community',
+        'intro' => 'You are on the Community plan: opportunities, learning materials and platform information. Contact search, matching and the AI assistant unlock with the Active plan.',
+        'upgrade_title' => 'Open more possibilities',
+        'upgrade_text' => 'WOMEN’S HUB ACTIVE: a closed business community, personal networking, business promotion, legal and financial consultations.',
+        'upgrade_cta' => 'Get Active',
         'news' => 'News and announcements',
         'publications' => 'Publications',
         'opportunities' => 'Opportunities: grants, competitions, projects',

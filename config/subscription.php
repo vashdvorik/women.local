@@ -7,7 +7,7 @@ return [
     | Тарифы кабинета участницы
     |--------------------------------------------------------------------------
     |
-    | Три платных тарифа на год: Open (600), Community (5000) и Private (19 000). Бесплатного тарифа нет: после регистрации
+    | Три платных тарифа на год: Community (600), Active (5000) и Private (19 000). Бесплатного тарифа нет: после регистрации
     | и анкеты участница выбирает тариф, до этого кабинета у неё нет. Цена задаётся в целых рублях: банку она уходит в
     | копейках (см. config/webpayment.php). Тариф включается после оплаты или вручную в админке («Подписки»).
     |
@@ -17,12 +17,12 @@ return [
     */
 
     'plans' => [
-        'open' => [
-            'price' => (int) env('SUBSCRIPTION_OPEN_PRICE', 600),
+        'community' => [
+            'price' => (int) env('SUBSCRIPTION_COMMUNITY_PRICE', 600),
             'months' => 12,
         ],
-        'community' => [
-            'price' => (int) env('SUBSCRIPTION_COMMUNITY_PRICE', 5000),
+        'active' => [
+            'price' => (int) env('SUBSCRIPTION_ACTIVE_PRICE', 5000),
             'months' => 12,
         ],
         'private' => [

@@ -186,12 +186,12 @@ Route::middleware(RequireAccountAuth::class)
         // Тариф Open (600) читает: возможности участниц и обучение. Поиск, подбор, каталог участниц с контактами,
         // ИИ-помощник и публикация собственных возможностей входят в Community и Private. На месте закрытого раздела
         // RequirePlan показывает сообщение и кнопку «Купить подписку» (запись и запросы ИИ он отклоняет редиректом и 403).
-        Route::middleware('plan:open')->group(function (): void {
+        Route::middleware('plan:community')->group(function (): void {
             Route::get('/knowledge', [AccountController::class, 'knowledge'])->name('knowledge');
             Route::get('/opportunities', [OpportunityController::class, 'index'])->name('opportunities.index');
         });
 
-        Route::middleware('plan:community')->group(function (): void {
+        Route::middleware('plan:active')->group(function (): void {
             Route::get('/assistant', [AccountController::class, 'assistant'])->name('assistant');
             Route::get('/matches', [AccountController::class, 'matches'])->name('matches');
             Route::get('/people', [AccountController::class, 'people'])->name('people');

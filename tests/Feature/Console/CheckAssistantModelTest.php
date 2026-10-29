@@ -163,7 +163,7 @@ class CheckAssistantModelTest extends TestCase
     public function test_ask_runs_a_real_assistant_request_and_shows_time_tokens_and_the_reply(): void
     {
         $this->configureDeepSeek('deepseek-flash');
-        BotUser::factory()->community()->create(['full_name' => 'Анна Спрашивающая', 'telegram_id' => 5001]);
+        BotUser::factory()->active()->create(['full_name' => 'Анна Спрашивающая', 'telegram_id' => 5001]);
         Http::fake([
             'api.deepseek.com/models' => Http::response(['data' => [['id' => 'deepseek-flash']]]),
             'api.deepseek.com/chat/completions' => Http::sequence()
@@ -189,7 +189,7 @@ class CheckAssistantModelTest extends TestCase
     public function test_ask_reports_a_reply_lost_to_reasoning_as_the_participant_would_see_it(): void
     {
         $this->configureDeepSeek('deepseek-flash');
-        BotUser::factory()->community()->create();
+        BotUser::factory()->active()->create();
         Http::fake([
             'api.deepseek.com/models' => Http::response(['data' => [['id' => 'deepseek-flash']]]),
             'api.deepseek.com/chat/completions' => Http::response([
@@ -224,7 +224,7 @@ class CheckAssistantModelTest extends TestCase
         // Рабочие настройки — DeepSeek; проверяем кандидата на OpenRouter тем же настоящим запросом.
         $this->configureDeepSeek('deepseek-flash');
         SiteSetting::setOpenRouterProviderConfig(['base_url' => 'https://openrouter.ai/api/v1', 'timeout' => 30, 'api_key' => 'or-test-key']);
-        BotUser::factory()->community()->create(['full_name' => 'Анна Проверяющая']);
+        BotUser::factory()->active()->create(['full_name' => 'Анна Проверяющая']);
 
         Http::fake([
             'openrouter.ai/api/v1/models' => Http::response(['data' => [['id' => 'google/gemma-test:free']]]),
@@ -271,7 +271,7 @@ class CheckAssistantModelTest extends TestCase
         // Часть моделей не принимает роль «system»: ассистент должен показать причину, а не молча упасть.
         $this->configureDeepSeek('deepseek-flash');
         SiteSetting::setOpenRouterProviderConfig(['base_url' => 'https://openrouter.ai/api/v1', 'timeout' => 30, 'api_key' => 'or-test-key']);
-        BotUser::factory()->community()->create();
+        BotUser::factory()->active()->create();
         Http::fake([
             'openrouter.ai/api/v1/models' => Http::response([], 404),
             'openrouter.ai/api/v1/chat/completions' => Http::sequence()

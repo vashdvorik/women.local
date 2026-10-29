@@ -138,7 +138,7 @@ class AdminLanguageTest extends TestCase
     {
         $this->withCookie(AdminLocale::COOKIE, 'en')->get('/')->assertOk()->assertDontSee('<html lang="en">', false);
 
-        $user = BotUser::factory()->community()->create();
+        $user = BotUser::factory()->active()->create();
         $this->withCookie(AdminLocale::COOKIE, 'en')->withSession($this->sessionFor($user))
             ->get(route('account.subscription'))->assertOk()->assertSee('Ваш доступ к WOMEN’S HUB');
     }
@@ -159,7 +159,7 @@ class AdminLanguageTest extends TestCase
 
         $pending = BotUser::factory()->pending()->create();
         $member = BotUser::factory()->approved()->create();
-        app(SubscriptionService::class)->grant($member, Plan::Community, 12);
+        app(SubscriptionService::class)->grant($member, Plan::Active, 12);
         $memberPost = Opportunity::create([
             'bot_user_id' => $member->id, 'type' => 'project', 'title' => 'Title', 'body' => 'Body', 'status' => Opportunity::STATUS_PENDING,
         ]);

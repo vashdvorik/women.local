@@ -46,13 +46,13 @@
                     <span aria-hidden="true">→</span>
                     <span class="miro-visually-hidden">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ ['ru' => 'Вперёд', 'en' => 'Next', 'ro' => 'Înainte'][$l] }}</span>@endforeach</span>
                 </button>
-                <button type="button" class="miro-flip__btn miro-flip__btn--text" data-flip-zoom-in>
+                <button type="button" class="miro-flip__btn miro-flip__btn--text miro-flip__btn--zoom" data-flip-zoom-in>
                     <span class="miro-flip__icon" aria-hidden="true">+</span>
-                    @foreach($locales as $l)<span data-lang="{{ $l }}">{{ ['ru' => 'Приблизить', 'en' => 'Zoom in', 'ro' => 'Mărește'][$l] }}</span>@endforeach
+                    <span class="miro-flip__label">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ ['ru' => 'Приблизить', 'en' => 'Zoom in', 'ro' => 'Mărește'][$l] }}</span>@endforeach</span>
                 </button>
-                <button type="button" class="miro-flip__btn miro-flip__btn--text" data-flip-zoom-out hidden>
+                <button type="button" class="miro-flip__btn miro-flip__btn--text miro-flip__btn--zoom" data-flip-zoom-out disabled>
                     <span class="miro-flip__icon" aria-hidden="true">−</span>
-                    @foreach($locales as $l)<span data-lang="{{ $l }}">{{ ['ru' => 'Уменьшить', 'en' => 'Zoom out', 'ro' => 'Micșorează'][$l] }}</span>@endforeach
+                    <span class="miro-flip__label">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ ['ru' => 'Уменьшить', 'en' => 'Zoom out', 'ro' => 'Micșorează'][$l] }}</span>@endforeach</span>
                 </button>
                 <button type="button" class="miro-flip__btn miro-flip__btn--text" data-flip-full aria-pressed="false">
                     <span data-flip-full-label="enter">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ ['ru' => 'На весь экран', 'en' => 'Full screen', 'ro' => 'Ecran complet'][$l] }}</span>@endforeach</span>

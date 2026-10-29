@@ -11,7 +11,7 @@ use App\Models\BotUser;
  * Меню кабинета: один список разделов для боковой панели, нижней панели на телефоне и плиток на главной, одинаковый во
  * всех темах (тема только оформляет его). У каждого раздела — маршрут, подпись, иконка и тариф, с которого он открыт.
  *
- * Закрытые для Open (600) разделы участницам Open не прячем: они ведут на страницу с объяснением, что откроет подписка
+ * Закрытые для Community (600) разделы участницам Community не прячем: они ведут на страницу с объяснением, что откроет подписка
  * (RequirePlan), а на главной помечены замком.
  */
 final class CabinetNav
@@ -37,17 +37,17 @@ final class CabinetNav
      */
     public static function items(?BotUser $user): array
     {
-        $paid = $user !== null && $user->hasPlan(Plan::Community);
+        $paid = $user !== null && $user->hasPlan(Plan::Active);
         $anyPlan = $user !== null && $user->currentPlan()->isPaid();
 
         $definitions = [
             ['home', 'account.index', 'account.nav.home', null],
-            ['assistant', 'account.assistant', 'account.nav.assistant', Plan::Community],
-            ['matches', 'account.matches', 'account.nav.matches', Plan::Community],
-            ['search', 'account.search', 'account.nav.search', Plan::Community],
-            ['people', 'account.people', 'account.nav.people', Plan::Community],
-            ['opportunities', 'account.opportunities.index', 'account.nav.opportunities', Plan::Community],
-            ['knowledge', 'account.knowledge', 'account.nav.knowledge', Plan::Open],
+            ['assistant', 'account.assistant', 'account.nav.assistant', Plan::Active],
+            ['matches', 'account.matches', 'account.nav.matches', Plan::Active],
+            ['search', 'account.search', 'account.nav.search', Plan::Active],
+            ['people', 'account.people', 'account.nav.people', Plan::Active],
+            ['opportunities', 'account.opportunities.index', 'account.nav.opportunities', Plan::Active],
+            ['knowledge', 'account.knowledge', 'account.nav.knowledge', Plan::Community],
             ['profile', 'account.profile', 'account.nav.profile', null],
             ['subscription', 'account.subscription', 'subscription.nav.subscription', null],
         ];
@@ -63,7 +63,7 @@ final class CabinetNav
             'label' => __($d[2]),
             'path' => self::ICONS[$d[0]],
             'min' => $d[3],
-            'locked' => $d[3] === Plan::Community && ! $paid,
+            'locked' => $d[3] === Plan::Active && ! $paid,
         ], $definitions);
     }
 

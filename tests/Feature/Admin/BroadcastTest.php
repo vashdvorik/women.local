@@ -93,7 +93,7 @@ class BroadcastTest extends TestCase
 
     public function test_the_form_shows_how_many_will_receive_the_message(): void
     {
-        BotUser::factory()->community()->count(2)->create();
+        BotUser::factory()->active()->count(2)->create();
         BotUser::factory()->approved()->create();
         BotUser::factory()->pending()->create();
 
@@ -207,9 +207,9 @@ class BroadcastTest extends TestCase
     public function test_send_now_delivers_to_the_chosen_audience_in_each_members_language(): void
     {
         $this->fakeTelegram();
-        $ru = BotUser::factory()->community()->create(['locale' => 'ru']);
+        $ru = BotUser::factory()->active()->create(['locale' => 'ru']);
         $en = BotUser::factory()->private()->create(['locale' => 'en']);
-        $ro = BotUser::factory()->community()->create(['locale' => 'ro']);   // перевода на румынский нет: придёт русский
+        $ro = BotUser::factory()->active()->create(['locale' => 'ro']);   // перевода на румынский нет: придёт русский
         $open = BotUser::factory()->approved()->create(['locale' => 'ru']);
         BotUser::factory()->pending()->create();                              // не одобрена: не получит
 
@@ -232,7 +232,7 @@ class BroadcastTest extends TestCase
 
     public function test_the_three_audiences_pick_the_right_people(): void
     {
-        $paid = BotUser::factory()->community()->create();
+        $paid = BotUser::factory()->active()->create();
         $private = BotUser::factory()->private()->create();
         $open = BotUser::factory()->approved()->create();
         $pending = BotUser::factory()->pending()->create();
@@ -247,8 +247,8 @@ class BroadcastTest extends TestCase
 
     public function test_a_member_who_blocked_the_bot_is_marked_and_the_rest_still_get_the_message(): void
     {
-        $blocked = BotUser::factory()->community()->create();
-        $fine = BotUser::factory()->community()->create();
+        $blocked = BotUser::factory()->active()->create();
+        $fine = BotUser::factory()->active()->create();
         Http::fake([
             'api.telegram.org/*' => fn (Request $r) => (string) $this->body($r)['chat_id'] === (string) $blocked->telegram_id
                 ? Http::response(['ok' => false, 'error_code' => 403, 'description' => 'Forbidden: bot was blocked by the user'], 403)
@@ -268,7 +268,7 @@ class BroadcastTest extends TestCase
 
     public function test_another_telegram_error_is_a_failure_not_a_block(): void
     {
-        BotUser::factory()->community()->create();
+        BotUser::factory()->active()->create();
         $this->fakeTelegram(['api.telegram.org/*' => Http::response(['ok' => false, 'error_code' => 400, 'description' => 'Bad Request: something odd'], 400)]);
 
         $this->submit($this->payload(['action' => 'send', 'send_mode' => 'now']))->assertRedirect();
@@ -279,7 +279,7 @@ class BroadcastTest extends TestCase
 
     public function test_telegram_asking_to_wait_is_retried_and_the_message_is_not_lost(): void
     {
-        $user = BotUser::factory()->community()->create();
+        $user = BotUser::factory()->active()->create();
         Http::fake(['api.telegram.org/*' => Http::sequence()
             ->push(['ok' => false, 'error_code' => 429, 'description' => 'Too Many Requests', 'parameters' => ['retry_after' => 1]], 429)
             ->push(['ok' => true, 'result' => []])]);
@@ -292,7 +292,7 @@ class BroadcastTest extends TestCase
 
     public function test_if_telegram_rejects_the_markup_the_message_goes_out_as_plain_text(): void
     {
-        BotUser::factory()->community()->create();
+        BotUser::factory()->active()->create();
         Http::fake(['api.telegram.org/*' => Http::sequence()
             ->push(['ok' => false, 'error_code' => 400, 'description' => "Bad Request: can't parse entities: Unsupported start tag"], 400)
             ->push(['ok' => true, 'result' => []])]);
@@ -320,7 +320,7 @@ class BroadcastTest extends TestCase
 
     public function test_the_photo_is_uploaded_once_then_sent_by_file_id(): void
     {
-        BotUser::factory()->community()->count(3)->create();
+        BotUser::factory()->active()->count(3)->create();
         Http::fake(['api.telegram.org/*' => Http::response(['ok' => true, 'result' => ['photo' => [
             ['file_id' => 'SMALL', 'width' => 90], ['file_id' => 'BIG-FILE-ID', 'width' => 1280],
         ]]])]);
@@ -368,7 +368,7 @@ class BroadcastTest extends TestCase
     public function test_a_scheduled_broadcast_goes_out_when_its_time_comes(): void
     {
         $this->fakeTelegram();
-        BotUser::factory()->community()->count(2)->create();
+        BotUser::factory()->active()->count(2)->create();
         $at = now(Broadcast::TIMEZONE)->addHours(2)->startOfMinute();
 
         $this->submit($this->payload(['action' => 'send', 'send_mode' => 'later', 'scheduled_at' => $at->format('Y-m-d\TH:i')]))
@@ -396,7 +396,7 @@ class BroadcastTest extends TestCase
     public function test_a_cancelled_scheduled_broadcast_never_goes_out(): void
     {
         $this->fakeTelegram();
-        BotUser::factory()->community()->create();
+        BotUser::factory()->active()->create();
         $at = now(Broadcast::TIMEZONE)->addHour();
         $this->submit($this->payload(['action' => 'send', 'send_mode' => 'later', 'scheduled_at' => $at->format('Y-m-d\TH:i')]));
         $broadcast = Broadcast::firstOrFail();
@@ -412,7 +412,7 @@ class BroadcastTest extends TestCase
     public function test_starting_twice_sends_only_once(): void
     {
         $this->fakeTelegram();
-        BotUser::factory()->community()->create();
+        BotUser::factory()->active()->create();
         $broadcast = Broadcast::create(['texts' => ['ru' => 'Текст'], 'audience' => 'approved', 'status' => 'draft']);
 
         $this->assertTrue(app(BroadcastLauncher::class)->start($broadcast));
@@ -425,8 +425,8 @@ class BroadcastTest extends TestCase
     public function test_a_restarted_job_does_not_write_again_to_those_who_already_got_the_message(): void
     {
         $this->fakeTelegram();
-        $done = BotUser::factory()->community()->create();
-        $left = BotUser::factory()->community()->create();
+        $done = BotUser::factory()->active()->create();
+        $left = BotUser::factory()->active()->create();
         $broadcast = Broadcast::create(['texts' => ['ru' => 'Текст'], 'audience' => 'approved', 'status' => 'sending']);
         foreach ([[$done, 'sent'], [$left, 'pending']] as [$user, $status]) {
             BroadcastDelivery::create(['broadcast_id' => $broadcast->id, 'bot_user_id' => $user->id, 'telegram_id' => $user->telegram_id, 'locale' => 'ru', 'status' => $status]);
@@ -443,7 +443,7 @@ class BroadcastTest extends TestCase
     public function test_a_stalled_broadcast_is_resumed_by_the_scheduler(): void
     {
         $this->fakeTelegram();
-        $user = BotUser::factory()->community()->create();
+        $user = BotUser::factory()->active()->create();
         $broadcast = Broadcast::create(['texts' => ['ru' => 'Текст'], 'audience' => 'approved', 'status' => 'sending', 'started_at' => now()->subHour()]);
         BroadcastDelivery::create(['broadcast_id' => $broadcast->id, 'bot_user_id' => $user->id, 'telegram_id' => $user->telegram_id, 'locale' => 'ru', 'status' => 'pending']);
         Broadcast::whereKey($broadcast->id)->update(['updated_at' => now()->subMinutes(30)]);
@@ -457,7 +457,7 @@ class BroadcastTest extends TestCase
     public function test_cancelling_while_sending_stops_the_rest(): void
     {
         $this->fakeTelegram();
-        $user = BotUser::factory()->community()->create();
+        $user = BotUser::factory()->active()->create();
         $broadcast = Broadcast::create(['texts' => ['ru' => 'Текст'], 'audience' => 'approved', 'status' => 'sending']);
         BroadcastDelivery::create(['broadcast_id' => $broadcast->id, 'bot_user_id' => $user->id, 'telegram_id' => $user->telegram_id, 'locale' => 'ru', 'status' => 'pending']);
 
@@ -490,7 +490,7 @@ class BroadcastTest extends TestCase
     {
         $broadcast = Broadcast::create(['texts' => ['ru' => 'Текст'], 'audience' => 'approved', 'status' => 'sent', 'total' => 3, 'sent' => 1, 'failed' => 1, 'blocked' => 1]);
         foreach ([['sent', null, 'Анна Ровная'], ['blocked', 'Forbidden: bot was blocked by the user', 'Борис Блок'], ['failed', 'Bad Request: oops', 'Вера Ошибка']] as [$status, $error, $name]) {
-            $user = BotUser::factory()->community()->create(['full_name' => $name]);
+            $user = BotUser::factory()->active()->create(['full_name' => $name]);
             BroadcastDelivery::create(['broadcast_id' => $broadcast->id, 'bot_user_id' => $user->id, 'telegram_id' => $user->telegram_id, 'locale' => 'ru', 'status' => $status, 'error' => $error]);
         }
 

@@ -162,69 +162,17 @@ final class Regulations
                     'id' => 'packages',
                     'title' => self::t('6. Пакеты участия', '6. Participation packages', '6. Pachete de participare'),
                     'blocks' => [
-                        [
-                            'type' => 'package',
-                            'plan' => 'open',
-                            'number' => '6.1.',
-                            'name' => 'WOMAN’S HUB OPEN',
-                            'items' => self::triples([
-                                ['Полезные материалы для женщин.', 'Useful materials for women.', 'Materiale utile pentru femei.'],
-                                ['Информация о бизнесе, карьере и личностном развитии.', 'Information about business, career and personal development.', 'Informații despre afaceri, carieră și dezvoltare personală.'],
-                                ['Анонсы открытых мероприятий.', 'Announcements of open events.', 'Anunțuri despre evenimentele deschise.'],
-                                ['Информация об образовательных программах.', 'Information about educational programmes.', 'Informații despre programele educaționale.'],
-                                ['Истории успешных женщин.', 'Stories of successful women.', 'Povești ale femeilor de succes.'],
-                                ['Информация о грантах, конкурсах и проектах.', 'Information about grants, competitions and projects.', 'Informații despre granturi, concursuri și proiecte.'],
-                                ['Возможность зарегистрироваться на открытые мероприятия.', 'The option to register for open events.', 'Posibilitatea de a te înregistra la evenimentele deschise.'],
-                            ]),
-                        ],
-                        [
-                            'type' => 'package',
-                            'plan' => 'community',
-                            'number' => '6.2.',
-                            'name' => 'WOMAN’S HUB COMMUNITY',
-                            'items' => self::triples([
-                                ['Членство в Woman’s Hub.', 'Membership in Woman’s Hub.', 'Calitatea de membră a Woman’s Hub.'],
-                                ['Участие в Гала Премии «Женщина Года».', 'Participation in the Gala “Woman of the Year”.', 'Participarea la Gala „Woman of the Year”.'],
-                                ['Доступ в закрытое сообщество.', 'Access to the closed community.', 'Acces în comunitatea închisă.'],
-                                ['Информация о мероприятиях и проектах Woman’s Hub.', 'Information about Woman’s Hub events and projects.', 'Informații despre evenimentele și proiectele Woman’s Hub.'],
-                                ['Участие в открытых мероприятиях Woman’s Hub.', 'Participation in open Woman’s Hub events.', 'Participarea la evenimentele deschise ale Woman’s Hub.'],
-                                ['Специальная стоимость участия в мероприятиях.', 'Special pricing for event participation.', 'Preț special pentru participarea la evenimente.'],
-                                ['Нетворкинг с участницами сообщества.', 'Networking with community members.', 'Networking cu participantele comunității.'],
-                                ['Доступ к образовательным мероприятиям и лекциям.', 'Access to educational events and lectures.', 'Acces la evenimente educaționale și prelegeri.'],
-                                ['Информация о грантах, конкурсах, проектах и возможностях.', 'Information about grants, competitions, projects and opportunities.', 'Informații despre granturi, concursuri, proiecte și oportunități.'],
-                                ['Скидки и специальные предложения от партнёров.', 'Discounts and special offers from partners.', 'Reduceri și oferte speciale din partea partenerilor.'],
-                                ['Возможность представить свой бизнес/проект внутри сообщества.', 'The opportunity to present your business/project within the community.', 'Posibilitatea de a-și prezenta afacerea/proiectul în cadrul comunității.'],
-                                ['Возможность участвовать в инициативах и проектах Woman’s Hub.', 'The opportunity to take part in Woman’s Hub initiatives and projects.', 'Posibilitatea de a participa la inițiativele și proiectele Woman’s Hub.'],
-                            ]),
-                        ],
-                        [
-                            'type' => 'package',
-                            'plan' => 'private',
-                            'number' => '6.3.',
-                            'name' => 'WOMAN’S HUB PRIVATE',
-                            'items' => self::triples([
-                                ['Членство в Woman’s Hub.', 'Membership in Woman’s Hub.', 'Calitatea de membră a Woman’s Hub.'],
-                                ['Участие в Гала Премии «Женщина Года».', 'Participation in the Gala “Woman of the Year”.', 'Participarea la Gala „Woman of the Year”.'],
-                                ['Всё из пакета Community.', 'Everything from the Community package.', 'Tot ce include pachetul Community.'],
-                                ['Закрытый Private Circle.', 'The closed Private Circle.', 'Private Circle închis.'],
-                                ['Персональный куратор.', 'A personal curator.', 'Curator personal.'],
-                                ['Персональная консультационная поддержка.', 'Personal consulting support.', 'Sprijin consultativ personalizat.'],
-                                ['Юридические консультации.', 'Legal consultations.', 'Consultanță juridică.'],
-                                ['Финансово-экономические консультации.', 'Financial and economic consultations.', 'Consultanță financiar-economică.'],
-                                ['Персональная стратегическая сессия.', 'A personal strategy session.', 'Sesiune strategică personalizată.'],
-                                ['Персональный подбор полезных контактов и знакомств.', 'Personal selection of useful contacts and introductions.', 'Selecție personalizată de contacte și cunoștințe utile.'],
-                                ['Приоритетный доступ к проектам Woman’s Hub.', 'Priority access to Woman’s Hub projects.', 'Acces prioritar la proiectele Woman’s Hub.'],
-                                ['Приоритетное участие в международных проектах и делегациях.', 'Priority participation in international projects and delegations.', 'Participare prioritară la proiecte și delegații internaționale.'],
-                                ['Закрытые бизнес-встречи и private dinner.', 'Closed business meetings and private dinners.', 'Întâlniri de afaceri închise și private dinner.'],
-                                ['Приоритетное приглашение на встречи с партнёрами, экспертами и представителями бизнеса.', 'Priority invitations to meetings with partners, experts and business representatives.', 'Invitație prioritară la întâlniri cu parteneri, experți și reprezentanți ai mediului de afaceri.'],
-                                ['Персональные возможности продвижения внутри Woman’s Hub.', 'Personal promotion opportunities within Woman’s Hub.', 'Oportunități personalizate de promovare în cadrul Woman’s Hub.'],
-                                ['Приоритетное размещение информации о собственном проекте в коммуникациях Woman’s Hub.', 'Priority placement of information about your own project in Woman’s Hub communications.', 'Plasarea prioritară a informațiilor despre propriul proiect în comunicările Woman’s Hub.'],
-                                ['Расширенные скидки на мероприятия и программы Woman’s Hub.', 'Extended discounts on Woman’s Hub events and programs.', 'Reduceri extinse la evenimentele și programele Woman’s Hub.'],
-                                ['Специальные условия от партнёров Woman’s Hub.', 'Special terms from Woman’s Hub partners.', 'Condiții speciale din partea partenerilor Woman’s Hub.'],
-                                ['Приоритетный доступ к новым образовательным и бизнес-программам.', 'Priority access to new educational and business programs.', 'Acces prioritar la noile programe educaționale și de afaceri.'],
-                                ['Возможность инициировать собственный проект совместно с Woman’s Hub.', 'The opportunity to initiate your own project together with Woman’s Hub.', 'Posibilitatea de a iniția un proiect propriu împreună cu Woman’s Hub.'],
-                            ]),
-                        ],
+                        self::package('community', '6.1.', 'WOMAN’S HUB COMMUNITY'),
+                        self::package('active', '6.2.', 'WOMAN’S HUB ACTIVE', [
+                            'Все преимущества пакета COMMUNITY.',
+                            'All the benefits of the COMMUNITY package.',
+                            'Toate avantajele pachetului COMMUNITY.',
+                        ]),
+                        self::package('private', '6.3.', 'WOMAN’S HUB PRIVATE', [
+                            'Все преимущества пакетов COMMUNITY и ACTIVE.',
+                            'All the benefits of the COMMUNITY and ACTIVE packages.',
+                            'Toate avantajele pachetelor COMMUNITY și ACTIVE.',
+                        ]),
                     ],
                 ],
                 [
@@ -232,9 +180,9 @@ final class Regulations
                     'title' => self::t('7. Woman’s Hub и Гала Премия «Женщина Года»', '7. Woman’s Hub and the Gala “Woman of the Year”', '7. Woman’s Hub și Gala „Woman of the Year”'),
                     'blocks' => [
                         self::clause('7.1.',
-                            'Участие в Гала Премии «Женщина Года» является базовой возможностью, предусмотренной обоими пакетами членства.',
-                            'Participation in the Gala “Woman of the Year” is a basic opportunity provided by both membership packages.',
-                            'Participarea la Gala „Woman of the Year” este o oportunitate de bază prevăzută de ambele pachete de membru.'),
+                            'Участие в Гала Премии «Женщина Года» является базовой возможностью, предусмотренной всеми пакетами членства.',
+                            'Participation in the Gala “Woman of the Year” is a basic opportunity provided by all membership packages.',
+                            'Participarea la Gala „Woman of the Year” este o oportunitate de bază prevăzută de toate pachetele de membru.'),
                         self::clause('7.2.',
                             'Право на номинирование на премию предоставляется резидентам Woman’s Hub в соответствии с отдельным Положением о премии.',
                             'The right to nominate for the award is granted to residents of Woman’s Hub in accordance with the separate Regulations on the Award.',
@@ -293,6 +241,28 @@ final class Regulations
                 ],
             ],
         ];
+    }
+
+    /**
+     * Пакет участия для раздела 6: пункты берутся из lang/{ru,en,ro}/subscription.php, чтобы Положение, страница «Как
+     * стать участницей» и кабинет не расходились. $first — вводная строка («Все преимущества пакета …»), если она нужна.
+     *
+     * @param  array{0: string, 1: string, 2: string}|null  $first
+     * @return array<string, mixed>
+     */
+    private static function package(string $plan, string $number, string $name, ?array $first = null): array
+    {
+        $ru = __("subscription.plans.{$plan}.features", [], 'ru');
+        $en = __("subscription.plans.{$plan}.features", [], 'en');
+        $ro = __("subscription.plans.{$plan}.features", [], 'ro');
+
+        $items = array_map(fn (int $i): array => [$ru[$i], $en[$i], $ro[$i]], array_keys($ru));
+
+        if ($first !== null) {
+            array_unshift($items, $first);
+        }
+
+        return ['type' => 'package', 'plan' => $plan, 'number' => $number, 'name' => $name, 'items' => self::triples($items)];
     }
 
     /** @return array{ru: string, en: string, ro: string} */

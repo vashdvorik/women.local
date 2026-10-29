@@ -260,7 +260,10 @@ html.miro-page :is(.miro-logo-wall, .miro-public-member__visual, .miro-event-car
 html.miro-page .miro-about__plan--private { border: 1px solid var(--miro2-line-strong); background: linear-gradient(160deg, #F7EAE1 0%, var(--miro2-sand) 100%); box-shadow: 0 18px 40px -26px rgba(116, 71, 47, .45); }
 html.miro-page .miro-about .miro-about__plan--private .miro-about__plan-name,
 html.miro-page .miro-about .miro-about__plan--private .miro-about__plan-amount { color: var(--miro2-ink); }
-html.miro-page .miro-about .miro-about__plan--private .miro-about__plan-tag { color: var(--miro2-caramel-deep); }
+html.miro-page .miro-about .miro-about__plan--private .miro-about__plan-tag,
+html.miro-page .miro-about .miro-about__plan--private .miro-about__plan-month { color: var(--miro2-caramel-deep); }
+html.miro-page .miro-about .miro-about__plan--private .miro-about__plan-note,
+html.miro-page .miro-about .miro-about__plan--private .miro-about__plan-closing { color: var(--miro2-text); }
 html.miro-page .miro-about .miro-about__plan--private .miro-about__plan-unit,
 html.miro-page .miro-about .miro-about__plan--private .miro-about__plan-lead,
 html.miro-page .miro-about .miro-about__plan--private .miro-about__plan-list li { color: var(--miro2-text); }

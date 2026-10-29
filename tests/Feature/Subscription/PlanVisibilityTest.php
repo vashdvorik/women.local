@@ -26,8 +26,8 @@ class PlanVisibilityTest extends TestCase
 
     public function test_open_reads_opportunities_and_learning_but_has_no_search_catalog_or_assistant(): void
     {
-        $open = BotUser::factory()->openPlan()->create();
-        $other = BotUser::factory()->community()->create();
+        $open = BotUser::factory()->community()->create();
+        $other = BotUser::factory()->active()->create();
 
         $this->withSession($this->participantSession($open))->get(route('account.opportunities.index'))->assertOk()->assertDontSee(route('account.opportunities.create'));
         $this->withSession($this->participantSession($open))->get(route('account.knowledge'))->assertOk();
@@ -44,11 +44,11 @@ class PlanVisibilityTest extends TestCase
 
     public function test_community_sees_every_paid_plan_with_phones_but_not_unpaid_or_hidden_or_unapproved_people(): void
     {
-        $viewer = BotUser::factory()->community()->create();
-        $openMember = BotUser::factory()->openPlan()->create(['full_name' => 'Открытая Участница', 'phone' => '+373 69 000 111']);
+        $viewer = BotUser::factory()->active()->create();
+        $openMember = BotUser::factory()->community()->create(['full_name' => 'Открытая Участница', 'phone' => '+373 69 000 111']);
         $privateMember = BotUser::factory()->private()->create(['full_name' => 'Приватная Участница', 'phone' => '+373 69 000 222']);
         $noPlan = BotUser::factory()->approved()->create(['full_name' => 'Без Тарифа Участница']);
-        $hidden = BotUser::factory()->community()->create(['full_name' => 'Скрытая Участница', 'is_hidden' => true]);
+        $hidden = BotUser::factory()->active()->create(['full_name' => 'Скрытая Участница', 'is_hidden' => true]);
         $pending = BotUser::factory()->pending()->create(['full_name' => 'Непроверенная Участница']);
 
         $html = $this->withSession($this->participantSession($viewer))->get(route('account.people'))->assertOk()->getContent();
@@ -71,7 +71,7 @@ class PlanVisibilityTest extends TestCase
     public function test_private_sees_the_same_as_community_and_open_members_are_in_the_broadcast_audience(): void
     {
         $viewer = BotUser::factory()->private()->create();
-        $openMember = BotUser::factory()->openPlan()->create(['full_name' => 'Открытая Участница']);
+        $openMember = BotUser::factory()->community()->create(['full_name' => 'Открытая Участница']);
 
         $this->withSession($this->participantSession($viewer))->get(route('account.people'))->assertOk()->assertSee('Открытая Участница');
 
@@ -81,7 +81,7 @@ class PlanVisibilityTest extends TestCase
 
     public function test_the_profile_shows_the_phone_field_and_the_telegram_connection(): void
     {
-        $user = BotUser::factory()->openPlan()->withoutTelegram()->create();
+        $user = BotUser::factory()->community()->withoutTelegram()->create();
 
         $this->withSession($this->participantSession($user))->get(route('account.profile'))->assertOk()
             ->assertSee(route('account.telegram.connect'), false);

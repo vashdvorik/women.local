@@ -19,6 +19,13 @@
     $lang = fn (string $key): HtmlString => new HtmlString(
         collect($locales)->map(fn (string $l) => '<span data-lang="'.$l.'">'.e(__($key, [], $l)).'</span>')->implode('')
     );
+    // «Всего 50 рублей в месяц!» и кнопка «Выбрать COMMUNITY — 600 руб./год» на трёх языках (цена из настроек сайта).
+    $monthly = fn (Plan $plan): HtmlString => new HtmlString(
+        collect($locales)->map(fn (string $l) => '<span data-lang="'.$l.'">'.e(__("subscription.plans.{$plan->value}.monthly", ['price' => $plan->pricePerMonth()], $l)).'</span>')->implode('')
+    );
+    $cta = fn (Plan $plan): HtmlString => new HtmlString(
+        collect($locales)->map(fn (string $l) => '<span data-lang="'.$l.'">'.e(__("subscription.plans.{$plan->value}.cta", ['price' => number_format($plan->price(), 0, ',', "\u{00A0}"), 'currency' => __('subscription.currency', [], $l)], $l)).'</span>')->implode('')
+    );
     // Пункт списка пакета с номером $i на трёх языках.
     $feature = fn (string $plan, int $i): HtmlString => new HtmlString(
         collect($locales)->map(fn (string $l) => '<span data-lang="'.$l.'">'.e(__("subscription.plans.{$plan}.features", [], $l)[$i] ?? '').'</span>')->implode('')
@@ -71,21 +78,26 @@
                 <p class="miro-about__lead">{{ $tri($content['plans']['intro']) }}</p>
             </div>
             <div class="miro-about__plans">
-                @foreach([Plan::Open, Plan::Community, Plan::Private] as $plan)
+                @foreach([Plan::Community, Plan::Active, Plan::Private] as $plan)
                     <article class="miro-about__plan miro-about__plan--{{ $plan->value }}">
                         <h3 class="miro-about__plan-name">{{ $plan->title('ru') }}</h3>
                         <p class="miro-about__plan-tag">{{ $lang("subscription.plans.{$plan->value}.tagline") }}</p>
+                        <p class="miro-about__plan-note">{{ $lang("subscription.plans.{$plan->value}.audience") }}</p>
                         <div class="miro-about__plan-price">
                             <span class="miro-about__plan-amount">{{ number_format($plan->price(), 0, ',', "\u{00A0}") }}</span>
                             <span class="miro-about__plan-unit">@foreach($locales as $l)<span data-lang="{{ $l }}">{{ __('subscription.currency', [], $l) }} / {{ __('subscription.per_year', [], $l) }}</span>@endforeach</span>
                         </div>
+                        @if(\Illuminate\Support\Facades\Lang::has("subscription.plans.{$plan->value}.monthly"))
+                            <p class="miro-about__plan-month">{{ $monthly($plan) }}</p>
+                        @endif
                         <p class="miro-about__plan-lead">{{ $lang("subscription.plans.{$plan->value}.lead") }}</p>
                         <ul class="miro-about__plan-list">
                             @foreach(__("subscription.plans.{$plan->value}.features", [], 'ru') as $i => $unused)
                                 <li>{{ $feature($plan->value, $i) }}</li>
                             @endforeach
                         </ul>
-                        <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button {{ $plan === Plan::Private ? 'miro-button--pink' : 'miro-button--primary' }}">{{ $tri($content['apply']) }}</a>
+                        <p class="miro-about__plan-closing">{{ $lang("subscription.plans.{$plan->value}.closing") }}</p>
+                        <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button miro-about__plan-cta {{ $plan === Plan::Private ? 'miro-button--pink' : 'miro-button--primary' }}">{{ $cta($plan) }}</a>
                     </article>
                 @endforeach
             </div>

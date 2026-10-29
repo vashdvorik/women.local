@@ -11,8 +11,8 @@ use App\Models\Opportunity;
 /**
  * Данные главной страницы кабинета (account.index): человек сразу видит, где что лежит и с чего начать, а не упирается
  * в чат. Список «С чего начать» с галочками, плитки всех разделов с пояснением «что это и зачем» и «как пользоваться»
- * (дублируют меню), блок «Что нового». У тарифа Open те же плитки, закрытые разделы с замком, а вместо «Что нового» —
- * материалы публичного сайта (OpenFeed) и приглашение подписаться.
+ * (дублируют меню), блок «Что нового». У тарифа Community те же плитки, закрытые разделы с замком, а вместо «Что нового» —
+ * материалы публичного сайта (CommunityFeed) и приглашение подписаться.
  */
 final class CabinetHome
 {
@@ -30,7 +30,7 @@ final class CabinetHome
      */
     public static function build(BotUser $user, string $locale): array
     {
-        $paid = $user->hasPlan(Plan::Community);
+        $paid = $user->hasPlan(Plan::Active);
         $steps = self::steps($user, $paid);
 
         return [
@@ -40,16 +40,16 @@ final class CabinetHome
             'doneCount' => count(array_filter($steps, fn (array $step): bool => $step['done'])),
             // Плитки — те же разделы, что в меню, кроме самой главной.
             'tiles' => array_values(array_filter(CabinetNav::items($user), fn (array $item): bool => $item['key'] !== 'home')),
-            // Возможности участниц видны с тарифа Open (600), новые участницы и каталог — с Community.
+            // Возможности участниц видны с тарифа Community (600), новые участницы и каталог — с Active.
             'opportunities' => self::latestOpportunities($user),
             'members' => $paid ? self::newestMembers($user) : collect(),
-            'feed' => $paid ? null : OpenFeed::build($locale),
+            'feed' => $paid ? null : CommunityFeed::build($locale),
         ];
     }
 
     /**
      * Шаги «С чего начать». Профиль и подписка отмечаются сами по данным; остальные — когда участница открыла раздел
-     * (BotUser::markSeen). У Open шагов два: профиль и подписка, остальные разделы ей закрыты.
+     * (BotUser::markSeen). У Community шагов два: профиль и подписка, остальные разделы ей закрыты.
      *
      * @return list<array{key: string, route: string, done: bool}>
      */

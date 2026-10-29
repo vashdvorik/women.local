@@ -22,16 +22,16 @@ class CabinetHomeTest extends TestCase
         return $this->withSession($this->participantSession($user));
     }
 
-    private function community(array $attributes = []): BotUser
+    private function active(array $attributes = []): BotUser
     {
-        return BotUser::factory()->community()->create(['full_name' => 'Анна Иванова', ...$attributes]);
+        return BotUser::factory()->active()->create(['full_name' => 'Анна Иванова', ...$attributes]);
     }
 
     // ---------------------------------------------------------------- главная не чат
 
     public function test_the_home_is_a_navigation_page_not_the_chat(): void
     {
-        $html = $this->as($this->community())->get(route('account.index'))->assertOk()->getContent();
+        $html = $this->as($this->active())->get(route('account.index'))->assertOk()->getContent();
 
         $this->assertStringContainsString('Здравствуйте, Анна!', $html);
         $this->assertStringNotContainsString('fortun-ai-assistant', $html, 'чата на главной нет');
@@ -45,7 +45,7 @@ class CabinetHomeTest extends TestCase
 
     public function test_every_section_of_the_menu_has_a_tile_that_explains_it(): void
     {
-        $html = $this->as($this->community())->get(route('account.index'))->assertOk()->getContent();
+        $html = $this->as($this->active())->get(route('account.index'))->assertOk()->getContent();
 
         foreach (['assistant', 'matches', 'search', 'people', 'opportunities', 'knowledge', 'profile', 'subscription'] as $key) {
             $this->assertStringContainsString(__("account.home.tiles.{$key}.what"), $html, "{$key}: что это");
@@ -59,7 +59,7 @@ class CabinetHomeTest extends TestCase
 
     public function test_the_menu_has_home_and_the_assistant_as_separate_items(): void
     {
-        $html = $this->as($this->community())->get(route('account.profile'))->assertOk()->getContent();
+        $html = $this->as($this->active())->get(route('account.profile'))->assertOk()->getContent();
 
         $this->assertMatchesRegularExpression('~href="'.preg_quote(route('account.index'), '~').'"[^>]*>(?:(?!</a>).)*Главная~su', $html);
         $this->assertMatchesRegularExpression('~href="'.preg_quote(route('account.assistant'), '~').'"[^>]*>(?:(?!</a>).)*ИИ-помощник~su', $html);
@@ -67,7 +67,7 @@ class CabinetHomeTest extends TestCase
 
     public function test_the_chat_lives_on_its_own_page_for_paid_members_and_is_explained_for_open(): void
     {
-        $this->as($this->community())->get(route('account.assistant'))->assertOk()->assertSee('fortun-ai-assistant', false);
+        $this->as($this->active())->get(route('account.assistant'))->assertOk()->assertSee('fortun-ai-assistant', false);
 
         $open = BotUser::factory()->approved()->create();
         $this->as($open)->get(route('account.assistant'))->assertOk()->assertDontSee('fortun-ai-assistant', false)->assertSee('Купить подписку');
@@ -77,7 +77,7 @@ class CabinetHomeTest extends TestCase
 
     public function test_phones_get_a_bottom_bar_with_the_main_sections_and_a_more_button(): void
     {
-        $html = $this->as($this->community())->get(route('account.index'))->assertOk()->getContent();
+        $html = $this->as($this->active())->get(route('account.index'))->assertOk()->getContent();
 
         $this->assertStringContainsString('account-bottom-nav', $html);
         preg_match('~<nav class="account-bottom-nav.*?</nav>~s', $html, $bar);
@@ -94,7 +94,7 @@ class CabinetHomeTest extends TestCase
 
     public function test_the_bottom_bar_is_on_every_cabinet_page(): void
     {
-        $user = $this->community();
+        $user = $this->active();
 
         foreach (['account.profile', 'account.matches', 'account.opportunities.index', 'account.subscription'] as $route) {
             $this->as($user)->get(route($route))->assertOk()->assertSee('account-bottom-nav', false);
@@ -105,7 +105,7 @@ class CabinetHomeTest extends TestCase
 
     public function test_the_steps_tick_by_themselves_as_the_member_uses_the_cabinet(): void
     {
-        $user = $this->community(['description' => null, 'expectation' => null]);
+        $user = $this->active(['description' => null, 'expectation' => null]);
 
         $html = $this->as($user)->get(route('account.index'))->assertOk()->getContent();
         $this->assertStringContainsString(__('account.home.steps_progress', ['done' => 0, 'total' => 5]), $html);
@@ -135,7 +135,7 @@ class CabinetHomeTest extends TestCase
 
     public function test_asking_the_cabinet_assistant_a_real_question_ticks_its_step(): void
     {
-        $user = $this->community();
+        $user = $this->active();
         $this->app->instance(AiAssistantService::class, new class extends AiAssistantService
         {
             public function respond(BotUser $user, string $message, array $history, string $locale): array
@@ -151,7 +151,7 @@ class CabinetHomeTest extends TestCase
 
     public function test_when_every_step_is_done_the_list_gives_way_to_a_short_note(): void
     {
-        $user = $this->community(['description' => 'Кондитерская', 'expectation' => 'Партнёры', 'cabinet_seen' => ['matches', 'search', 'opportunities', 'assistant']]);
+        $user = $this->active(['description' => 'Кондитерская', 'expectation' => 'Партнёры', 'cabinet_seen' => ['matches', 'search', 'opportunities', 'assistant']]);
 
         $html = $this->as($user)->get(route('account.index'))->assertOk()->getContent();
 
@@ -161,7 +161,7 @@ class CabinetHomeTest extends TestCase
 
     public function test_marking_a_section_seen_is_idempotent(): void
     {
-        $user = $this->community();
+        $user = $this->active();
 
         $user->markSeen('search');
         $user->markSeen('search');
@@ -174,10 +174,10 @@ class CabinetHomeTest extends TestCase
 
     public function test_whats_new_shows_fresh_opportunities_and_new_paid_members_but_not_myself_or_open_members(): void
     {
-        $me = $this->community();
-        $newcomer = BotUser::factory()->community()->create(['full_name' => 'Вера Новенькая', 'description' => 'Дизайн интерьеров', 'approved_at' => now()]);
+        $me = $this->active();
+        $newcomer = BotUser::factory()->active()->create(['full_name' => 'Вера Новенькая', 'description' => 'Дизайн интерьеров', 'approved_at' => now()]);
         $open = BotUser::factory()->approved()->create(['full_name' => 'Ольга Бесплатная', 'approved_at' => now()]);
-        $author = BotUser::factory()->community()->create(['full_name' => 'Нина Автор']);
+        $author = BotUser::factory()->active()->create(['full_name' => 'Нина Автор']);
         Opportunity::create(['bot_user_id' => $author->id, 'type' => 'project', 'title' => 'Грант для основательниц', 'body' => 'Условия', 'status' => 'approved']);
         Opportunity::create(['bot_user_id' => $author->id, 'type' => 'project', 'title' => 'Чужой черновик', 'body' => 'x', 'status' => 'pending']);
 
@@ -195,7 +195,7 @@ class CabinetHomeTest extends TestCase
 
     public function test_whats_new_has_friendly_empty_states(): void
     {
-        $html = $this->as($this->community())->get(route('account.index'))->assertOk()->getContent();
+        $html = $this->as($this->active())->get(route('account.index'))->assertOk()->getContent();
 
         $this->assertSame(2, substr_count($html, __('account.home.fresh_empty')));
     }
@@ -208,7 +208,7 @@ class CabinetHomeTest extends TestCase
 
         $html = $this->as($open)->get(route('account.index'))->assertOk()->getContent();
 
-        $this->assertStringContainsString(__('account.home.intro_open'), $html);
+        $this->assertStringContainsString(__('account.home.intro_community'), $html);
         $this->assertStringContainsString(__('account.home.steps_progress', ['done' => 0, 'total' => 2]), $html);
         $this->assertStringContainsString(__('account.home.steps.subscription.title'), $html);
 
@@ -216,14 +216,14 @@ class CabinetHomeTest extends TestCase
         $this->assertSame(6, substr_count($html, __('account.home.tile_locked')));
         // Открытые разделы без замка, закрытые ведут туда же, где объясняют подписку.
         $this->assertStringContainsString('href="'.route('account.search').'"', $html);
-        $this->assertStringContainsString(__('subscription.open_home.upgrade_cta'), $html);
+        $this->assertStringContainsString(__('subscription.community_home.upgrade_cta'), $html);
         $this->assertStringNotContainsString(__('account.home.fresh_title'), $html);
     }
 
     public function test_the_subscription_step_is_done_once_she_is_a_paid_member(): void
     {
         // Платная видит пять шагов без «подписки»: она уже есть.
-        $html = $this->as($this->community())->get(route('account.index'))->assertOk()->getContent();
+        $html = $this->as($this->active())->get(route('account.index'))->assertOk()->getContent();
 
         $this->assertStringNotContainsString(__('account.home.steps.subscription.title'), $html);
     }
@@ -256,7 +256,7 @@ class CabinetHomeTest extends TestCase
 
     public function test_the_home_renders_in_english_and_romanian(): void
     {
-        $user = $this->community();
+        $user = $this->active();
 
         foreach (['en' => 'Where to start', 'ro' => 'De unde să începeți'] as $locale => $heading) {
             $this->as($user)->withCookie('locale', $locale)->withSession(['locale' => $locale, 'app_locale' => $locale]);

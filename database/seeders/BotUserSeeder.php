@@ -141,8 +141,8 @@ class BotUserSeeder extends Seeder
             // четвёртой Open, каждой шестой Private. Сидер работает только вне боевого сервера.
             $plan = match (true) {
                 $index % 6 === 5 => Plan::Private,
-                $index % 4 === 3 => Plan::Open,
-                default => Plan::Community,
+                $index % 4 === 3 => Plan::Community,
+                default => Plan::Active,
             };
 
             if (! $user->hasPlan($plan)) {

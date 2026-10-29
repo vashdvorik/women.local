@@ -69,7 +69,7 @@ class BotAndRemindersTest extends TestCase
 
     public function test_contact_search_in_the_bot_works_for_community_and_private(): void
     {
-        foreach ([self::ID => BotUser::factory()->community(), self::ID + 1 => BotUser::factory()->private()] as $id => $factory) {
+        foreach ([self::ID => BotUser::factory()->active(), self::ID + 1 => BotUser::factory()->private()] as $id => $factory) {
             $factory->create(['telegram_id' => $id]);
 
             $bot = $this->bot('ru', $id);
@@ -81,7 +81,7 @@ class BotAndRemindersTest extends TestCase
 
     public function test_a_search_dialog_that_outlives_the_subscription_stops_politely(): void
     {
-        $user = BotUser::factory()->community()->create(['telegram_id' => self::ID]);
+        $user = BotUser::factory()->active()->create(['telegram_id' => self::ID]);
 
         $bot = $this->bot();
         $bot->hearText(BotMessages::default('menu_matches_button', 'ru'))->reply();
@@ -115,7 +115,7 @@ class BotAndRemindersTest extends TestCase
         Telegram::fake();
         $user = BotUser::factory()->approved()->create(['telegram_id' => self::ID, 'locale' => 'ro']);
 
-        $subscription = app(SubscriptionService::class)->grant($user, Plan::Community, 12);
+        $subscription = app(SubscriptionService::class)->grant($user, Plan::Active, 12);
         app(\App\Services\Subscriptions\SubscriptionNotifier::class)->activated($subscription);
 
         $texts = collect(Telegram::getRequestHistory())
@@ -139,7 +139,7 @@ class BotAndRemindersTest extends TestCase
     public function test_reminders_come_14_and_3_days_before_the_end_once_each(): void
     {
         $user = BotUser::factory()->approved()->create(['telegram_id' => self::ID, 'locale' => 'ru']);
-        app(SubscriptionService::class)->grant($user, Plan::Community, 12);
+        app(SubscriptionService::class)->grant($user, Plan::Active, 12);
         $end = $user->fresh()->plan_ends_at->copy();
 
         Telegram::fake();
@@ -174,7 +174,7 @@ class BotAndRemindersTest extends TestCase
     public function test_a_late_first_run_sends_one_urgent_reminder_not_two(): void
     {
         $user = BotUser::factory()->approved()->create(['telegram_id' => self::ID]);
-        app(SubscriptionService::class)->grant($user, Plan::Community, 12);
+        app(SubscriptionService::class)->grant($user, Plan::Active, 12);
         Telegram::fake();
 
         // Команду не запускали, и она впервые сработала за 2 дня до конца.
@@ -198,7 +198,7 @@ class BotAndRemindersTest extends TestCase
         $user->refresh();
         $this->assertSame('open', $user->plan, 'в базе тоже Open, а не только по дате');
         $this->assertNull($user->plan_ends_at);
-        $this->assertSame(Plan::Open, $user->currentPlan());
+        $this->assertSame(Plan::Community, $user->currentPlan());
 
         $sent = $this->remindersSent();
         $this->assertCount(1, $sent);
@@ -210,7 +210,7 @@ class BotAndRemindersTest extends TestCase
     {
         $user = BotUser::factory()->approved()->create(['telegram_id' => self::ID]);
         $service = app(SubscriptionService::class);
-        $service->grant($user, Plan::Community, 12);
+        $service->grant($user, Plan::Active, 12);
         $service->grant($user, Plan::Private, 1);
         Telegram::fake();
 
@@ -226,7 +226,7 @@ class BotAndRemindersTest extends TestCase
     {
         $user = BotUser::factory()->approved()->create(['telegram_id' => self::ID]);
         $service = app(SubscriptionService::class);
-        $service->grant($user, Plan::Community, 1);
+        $service->grant($user, Plan::Active, 1);
         Telegram::fake();
 
         $this->travelTo(now()->addDays(20));
@@ -234,7 +234,7 @@ class BotAndRemindersTest extends TestCase
         $this->assertCount(1, $this->remindersSent());
         $this->assertSame(1, $user->fresh()->plan_notified_stage);
 
-        $service->grant($user->fresh(), Plan::Community, 1);
+        $service->grant($user->fresh(), Plan::Active, 1);
         $this->assertSame(0, $user->fresh()->plan_notified_stage, 'оплата сбросила счётчик напоминаний');
     }
 
@@ -242,7 +242,7 @@ class BotAndRemindersTest extends TestCase
     {
         BotUser::factory()->approved()->create();
         $pending = BotUser::factory()->pending()->create();
-        app(SubscriptionService::class)->grant($pending, Plan::Community, 1);
+        app(SubscriptionService::class)->grant($pending, Plan::Active, 1);
         Telegram::fake();
 
         $this->travel(40)->days();
@@ -254,7 +254,7 @@ class BotAndRemindersTest extends TestCase
     public function test_a_telegram_failure_does_not_break_the_run_and_the_reminder_is_retried_next_day(): void
     {
         $user = BotUser::factory()->approved()->create(['telegram_id' => self::ID]);
-        app(SubscriptionService::class)->grant($user, Plan::Community, 1);
+        app(SubscriptionService::class)->grant($user, Plan::Active, 1);
         $this->travel(20)->days();
 
         // Telegram не отвечает: команда не падает, напоминание не считается отправленным.

@@ -31,15 +31,15 @@ class SecurityTest extends TestCase
 
     public function test_a_participant_session_does_not_open_the_admin(): void
     {
-        $user = BotUser::factory()->community()->create();
+        $user = BotUser::factory()->active()->create();
 
         $this->withSession($this->participantSession($user))->get(route('admin.dashboard'))->assertRedirect();
     }
 
     public function test_a_participant_sees_only_her_own_data(): void
     {
-        $userA = BotUser::factory()->community()->create(['full_name' => 'Анна Первая']);
-        $userB = BotUser::factory()->community()->create(['full_name' => 'Борис Второй']);
+        $userA = BotUser::factory()->active()->create(['full_name' => 'Анна Первая']);
+        $userB = BotUser::factory()->active()->create(['full_name' => 'Борис Второй']);
 
         $html = $this->withSession($this->participantSession($userA))->get(route('account.profile'))->assertOk()->getContent();
 
@@ -49,7 +49,7 @@ class SecurityTest extends TestCase
 
     public function test_a_rejected_participant_is_signed_out_at_the_next_request(): void
     {
-        $user = BotUser::factory()->community()->create();
+        $user = BotUser::factory()->active()->create();
 
         $user->update(['status' => BotUser::STATUS_REJECTED]);
 
@@ -62,7 +62,7 @@ class SecurityTest extends TestCase
 
     public function test_a_participant_cannot_change_her_plan_or_status_through_the_profile_form(): void
     {
-        $user = BotUser::factory()->openPlan()->create();
+        $user = BotUser::factory()->community()->create();
 
         $this->withSession($this->participantSession($user))->post(route('account.profile.update'), [
             'full_name' => 'Новое Имя',

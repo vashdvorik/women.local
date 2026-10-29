@@ -26,12 +26,12 @@ class AccountController extends Controller
         /** @var BotUser $user */
         $user = view()->shared('accountUser');
 
-        // Главная — навигационная для всех тарифов: список «С чего начать», плитки разделов (закрытые для Open с замком),
-        // «Что нового». У Open вместо «Что нового» — материалы публичного сайта и предложение перейти на Community.
+        // Главная — навигационная для всех тарифов: список «С чего начать», плитки разделов (закрытые для Community с замком),
+        // «Что нового». У Community вместо «Что нового» — материалы публичного сайта и предложение перейти на Active.
         return view('account.home', ['user' => $user] + CabinetHome::build($user, app()->getLocale()));
     }
 
-    /** Чат с ИИ-помощником кабинета (подбор контактов и возможностей); открыт с тарифа Community. */
+    /** Чат с ИИ-помощником кабинета (подбор контактов и возможностей); открыт с тарифа Active. */
     public function assistant(): View
     {
         return $this->themedView('assistant');
@@ -93,7 +93,7 @@ class AccountController extends Controller
     public function showPerson(BotUser $botUser): View
     {
         // В каталоге видны только одобренные участницы с действующим платным тарифом, не скрытые администратором:
-        // остальных открыть нельзя (скрытый открывает только свою страницу). Раздел открыт с тарифа Community.
+        // остальных открыть нельзя (скрытый открывает только свою страницу). Раздел открыт с тарифа Active.
         /** @var BotUser $accountUser */
         $accountUser = view()->shared('accountUser');
 

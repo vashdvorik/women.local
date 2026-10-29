@@ -37,7 +37,7 @@ class SubscriptionPriceAndGiftTest extends TestCase
 
     public function test_without_admin_prices_the_configured_ones_are_used_and_the_form_shows_them(): void
     {
-        $this->assertSame(600, Plan::Community->price());
+        $this->assertSame(600, Plan::Active->price());
         $this->assertSame(20000, Plan::Private->price());
 
         $this->actingAsAdmin()->get(route('admin.subscriptions.index'))
@@ -53,13 +53,13 @@ class SubscriptionPriceAndGiftTest extends TestCase
         $this->savePrices(750, 25000)->assertRedirect(route('admin.subscriptions.index'))->assertSessionHas('success');
 
         $this->assertSame(['community' => 750, 'private' => 25000], SiteSetting::subscriptionPrices());
-        $this->assertSame(750, Plan::Community->price());
-        $this->assertSame(75000, Plan::Community->priceKopecks());
+        $this->assertSame(750, Plan::Active->price());
+        $this->assertSame(75000, Plan::Active->priceKopecks());
         $this->assertSame(25000, Plan::Private->price());
-        $this->assertSame("750\u{00A0}руб.", Plan::Community->priceLabel('ru'));
+        $this->assertSame("750\u{00A0}руб.", Plan::Active->priceLabel('ru'));
 
         // Участница видит новые цены на странице тарифов, форма админки — тоже.
-        $user = BotUser::factory()->community()->create();
+        $user = BotUser::factory()->active()->create();
         $plans = $this->asParticipant($user)->get(route('account.subscription'))->assertOk()->getContent();
         $this->assertStringContainsString("750\u{00A0}руб.", $plans);
         $this->assertStringContainsString("25\u{00A0}000\u{00A0}руб.", $plans);
@@ -71,18 +71,18 @@ class SubscriptionPriceAndGiftTest extends TestCase
     public function test_a_new_payment_is_issued_for_the_new_price_and_an_old_invoice_stays_valid_at_the_old_one(): void
     {
         $user = BotUser::factory()->approved()->create();
-        $old = $this->checkoutFor($user, Plan::Community);
+        $old = $this->checkoutFor($user, Plan::Active);
         $this->assertSame(60000, $old->amount);
 
         $this->savePrices(750, 20000);
 
         // Цена изменилась: повторное нажатие «Оформить» даёт новый счёт на новую сумму, а не старый.
-        $new = $this->checkoutFor($user, Plan::Community);
+        $new = $this->checkoutFor($user, Plan::Active);
         $this->assertNotSame($old->id, $new->id);
         $this->assertSame(75000, $new->amount);
 
         // Пока цена не меняется, счёт переиспользуется, как и раньше.
-        $this->assertSame($new->id, $this->checkoutFor($user, Plan::Community)->id);
+        $this->assertSame($new->id, $this->checkoutFor($user, Plan::Active)->id);
 
         // Старый счёт не изменился и оплачивается по той сумме, на которую был выставлен.
         $this->assertSame(60000, $old->fresh()->amount);
@@ -91,12 +91,12 @@ class SubscriptionPriceAndGiftTest extends TestCase
 
     public function test_a_price_change_does_not_touch_plans_already_paid_for(): void
     {
-        $user = BotUser::factory()->community()->create();
+        $user = BotUser::factory()->active()->create();
         $endsAt = $user->fresh()->plan_ends_at->copy();
 
         $this->savePrices(9999, 99999);
 
-        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Active, $user->fresh()->currentPlan());
         $this->assertTrue($user->fresh()->plan_ends_at->equalTo($endsAt));
     }
 
@@ -119,7 +119,7 @@ class SubscriptionPriceAndGiftTest extends TestCase
         }
 
         $this->assertSame([], SiteSetting::subscriptionPrices());
-        $this->assertSame(600, Plan::Community->price());
+        $this->assertSame(600, Plan::Active->price());
         $this->assertSame(20000, Plan::Private->price());
     }
 
@@ -133,13 +133,13 @@ class SubscriptionPriceAndGiftTest extends TestCase
     public function test_the_cached_prices_are_refreshed_on_save_and_a_broken_stored_value_falls_back_to_the_config(): void
     {
         $this->savePrices(700, 21000);
-        $this->assertSame(700, Plan::Community->price());
+        $this->assertSame(700, Plan::Active->price());
 
         // Испорченные данные в настройках (кто-то правил базу руками) не ломают тарифы: берётся значение из конфига.
         SiteSetting::query()->where('key', SiteSetting::SUBSCRIPTION_PRICES_KEY)->update(['value' => json_encode(['community' => 'много', 'private' => -4])]);
         Cache::forget(SiteSetting::SUBSCRIPTION_PRICES_KEY);
 
-        $this->assertSame(600, Plan::Community->price());
+        $this->assertSame(600, Plan::Active->price());
         $this->assertSame(20000, Plan::Private->price());
     }
 
@@ -155,7 +155,7 @@ class SubscriptionPriceAndGiftTest extends TestCase
             ->assertSessionHas('success');
 
         $user->refresh();
-        $this->assertSame(Plan::Community, $user->currentPlan());
+        $this->assertSame(Plan::Active, $user->currentPlan());
         $this->assertTrue($user->plan_ends_at->equalTo(now()->addYear()), 'ровно год');
 
         $subscription = $user->subscriptions()->first();
@@ -206,7 +206,7 @@ class SubscriptionPriceAndGiftTest extends TestCase
         $this->actingAsAdmin()->post(route('admin.subscriptions.gift', $pending), ['plan' => 'community'])->assertStatus(422);
 
         $this->assertSame(0, Subscription::count());
-        $this->assertSame(Plan::Open, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
     }
 
     public function test_the_manage_page_offers_a_gift_first_and_the_manual_grant_is_quiet_by_default(): void

@@ -2,8 +2,8 @@
     $tabs = [
         '' => [__('Все'), $counts['']],
         'private' => ['Private', $counts['private']],
+        'active' => ['Active', $counts['active']],
         'community' => ['Community', $counts['community']],
-        'open' => ['Open', $counts['open']],
         'none' => [__('Без тарифа'), $counts['none']],
         'expiring' => [__('Заканчиваются (30 дней)'), $counts['expiring']],
     ];
@@ -13,7 +13,7 @@
     <div class="space-y-4">
         <div class="card space-y-1 text-ui text-ink-muted">
             <p>
-                {!! __('Тарифы зарегистрированных участниц. Бесплатного тарифа нет: <b class="text-ink">Open</b>, <b class="text-ink">Community</b> и <b class="text-ink">Private</b> платные, на год. Оплата проходит через банк сама; здесь тариф можно выдать вручную (перевод, подарок, исправление) или закрыть. Платежи банка смотрите в разделе «Платежи».') !!}
+                {!! __('Тарифы зарегистрированных участниц. Бесплатного тарифа нет: <b class="text-ink">Community</b>, <b class="text-ink">Active</b> и <b class="text-ink">Private</b> платные, на год. Оплата проходит через банк сама; здесь тариф можно выдать вручную (перевод, подарок, исправление) или закрыть. Платежи банка смотрите в разделе «Платежи».') !!}
             </p>
         </div>
 
@@ -30,7 +30,7 @@
             </div>
 
             <div class="grid gap-4 sm:grid-cols-3">
-                @foreach(['open' => 'WOMEN’S HUB OPEN', 'community' => 'WOMEN’S HUB COMMUNITY', 'private' => 'WOMEN’S HUB PRIVATE'] as $key => $label)
+                @foreach(['community' => 'WOMEN’S HUB COMMUNITY', 'active' => 'WOMEN’S HUB ACTIVE', 'private' => 'WOMEN’S HUB PRIVATE'] as $key => $label)
                     <div class="space-y-1">
                         <label for="price-{{ $key }}" class="field-label">{{ $label }}</label>
                         <div class="flex items-center gap-2">
@@ -57,7 +57,7 @@
             </div>
 
             <div class="grid gap-3 sm:grid-cols-3">
-                @foreach(['open' => 'WOMEN’S HUB OPEN', 'community' => 'WOMEN’S HUB COMMUNITY', 'private' => 'WOMEN’S HUB PRIVATE'] as $key => $label)
+                @foreach(['community' => 'WOMEN’S HUB COMMUNITY', 'active' => 'WOMEN’S HUB ACTIVE', 'private' => 'WOMEN’S HUB PRIVATE'] as $key => $label)
                     <label class="flex items-center gap-2 rounded-lg border border-hairline px-3 py-2 text-ui">
                         <input type="checkbox" name="closed[]" value="{{ $key }}" class="rounded border-hairline" @checked(in_array($key, old('closed', $closed), true))>
                         <span><b class="text-ink">{{ $label }}</b><br><span class="text-ink-muted">{{ __('закрыть покупку, только по заявке') }}</span></span>

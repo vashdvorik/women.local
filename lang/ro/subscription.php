@@ -10,6 +10,67 @@ return [
         'subscription' => 'Abonament',
     ],
 
+    // Descrierile pachetelor: traducerea textelor clientului din rusă („2026 САйт Пакеты ЖЕНЩИНЫ”; variantă de lucru, de corectat). lead — fraza dinaintea listei, closing — fraza de încheiere a pachetului.
+    'plans' => [
+        'community' => [
+            'title' => 'WOMEN’S HUB COMMUNITY',
+            'tagline' => 'Comunitatea ta. Cunoștințe noi. Oportunități noi.',
+            'audience' => 'Pentru femeile care vor să fie în cercul unor persoane cu aceleași idei, să se dezvolte și să afle primele despre noile oportunități.',
+            'monthly' => 'Doar :price de ruble pe lună!',
+            'lead' => 'Pachetul include:',
+            'features' => [
+                'Calitatea de membră a comunității de afaceri feminine Women’s hub.',
+                'Cunoștințe noi, comunicare și networking.',
+                'Informații despre granturi, concursuri, programe de afaceri și instruire.',
+                'Posibilitatea de a participa la nominalizările galei „Femeia anului”.',
+                'Invitații la evenimentele Women’s hub.',
+                'Reduceri și oferte speciale de la parteneri.',
+            ],
+            'closing' => 'Fii în cercul femeilor care se inspiră și se sprijină reciproc!',
+            'cta' => 'Alege COMMUNITY — :price :currency/an',
+        ],
+        'active' => [
+            'title' => 'WOMEN’S HUB ACTIVE',
+            'tagline' => 'Dezvoltă-ți afacerea. Extinde-ți legăturile. Descoperă piețe noi.',
+            'audience' => 'Pentru femeile care vor să-și promoveze afacerea, să găsească parteneri și să folosească noi oportunități de creștere.',
+            'monthly' => 'Doar :price de ruble pe lună!',
+            'lead' => 'Toate avantajele COMMUNITY, plus:',
+            'features' => [
+                'Comunitate de afaceri închisă și comunicare directă cu membrele.',
+                'Networking personalizat: selecție de parteneri, clienți și experți.',
+                'Promovarea afacerii: profil extins, publicații și anunțuri prioritare.',
+                'Informații despre granturi, concursuri, programe de afaceri și instruire.',
+                'Posibilitatea de a participa la nominalizările galei „Femeia anului”.',
+                '3 consultații juridice pe an.',
+                '3 consultații financiar-economice pe an.',
+                'Înscriere prioritară la programe educaționale și de afaceri.',
+                'Prețuri speciale la evenimentele și programele Women’s hub.',
+                'Posibilitatea de a participa la proiecte de afaceri comune.',
+            ],
+            'closing' => 'ACTIVE — transformă cunoștințele în oportunități de afaceri!',
+            'cta' => 'Alege ACTIVE — :price :currency/an',
+        ],
+        'private' => [
+            'title' => 'WOMEN’S HUB PRIVATE',
+            'tagline' => 'Cercul tău personal de influență. Soluții personalizate. Noi orizonturi.',
+            'audience' => 'Calitate de membră exclusivă pentru femeile care își prețuiesc timpul, abordarea individuală și un mediu de afaceri puternic.',
+            'lead' => 'Toate avantajele COMMUNITY și ACTIVE, plus:',
+            'features' => [
+                'PRIVATE CIRCLE: acces la cercul închis al femeilor lider și antreprenoare.',
+                'Curator personal: însoțire și sprijin individual.',
+                'Strategie de afaceri: o sesiune strategică personală și consultații de la experți.',
+                'Legături de afaceri: selecție individuală de parteneri, experți și contacte utile.',
+                'Evenimente închise: întâlniri de afaceri exclusive și Private Dinner.',
+                'Oportunități internaționale: examinare prioritară a participării la proiecte și delegații internaționale.',
+                'Promovare personală: sprijin individual în promovarea afacerii tale.',
+                'Inițiative proprii: posibilitatea de a propune un proiect comun cu Women’s hub.',
+                'Privilegii speciale: condiții speciale de la Women’s hub și partenerii săi.',
+            ],
+            'closing' => 'PRIVATE — mai mult decât calitatea de membră. Spațiul tău personal de creștere și influență.',
+            'cta' => 'Alege PRIVATE — :price :currency/an',
+        ],
+    ],
+
     // Descrierile pachetelor: traducerea textelor clientului din rusă (variantă de lucru; de corectat).
     'plans' => [
         'open' => [
@@ -113,14 +174,14 @@ return [
         'buy' => 'Cumpără abonamentul',
     ],
 
-    'open_home' => [
+    'community_home' => [
         'title' => 'Acasă',
-        'eyebrow' => 'WOMEN’S HUB OPEN',
+        'eyebrow' => 'WOMEN’S HUB COMMUNITY',
         'hello' => 'Bună ziua, :name!',
-        'intro' => 'Aveți tariful Open: oportunități, materiale de instruire și informații ale platformei. Căutarea de contacte, potrivirea și asistentul AI se deschid cu tariful Community.',
-        'upgrade_title' => 'Deschideți comunitatea',
-        'upgrade_text' => 'WOMEN’S HUB COMMUNITY: catalogul membrelor, networking, comunitatea închisă, reduceri de la parteneri și participarea la Gala.',
-        'upgrade_cta' => 'Alege Community',
+        'intro' => 'Aveți tariful Community: oportunități, materiale de instruire și informații ale platformei. Căutarea de contacte, potrivirea și asistentul AI se deschid cu tariful Active.',
+        'upgrade_title' => 'Deschideți mai multe posibilități',
+        'upgrade_text' => 'WOMEN’S HUB ACTIVE: comunitate de afaceri închisă, networking personalizat, promovarea afacerii, consultații juridice și financiare.',
+        'upgrade_cta' => 'Alege Active',
         'news' => 'Noutăți și anunțuri',
         'publications' => 'Publicații',
         'opportunities' => 'Oportunități: granturi, concursuri, proiecte',

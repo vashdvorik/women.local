@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Закрывает раздел кабинета для тех, у кого тариф ниже нужного: `plan:community` пускает Community и Private.
+ * Закрывает раздел кабинета для тех, у кого тариф ниже нужного: `plan:active` пускает Active и Private.
  *
  * Стоит ПОСЛЕ RequireAccountAuth (он кладёт участницу в общие данные представлений), поэтому вешается на маршруты
  * внутри группы кабинета. Тариф проверяется на каждом запросе по сохранённой дате окончания, так что доступ
@@ -33,9 +33,9 @@ class RequirePlan
         'account.knowledge' => 'knowledge',
     ];
 
-    public function handle(Request $request, Closure $next, string $plan = 'community'): Response
+    public function handle(Request $request, Closure $next, string $plan = 'active'): Response
     {
-        $required = Plan::tryFrom($plan) ?? Plan::Community;
+        $required = Plan::tryFrom($plan) ?? Plan::Active;
 
         /** @var BotUser|null $user */
         $user = view()->shared('accountUser');

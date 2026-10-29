@@ -26,7 +26,7 @@ class HiddenMembersTest extends TestCase
 
     private function member(string $name, bool $hidden = false, ?array $embedding = null): BotUser
     {
-        $user = BotUser::factory()->community()->create([
+        $user = BotUser::factory()->active()->create([
             'full_name' => $name,
             'embedding' => $embedding,
         ]);

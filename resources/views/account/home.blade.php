@@ -19,7 +19,7 @@
     <header class="mb-6 max-w-3xl">
         <p class="text-xs font-semibold uppercase tracking-widest text-brand-600">{{ __('account.home.eyebrow') }}</p>
         <h1 class="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">{{ __('account.home.hello', ['name' => $name]) }}</h1>
-        <p class="mt-3 text-sm leading-6 text-gray-600">{{ $paid ? __('account.home.intro') : __('account.home.intro_open') }}</p>
+        <p class="mt-3 text-sm leading-6 text-gray-600">{{ $paid ? __('account.home.intro') : __('account.home.intro_community') }}</p>
     </header>
 
     {{-- Как тут всё устроено: закрывается и больше не показывается на этом устройстве --}}
@@ -40,10 +40,10 @@
     @unless($paid)
         <section class="mb-6 flex flex-col gap-4 rounded-3xl border border-brand-100 bg-brand-50 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6" aria-labelledby="upgrade-title">
             <div class="max-w-2xl">
-                <h2 id="upgrade-title" class="text-base font-semibold">{{ __('subscription.open_home.upgrade_title') }}</h2>
-                <p class="mt-1.5 text-sm leading-6 text-gray-600">{{ __('subscription.open_home.upgrade_text') }}</p>
+                <h2 id="upgrade-title" class="text-base font-semibold">{{ __('subscription.community_home.upgrade_title') }}</h2>
+                <p class="mt-1.5 text-sm leading-6 text-gray-600">{{ __('subscription.community_home.upgrade_text') }}</p>
             </div>
-            <a href="{{ route('account.subscription') }}" class="inline-flex shrink-0 justify-center rounded-xl bg-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700">{{ __('subscription.open_home.upgrade_cta') }}</a>
+            <a href="{{ route('account.subscription') }}" class="inline-flex shrink-0 justify-center rounded-xl bg-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700">{{ __('subscription.community_home.upgrade_cta') }}</a>
         </section>
     @endunless
 
@@ -156,9 +156,9 @@
         {{-- Тариф Open: то, что есть на публичном сайте --}}
         @php
             $sections = [
-                ['key' => 'news', 'title' => __('subscription.open_home.news'), 'all' => route('events')],
-                ['key' => 'publications', 'title' => __('subscription.open_home.publications'), 'all' => route('media.publications')],
-                ['key' => 'opportunities', 'title' => __('subscription.open_home.opportunities'), 'all' => route('opportunities')],
+                ['key' => 'news', 'title' => __('subscription.community_home.news'), 'all' => route('events')],
+                ['key' => 'publications', 'title' => __('subscription.community_home.publications'), 'all' => route('media.publications')],
+                ['key' => 'opportunities', 'title' => __('subscription.community_home.opportunities'), 'all' => route('opportunities')],
             ];
         @endphp
         <div class="mb-10 grid gap-6 lg:grid-cols-3">
@@ -179,10 +179,10 @@
                             @endif
                         </article>
                     @empty
-                        <p class="mt-4 text-sm text-gray-500">{{ __('subscription.open_home.empty') }}</p>
+                        <p class="mt-4 text-sm text-gray-500">{{ __('subscription.community_home.empty') }}</p>
                     @endforelse
 
-                    <a href="{{ $section['all'] }}" target="_blank" rel="noopener" class="mt-auto pt-5 text-sm font-medium text-brand-700 hover:underline">{{ __('subscription.open_home.all') }} →</a>
+                    <a href="{{ $section['all'] }}" target="_blank" rel="noopener" class="mt-auto pt-5 text-sm font-medium text-brand-700 hover:underline">{{ __('subscription.community_home.all') }} →</a>
                 </section>
             @endforeach
         </div>

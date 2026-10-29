@@ -163,20 +163,17 @@
             : MIN_PAGE_WIDTH;
     }
 
-    // Лист приближен впервые: рамку с книгой подтягиваем к верху экрана, чтобы лист и кнопки были на виду
-    function bringIntoView() {
-        if (root.classList.contains('is-full') || !root.scrollIntoView) return;
-        var top = root.getBoundingClientRect().top;
-        if (top < 8 || top > 140) root.scrollIntoView({ block: 'start', behavior: 'smooth' });
-    }
-
     // focus — точка на экране, которая должна остаться на месте (середина щипка); без неё остаётся центр
     function setZoomValue(value, focus) {
         value = Math.max(1, Math.min(maxZoom(), value));
         if (!viewport || Math.abs(value - zoomValue) < 0.001) return;
 
         var wasZoomed = isZoomed();
-        if (!wasZoomed) baseWidth = book.getBoundingClientRect().width;
+        if (!wasZoomed) {
+            baseWidth = book.getBoundingClientRect().width;
+            // Рамка остаётся того же размера, что и без приближения: растёт только лист внутри неё, ничего вокруг не сдвигается
+            root.style.setProperty('--frame-h', Math.round(viewport.getBoundingClientRect().height) + 'px');
+        }
 
         var rect = viewport.getBoundingClientRect();
         var mx = focus ? focus.x - rect.left : viewport.clientWidth / 2;
@@ -188,8 +185,9 @@
         keepSinglePage();
         root.style.setProperty('--z', String(value));
         root.classList.toggle('is-zoomed', isZoomed());
+        if (!isZoomed()) root.style.removeProperty('--frame-h');
         if (zoomIn) zoomIn.disabled = value >= maxZoom() - 0.001;
-        if (zoomOut) zoomOut.hidden = !isZoomed();
+        if (zoomOut) zoomOut.disabled = !isZoomed();
 
         relayout();
         // Размеры книги пересчитываются после события resize: возвращаем нужную точку уже на новом размере
@@ -204,7 +202,6 @@
             viewport.scrollTop = fy * viewport.scrollHeight - my;
         }, 120);
 
-        if (!wasZoomed && isZoomed()) bringIntoView();
     }
 
     // Шаг кнопки или клавиши: к ближайшему большему (меньшему) значению из ZOOMS, на телефоне есть ещё ZOOM_MAX_TOUCH
@@ -224,6 +221,15 @@
     // Перелистнули, пока книга приближена: новая страница (или разворот) снова по центру видимой области
     flip.on('flip', function () { window.setTimeout(centerX, 60); });
     flip.on('changeOrientation', function () { window.setTimeout(centerX, 160); });
+
+    // Размер рамки запоминается при приближении, поэтому после поворота телефона приближение снимается. Свои пересчёты
+    // (relayout) не считаются, а смена только высоты окна (прячется адресная строка) не мешает.
+    var lastWidth = window.innerWidth;
+    window.addEventListener('resize', function (event) {
+        if (!event.isTrusted || window.innerWidth === lastWidth) return;
+        lastWidth = window.innerWidth;
+        if (isZoomed()) setZoomValue(1);
+    });
 
     if (zoomIn) zoomIn.addEventListener('click', function () { stepZoom(1); });
     if (zoomOut) zoomOut.addEventListener('click', function () { stepZoom(-1); });
@@ -351,6 +357,7 @@
 
     function syncFull() {
         var on = isFull();
+        if (isZoomed()) setZoomValue(1);
         root.classList.toggle('is-full', on);
         document.documentElement.classList.toggle('miro-flip-lock', root.classList.contains('is-pseudo-full'));
         if (full) full.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -359,7 +366,26 @@
         relayout();
     }
 
+    // «Во всё окно» работает через position: fixed, но предок со своим слоем (position и z-index) держит книгу под шапкой
+    // сайта, и она закрывает верх экрана. Поэтому на время раскрытия z-index таких предков снимается.
+    var lifted = [];
+
+    function liftAncestors(on) {
+        lifted.forEach(function (item) { item.el.style.zIndex = item.value; });
+        lifted = [];
+        if (!on) return;
+
+        for (var el = root.parentElement; el && el !== document.documentElement; el = el.parentElement) {
+            var style = window.getComputedStyle(el);
+            if (style.position !== 'static' && style.zIndex !== 'auto') {
+                lifted.push({ el: el, value: el.style.zIndex });
+                el.style.zIndex = 'auto';
+            }
+        }
+    }
+
     function pseudoFull(on) {
+        liftAncestors(on);
         root.classList.toggle('is-pseudo-full', on);
         syncFull();
     }

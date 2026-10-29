@@ -7,7 +7,7 @@ namespace App\Support;
  * (/members/join). Оба написаны заново на основании Положения о платформе Woman’s Hub (App\Support\Regulations): цели,
  * принципы, партнёры, членство, Комиссия, права и обязанности, пакеты, Gala. Остальное взято из того, как платформа
  * работает на самом деле: регистрация по почте, оплата в кабинете картой Агропромбанка на 12 месяцев, что открыто
- * на тарифе Open (600) и что входит в Community и Private (docs/SUBSCRIPTIONS.md, docs/PROJECT_MAP.md).
+ * на тарифе Community (600) и что входит в Active и Private (docs/SUBSCRIPTIONS.md, docs/PROJECT_MAP.md).
  *
  * Тексты пакетов (перечни возможностей) здесь не дублируются: страница берёт их из lang/{ru,en,ro}/subscription.php, как
  * и страница «Подписка» в кабинете, а цены из App\Enums\Plan (админка «Подписки → Цена подписки»).
@@ -238,9 +238,9 @@ final class AboutContent
                         'Comisia de selecție a participantelor, formată din șase persoane (trei reprezentanți ai Agenției și trei ai partenerilor), decide dacă cererea corespunde scopurilor și valorilor platformei. Răspunsul vine prin e-mail, iar dacă ai conectat Telegram, și acolo.'),
                     self::card('card',
                         'Выберите тариф и оплатите', 'Choose a plan and pay', 'Alege tariful și plătește',
-                        'Сразу после анкеты вам предложат тарифы Open, Community и Private на 12 месяцев: оплатите картой на защищённой странице банка. Некоторые тарифы могут открываться по заявке: менеджер позвонит и откроет покупку. Данные карты платформа не получает.',
-                        'Right after the profile you will be offered the Open, Community and Private plans for 12 months: pay by card on the bank’s secure page. Some plans may open by request: a manager will call you and open the purchase. The platform never receives your card details.',
-                        'Imediat după profil ți se propun tarifele Open, Community și Private pe 12 luni: plătește cu cardul pe pagina securizată a băncii. Unele tarife se pot deschide la cerere: un manager te va suna și va deschide achiziția. Platforma nu primește datele cardului.'),
+                        'Сразу после анкеты вам предложат тарифы Community, Active и Private на 12 месяцев: оплатите картой на защищённой странице банка. Некоторые тарифы могут открываться по заявке: менеджер позвонит и откроет покупку. Данные карты платформа не получает.',
+                        'Right after the profile you will be offered the Community, Active and Private plans for 12 months: pay by card on the bank’s secure page. Some plans may open by request: a manager will call you and open the purchase. The platform never receives your card details.',
+                        'Imediat după profil ți se propun tarifele Community, Active și Private pe 12 luni: plătește cu cardul pe pagina securizată a băncii. Unele tarife se pot deschide la cerere: un manager te va suna și va deschide achiziția. Platforma nu primește datele cardului.'),
                     self::card('key',
                         'Пользуйтесь возможностями', 'Use the opportunities', 'Folosește oportunitățile',
                         'Закрытое сообщество, каталог участниц, подбор контактов, мероприятия и обучение открываются сразу после оплаты и работают, пока действует членство.',
@@ -258,9 +258,9 @@ final class AboutContent
                     'Calitatea de membră este individuală și se acordă pentru 12 luni. Statutul de rezidentă este valabil pe durata perioadei achitate.',
                 ),
                 'open_note' => self::t(
-                    'Тариф Open открывает кабинет с материалами и возможностями, но не включает поиск участниц и подбор контактов.',
-                    'The Open plan opens the cabinet with materials and opportunities but does not include member search and contact matching.',
-                    'Tariful Open deschide cabinetul cu materiale și oportunități, dar nu include căutarea participantelor și selecția de contacte.',
+                    'Тариф Community открывает кабинет с материалами и возможностями, но не включает поиск участниц и подбор контактов.',
+                    'The Community plan opens the cabinet with materials and opportunities but does not include member search and contact matching.',
+                    'Tariful Community deschide cabinetul cu materiale și oportunități, dar nu include căutarea participantelor și selecția de contacte.',
                 ),
                 'note' => self::t(
                     'Полный перечень возможностей пакетов — в разделе 6 Положения.',
@@ -280,9 +280,9 @@ final class AboutContent
                 'items' => [
                     self::card('idcard',
                         'Индивидуальное членство', 'Individual membership', 'Calitate de membră individuală',
-                        'Членство оформляется на женщину лично и предоставляется на условиях выбранного пакета: Woman’s Hub Community или Woman’s Hub Private.',
-                        'Membership is issued to the woman personally and is provided under the terms of the chosen package: Woman’s Hub Community or Woman’s Hub Private.',
-                        'Calitatea de membră se acordă femeii personal și în condițiile pachetului ales: Woman’s Hub Community sau Woman’s Hub Private.'),
+                        'Членство оформляется на женщину лично и предоставляется на условиях выбранного пакета: Woman’s Hub Community, Woman’s Hub Active или Woman’s Hub Private.',
+                        'Membership is issued to the woman personally and is provided under the terms of the chosen package: Woman’s Hub Community, Woman’s Hub Active or Woman’s Hub Private.',
+                        'Calitatea de membră se acordă femeii personal și în condițiile pachetului ales: Woman’s Hub Community, Woman’s Hub Active sau Woman’s Hub Private.'),
                     self::card('card',
                         'Заявка и взнос', 'Application and fee', 'Cerere și cotizație',
                         'Для вступления нужно подать заявку и оплатить членский взнос за выбранный пакет.',
@@ -316,9 +316,9 @@ final class AboutContent
                 'eyebrow' => self::t('Личный кабинет', 'Personal cabinet', 'Cabinet personal'),
                 'title' => self::t('Что вы получаете в кабинете', 'What you get in the cabinet', 'Ce primești în cabinet'),
                 'intro' => self::t(
-                    'Кабинет открывается после регистрации по почте и выбора тарифа. Open даёт возможности и обучающие материалы; поиск участниц, подбор контактов и ИИ-помощник входят в Community и Private.',
-                    'The cabinet opens after you sign up by email and choose a plan. Open gives opportunities and learning materials; member search, contact matching and the AI assistant are part of Community and Private.',
-                    'Cabinetul se deschide după înregistrarea prin e-mail și alegerea unui tarif. Open oferă oportunități și materiale de instruire; căutarea participantelor, selecția de contacte și asistentul AI fac parte din Community și Private.',
+                    'Кабинет открывается после регистрации по почте и выбора тарифа. Community даёт возможности и обучающие материалы; поиск участниц, подбор контактов и ИИ-помощник входят в Active и Private.',
+                    'The cabinet opens after you sign up by email and choose a plan. Community gives opportunities and learning materials; member search, contact matching and the AI assistant are part of Active and Private.',
+                    'Cabinetul se deschide după înregistrarea prin e-mail și alegerea unui tarif. Community oferă oportunități și materiale de instruire; căutarea participantelor, selecția de contacte și asistentul AI fac parte din Active și Private.',
                 ),
                 'login' => self::t('Войти в кабинет', 'Sign in to the cabinet', 'Intră în cabinet'),
                 'groups' => [
@@ -343,7 +343,7 @@ final class AboutContent
                         ],
                     ],
                     [
-                        'badge' => self::t('С пакетом Community и Private', 'With the Community and Private packages', 'Cu pachetele Community și Private'),
+                        'badge' => self::t('С пакетом Active и Private', 'With the Active and Private packages', 'Cu pachetele Active și Private'),
                         'items' => [
                             self::card('users',
                                 'Каталог участниц', 'Members’ directory', 'Catalogul participantelor',
@@ -423,11 +423,11 @@ final class AboutContent
                         ),
                     ],
                     [
-                        'q' => self::t('Можно ли перейти с Community на Private?', 'Can I switch from Community to Private?', 'Pot trece de la Community la Private?'),
+                        'q' => self::t('Можно ли перейти с Active на Private?', 'Can I switch from Active to Private?', 'Pot trece de la Active la Private?'),
                         'a' => self::t(
-                            'Да. Private начинается сразу, а остаток Community продолжится после окончания Private.',
-                            'Yes. Private starts right away, and the remainder of Community continues after Private ends.',
-                            'Da. Private începe imediat, iar restul perioadei Community continuă după încheierea Private.',
+                            'Да. Private начинается сразу, а остаток Active продолжится после окончания Private.',
+                            'Yes. Private starts right away, and the remainder of Active continues after Private ends.',
+                            'Da. Private începe imediat, iar restul perioadei Active continuă după încheierea Private.',
                         ),
                     ],
                     [

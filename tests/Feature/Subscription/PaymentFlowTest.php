@@ -33,7 +33,7 @@ class PaymentFlowTest extends TestCase
         $this->registerFakeBank();
     }
 
-    private function community(): BotUser
+    private function active(): BotUser
     {
         return BotUser::factory()->approved()->create(['full_name' => 'Анна Иванова', 'locale' => 'ru']);
     }
@@ -42,7 +42,7 @@ class PaymentFlowTest extends TestCase
 
     public function test_checkout_creates_an_invoice_with_the_price_from_settings_and_a_correct_signature(): void
     {
-        $user = $this->community();
+        $user = $this->active();
 
         $response = $this->asParticipant($user)
             ->post(route('account.subscription.checkout'), ['plan' => 'community', 'amount' => 1, 'RequestSum' => 1])
@@ -93,7 +93,7 @@ class PaymentFlowTest extends TestCase
     public function test_the_description_in_the_signature_is_plain_ascii(): void
     {
         // Кодировка строки подписи в документе не указана, поэтому описание счёта нарочно только из ASCII.
-        $payment = $this->checkoutFor($this->community(), Plan::Private);
+        $payment = $this->checkoutFor($this->active(), Plan::Private);
 
         $this->assertMatchesRegularExpression('/^[\x20-\x7E]+$/', app(\App\Services\Payments\WebPayment\Checkout::class)->description($payment));
         $this->assertSame(2000000, $payment->amount);
@@ -101,10 +101,10 @@ class PaymentFlowTest extends TestCase
 
     public function test_a_second_click_reuses_the_unexpired_invoice(): void
     {
-        $user = $this->community();
+        $user = $this->active();
 
-        $first = $this->checkoutFor($user, Plan::Community);
-        $second = $this->checkoutFor($user, Plan::Community);
+        $first = $this->checkoutFor($user, Plan::Active);
+        $second = $this->checkoutFor($user, Plan::Active);
         $other = $this->checkoutFor($user, Plan::Private);
 
         $this->assertTrue($first->is($second));
@@ -114,16 +114,16 @@ class PaymentFlowTest extends TestCase
 
     public function test_an_expired_invoice_is_not_reused(): void
     {
-        $user = $this->community();
-        $first = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $first = $this->checkoutFor($user, Plan::Active);
         $first->update(['expires_at' => now()->subMinute()]);
 
-        $this->assertFalse($first->is($this->checkoutFor($user, Plan::Community)));
+        $this->assertFalse($first->is($this->checkoutFor($user, Plan::Active)));
     }
 
     public function test_only_paid_plans_can_be_bought_and_garbage_is_rejected(): void
     {
-        $user = $this->community();
+        $user = $this->active();
 
         foreach (['open', 'enterprise', '', '../../etc'] as $plan) {
             $this->asParticipant($user)
@@ -159,7 +159,7 @@ class PaymentFlowTest extends TestCase
         $this->app['env'] = 'production';
         $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class);
 
-        $this->asParticipant($this->community())
+        $this->asParticipant($this->active())
             ->post(route('account.subscription.checkout'), ['plan' => 'community'])
             ->assertRedirect(route('account.subscription'))
             ->assertSessionHas('error');
@@ -172,7 +172,7 @@ class PaymentFlowTest extends TestCase
         config(['webpayment.driver' => 'bank', 'webpayment.merchant_login' => null, 'webpayment.merchant_pass' => null]);
         Log::spy();
 
-        $this->asParticipant($this->community())
+        $this->asParticipant($this->active())
             ->post(route('account.subscription.checkout'), ['plan' => 'community'])
             ->assertRedirect(route('account.subscription'))
             ->assertSessionHas('error');
@@ -184,7 +184,7 @@ class PaymentFlowTest extends TestCase
     {
         config(['webpayment.driver' => 'bank', 'webpayment.merchant_login' => '000555', 'webpayment.merchant_pass' => 'prod-secret', 'webpayment.is_test' => false]);
 
-        $html = $this->asParticipant($this->community())
+        $html = $this->asParticipant($this->active())
             ->post(route('account.subscription.checkout'), ['plan' => 'community'])
             ->assertOk()
             ->getContent();
@@ -203,8 +203,8 @@ class PaymentFlowTest extends TestCase
 
     public function test_the_imitator_checks_the_signature_like_the_real_bank_would(): void
     {
-        $user = $this->community();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $payment = $this->checkoutFor($user, Plan::Active);
         $fields = app(\App\Services\Payments\WebPayment\Checkout::class)->fields($payment);
 
         $this->post('/dev/fake-bank', $fields)
@@ -221,8 +221,8 @@ class PaymentFlowTest extends TestCase
 
     public function test_a_paid_invoice_switches_the_plan_on_notifies_the_participant_and_shows_the_result(): void
     {
-        $user = $this->community();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $payment = $this->checkoutFor($user, Plan::Active);
 
         $this->asParticipant($user)
             ->post(route('dev.fakebank.complete'), ['nivid' => $payment->invoice_id, 'decision' => 'pay'])
@@ -235,7 +235,7 @@ class PaymentFlowTest extends TestCase
         $this->assertNotNull($payment->paid_at);
         $this->assertSame('4242', $payment->last_digits);
         $this->assertNotNull($payment->rrn);
-        $this->assertSame(Plan::Community, $user->currentPlan());
+        $this->assertSame(Plan::Active, $user->currentPlan());
         $this->assertTrue($user->plan_ends_at->isFuture());
         $this->assertSame($payment->id, $user->subscriptions()->first()->payment_id);
 
@@ -254,15 +254,15 @@ class PaymentFlowTest extends TestCase
 
     public function test_a_declined_payment_changes_nothing(): void
     {
-        $user = $this->community();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $payment = $this->checkoutFor($user, Plan::Active);
 
         $this->asParticipant($user)
             ->post(route('dev.fakebank.complete'), ['nivid' => $payment->invoice_id, 'decision' => 'decline'])
             ->assertRedirect(route('account.subscription.fail', ['invoiceid' => $payment->invoice_id]));
 
         $this->assertSame(Payment::STATUS_FAILED, $payment->fresh()->status);
-        $this->assertSame(Plan::Open, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
 
         $this->asParticipant($user)
             ->get(route('account.subscription.fail', ['invoiceid' => $payment->invoice_id]))
@@ -272,13 +272,13 @@ class PaymentFlowTest extends TestCase
 
     public function test_a_second_payment_for_the_same_plan_extends_the_period_once_per_payment(): void
     {
-        $user = $this->community();
+        $user = $this->active();
 
-        $first = $this->checkoutFor($user, Plan::Community);
+        $first = $this->checkoutFor($user, Plan::Active);
         $this->post(route('dev.fakebank.complete'), ['nivid' => $first->invoice_id, 'decision' => 'pay']);
         $endAfterFirst = $user->fresh()->plan_ends_at->copy();
 
-        $second = $this->checkoutFor($user->fresh(), Plan::Community);
+        $second = $this->checkoutFor($user->fresh(), Plan::Active);
         $this->assertNotSame($first->invoice_id, $second->invoice_id);
         $this->post(route('dev.fakebank.complete'), ['nivid' => $second->invoice_id, 'decision' => 'pay']);
 
@@ -290,32 +290,32 @@ class PaymentFlowTest extends TestCase
 
     public function test_a_valid_result_notification_is_confirmed_with_the_bank_before_the_plan_is_switched_on(): void
     {
-        $user = $this->community();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $payment = $this->checkoutFor($user, Plan::Active);
         // Имитатор «банка» знает об оплате.
         $payment->update(['payload' => ['fake' => ['state' => 1, 'sum' => 60000, 'currency' => '000', 'istest' => true, 'rrn' => '1', 'lastdgt' => '4242']]]);
 
         $this->post('/payment/result', $this->paidNotification($payment))->assertOk()->assertSee('OK');
 
-        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Active, $user->fresh()->currentPlan());
     }
 
     public function test_a_notification_alone_does_not_switch_the_plan_on_when_the_bank_does_not_confirm_it(): void
     {
         // Документ банка требует проверять оплату через GetState. Оповещение с верной подписью, но без подтверждения банка — не оплата.
-        $user = $this->community();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $payment = $this->checkoutFor($user, Plan::Active);
 
         $this->post('/payment/result', $this->paidNotification($payment))->assertOk();
 
-        $this->assertSame(Plan::Open, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
         $this->assertSame(Payment::STATUS_VERIFYING, $payment->fresh()->status);
     }
 
     public function test_a_forged_notification_with_a_wrong_signature_is_rejected(): void
     {
-        $user = $this->community();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $payment = $this->checkoutFor($user, Plan::Active);
 
         $forged = $this->paidNotification($payment, ['signature' => md5('guess')]);
         $this->post('/payment/result', $forged)->assertStatus(400)->assertSee('ERROR');
@@ -330,13 +330,13 @@ class PaymentFlowTest extends TestCase
         $tampered['paymentsum'] = '100';
         $this->post('/payment/result', $tampered)->assertStatus(400);
 
-        $this->assertSame(Plan::Open, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
         $this->assertSame(Payment::STATUS_PENDING, $payment->fresh()->status);
     }
 
     public function test_incomplete_or_unknown_notifications_are_rejected(): void
     {
-        $payment = $this->checkoutFor($this->community(), Plan::Community);
+        $payment = $this->checkoutFor($this->active(), Plan::Active);
 
         $this->post('/payment/result', [])->assertStatus(400);
         $this->post('/payment/result', ['invoiceid' => $payment->invoice_id])->assertStatus(400);
@@ -351,8 +351,8 @@ class PaymentFlowTest extends TestCase
 
     public function test_a_notification_that_does_not_match_the_invoice_is_never_trusted(): void
     {
-        $user = $this->community();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $payment = $this->checkoutFor($user, Plan::Active);
         $payment->update(['payload' => ['fake' => ['state' => 1, 'sum' => 100, 'currency' => '000', 'istest' => true]]]);
 
         // Банк (с верной подписью) прислал сумму 1 рубль вместо 600.
@@ -363,10 +363,10 @@ class PaymentFlowTest extends TestCase
         $payment->refresh();
         $this->assertSame(Payment::STATUS_VERIFYING, $payment->status);
         $this->assertStringContainsString('сумма', $payment->payload['anomaly']);
-        $this->assertSame(Plan::Open, $user->fresh()->currentPlan(), 'тариф за 1 рубль не включается');
+        $this->assertSame(Plan::Community, $user->fresh()->currentPlan(), 'тариф за 1 рубль не включается');
 
         // Нестыковка по признаку теста: боевое оповещение по тестовому счёту.
-        $other = $this->checkoutFor($this->community(), Plan::Community);
+        $other = $this->checkoutFor($this->active(), Plan::Active);
         $live = $this->paidNotification($other, ['istest' => '0']);
         $this->post('/payment/result', $live)->assertOk();
         $this->assertSame(Payment::STATUS_VERIFYING, $other->fresh()->status);
@@ -375,8 +375,8 @@ class PaymentFlowTest extends TestCase
 
     public function test_a_replayed_notification_does_not_extend_the_plan_twice(): void
     {
-        $user = $this->community();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $payment = $this->checkoutFor($user, Plan::Active);
         $payment->update(['payload' => ['fake' => ['state' => 1, 'sum' => 60000, 'currency' => '000', 'istest' => true]]]);
         $notification = $this->paidNotification($payment);
 
@@ -393,24 +393,24 @@ class PaymentFlowTest extends TestCase
 
     public function test_the_notification_also_works_with_get_and_ignores_header_case_of_names(): void
     {
-        $user = $this->community();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $payment = $this->checkoutFor($user, Plan::Active);
         $payment->update(['payload' => ['fake' => ['state' => 1, 'sum' => 60000, 'currency' => '000', 'istest' => true]]]);
 
         $this->get('/payment/result?'.http_build_query($this->paidNotification($payment)))->assertOk();
 
-        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Active, $user->fresh()->currentPlan());
     }
 
     public function test_the_failure_notification_closes_the_invoice(): void
     {
-        $user = $this->community();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $payment = $this->checkoutFor($user, Plan::Active);
 
         $this->post('/payment/result', $this->failedNotification($payment))->assertOk();
 
         $this->assertSame(Payment::STATUS_FAILED, $payment->fresh()->status);
-        $this->assertSame(Plan::Open, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
 
         // Позднее «оплачено» по уже закрытому счёту ничего не меняет.
         $this->post('/payment/result', $this->paidNotification($payment))->assertOk();
@@ -429,8 +429,8 @@ class PaymentFlowTest extends TestCase
 
     public function test_the_result_page_trusts_the_database_not_the_address_it_was_opened_with(): void
     {
-        $user = $this->community();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $payment = $this->checkoutFor($user, Plan::Active);
 
         // Открыли «Успешно» руками, а банк оплату не подтвердил: тариф не включается, страница говорит «проверяем».
         $this->asParticipant($user)
@@ -439,16 +439,16 @@ class PaymentFlowTest extends TestCase
             ->assertSee(__('subscription.result.processing_title'))
             ->assertSee('http-equiv="refresh"', false);
 
-        $this->assertSame(Plan::Open, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
     }
 
     public function test_the_result_page_never_shows_someone_elses_invoice(): void
     {
-        $owner = $this->community();
-        $payment = $this->checkoutFor($owner, Plan::Community);
+        $owner = $this->active();
+        $payment = $this->checkoutFor($owner, Plan::Active);
         $payment->update(['status' => Payment::STATUS_PAID]);
 
-        $stranger = $this->community();
+        $stranger = $this->active();
 
         $this->asParticipant($stranger)
             ->get(route('account.subscription.success', ['invoiceid' => $payment->invoice_id]))
@@ -458,8 +458,8 @@ class PaymentFlowTest extends TestCase
 
     public function test_the_bank_may_return_the_participant_with_post_and_without_an_invoice_number(): void
     {
-        $user = $this->community();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $payment = $this->checkoutFor($user, Plan::Active);
         $payment->update(['status' => Payment::STATUS_FAILED]);
 
         // Номер счёта запоминается в сессии при нажатии «Оплатить»: если банк его не вернул, находим счёт по ней.
@@ -475,8 +475,8 @@ class PaymentFlowTest extends TestCase
     {
         config(['webpayment.driver' => 'bank', 'webpayment.merchant_login' => '000555', 'webpayment.merchant_pass' => 'prod-secret', 'webpayment.is_test' => false]);
 
-        $user = $this->community();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $payment = $this->checkoutFor($user, Plan::Active);
 
         // Банк оповестил об оплате, но веб-сервис недоступен: подтвердить нельзя, тариф не включается.
         $bankUp = false;
@@ -498,7 +498,7 @@ class PaymentFlowTest extends TestCase
         $payment->refresh();
         $this->assertSame(Payment::STATUS_VERIFYING, $payment->status);
         $this->assertNotEmpty($payment->payload['last_error']);
-        $this->assertSame(Plan::Open, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
 
         // Через несколько минут банк снова доступен: фоновая сверка подтверждает оплату и включает тариф.
         $bankUp = true;
@@ -507,14 +507,14 @@ class PaymentFlowTest extends TestCase
         $this->artisan('payments:reconcile')->assertSuccessful();
 
         $this->assertSame(Payment::STATUS_PAID, $payment->fresh()->status);
-        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Active, $user->fresh()->currentPlan());
     }
 
     public function test_the_reconciler_finds_a_payment_whose_notification_was_lost(): void
     {
         config(['webpayment.driver' => 'bank', 'webpayment.merchant_login' => '000555', 'webpayment.merchant_pass' => 'prod-secret', 'webpayment.is_test' => false]);
 
-        $user = $this->community();
+        $user = $this->active();
         $payment = $this->checkoutFor($user, Plan::Private);
         Http::fake(['*' => Http::response($this->paidSoapReply($payment), 200)]);
 
@@ -530,7 +530,7 @@ class PaymentFlowTest extends TestCase
     {
         config(['webpayment.driver' => 'bank', 'webpayment.merchant_login' => '000555', 'webpayment.merchant_pass' => 'prod-secret', 'webpayment.is_test' => false]);
 
-        $payment = $this->checkoutFor($this->community(), Plan::Community);
+        $payment = $this->checkoutFor($this->active(), Plan::Active);
         Http::fake(['*' => Http::response($this->bankSoapReply(['state' => '0', 'sum' => '60000', 'currency' => '000', 'istest' => '0', 'invoiceid' => $payment->invoice_id]), 200)]);
 
         $this->travel(5)->minutes();
@@ -557,7 +557,7 @@ class PaymentFlowTest extends TestCase
         });
 
         foreach ([2 => Payment::STATUS_CANCELLED, 3 => Payment::STATUS_FAILED, 4 => Payment::STATUS_EXPIRED] as $code => $expected) {
-            $payment = $this->checkoutFor($this->community(), Plan::Community);
+            $payment = $this->checkoutFor($this->active(), Plan::Active);
 
             app(PaymentReconciler::class)->check($payment);
 
@@ -569,8 +569,8 @@ class PaymentFlowTest extends TestCase
     {
         config(['webpayment.driver' => 'bank', 'webpayment.merchant_login' => '000555', 'webpayment.merchant_pass' => 'prod-secret', 'webpayment.is_test' => false]);
 
-        $user = $this->community();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $payment = $this->checkoutFor($user, Plan::Active);
         Http::fake(['*' => Http::response($this->paidSoapReply($payment, ['sum' => '100']), 200)]);
 
         app(PaymentReconciler::class)->check($payment);
@@ -578,13 +578,13 @@ class PaymentFlowTest extends TestCase
         $payment->refresh();
         $this->assertSame(Payment::STATUS_VERIFYING, $payment->status);
         $this->assertStringContainsString('сумма', $payment->payload['anomaly']);
-        $this->assertSame(Plan::Open, $user->fresh()->currentPlan());
+        $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
     }
 
     public function test_a_payment_after_the_participant_deleted_the_profile_is_kept_for_a_refund(): void
     {
-        $user = $this->community();
-        $payment = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $payment = $this->checkoutFor($user, Plan::Active);
         $user->delete();
 
         $payment->refresh();
@@ -599,9 +599,9 @@ class PaymentFlowTest extends TestCase
 
     public function test_pending_invoices_survive_without_a_participant_and_subscriptions_follow_the_profile(): void
     {
-        $user = $this->community();
-        $payment = $this->checkoutFor($user, Plan::Community);
-        app(\App\Services\Subscriptions\SubscriptionService::class)->grant($user, Plan::Community, 1);
+        $user = $this->active();
+        $payment = $this->checkoutFor($user, Plan::Active);
+        app(\App\Services\Subscriptions\SubscriptionService::class)->grant($user, Plan::Active, 1);
 
         $user->delete();
 
@@ -614,11 +614,11 @@ class PaymentFlowTest extends TestCase
 
     public function test_invoice_numbers_do_not_come_from_the_database_row_counter(): void
     {
-        $user = $this->community();
-        $first = $this->checkoutFor($user, Plan::Community);
+        $user = $this->active();
+        $first = $this->checkoutFor($user, Plan::Active);
         $first->update(['status' => Payment::STATUS_EXPIRED]);
 
-        $second = $this->checkoutFor($user, Plan::Community);
+        $second = $this->checkoutFor($user, Plan::Active);
 
         $this->assertNotSame($first->invoice_id, $second->invoice_id);
         $this->assertStringNotContainsString(str_pad((string) $first->id, 8, '0', STR_PAD_LEFT), $first->invoice_id);
@@ -627,12 +627,12 @@ class PaymentFlowTest extends TestCase
 
     public function test_restoring_an_old_backup_does_not_repeat_invoice_numbers_the_bank_has_already_seen(): void
     {
-        $user = $this->community();
+        $user = $this->active();
         $before = [];
 
         // До аварии: счета создавались и уходили в банк.
         for ($i = 0; $i < 5; $i++) {
-            $payment = $this->checkoutFor($user, Plan::Community);
+            $payment = $this->checkoutFor($user, Plan::Active);
             $before[] = $payment->invoice_id;
             $payment->update(['status' => Payment::STATUS_EXPIRED]);
         }
@@ -643,7 +643,7 @@ class PaymentFlowTest extends TestCase
 
         $after = [];
         for ($i = 0; $i < 5; $i++) {
-            $payment = $this->checkoutFor($user, Plan::Community);
+            $payment = $this->checkoutFor($user, Plan::Active);
             $after[] = $payment->invoice_id;
             $payment->update(['status' => Payment::STATUS_EXPIRED]);
         }
@@ -654,7 +654,7 @@ class PaymentFlowTest extends TestCase
 
     public function test_a_taken_invoice_number_is_replaced_by_another_one(): void
     {
-        $user = $this->community();
+        $user = $this->active();
         $taken = 'WHT'.now()->format('ymd').'AAAAAA';
         Payment::create([
             'telegram_id' => 1, 'plan' => 'community', 'months' => 12, 'amount' => 60000, 'currency' => '000',
@@ -665,7 +665,7 @@ class PaymentFlowTest extends TestCase
         \Illuminate\Support\Str::createRandomStringsUsingSequence(['aaaaaa', 'aaaaaa', 'bbbbbb']);
 
         try {
-            $payment = $this->checkoutFor($user, Plan::Community);
+            $payment = $this->checkoutFor($user, Plan::Active);
         } finally {
             \Illuminate\Support\Str::createRandomStringsNormally();
         }
@@ -676,7 +676,7 @@ class PaymentFlowTest extends TestCase
 
     public function test_giving_up_after_five_taken_numbers_raises_the_database_error_instead_of_looping(): void
     {
-        $user = $this->community();
+        $user = $this->active();
         Payment::create([
             'telegram_id' => 1, 'plan' => 'community', 'months' => 12, 'amount' => 60000, 'currency' => '000',
             'invoice_id' => 'WHT'.now()->format('ymd').'AAAAAA', 'status' => Payment::STATUS_PAID, 'is_test' => true, 'driver' => 'fake', 'expires_at' => now(),
@@ -685,7 +685,7 @@ class PaymentFlowTest extends TestCase
 
         try {
             $this->expectException(\Illuminate\Database\UniqueConstraintViolationException::class);
-            $this->checkoutFor($user, Plan::Community);
+            $this->checkoutFor($user, Plan::Active);
         } finally {
             \Illuminate\Support\Str::createRandomStringsNormally();
         }

@@ -136,7 +136,7 @@ return [
 
     'contacts' => [
         'phone' => 'Telefon',
-        'locked' => 'Contactele participantelor sunt deschise de la tariful Community.',
+        'locked' => 'Contactele participantelor sunt deschise de la tariful Active.',
     ],
 
     'mail' => [

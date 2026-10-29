@@ -145,14 +145,14 @@ class ParticipantRegistrationTest extends TestCase
 
     public function test_after_paying_for_a_plan_the_cabinet_opens(): void
     {
-        $user = BotUser::factory()->openPlan()->create();
+        $user = BotUser::factory()->community()->create();
 
         $this->withSession($this->participantSession($user))->get(route('account.index'))->assertOk();
     }
 
     public function test_login_logout_and_a_wrong_password(): void
     {
-        $user = BotUser::factory()->openPlan()->create(['email' => 'member@example.test']);
+        $user = BotUser::factory()->community()->create(['email' => 'member@example.test']);
         $user->forceFill(['password' => 'correct-horse'])->save();
 
         $this->post(route('account.login.submit'), ['email' => 'member@example.test', 'password' => 'wrong'])
@@ -169,7 +169,7 @@ class ParticipantRegistrationTest extends TestCase
 
     public function test_the_login_form_locks_after_five_wrong_passwords(): void
     {
-        $user = BotUser::factory()->openPlan()->create(['email' => 'member@example.test']);
+        $user = BotUser::factory()->community()->create(['email' => 'member@example.test']);
         $user->forceFill(['password' => 'correct-horse'])->save();
 
         foreach (range(1, 5) as $_) {

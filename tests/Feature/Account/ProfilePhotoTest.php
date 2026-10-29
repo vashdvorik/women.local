@@ -39,7 +39,7 @@ class ProfilePhotoTest extends TestCase
 
     public function test_the_edit_form_can_send_a_file_and_shows_the_current_photo(): void
     {
-        $user = BotUser::factory()->community()->create(['avatar_path' => 'avatars/old.jpg']);
+        $user = BotUser::factory()->active()->create(['avatar_path' => 'avatars/old.jpg']);
         Storage::disk('public')->put('avatars/old.jpg', 'x');
 
         $html = $this->withSession($this->sessionOf($user))->get(route('account.profile.edit'))->assertOk()->getContent();
@@ -52,7 +52,7 @@ class ProfilePhotoTest extends TestCase
 
     public function test_a_new_photo_is_cut_to_a_square_and_replaces_the_old_one(): void
     {
-        $user = BotUser::factory()->community()->create(['avatar_path' => 'avatars/telegram.jpg']);
+        $user = BotUser::factory()->active()->create(['avatar_path' => 'avatars/telegram.jpg']);
         Storage::disk('public')->put('avatars/telegram.jpg', 'old');
 
         $this->withSession($this->sessionOf($user))
@@ -73,7 +73,7 @@ class ProfilePhotoTest extends TestCase
 
     public function test_the_photo_can_be_removed(): void
     {
-        $user = BotUser::factory()->community()->create(['avatar_path' => 'avatars/me.jpg']);
+        $user = BotUser::factory()->active()->create(['avatar_path' => 'avatars/me.jpg']);
         Storage::disk('public')->put('avatars/me.jpg', 'x');
 
         $this->withSession($this->sessionOf($user))
@@ -86,7 +86,7 @@ class ProfilePhotoTest extends TestCase
 
     public function test_saving_the_profile_without_a_file_keeps_the_photo(): void
     {
-        $user = BotUser::factory()->community()->create(['avatar_path' => 'avatars/me.jpg']);
+        $user = BotUser::factory()->active()->create(['avatar_path' => 'avatars/me.jpg']);
         Storage::disk('public')->put('avatars/me.jpg', 'x');
 
         $this->withSession($this->sessionOf($user))
@@ -99,7 +99,7 @@ class ProfilePhotoTest extends TestCase
 
     public function test_only_images_up_to_eight_megabytes_are_accepted(): void
     {
-        $user = BotUser::factory()->community()->create(['avatar_path' => null]);
+        $user = BotUser::factory()->active()->create(['avatar_path' => null]);
 
         $notAnImage = UploadedFile::fake()->create('cv.pdf', 100, 'application/pdf');
         $tooBig = UploadedFile::fake()->image('big.jpg', 800, 800)->size(9000);
