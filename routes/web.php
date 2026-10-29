@@ -9,6 +9,7 @@ use App\Http\Controllers\Account\OnboardingController;
 use App\Http\Controllers\Account\OpportunityController;
 use App\Http\Controllers\Account\PasswordResetController;
 use App\Http\Controllers\Account\PlanRequestController;
+use App\Http\Controllers\Account\SiteOpportunityController;
 use App\Http\Controllers\Account\SubscriptionController;
 use App\Http\Controllers\Account\TelegramLinkController;
 use App\Http\Controllers\Admin;
@@ -189,6 +190,8 @@ Route::middleware(RequireAccountAuth::class)
         Route::middleware('plan:community')->group(function (): void {
             Route::get('/knowledge', [AccountController::class, 'knowledge'])->name('knowledge');
             Route::get('/opportunities', [OpportunityController::class, 'index'])->name('opportunities.index');
+            Route::get('/possibilities', [SiteOpportunityController::class, 'index'])->name('possibilities.index');
+            Route::get('/possibilities/{opportunity}', [SiteOpportunityController::class, 'show'])->name('possibilities.show');
         });
 
         Route::middleware('plan:active')->group(function (): void {

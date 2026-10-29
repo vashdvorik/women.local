@@ -92,7 +92,7 @@ return [
         'heading_choose' => 'Choose a plan',
         'intro_choose' => 'Pay by bank card for a year. Your account opens after payment.',
         'heading_current' => 'Your subscription',
-        'intro_upgrade' => 'The higher plan starts right away, and the rest of your current term continues after it.',
+        'intro_upgrade' => 'You can switch to a higher plan: it starts right after payment.',
         'more' => 'What is included',
         'popular' => 'Most popular',
         'choose' => 'Choose for :price',

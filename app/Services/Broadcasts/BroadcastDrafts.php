@@ -88,7 +88,10 @@ class BroadcastDrafts
         return match (true) {
             $item instanceof Event => $item->cardLink()['href'] ?? route('events'),
             $item instanceof Post => route('media.publications.show', $item),
-            $item instanceof SiteOpportunity => route('opportunities.show', $item),
+            // Возможность только для участниц на открытом сайте не открывается: ссылка ведёт в кабинет (после входа)
+            $item instanceof SiteOpportunity => $item->show_on_site
+                ? route('opportunities.show', $item)
+                : route('account.possibilities.show', $item->slug),
             default => url('/'),
         };
     }

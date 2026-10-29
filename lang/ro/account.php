@@ -19,6 +19,7 @@ return [
 
     'nav' => [
         'home' => 'Acasă',
+        'possibilities' => 'Oportunități',
         'assistant' => 'Asistent AI',
         'matches' => 'Recomandări',
         'search' => 'Căutare contacte',
@@ -113,6 +114,10 @@ return [
         'tile_locked' => 'În abonamentul Active',
         'tile_how' => 'Cum se folosește:',
         'tiles' => [
+            'possibilities' => [
+                'what' => 'Granturi, concursuri, programe și oferte ale partenerilor, publicate de echipa platformei.',
+                'how' => 'Deschideți cardul ca să citiți condițiile și termenele.',
+            ],
             'assistant' => [
                 'what' => 'Chat cu AI: selectează contacte și oportunități pentru sarcina dvs.',
                 'how' => 'Scrieți ce vă trebuie, de exemplu „găsiți un expert în marketing”.',
@@ -287,4 +292,13 @@ return [
         'contact_url_url' => 'Introduceți un link valid, de exemplu https://t.me/username.',
         'contact_url_max' => 'Linkul nu trebuie să depășească 500 de caractere.',
     ],
+    'possibilities' => [
+        'title' => 'Oportunități',
+        'subtitle' => 'Granturi, programe, evenimente și oferte ale partenerilor pentru dezvoltarea afacerii dvs.',
+        'empty_title' => 'Încă nu există oportunități',
+        'empty_text' => 'Oportunitățile noi vor apărea aici imediat ce echipa platformei le publică.',
+        'more' => 'Detalii',
+        'back' => 'Toate oportunitățile',
+    ],
+
 ];

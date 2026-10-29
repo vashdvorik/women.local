@@ -18,7 +18,7 @@ class OpportunitiesController extends ContentPageController
     {
         [$cards, $items] = $this->cachedCards(
             'opportunities.list',
-            fn () => SiteOpportunity::with(['translations', 'tag.translations'])->published()->orderByDesc('published_at'),
+            fn () => SiteOpportunity::with(['translations', 'tag.translations'])->published()->onSite()->orderByDesc('published_at'),
             fn (SiteOpportunity $item) => PublicCards::opportunity($item),
         );
 
@@ -41,7 +41,7 @@ class OpportunitiesController extends ContentPageController
             'opportunities',
             $this->tri('Возможности', 'Opportunities', 'Oportunități'),
             $opportunity,
-            fn (bool $withDrafts) => ($withDrafts ? SiteOpportunity::query() : SiteOpportunity::published())->with(['translations', 'tag.translations'])->where('slug', $opportunity)->first(),
+            fn (bool $withDrafts) => ($withDrafts ? SiteOpportunity::query() : SiteOpportunity::published()->onSite())->with(['translations', 'tag.translations'])->where('slug', $opportunity)->first(),
             fn (SiteOpportunity $item) => $this->articleData($item),
         );
     }

@@ -40,6 +40,6 @@ class PlanRequestController extends Controller
 
         $purchase->request($user, $plan, $data['comment'] ?? null);
 
-        return redirect()->route('account.subscription')->with('success', __('participant.plans.requested_flash', ['phone' => $user->phone]));
+        return redirect()->route('account.subscription')->with('success', __('participant.plans.requested_flash'));
     }
 }

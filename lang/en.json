@@ -998,5 +998,9 @@
     "Какому тарифу показывать метку и обводку на странице «Подписка» в кабинете участницы. Можно выбрать любой тариф или никому.": "Which plan gets the badge and outline on the “Subscription” page in the member area. You can pick any plan or none.",
     "Никому": "None",
     "метка": "badge",
-    "Метка «Самый популярный» сохранена.": "The “Most popular” badge has been saved."
+    "Метка «Самый популярный» сохранена.": "The “Most popular” badge has been saved.",
+    "Где показывать": "Where to show",
+    "На открытом сайте": "On the public site",
+    "В кабинете участниц": "In the members’ area",
+    "Опубликованная возможность видна там, где стоит галочка. Сняв «На открытом сайте», вы оставляете её только для участниц.": "A published opportunity is visible wherever the box is ticked. Untick “On the public site” to keep it for members only."
 }

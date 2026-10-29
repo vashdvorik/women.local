@@ -57,7 +57,7 @@
 
             <nav class="flex-1 overflow-y-auto px-3">
                 <p class="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-gray-400">{{ __('account.nav_title') }}</p>
-                @php $navItems = \App\Support\CabinetNav::items($accountUser); @endphp
+                @php $navItems = \App\Support\CabinetNav::items($accountUser, includeLocked: false); @endphp
                 @foreach($navItems as $item)
                     @php $active = request()->routeIs($item['route']) || request()->routeIs($item['route'] . '.*'); @endphp
                     <a href="{{ route($item['route']) }}" @click="sidebarOpen = false"

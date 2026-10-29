@@ -92,7 +92,7 @@ return [
         'heading_choose' => 'Alegeți un tarif',
         'intro_choose' => 'Plata se face cu cardul bancar, pentru un an. Contul se deschide după plată.',
         'heading_current' => 'Abonamentul dvs.',
-        'intro_upgrade' => 'Tariful superior începe imediat, iar restul perioadei curente continuă după el.',
+        'intro_upgrade' => 'Puteți trece la un tarif superior: începe imediat după plată.',
         'more' => 'Ce include tariful',
         'popular' => 'Cel mai popular',
         'choose' => 'Alege pentru :price',

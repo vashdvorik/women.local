@@ -145,6 +145,18 @@
                 <x-forms.field :label="__('Автор')" name="author" x-model="author" />
 
                 @if($isOpportunity)
+                    <fieldset class="space-y-2">
+                        <legend class="field-label">{{ __('Где показывать') }}</legend>
+                        @foreach(['show_on_site' => __('На открытом сайте'), 'show_in_cabinet' => __('В кабинете участниц')] as $flag => $flagLabel)
+                            <label class="flex items-center gap-2 text-ui">
+                                <input type="hidden" name="{{ $flag }}" value="0">
+                                <input type="checkbox" name="{{ $flag }}" value="1" class="rounded border-hairline" @checked((bool) old($flag, $article->{$flag} ?? true))>
+                                <span>{{ $flagLabel }}</span>
+                            </label>
+                        @endforeach
+                        <p class="field-hint">{{ __('Опубликованная возможность видна там, где стоит галочка. Сняв «На открытом сайте», вы оставляете её только для участниц.') }}</p>
+                    </fieldset>
+
                     <div class="space-y-1">
                         <label class="field-label">{{ __('Подать заявку до') }}</label>
                         <input type="date" x-model="deadlineAt"

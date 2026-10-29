@@ -27,21 +27,29 @@
     @if($pending)
         <div class="rounded-xl border border-brand-100 bg-brand-50 px-4 py-3 text-center">
             <p class="text-sm font-semibold text-brand-700">{{ __('participant.plans.request_sent') }}</p>
-            <p class="mt-1 text-xs leading-5 text-gray-600">{{ __('participant.plans.request_sent_text', ['phone' => $user->phone]) }}</p>
+            <p class="mt-1 text-xs leading-5 text-gray-600">{{ __('participant.plans.request_sent_text') }}</p>
         </div>
     @else
-        <form method="POST" action="{{ route('account.plan-request.store') }}" class="space-y-3">
+        {{-- Заявку нельзя отправить случайным нажатием: сначала окно подтверждения (Esc и «Отмена» закрывают его) --}}
+        <form method="POST" action="{{ route('account.plan-request.store') }}" class="space-y-3"
+              x-data="{ confirm: false }" @keydown.escape.window="confirm = false">
             @csrf
             <input type="hidden" name="plan" value="{{ $plan->value }}">
             <p class="text-xs leading-5 text-gray-500">{{ __('participant.plans.request_hint') }}</p>
-            <label class="block">
-                <span class="sr-only">{{ __('participant.plans.comment') }}</span>
-                <textarea name="comment" rows="2" maxlength="500" placeholder="{{ __('participant.plans.comment') }}"
-                          class="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 placeholder:text-gray-400 focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"></textarea>
-            </label>
-            <button type="submit" class="w-full rounded-xl border border-brand-600 bg-white px-4 py-3 text-sm font-semibold text-brand-700 transition hover:bg-brand-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2">
+            <button type="button" @click="confirm = true" class="w-full rounded-xl border border-brand-600 bg-white px-4 py-3 text-sm font-semibold text-brand-700 transition hover:bg-brand-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2">
                 {{ __('participant.plans.request') }}
             </button>
+
+            <div x-show="confirm" x-cloak class="sub-confirm" role="dialog" aria-modal="true" aria-labelledby="confirm-{{ $plan->value }}" @click.self="confirm = false">
+                <div class="sub-confirm__box">
+                    <h3 id="confirm-{{ $plan->value }}" class="sub-confirm__title">{{ __('participant.plans.confirm_title') }}</h3>
+                    <p class="sub-confirm__text">{{ __('participant.plans.confirm_text', ['plan' => $plan->title()]) }}</p>
+                    <div class="sub-confirm__actions">
+                        <button type="button" class="sub-confirm__cancel" @click="confirm = false">{{ __('participant.plans.confirm_cancel') }}</button>
+                        <button type="submit" class="sub-confirm__send">{{ __('participant.plans.confirm_send') }}</button>
+                    </div>
+                </div>
+            </div>
         </form>
     @endif
 @else

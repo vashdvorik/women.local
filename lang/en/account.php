@@ -19,6 +19,7 @@ return [
 
     'nav' => [
         'home' => 'Home',
+        'possibilities' => 'Opportunities',
         'assistant' => 'AI assistant',
         'matches' => 'Recommendations',
         'search' => 'Contact search',
@@ -113,6 +114,10 @@ return [
         'tile_locked' => 'In the Active subscription',
         'tile_how' => 'How to use it:',
         'tiles' => [
+            'possibilities' => [
+                'what' => 'Grants, competitions, programmes and partner offers published by the platform team.',
+                'how' => 'Open a card to read the terms and deadlines.',
+            ],
             'assistant' => [
                 'what' => 'A chat with AI: matches contacts and opportunities to your task.',
                 'how' => 'Write what you need, for example “find a marketing expert”.',
@@ -287,4 +292,13 @@ return [
         'contact_url_url' => 'Enter a valid link, for example https://t.me/username.',
         'contact_url_max' => 'The link must not be longer than 500 characters.',
     ],
+    'possibilities' => [
+        'title' => 'Opportunities',
+        'subtitle' => 'Grants, programmes, events and partner offers for growing your business.',
+        'empty_title' => 'No opportunities yet',
+        'empty_text' => 'New opportunities will appear here as soon as the platform team publishes them.',
+        'more' => 'Read more',
+        'back' => 'All opportunities',
+    ],
+
 ];

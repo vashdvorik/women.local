@@ -30,6 +30,7 @@ class RequirePlan
         'account.people' => 'people',
         'account.people.show' => 'people',
         'account.opportunities.*' => 'opportunities',
+        'account.possibilities.*' => 'possibilities',
         'account.knowledge' => 'knowledge',
     ];
 

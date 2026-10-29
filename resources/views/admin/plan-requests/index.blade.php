@@ -77,12 +77,6 @@
 
                         @if(in_array($item->status, \App\Models\PlanRequest::OPEN_STATUSES, true))
                             <div class="flex flex-wrap items-center gap-2">
-                                @if($item->status === 'new')
-                                    <form method="POST" action="{{ route('admin.plan-requests.contacted', $item) }}">
-                                        @csrf
-                                        <button type="submit" class="btn-secondary">{{ __('Позвонили') }}</button>
-                                    </form>
-                                @endif
                                 @if($item->status !== 'unlocked')
                                     <form method="POST" action="{{ route('admin.plan-requests.unlock', $item) }}" class="flex flex-wrap items-center gap-3">
                                         @csrf

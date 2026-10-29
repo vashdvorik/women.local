@@ -10,8 +10,8 @@ use App\Models\SiteOpportunity;
 
 /**
  * Лента для главной кабинета на тарифе Community: «только та информация, которая есть на публичном сайте».
- * Берёт последние опубликованные материалы тех же разделов, что показывает сайт (новости, публикации, возможности), и
- * отдаёт карточки с готовыми ссылками на публичные страницы. Ничего из закрытой части сюда не попадает.
+ * Берёт последние опубликованные материалы тех же разделов, что показывает сайт (новости, публикации), и отдаёт карточки
+ * с готовыми ссылками на публичные страницы. Возможности берутся те, что открыты участницам в кабинете.
  */
 final class CommunityFeed
 {
@@ -36,8 +36,9 @@ final class CommunityFeed
         $publications = Post::with(['translations', 'tag.translations'])->published()->orderByDesc('published_at')->limit($limit)->get()
             ->map(fn (Post $post): array => self::fromCard(PublicCards::post($post), $locale))->all();
 
-        $opportunities = SiteOpportunity::with(['translations', 'tag.translations'])->published()->orderByDesc('published_at')->limit($limit)->get()
-            ->map(fn (SiteOpportunity $item): array => self::fromCard(PublicCards::opportunity($item), $locale))->all();
+        // Возможности для участниц (в том числе закрытые для сайта) открываются внутри кабинета
+        $opportunities = SiteOpportunity::with(['translations', 'tag.translations'])->published()->inCabinet()->orderByDesc('published_at')->limit($limit)->get()
+            ->map(fn (SiteOpportunity $item): array => [...self::fromCard(PublicCards::opportunity($item), $locale), 'href' => route('account.possibilities.show', $item->slug), 'external' => false])->all();
 
         return compact('news', 'publications', 'opportunities');
     }
