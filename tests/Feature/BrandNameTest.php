@@ -45,7 +45,7 @@ class BrandNameTest extends TestCase
             }
         }
 
-        $this->assertSame([], $found, 'Старое название платформы: замените на «Women\'s hub»');
+        $this->assertSame([], $found, 'Старое название платформы: замените на «Women\'s Hub»');
     }
 
     public function test_the_public_site_uses_the_new_name_in_titles_and_footer(): void

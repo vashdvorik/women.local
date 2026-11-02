@@ -8,6 +8,7 @@
 
     function initChat(root) {
         var log = root.querySelector('[data-mgr-log]');
+        var thread = root.querySelector('[data-mgr-thread]');
         var chips = root.querySelector('[data-mgr-chips]');
         var form = root.querySelector('[data-mgr-form]');
         var input = root.querySelector('[data-mgr-input]');
@@ -18,13 +19,30 @@
         var busy = false;
         var typing = null;
 
+        // Сообщение как в чате AI-помощника: у ответа аватар «AI» и подпись, у участницы только пузырь
         function bubble(role, text) {
             var item = document.createElement('div');
-            item.className = 'mgr-msg mgr-msg--' + role;
+            item.className = 'fortun-ai-message fortun-ai-message--' + role;
+            if (role === 'assistant') {
+                var avatar = document.createElement('span');
+                avatar.className = 'fortun-ai-message__avatar';
+                avatar.setAttribute('aria-hidden', 'true');
+                avatar.textContent = 'AI';
+                item.appendChild(avatar);
+            }
+            var box = document.createElement('div');
+            box.className = 'fortun-ai-message__bubble';
+            if (role === 'assistant') {
+                var author = document.createElement('span');
+                author.className = 'fortun-ai-message__author';
+                author.textContent = i18n.author || '';
+                box.appendChild(author);
+            }
             var body = document.createElement('p');
             body.textContent = text;
-            item.appendChild(body);
-            log.appendChild(item);
+            box.appendChild(body);
+            item.appendChild(box);
+            thread.appendChild(item);
             log.scrollTop = log.scrollHeight;
             return item;
         }
@@ -34,6 +52,13 @@
             if (!on && typing) { typing.remove(); typing = null; }
         }
 
+        // Приветствие; пока переписки нет, быстрые вопросы стоят прямо под ним
+        function greet(withChips) {
+            var item = bubble('assistant', i18n.hello || '');
+            if (withChips) item.querySelector('.fortun-ai-message__bubble').appendChild(chips);
+            else chips.hidden = true;
+        }
+
         function load() {
             if (loaded) return;
             loaded = true;
@@ -41,11 +66,10 @@
                 .then(function (response) { return response.ok ? response.json() : { messages: [] }; })
                 .then(function (data) {
                     var messages = data.messages || [];
-                    bubble('assistant', i18n.hello || '');
+                    greet(messages.length === 0);
                     messages.forEach(function (m) { bubble(m.role === 'user' ? 'user' : 'assistant', m.content); });
-                    if (messages.length) chips.hidden = true;
                 })
-                .catch(function () { bubble('assistant', i18n.hello || ''); });
+                .catch(function () { greet(true); });
         }
 
         function send(text) {
@@ -56,7 +80,6 @@
             chips.hidden = true;
             bubble('user', text);
             input.value = '';
-            input.style.height = '';
             showTyping(true);
 
             fetch(root.getAttribute('data-send-url'), {
@@ -80,13 +103,6 @@
         }
 
         form.addEventListener('submit', function (event) { event.preventDefault(); send(input.value); });
-        input.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); send(input.value); }
-        });
-        input.addEventListener('input', function () {
-            input.style.height = 'auto';
-            input.style.height = Math.min(input.scrollHeight, 120) + 'px';
-        });
         root.querySelectorAll('[data-mgr-suggest]').forEach(function (chip) {
             chip.addEventListener('click', function () { send(chip.textContent); });
         });

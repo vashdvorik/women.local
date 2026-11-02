@@ -98,7 +98,7 @@ class AccountCabinetTest extends TestCase
         $this->assertStringContainsString('class="account-brand-logo', $html);
         $this->assertStringNotContainsString('logo-platform-light', $html);
         $this->assertStringNotContainsString('background:#21140F', $html);
-        $this->assertStringContainsString('href="'.route('account.index').'" aria-label="Women\'s hub"', $html);
+        $this->assertStringContainsString('href="'.route('account.index').'" aria-label="Women\'s Hub"', $html);
     }
 
     /** @dataProvider accountThemeProvider */

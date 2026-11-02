@@ -150,6 +150,6 @@ class BotUserSeeder extends Seeder
             }
         }
 
-        $this->command->info('Создано/обновлено ' . count($users) . ' профилей участниц Women\'s hub.');
+        $this->command->info('Создано/обновлено ' . count($users) . ' профилей участниц Women\'s Hub.');
     }
 }

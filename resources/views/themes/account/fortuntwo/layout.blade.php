@@ -109,11 +109,11 @@
         $barItems = array_values(array_filter($navItems, fn ($item) => in_array($item['key'], $barKeys, true)));
     @endphp
     {{-- Одна страница в меню (тарифа ещё нет): нижняя панель не нужна, «Подписка» открывается из верхней полосы --}}
-    {{-- AI-менеджер: плавающая кнопка и окно на всех страницах кабинета, где есть тариф; на его собственной странице чат уже открыт --}}
+    {{-- AI-менеджер: плавающая кнопка и окно только на главной (на других страницах она перекрывала бы кнопки и поля); раздел «AI-менеджер» есть в меню. Скрипт нужен и на самой странице менеджера --}}
     @if($accountUser->currentPlan()->isPaid())
-        @unless(request()->routeIs('account.manager'))
+        @if(request()->routeIs('account.index'))
             @include('account.partials.manager-widget')
-        @endunless
+        @endif
         <script defer src="{{ asset_v('themes/account/fortuntwo/js/manager.js') }}"></script>
     @endif
 

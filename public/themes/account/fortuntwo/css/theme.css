@@ -532,14 +532,22 @@ body.account-theme-fortuntwo .sub-card__more-body { display: grid; gap: 16px; ma
 body.account-theme-fortuntwo .sub-card__audience { margin: 0; padding: 12px 14px; border-radius: 14px; background: var(--fortun-surface); color: var(--fortun-slate); font-size: 14px; line-height: 1.55; }
 body.account-theme-fortuntwo .sub-card__closing { margin: 0; color: var(--fortun-ink-deep); font-size: 14px; font-weight: 600; line-height: 1.5; }
 body.account-theme-fortuntwo .sub-card__buy { margin-top: auto; padding-top: 24px; }
-@media (min-width: 1024px) {
+/* Слева в кабинете меню в 256 px, поэтому на ноутбуках три колонки получаются узкими, а карточки очень высокими.
+   Пока места мало (от планшета до ~1360 px), карточка ложится горизонтально: слева шапка с названием, справа цена, состав и кнопка.
+   Три колонки бок о бок только на широком экране, на телефоне карточки идут столбиком. */
+@media (min-width: 768px) and (max-width: 1359px) {
+    body.account-theme-fortuntwo .sub-card { display: grid; grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); }
+    body.account-theme-fortuntwo .sub-card__head { padding: 28px 24px; border-radius: 23px 0 0 23px; }
+    body.account-theme-fortuntwo .sub-card__body { padding: 24px 28px; }
+}
+@media (min-width: 1360px) {
     body.account-theme-fortuntwo .sub-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     body.account-theme-fortuntwo .sub-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 780px; }
     body.account-theme-fortuntwo .sub-grid--1 { max-width: 380px; }
 }
 /* Шапки карточек одной высоты (по самой высокой), чтобы цены, списки и кнопки стояли на одном уровне */
 @supports (grid-template-rows: subgrid) {
-    @media (min-width: 1024px) {
+    @media (min-width: 1360px) {
         body.account-theme-fortuntwo .sub-card { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 0; }
     }
 }
@@ -602,24 +610,11 @@ body.account-theme-fortuntwo .tour__next { padding: 9px 20px; border: 0; border-
 body.account-theme-fortuntwo .tour__next:hover { background: var(--fortun-primary-hover); }
 
 /* ---------- AI-менеджер: чат на странице и плавающее окно ---------- */
-body.account-theme-fortuntwo .mgr-chat { display: flex; flex-direction: column; min-height: 0; }
-body.account-theme-fortuntwo .mgr-log { display: flex; flex: 1; flex-direction: column; gap: 10px; min-height: 0; overflow-y: auto; padding: 4px 2px 12px; }
-body.account-theme-fortuntwo .mgr-msg { max-width: 88%; padding: 11px 14px; border-radius: 16px; font-size: 14px; line-height: 1.55; }
-body.account-theme-fortuntwo .mgr-msg p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
-body.account-theme-fortuntwo .mgr-msg--assistant { align-self: flex-start; border-bottom-left-radius: 6px; background: var(--fortun-surface-cream); color: var(--fortun-ink-deep); }
-body.account-theme-fortuntwo .mgr-msg--user { align-self: flex-end; border-bottom-right-radius: 6px; background: var(--fortun-primary); color: var(--fortun-on-primary); }
-body.account-theme-fortuntwo .mgr-msg--typing { color: var(--fortun-slate); font-style: italic; }
-body.account-theme-fortuntwo .mgr-chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 0 12px; }
-body.account-theme-fortuntwo .mgr-chips[hidden] { display: none; }
-body.account-theme-fortuntwo .mgr-chip { padding: 8px 12px; border: 1px solid var(--fortun-hairline-strong); border-radius: 9999px; background: var(--fortun-canvas); color: var(--fortun-ink-deep); font-size: 13px; font-weight: 500; text-align: left; cursor: pointer; }
-body.account-theme-fortuntwo .mgr-chip:hover { background: var(--fortun-surface-cream); }
-body.account-theme-fortuntwo .mgr-form { display: flex; align-items: flex-end; gap: 8px; padding-top: 10px; border-top: 1px solid var(--fortun-hairline); }
-body.account-theme-fortuntwo .mgr-input { flex: 1; min-height: 44px; max-height: 120px; padding: 11px 14px; border: 1px solid var(--fortun-hairline-strong); border-radius: 14px; background: var(--fortun-canvas); color: var(--fortun-ink-deep); font: inherit; font-size: 14px; line-height: 1.4; resize: none; }
-body.account-theme-fortuntwo .mgr-input:focus { outline: 2px solid var(--fortun-brand-teal); outline-offset: 1px; }
-body.account-theme-fortuntwo .mgr-send { flex: none; display: grid; width: 44px; height: 44px; place-items: center; border: 0; border-radius: 14px; background: var(--fortun-primary); color: var(--fortun-on-primary); cursor: pointer; }
-body.account-theme-fortuntwo .mgr-send:disabled { opacity: .5; cursor: default; }
+/* Чат AI-менеджера оформлен как чат AI-помощника (fortun-ai-*): здесь только то, чего у помощника нет */
+body.account-theme-fortuntwo .mgr-chat { flex: 1 1 auto; }
+body.account-theme-fortuntwo .mgr-msg--typing .fortun-ai-message__bubble p { color: var(--fortun-slate); font-style: italic; }
+body.account-theme-fortuntwo .fortun-ai-composer input { font-size: 14px; }
 body.account-theme-fortuntwo .mgr-note { margin: 8px 0 0; color: var(--fortun-slate); font-size: 12px; line-height: 1.4; }
-body.account-theme-fortuntwo .mgr-page .mgr-chat { height: calc(100vh - 230px); min-height: 380px; max-width: 760px; padding: 18px; border: 1px solid var(--fortun-hairline-strong); border-radius: 22px; background: var(--fortun-canvas); }
 body.account-theme-fortuntwo .mgr-fab { position: fixed; z-index: 60; right: 24px; bottom: 24px; display: inline-flex; align-items: center; gap: 10px; padding: 14px 20px; border: 0; border-radius: 9999px; background: var(--fortun-primary); color: var(--fortun-on-primary); font-size: 14px; font-weight: 600; box-shadow: 0 10px 28px rgba(33, 20, 15, .3); cursor: pointer; }
 body.account-theme-fortuntwo .mgr-fab:hover { background: var(--fortun-primary-hover); }
 body.account-theme-fortuntwo .mgr-fab[hidden], body.account-theme-fortuntwo .mgr-panel[hidden] { display: none; }
@@ -635,7 +630,8 @@ body.account-theme-fortuntwo .mgr-panel .mgr-chat { flex: 1; padding-top: 12px; 
     body.account-theme-fortuntwo .mgr-fab { right: 16px; bottom: 84px; padding: 14px; }
     body.account-theme-fortuntwo .mgr-fab__label { display: none; }
     body.account-theme-fortuntwo .mgr-panel { inset: 0; width: auto; max-width: none; height: auto; border: 0; border-radius: 0; }
-    body.account-theme-fortuntwo .mgr-page .mgr-chat { height: calc(100vh - 260px); padding: 14px; }
+    /* Страница менеджера по высоте экрана за вычетом верхней панели и нижнего меню, чтобы поле ввода не уходило вниз */
+    body.account-theme-fortuntwo .mgr-page { height: calc(100vh - 190px); height: calc(100dvh - 190px - env(safe-area-inset-bottom)); min-height: 360px; }
 }
 
 /* Тариф участницы среди карточек: тёмная метка и обводка, чтобы сразу было видно, какой действует */

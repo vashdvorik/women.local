@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'brand' => 'Women\'s hub',
+    'brand' => 'Women\'s Hub',
     'cabinet' => 'Кабинет',
     'language' => 'Язык',
     'open_menu' => 'Открыть меню',
