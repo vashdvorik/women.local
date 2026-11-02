@@ -1,33 +1,20 @@
 @php
-    use App\Support\AdminCamp;
-
-    // Лагерь определяется маршрутом: под переключателем показывается меню только его.
-    $camp = AdminCamp::current();
-
-    // «Добавить …» подсвечивается, когда открыта форма создания; список —
-    // на index и на редактировании.
-    $isCreate = fn (string $name) => request()->routeIs($name);
+    // «Публикации» (статьи) пока не используются на сайте: пункт меню скрыт, страницы /admin/news открываются по прямой
+    // ссылке. Чтобы вернуть пункт в «Медиатеку», поставьте true.
     $showPublications = false;
-    $isList = fn (string $prefix) => request()->routeIs($prefix.'.index') || request()->routeIs($prefix.'.edit');
 
-    // Группа с активной страницей раскрывается принудительно (группы есть только у «Внешнего сайта»).
-    // «Медиатека» объединяет фотоальбомы, видео и публикации (каталоги и брошюры организации),
-    // как и в меню публичного сайта.
-    $activeGroup = match (true) {
-        request()->routeIs('admin.events.*') => 'events',
-        request()->routeIs('admin.projects.*') => 'projects',
-        request()->routeIs('admin.opportunities.*') => 'opportunities',
-        request()->routeIs('admin.experts.*') => 'experts',
-        request()->routeIs('admin.albums.*'), request()->routeIs('admin.videos.*'), request()->routeIs('admin.posts.*'), request()->routeIs('admin.catalogs.*') => 'media',
-        default => null,
-    };
+    // Группы меню сворачиваются; группа текущей страницы раскрыта всегда. «Медиатека» вложена в «Контент»: страницы
+    // фотоальбомов, видео и каталогов раскрывают обе.
+    $activeGroups = array_values(array_filter([
+        \App\Support\AdminSection::key(),
+        request()->routeIs('admin.albums.*', 'admin.videos.*', 'admin.posts.*', 'admin.catalogs.*') ? 'media' : null,
+    ]));
 
-    // Сколько профилей и постов участниц ждут решения: сумма стоит на вкладке «Кабинеты участниц»
-    // и видна из любого раздела сайта, чтобы очередь модерации не потерялась.
+    // Что ждёт решения администратора: числа стоят рядом с пунктами, а их сумма — на «Инфопанели».
     $pendingProfiles = \App\Models\BotUser::pending()->count();
     $pendingMemberPosts = \App\Models\Opportunity::pending()->count();
 
-    // Новые заявки на закрытые тарифы: менеджеру нужно позвонить.
+    // Новые заявки на закрытые пакеты: менеджеру нужно позвонить.
     $newPlanRequests = \App\Models\PlanRequest::where('status', \App\Models\PlanRequest::STATUS_NEW)->count();
 
     // Вопросы участниц AI-менеджеру, на которые он не нашёл ответа: ждут, пока админ дополнит знания или ответит сам.
@@ -38,6 +25,8 @@
 
     // Непрочитанные обращения из формы «Связаться с нами» на странице «Контакты».
     $unreadContacts = \App\Models\ContactMessage::unread()->count();
+
+    $attention = $pendingProfiles + $pendingMemberPosts + $newPlanRequests + $managerQuestions + $problemPayments + $unreadContacts;
 @endphp
 
 <aside {{ $attributes->merge(['class' => 'admin-sidebar']) }}>
@@ -50,183 +39,181 @@
              class="h-10 w-auto max-w-full object-contain object-left">
     </a>
 
-    <x-admin.camp-switch :camp="$camp" :pending="$pendingProfiles + $pendingMemberPosts" />
+    {{-- Одно меню для всей админки, сгруппированное по задачам администратора: участницы, пакеты и оплата, контент,
+         общение, настройки. Заголовки групп — кнопки сворачивания. --}}
+    <nav class="py-2 flex-1" style="visibility:hidden" data-active="{{ json_encode($activeGroups) }}" x-data="sidebarNav(@js($activeGroups))">
+        <a href="{{ route('admin.dashboard') }}"
+           class="nav-link @if(request()->routeIs('admin.dashboard')) nav-link--active @endif">
+            <x-admin.nav-icon name="dashboard" /><span>{{ __('Инфопанель') }}</span>
+            @if($attention > 0)<span class="nav-counter" title="{{ __('Требует внимания') }}">{{ $attention }}</span>@endif
+        </a>
 
-    <nav class="py-2 flex-1" x-data="sidebarNav(@js($activeGroup))">
-        @if($camp === AdminCamp::CABINETS)
-            {{-- ===================== Кабинеты участниц ===================== --}}
-            <a href="{{ route('admin.cabinets.dashboard') }}"
-               class="nav-link @if(request()->routeIs('admin.cabinets.dashboard')) nav-link--active @endif">
-                <x-admin.nav-icon name="dashboard" /><span>{{ __('Инфопанель') }}</span>
-            </a>
+        {{-- ======================== Участницы ======================== --}}
+        <x-admin.nav-group group="people" :label="__('Участницы')" :count="$pendingProfiles + $pendingMemberPosts + $managerQuestions" />
+        <div class="nav-collapsible" data-group="people" x-init="$nextTick(() => $el.style.maxHeight = '')" :class="open.people ? '' : 'nav-collapsible--closed'">
+        <a href="{{ route('admin.profiles.index') }}"
+           class="nav-link @if(request()->routeIs('admin.profiles.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="users" /><span>{{ __('Профили участниц') }}</span>
+            @if($pendingProfiles > 0)<span class="nav-counter" title="{{ __('Ждут решения') }}">{{ $pendingProfiles }}</span>@endif
+        </a>
+        <a href="{{ route('admin.member-posts.index') }}"
+           class="nav-link @if(request()->routeIs('admin.member-posts.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="news" /><span>{{ __('Инициативы участниц') }}</span>
+            @if($pendingMemberPosts > 0)<span class="nav-counter" title="{{ __('Ждут решения') }}">{{ $pendingMemberPosts }}</span>@endif
+        </a>
+        <a href="{{ route('admin.manager-questions.index') }}"
+           class="nav-link @if(request()->routeIs('admin.manager-questions.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="inbox" /><span>{{ __('Вопросы AI-менеджеру') }}</span>
+            @if($managerQuestions > 0)<span class="nav-counter" title="{{ __('Вопросы без ответа') }}">{{ $managerQuestions }}</span>@endif
+        </a>
+        <a href="{{ route('admin.statistics.index') }}"
+           class="nav-link @if(request()->routeIs('admin.statistics.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="chart" /><span>{{ __('Статистика') }}</span>
+        </a>
 
-            <a href="{{ route('admin.profiles.index') }}"
-               class="nav-link mt-2 @if(request()->routeIs('admin.profiles.*')) nav-link--active @endif">
-                <x-admin.nav-icon name="users" /><span>{{ __('Профили участниц') }}</span>
-                @if($pendingProfiles > 0)<span class="nav-counter">{{ $pendingProfiles }}</span>@endif
-            </a>
-            <a href="{{ route('admin.member-posts.index') }}"
-               class="nav-link @if(request()->routeIs('admin.member-posts.*')) nav-link--active @endif">
-                <x-admin.nav-icon name="news" /><span>{{ __('Посты участниц') }}</span>
-                @if($pendingMemberPosts > 0)<span class="nav-counter">{{ $pendingMemberPosts }}</span>@endif
-            </a>
-            <a href="{{ route('admin.learning-videos.index') }}"
-               class="nav-link @if(request()->routeIs('admin.learning-videos.*')) nav-link--active @endif">
-                <x-admin.nav-icon name="video" /><span>{{ __('Обучающие видео') }}</span>
-            </a>
-            <a href="{{ route('admin.broadcasts.index') }}"
-               class="nav-link @if(request()->routeIs('admin.broadcasts.*')) nav-link--active @endif">
-                <x-admin.nav-icon name="send" /><span>{{ __('Рассылка в Telegram') }}</span>
-            </a>
-            <a href="{{ route('admin.subscriptions.index') }}"
-               class="nav-link @if(request()->routeIs('admin.subscriptions.*')) nav-link--active @endif">
-                <x-admin.nav-icon name="tag" /><span>{{ __('Подписки') }}</span>
-            </a>
-            <a href="{{ route('admin.plan-requests.index') }}"
-               class="nav-link @if(request()->routeIs('admin.plan-requests.*')) nav-link--active @endif">
-                <x-admin.nav-icon name="users" /><span>{{ __('Заявки на тариф') }}</span>
-                @if($newPlanRequests > 0)<span class="nav-counter" title="{{ __('Новые заявки: нужно позвонить') }}">{{ $newPlanRequests }}</span>@endif
-            </a>
-            <a href="{{ route('admin.manager-questions.index') }}"
-               class="nav-link @if(request()->routeIs('admin.manager-questions.*')) nav-link--active @endif">
-                <x-admin.nav-icon name="inbox" /><span>{{ __('Вопросы AI-менеджеру') }}</span>
-                @if($managerQuestions > 0)<span class="nav-counter" title="{{ __('Вопросы без ответа') }}">{{ $managerQuestions }}</span>@endif
-            </a>
-            <a href="{{ route('admin.payments.index') }}"
-               class="nav-link @if(request()->routeIs('admin.payments.*')) nav-link--active @endif">
-                <x-admin.nav-icon name="inbox" /><span>{{ __('Платежи') }}</span>
-                @if($problemPayments > 0)<span class="nav-counter" title="{{ __('Платежи, которые нужно разобрать вручную') }}">{{ $problemPayments }}</span>@endif
-            </a>
-            <a href="{{ route('admin.statistics.index') }}"
-               class="nav-link @if(request()->routeIs('admin.statistics.*')) nav-link--active @endif">
-                <x-admin.nav-icon name="chart" /><span>{{ __('Статистика') }}</span>
-            </a>
+        {{-- ======================== Пакеты и оплата ======================== --}}
+        </div>
 
-            <a href="{{ route('admin.cabinets.bot-messages') }}"
-               class="nav-link mt-2 @if(request()->routeIs('admin.cabinets.bot-messages*')) nav-link--active @endif">
-                <x-admin.nav-icon name="inbox" /><span>{{ __('Сообщения бота') }}</span>
+        <x-admin.nav-group group="money" :label="__('Пакеты и оплата')" :count="$newPlanRequests + $problemPayments" />
+        <div class="nav-collapsible" data-group="money" x-init="$nextTick(() => $el.style.maxHeight = '')" :class="open.money ? '' : 'nav-collapsible--closed'">
+        <a href="{{ route('admin.subscriptions.index') }}"
+           class="nav-link @if(request()->routeIs('admin.subscriptions.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="tag" /><span>{{ __('Пакеты и цены') }}</span>
+        </a>
+        <a href="{{ route('admin.plan-requests.index') }}"
+           class="nav-link @if(request()->routeIs('admin.plan-requests.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="users" /><span>{{ __('Заявки на пакет') }}</span>
+            @if($newPlanRequests > 0)<span class="nav-counter" title="{{ __('Новые заявки: нужно позвонить') }}">{{ $newPlanRequests }}</span>@endif
+        </a>
+        <a href="{{ route('admin.payments.index') }}"
+           class="nav-link @if(request()->routeIs('admin.payments.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="inbox" /><span>{{ __('Платежи') }}</span>
+            @if($problemPayments > 0)<span class="nav-counter" title="{{ __('Платежи, которые нужно разобрать вручную') }}">{{ $problemPayments }}</span>@endif
+        </a>
+
+        {{-- ======================== Контент ======================== --}}
+        </div>
+
+        <x-admin.nav-group group="content" :label="__('Контент')" :count="0" />
+        <div class="nav-collapsible" data-group="content" x-init="$nextTick(() => $el.style.maxHeight = '')" :class="open.content ? '' : 'nav-collapsible--closed'">
+        {{-- Один пункт на раздел: «Добавить» есть кнопкой в шапке самого списка --}}
+        <a href="{{ route('admin.events.index') }}"
+           class="nav-link @if(request()->routeIs('admin.events.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="event" /><span>{{ __('Новости') }}</span>
+        </a>
+        <a href="{{ route('admin.opportunities.index') }}"
+           class="nav-link @if(request()->routeIs('admin.opportunities.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="opportunity" /><span>{{ __('Возможности/обучение') }}</span>
+        </a>
+        <a href="{{ route('admin.learning-videos.index') }}"
+           class="nav-link @if(request()->routeIs('admin.learning-videos.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="video" /><span>{{ __('Обучающие видео') }}</span>
+        </a>
+        <a href="{{ route('admin.projects.index') }}"
+           class="nav-link @if(request()->routeIs('admin.projects.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="news" /><span>{{ __('Проекты') }}</span>
+        </a>
+        <a href="{{ route('admin.experts.index') }}"
+           class="nav-link @if(request()->routeIs('admin.experts.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="users" /><span>{{ __('Эксперты') }}</span>
+        </a>
+
+        <x-admin.nav-group group="media" :label="__('Медиатека')" />
+        <div class="nav-collapsible" data-group="media" x-init="$nextTick(() => $el.style.maxHeight = '')" :class="open.media ? '' : 'nav-collapsible--closed'">
+            <a href="{{ route('admin.albums.index') }}"
+               class="nav-sub @if(request()->routeIs('admin.albums.*')) nav-sub--active @endif">
+                <x-admin.nav-icon name="album" /><span>{{ __('Фотоальбомы') }}</span>
             </a>
-            <a href="{{ route('admin.cabinets.settings') }}"
-               class="nav-link @if(request()->routeIs('admin.cabinets.settings*')) nav-link--active @endif">
-                <x-admin.nav-icon name="sliders" /><span>{{ __('Настройки кабинетов') }}</span>
+            <a href="{{ route('admin.videos.index') }}"
+               class="nav-sub @if(request()->routeIs('admin.videos.*')) nav-sub--active @endif">
+                <x-admin.nav-icon name="video" /><span>{{ __('Видео') }}</span>
             </a>
-        @else
-            {{-- ======================== Внешний сайт ======================== --}}
-            <a href="{{ route('admin.dashboard') }}"
-               class="nav-link @if(request()->routeIs('admin.dashboard')) nav-link--active @endif">
-                <x-admin.nav-icon name="dashboard" /><span>{{ __('Инфопанель') }}</span>
+            @if($showPublications)
+            <a href="{{ route('admin.posts.index') }}"
+               class="nav-sub @if(request()->routeIs('admin.posts.*')) nav-sub--active @endif">
+                <x-admin.nav-icon name="news" /><span>{{ __('Публикации') }}</span>
             </a>
-
-            <x-admin.nav-group group="events" :label="__('Новости')" />
-            <div class="nav-collapsible" :class="open.events ? '' : 'nav-collapsible--closed'">
-                <a href="{{ route('admin.events.index') }}"
-                   class="nav-sub @if($isList('admin.events')) nav-sub--active @endif">
-                    <x-admin.nav-icon name="event" /><span>{{ __('Все новости') }}</span>
-                </a>
-                <a href="{{ route('admin.events.create') }}"
-                   class="nav-sub @if($isCreate('admin.events.create')) nav-sub--active @endif">
-                    <x-admin.nav-icon name="plus" /><span>{{ __('Добавить новость') }}</span>
-                </a>
-            </div>
-
-            <x-admin.nav-group group="projects" :label="__('Проекты')" />
-            <div class="nav-collapsible" :class="open.projects ? '' : 'nav-collapsible--closed'">
-                <a href="{{ route('admin.projects.index') }}"
-                   class="nav-sub @if($isList('admin.projects')) nav-sub--active @endif">
-                    <x-admin.nav-icon name="news" /><span>{{ __('Все проекты') }}</span>
-                </a>
-                <a href="{{ route('admin.projects.create') }}"
-                   class="nav-sub @if($isCreate('admin.projects.create')) nav-sub--active @endif">
-                    <x-admin.nav-icon name="plus" /><span>{{ __('Добавить проект') }}</span>
-                </a>
-            </div>
-
-            <x-admin.nav-group group="opportunities" :label="__('Возможности/обучение')" />
-            <div class="nav-collapsible" :class="open.opportunities ? '' : 'nav-collapsible--closed'">
-                <a href="{{ route('admin.opportunities.index') }}"
-                   class="nav-sub @if($isList('admin.opportunities')) nav-sub--active @endif">
-                    <x-admin.nav-icon name="opportunity" /><span>{{ __('Все возможности') }}</span>
-                </a>
-                <a href="{{ route('admin.opportunities.create') }}"
-                   class="nav-sub @if($isCreate('admin.opportunities.create')) nav-sub--active @endif">
-                    <x-admin.nav-icon name="plus" /><span>{{ __('Добавить возможность') }}</span>
-                </a>
-            </div>
-
-            <x-admin.nav-group group="experts" :label="__('Эксперты')" />
-            <div class="nav-collapsible" :class="open.experts ? '' : 'nav-collapsible--closed'">
-                <a href="{{ route('admin.experts.index') }}"
-                   class="nav-sub @if($isList('admin.experts')) nav-sub--active @endif">
-                    <x-admin.nav-icon name="users" /><span>{{ __('Все эксперты') }}</span>
-                </a>
-                <a href="{{ route('admin.experts.create') }}"
-                   class="nav-sub @if($isCreate('admin.experts.create')) nav-sub--active @endif">
-                    <x-admin.nav-icon name="plus" /><span>{{ __('Добавить эксперта') }}</span>
-                </a>
-            </div>
-
-            <x-admin.nav-group group="media" :label="__('Медиатека')" />
-            <div class="nav-collapsible" :class="open.media ? '' : 'nav-collapsible--closed'">
-                <a href="{{ route('admin.albums.index') }}"
-                   class="nav-sub @if($isList('admin.albums')) nav-sub--active @endif">
-                    <x-admin.nav-icon name="album" /><span>{{ __('Все фотоальбомы') }}</span>
-                </a>
-                <a href="{{ route('admin.albums.create') }}"
-                   class="nav-sub @if($isCreate('admin.albums.create')) nav-sub--active @endif">
-                    <x-admin.nav-icon name="plus" /><span>{{ __('Добавить фотоальбом') }}</span>
-                </a>
-                <a href="{{ route('admin.videos.index') }}"
-                   class="nav-sub @if($isList('admin.videos')) nav-sub--active @endif">
-                    <x-admin.nav-icon name="video" /><span>{{ __('Все видео') }}</span>
-                </a>
-                <a href="{{ route('admin.videos.create') }}"
-                   class="nav-sub @if($isCreate('admin.videos.create')) nav-sub--active @endif">
-                    <x-admin.nav-icon name="plus" /><span>{{ __('Добавить видео') }}</span>
-                </a>
-                {{-- Публикации (статьи) пока не используются на сайте: пункты скрыты, страницы /admin/news по-прежнему открываются
-                     по прямой ссылке. Чтобы вернуть пункты в меню, поставьте $showPublications = true вверху файла. --}}
-                @if($showPublications)
-                <a href="{{ route('admin.posts.index') }}"
-                   class="nav-sub @if($isList('admin.posts')) nav-sub--active @endif">
-                    <x-admin.nav-icon name="news" /><span>{{ __('Все публикации') }}</span>
-                </a>
-                <a href="{{ route('admin.posts.create') }}"
-                   class="nav-sub @if($isCreate('admin.posts.create')) nav-sub--active @endif">
-                    <x-admin.nav-icon name="plus" /><span>{{ __('Добавить публикацию') }}</span>
-                </a>
-                @endif
-                <a href="{{ route('admin.catalogs.index') }}"
-                   class="nav-sub @if($isList('admin.catalogs')) nav-sub--active @endif">
-                    <x-admin.nav-icon name="news" /><span>{{ __('Все каталоги') }}</span>
-                </a>
-                <a href="{{ route('admin.catalogs.create') }}"
-                   class="nav-sub @if($isCreate('admin.catalogs.create')) nav-sub--active @endif">
-                    <x-admin.nav-icon name="plus" /><span>{{ __('Добавить каталог') }}</span>
-                </a>
-            </div>
-
-            <a href="{{ route('admin.tags.index') }}"
-               class="nav-link mt-2 @if(request()->routeIs('admin.tags.*')) nav-link--active @endif">
-                <x-admin.nav-icon name="tag" /><span>{{ __('Теги') }}</span>
+            @endif
+            <a href="{{ route('admin.catalogs.index') }}"
+               class="nav-sub @if(request()->routeIs('admin.catalogs.*')) nav-sub--active @endif">
+                <x-admin.nav-icon name="news" /><span>{{ __('Каталоги') }}</span>
             </a>
+        </div>
 
-            <a href="{{ route('admin.subscribers.index') }}"
-               class="nav-link @if(request()->routeIs('admin.subscribers.*')) nav-link--active @endif">
-                <x-admin.nav-icon name="inbox" /><span>{{ __('Подписчики') }}</span>
-            </a>
+        {{-- ======================== Общение ======================== --}}
+        </div>
 
-            <a href="{{ route('admin.contact-messages.index') }}"
-               class="nav-link @if(request()->routeIs('admin.contact-messages.*')) nav-link--active @endif">
-                <x-admin.nav-icon name="inbox" /><span>{{ __('Обращения') }}</span>
-                @if($unreadContacts > 0)<span class="nav-counter" title="{{ __('Непрочитанные обращения') }}">{{ $unreadContacts }}</span>@endif
-            </a>
+        <x-admin.nav-group group="comm" :label="__('Общение')" :count="$unreadContacts" />
+        <div class="nav-collapsible" data-group="comm" x-init="$nextTick(() => $el.style.maxHeight = '')" :class="open.comm ? '' : 'nav-collapsible--closed'">
+        <a href="{{ route('admin.broadcasts.index') }}"
+           class="nav-link @if(request()->routeIs('admin.broadcasts.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="send" /><span>{{ __('Рассылка в Telegram') }}</span>
+        </a>
+        <a href="{{ route('admin.contact-messages.index') }}"
+           class="nav-link @if(request()->routeIs('admin.contact-messages.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="inbox" /><span>{{ __('Обращения') }}</span>
+            @if($unreadContacts > 0)<span class="nav-counter" title="{{ __('Непрочитанные обращения') }}">{{ $unreadContacts }}</span>@endif
+        </a>
+        <a href="{{ route('admin.subscribers.index') }}"
+           class="nav-link @if(request()->routeIs('admin.subscribers.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="inbox" /><span>{{ __('Подписчики') }}</span>
+        </a>
+        <a href="{{ route('admin.cabinets.bot-messages') }}"
+           class="nav-link @if(request()->routeIs('admin.cabinets.bot-messages*')) nav-link--active @endif">
+            <x-admin.nav-icon name="inbox" /><span>{{ __('Сообщения бота') }}</span>
+        </a>
 
-            <a href="{{ route('admin.settings.edit') }}"
-               class="nav-link @if(request()->routeIs('admin.settings.*')) nav-link--active @endif">
-                <x-admin.nav-icon name="sliders" /><span>{{ __('Настройки сайта') }}</span>
-            </a>
-        @endif
+        {{-- ======================== Настройки ======================== --}}
+        </div>
+
+        <x-admin.nav-group group="settings" :label="__('Настройки')" :count="0" />
+        <div class="nav-collapsible" data-group="settings" x-init="$nextTick(() => $el.style.maxHeight = '')" :class="open.settings ? '' : 'nav-collapsible--closed'">
+        <a href="{{ route('admin.settings.edit') }}"
+           class="nav-link @if(request()->routeIs('admin.settings.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="sliders" /><span>{{ __('Настройки сайта') }}</span>
+        </a>
+        <a href="{{ route('admin.cabinets.settings') }}"
+           class="nav-link @if(request()->routeIs('admin.cabinets.settings*')) nav-link--active @endif">
+            <x-admin.nav-icon name="sliders" /><span>{{ __('Настройки кабинетов') }}</span>
+        </a>
+        <a href="{{ route('admin.tags.index') }}"
+           class="nav-link @if(request()->routeIs('admin.tags.*')) nav-link--active @endif">
+            <x-admin.nav-icon name="tag" /><span>{{ __('Теги') }}</span>
+        </a>
+        </div>
     </nav>
+    {{-- Состояние групп (раскрыта / свёрнута) показывается сразу при разборе страницы, до загрузки Alpine и до первой
+         отрисовки: иначе меню мигало бы развёрнутым и сворачивалось потом. Скрипт ставит только временный inline-стиль
+         (max-height и поворот стрелки); классы ведёт один Alpine (resources/js/sidebar.js), и сразу после запуска
+         x-init снимает временный стиль. Классы здесь ставить нельзя: Alpine не снимет класс, который уже стоял до него,
+         и группа не раскроется по клику. Пока скрипт не отработал, меню скрыто (visibility), чтобы не мелькнул промежуточный кадр. Логика состояния та же, что в sidebar.js. --}}
+    <script>
+        (function () {
+            var nav = document.currentScript.previousElementSibling;
+            var active = [];
+            var saved = null;
+            try { active = JSON.parse(nav.getAttribute('data-active') || '[]'); } catch (e) {}
+            try { saved = JSON.parse(localStorage.getItem('admin.sidebar.groups.v2') || 'null'); } catch (e) {}
+
+            nav.querySelectorAll('[data-group]').forEach(function (box) {
+                var group = box.getAttribute('data-group');
+                var open = saved && group in saved ? !!saved[group] : active.indexOf(group) > -1;
+                if (active.indexOf(group) > -1) open = true;
+
+                if (!open) box.style.maxHeight = '0px';
+
+                var button = nav.querySelector('[data-group-toggle="' + group + '"]');
+                var arrow = button && button.querySelector('svg');
+                if (arrow && !open) arrow.style.transform = 'rotate(-90deg)';
+
+                var counter = nav.querySelector('[data-group-counter="' + group + '"]');
+                if (counter) counter.style.display = open ? 'none' : '';
+            });
+
+            nav.style.visibility = '';
+        })();
+    </script>
+    <noscript><style>.admin-sidebar nav { visibility: visible !important; }</style></noscript>
 
     <div class="px-4 pt-4 pb-1 border-t border-hairline">
         <x-admin.lang-switch />

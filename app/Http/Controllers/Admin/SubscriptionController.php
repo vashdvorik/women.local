@@ -152,7 +152,7 @@ class SubscriptionController extends Controller
         $notice = __('Сохранено.');
 
         if ($closed !== [] && blank($data['manager_email'] ?? null)) {
-            $notice .= ' '.__('Почта менеджера не указана: заявки будут видны только в разделе «Заявки на тариф», письма не придут.');
+            $notice .= ' '.__('Почта менеджера не указана: заявки будут видны только в разделе «Заявки на пакет», письма не придут.');
         }
 
         return redirect()->route('admin.subscriptions.index')->with('success', $notice);

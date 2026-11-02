@@ -21,7 +21,7 @@ trait CreatesBroadcastDraft
         $draft = app(BroadcastDrafts::class)->create($item, $request->string('broadcast_audience')->toString(), $request->user()?->id);
 
         return $draft !== null
-            ? __('Черновик рассылки создан: откройте «Рассылка в Telegram» в разделе «Кабинеты участниц», поправьте текст и отправьте.')
+            ? __('Черновик рассылки создан: откройте «Рассылка в Telegram» в разделе «Общение», поправьте текст и отправьте.')
             : __('Черновик рассылки по этому материалу уже есть.');
     }
 }

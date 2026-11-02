@@ -1,30 +1,36 @@
 import Alpine from 'alpinejs';
 
 /**
- * Сворачивание групп бокового меню. Состояние каждой группы запоминается
- * в localStorage; группа с активной страницей всегда раскрыта.
+ * Сворачивание групп бокового меню (Участницы, Пакеты и оплата, Контент, Общение, Настройки и вложенная «Медиатека»).
+ * Состояние каждой группы запоминается в localStorage. При первом заходе раскрыта только группа текущей страницы,
+ * чтобы меню было коротким; группа с активной страницей раскрыта всегда. Активных групп может быть несколько
+ * (страница фотоальбомов лежит в «Медиатеке», а та в «Контенте»), поэтому их можно передать списком.
  */
-const GROUPS = ['events', 'projects', 'opportunities', 'experts', 'media'];
-const KEY = 'admin.sidebar.groups';
+const GROUPS = ['people', 'money', 'content', 'media', 'comm', 'settings'];
+const KEY = 'admin.sidebar.groups.v2';
 
-Alpine.data('sidebarNav', (activeGroup = null) => ({
+Alpine.data('sidebarNav', (active = null) => ({
     open: {},
 
     init() {
-        let saved = {};
+        const actives = Array.isArray(active) ? active : (active ? [active] : []);
+
+        let saved = null;
         try {
-            saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+            saved = JSON.parse(localStorage.getItem(KEY) || 'null');
         } catch (e) {
-            saved = {};
+            saved = null;
         }
 
         GROUPS.forEach((g) => {
-            this.open[g] = g in saved ? !!saved[g] : true; // по умолчанию раскрыто
+            this.open[g] = saved && g in saved ? !!saved[g] : actives.includes(g);
         });
 
-        if (activeGroup && GROUPS.includes(activeGroup)) {
-            this.open[activeGroup] = true;
-        }
+        actives.forEach((g) => {
+            if (GROUPS.includes(g)) {
+                this.open[g] = true;
+            }
+        });
     },
 
     toggle(group) {

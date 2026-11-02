@@ -31,8 +31,10 @@
                     </svg>
                 </button>
                 <div class="min-w-0">
-                    {{-- В каком лагере админки находится страница: «Внешний сайт» или «Кабинеты участниц». --}}
-                    <p class="text-micro uppercase text-ink-muted truncate">{{ \App\Support\AdminCamp::label(\App\Support\AdminCamp::current()) }}</p>
+                    {{-- В какой группе меню находится страница: Участницы, Контент и т. д. У «Инфопанели» подписи нет. --}}
+                    @if($section = \App\Support\AdminSection::label())
+                        <p class="text-micro uppercase text-ink-muted truncate">{{ $section }}</p>
+                    @endif
                     <h1 class="text-page font-semibold truncate">{{ $title }}</h1>
                 </div>
                 @isset($actions)

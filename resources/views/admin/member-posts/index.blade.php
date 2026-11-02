@@ -8,7 +8,7 @@
     $types = ['project' => __('Запрос'), 'meeting' => __('Партнёрство'), 'event' => __('Событие')];
 @endphp
 
-<x-layouts.admin :title="__('Посты участниц')">
+<x-layouts.admin :title="__('Инициативы участниц')">
     <div class="space-y-4">
         <div class="tabs">
             @foreach($tabs as $key => [$label, $count])

@@ -60,7 +60,7 @@ class AdminLanguageTest extends TestCase
         $this->asEnglish()->get(route('admin.dashboard'))
             ->assertOk()
             ->assertSee('How to use the admin panel')
-            ->assertSee('Participant cabinets')
+            ->assertSee('Plans and payments')
             ->assertSee('Log out')
             ->assertSee('<html lang="en">', false)
             ->assertDontSee('Как пользоваться админкой')
@@ -169,7 +169,7 @@ class AdminLanguageTest extends TestCase
         $enquiry = ContactMessage::create(['name' => 'Anna', 'email' => 'anna@example.test', 'message' => 'Hello, I would like to talk.', 'locale' => 'en']);
 
         return [
-            route('admin.dashboard'), route('admin.cabinets.dashboard'),
+            route('admin.dashboard'), route('admin.dashboard'),
             route('admin.events.index'), route('admin.events.create'), route('admin.events.edit', $event),
             route('admin.experts.index'), route('admin.experts.create'), route('admin.experts.edit', $expert),
             route('admin.projects.index'), route('admin.projects.create'), route('admin.projects.edit', $project),
@@ -234,7 +234,7 @@ class AdminLanguageTest extends TestCase
             route('admin.events.create'), route('admin.experts.create'), route('admin.projects.create'), route('admin.videos.create'),
             route('admin.albums.create'), route('admin.posts.create'), route('admin.opportunities.create'), route('admin.tags.create'),
             route('admin.subscriptions.index'), route('admin.payments.index'), route('admin.statistics.index'), route('admin.settings.edit'),
-            route('admin.cabinets.settings'), route('admin.cabinets.dashboard'), route('admin.profiles.index'),
+            route('admin.cabinets.settings'), route('admin.dashboard'), route('admin.profiles.index'),
         ] as $url) {
             $html = $this->asEnglish()->get($url)->assertOk()->getContent();
             // Текст в полях редактирования — данные (например, инструкция помощника бота на трёх языках), а не интерфейс.

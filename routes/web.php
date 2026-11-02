@@ -358,9 +358,9 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::put('settings', [Admin\SettingController::class, 'update'])->name('settings.update');
         Route::put('settings/theme', [Admin\ThemeSettingController::class, 'site'])->name('settings.theme');
 
-        // Кабинеты участниц: инфопанель и «Настройки кабинетов» — тема кабинета, AI, база знаний.
-        // (Профили, посты участниц и статистика — выше и ниже; лагерь определяет App\Support\AdminCamp.)
-        Route::get('cabinets', [Admin\CabinetDashboardController::class, 'index'])->name('cabinets.dashboard');
+        // «Настройки кабинетов» — тема кабинета, AI, база знаний. Раньше у кабинетов была своя инфопанель: старый адрес
+        // ведёт на общую (админка теперь одна, раздел страницы определяет App\Support\AdminSection).
+        Route::redirect('cabinets', '/admin', 301)->name('cabinets.dashboard');
         Route::get('cabinets/settings', [Admin\CabinetSettingController::class, 'edit'])->name('cabinets.settings');
         Route::put('cabinets/settings/theme', [Admin\ThemeSettingController::class, 'cabinet'])->name('cabinets.settings.theme');
         Route::put('cabinets/settings/knowledge', [Admin\AssistantKnowledgeController::class, 'update'])->name('cabinets.settings.knowledge');

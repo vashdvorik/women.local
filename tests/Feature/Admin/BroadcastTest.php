@@ -74,7 +74,7 @@ class BroadcastTest extends TestCase
 
     // ---------------------------------------------------------------- страницы
 
-    public function test_pages_render_and_the_menu_item_lives_in_the_cabinets_camp(): void
+    public function test_pages_render_and_the_menu_item_lives_in_the_communication_group(): void
     {
         $broadcast = Broadcast::create(['texts' => ['ru' => 'Текст'], 'audience' => 'approved', 'status' => 'draft']);
 
@@ -84,9 +84,8 @@ class BroadcastTest extends TestCase
         $this->actingAsAdmin()->get(route('admin.broadcasts.show', $broadcast))->assertOk();
 
         $this->actingAsAdmin()->get(route('admin.profiles.index'))->assertSee(route('admin.broadcasts.index'), false);
-        // Раздел относится к лагерю «Кабинеты участниц»: пункт меню виден на его страницах, а не на страницах сайта.
-        $this->actingAsAdmin()->get(route('admin.broadcasts.index'))->assertSee(route('admin.statistics.index'), false);
-        $this->actingAsAdmin()->get(route('admin.events.index'))->assertDontSee(route('admin.broadcasts.index'), false);
+        // Меню одно: пункт «Рассылка в Telegram» стоит в группе «Общение» и виден на страницах любого раздела.
+        $this->actingAsAdmin()->get(route('admin.events.index'))->assertSee(route('admin.broadcasts.index'), false);
     }
 
     public function test_guests_cannot_open_the_pages(): void

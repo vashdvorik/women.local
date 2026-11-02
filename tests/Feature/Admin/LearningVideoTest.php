@@ -59,17 +59,17 @@ class LearningVideoTest extends TestCase
 
     // ------------------------------------------------------------------ админка
 
-    public function test_the_menu_item_lives_in_the_cabinets_camp_and_the_pages_open(): void
+    public function test_the_menu_item_lives_in_the_content_group_and_the_pages_open(): void
     {
         $video = $this->make('aaaaaaaaaaa', 'Первое видео');
 
         $this->actingAsAdmin()->get(route('admin.learning-videos.index'))->assertOk()
-            ->assertSee('Обучающие видео')->assertSee('Первое видео')->assertSee(route('admin.statistics.index'), false);
+            ->assertSee('Обучающие видео')->assertSee('Первое видео');
         $this->actingAsAdmin()->get(route('admin.learning-videos.create'))->assertOk()->assertSee('Показывать в кабинете');
         $this->actingAsAdmin()->get(route('admin.learning-videos.edit', $video))->assertOk()->assertSee('Первое видео');
 
-        // Пункт виден в разделе кабинетов, а на страницах внешнего сайта его нет.
-        $this->actingAsAdmin()->get(route('admin.events.index'))->assertDontSee(route('admin.learning-videos.index'), false);
+        // Меню одно: пункт «Обучающие видео» стоит в группе «Контент» и виден на страницах любого раздела.
+        $this->actingAsAdmin()->get(route('admin.events.index'))->assertSee(route('admin.learning-videos.index'), false);
     }
 
     public function test_a_video_is_created_with_texts_in_three_languages_and_goes_to_the_end(): void

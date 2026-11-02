@@ -34,6 +34,12 @@
 
 @layer components {
 
+    /* Флажки и переключатели в цвете бренда: плагин форм по умолчанию красит их в синий (#2563eb). */
+    input[type="checkbox"],
+    input[type="radio"] { @apply text-accent; }
+    input[type="checkbox"]:focus,
+    input[type="radio"]:focus { --tw-ring-color: theme('colors.accent.DEFAULT'); }
+
     /* ---------- Кнопки ---------- */
 
     .btn {
@@ -135,10 +141,10 @@
     }
     /* Иконки наследуют цвет пункта (muted / ink при наведении / accent на активном). */
 
-    /* Сворачивание группы: max-height подобран под самую длинную группу («Медиатека», 8 пунктов по ~2,3rem). */
+    /* Сворачивание группы: max-height с запасом под самую длинную группу («Контент» с вложенной «Медиатекой», около 10 пунктов по ~2,5rem). */
     .nav-collapsible {
         overflow: hidden;
-        max-height: 20rem;
+        max-height: 60rem;
         transition: max-height 220ms ease;
     }
     .nav-collapsible--closed { max-height: 0; }

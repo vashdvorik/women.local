@@ -36,7 +36,7 @@ class AdminBrandLogoTest extends TestCase
 
     public function test_the_sidebar_logo_is_the_same_on_every_admin_section(): void
     {
-        foreach ([route('admin.dashboard'), route('admin.cabinets.dashboard'), route('admin.events.index'), route('admin.settings.edit')] as $url) {
+        foreach ([route('admin.dashboard'), route('admin.dashboard'), route('admin.events.index'), route('admin.settings.edit')] as $url) {
             $html = $this->actingAsAdmin()->get($url)->assertOk()->getContent();
 
             $this->assertSame(1, substr_count($html, 'admin-brand-logo'), $url);

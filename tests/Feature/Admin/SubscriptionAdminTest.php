@@ -60,13 +60,13 @@ class SubscriptionAdminTest extends TestCase
         $this->assertSame(Payment::STATUS_PENDING, $payment->fresh()->status);
     }
 
-    public function test_the_menu_of_the_participants_camp_has_subscriptions_and_payments(): void
+    public function test_the_menu_of_the_participants_camp_has_plans_and_payments(): void
     {
-        $html = $this->actingAsAdmin()->get(route('admin.cabinets.dashboard'))->assertOk()->getContent();
+        $html = $this->actingAsAdmin()->get(route('admin.dashboard'))->assertOk()->getContent();
 
         $this->assertStringContainsString(route('admin.subscriptions.index'), $html);
         $this->assertStringContainsString(route('admin.payments.index'), $html);
-        $this->assertStringContainsString('Подписки', $html);
+        $this->assertStringContainsString('Пакеты и цены', $html);
         $this->assertStringContainsString('Платежи', $html);
     }
 
@@ -407,10 +407,10 @@ class SubscriptionAdminTest extends TestCase
         $payment->forceFill(['status' => Payment::STATUS_VERIFYING])->save();
 
         // Только что — ещё не проблема (банк может успеть подтвердить); через 15 минут — требует внимания.
-        $this->assertStringNotContainsString('Платежи, которые нужно разобрать вручную', $this->actingAsAdmin()->get(route('admin.cabinets.dashboard'))->getContent());
+        $this->assertStringNotContainsString('Платежи, которые нужно разобрать вручную', $this->actingAsAdmin()->get(route('admin.dashboard'))->getContent());
 
         $this->travel(20)->minutes();
-        $this->assertStringContainsString('Платежи, которые нужно разобрать вручную', $this->actingAsAdmin()->get(route('admin.cabinets.dashboard'))->getContent());
+        $this->assertStringContainsString('Платежи, которые нужно разобрать вручную', $this->actingAsAdmin()->get(route('admin.dashboard'))->getContent());
     }
 
     public function test_the_subscriptions_service_is_used_by_grants_so_history_is_kept(): void

@@ -26,7 +26,6 @@ class AdminAccessTest extends TestCase
             ['admin.profiles.index'],
             ['admin.member-posts.index'],
             ['admin.statistics.index'],
-            ['admin.cabinets.dashboard'],
             ['admin.cabinets.settings'],
             ['admin.subscribers.index'],
             ['admin.contact-messages.index'],

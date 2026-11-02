@@ -26,7 +26,7 @@ export default {
     theme: {
         extend: {
             colors: {
-                accent:   { DEFAULT: '#0066cc', hover: '#0071e3', soft: '#e8f1fb' },
+                accent:   { DEFAULT: '#8e5b3d', hover: '#74472f', soft: '#f1e3da' },
                 canvas:   '#f5f5f7',
                 surface:  { DEFAULT: '#ffffff', sunken: '#fafafc' },
                 sidebar:  '#ffffff',
