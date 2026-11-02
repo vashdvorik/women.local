@@ -73,7 +73,7 @@ return [
     'home' => [
         'eyebrow' => 'Spațiul dvs.',
         'hello' => 'Bună ziua, :name!',
-        'intro' => 'Aici este tot ce are nevoie o membră Women’s hub. Alegeți o secțiune sau deschideți sfaturile.',
+        'intro' => 'Aici este tot ce are nevoie o membră Women’s Hub. Alegeți o secțiune sau deschideți sfaturile.',
         'plan_note_label' => 'Despre tariful dvs.',
         'intro_community' => 'Aveți tariful Community: oportunități, instruire și materiale. Mai jos sunt toate secțiunile cabinetului: ce este disponibil acum și ce se deschide cu tariful Active.',
         'hint_title' => 'Cum este organizat totul',
@@ -133,7 +133,7 @@ return [
                 'how' => 'Cu cât profilul este mai detaliat, cu atât selecția este mai exactă. Deschideți un card ca să vedeți profilul.',
             ],
             'search' => [
-                'what' => 'Căutare de membre după sens, nu după nume.',
+                'what' => 'Căutarea înțelege întrebarea așa cum ați pune-o unei persoane.',
                 'how' => 'Descrieți în cuvinte simple pe cine căutați și deschideți profilul potrivit.',
             ],
             'people' => [
@@ -328,7 +328,7 @@ return [
     'manager' => [
         'title' => 'Manager AI',
         'subtitle' => 'Vă povestește despre platformă și tariful dvs. și vă ajută să vă obișnuiți.',
-        'hello' => 'Bună ziua! Sunt managerul AI al Women’s hub. Vă explic cum folosiți contul, ce include tariful dvs. și cum treceți la altul. Întrebați orice despre platformă.',
+        'hello' => 'Bună ziua! Sunt managerul AI al Women’s Hub. Vă explic cum folosiți contul, ce include tariful dvs. și cum treceți la altul. Întrebați orice despre platformă.',
         'placeholder' => 'Scrieți întrebarea…',
         'send' => 'Trimite',
         'typing' => 'Scrie…',

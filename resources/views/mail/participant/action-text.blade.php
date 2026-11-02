@@ -8,5 +8,5 @@
 {{ $note }}
 
 --
-Women’s hub
+Women’s Hub
 {{ __('participant.mail.footer', [], $locale) }}

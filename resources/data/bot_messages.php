@@ -88,9 +88,9 @@ return [
             'kind' => 'text',
             'vars' => ['url' => 'Адрес сайта платформы'],
             'text' => [
-                'ru' => "Этот бот присылает уведомления и рассылки Women's hub. Меню и входа здесь нет.\n\nЧтобы подключить уведомления, откройте кабинет на сайте {url} и нажмите «Подключить Telegram» в разделе «Мой профиль».",
-                'en' => "This bot sends Women's hub notifications and newsletters. There is no menu or sign-in here.\n\nTo connect notifications, open your account on the website {url} and press “Connect Telegram” in “My profile”.",
-                'ro' => "Acest bot trimite notificările și newsletterele Women's hub. Aici nu există meniu și nici autentificare.\n\nPentru a conecta notificările, deschideți cabinetul pe site {url} și apăsați „Conectează Telegram” în „Profilul meu”.",
+                'ru' => "Этот бот присылает уведомления и рассылки Women's Hub. Меню и входа здесь нет.\n\nЧтобы подключить уведомления, откройте кабинет на сайте {url} и нажмите «Подключить Telegram» в разделе «Мой профиль».",
+                'en' => "This bot sends Women's Hub notifications and newsletters. There is no menu or sign-in here.\n\nTo connect notifications, open your account on the website {url} and press “Connect Telegram” in “My profile”.",
+                'ro' => "Acest bot trimite notificările și newsletterele Women's Hub. Aici nu există meniu și nici autentificare.\n\nPentru a conecta notificările, deschideți cabinetul pe site {url} și apăsați „Conectează Telegram” în „Profilul meu”.",
             ],
         ],
 
@@ -114,9 +114,9 @@ return [
             'kind' => 'text',
             'vars' => ['name' => 'Имя участницы'],
             'text' => [
-                'ru' => "{name}, спасибо за интерес к Women's hub.\n\nСейчас ваша анкета не была одобрена. Если хотите уточнить детали или задать вопрос команде проекта, напишите: @lesnichenkoP",
-                'en' => "{name}, thank you for your interest in Women's hub.\n\nAt the moment your profile has not been approved. If you would like to clarify the details or ask the project team a question, write to: @lesnichenkoP",
-                'ro' => "{name}, vă mulțumim pentru interesul față de Women's hub.\n\nÎn acest moment profilul dvs. nu a fost aprobat. Dacă doriți să aflați detalii sau să puneți o întrebare echipei proiectului, scrieți la: @lesnichenkoP",
+                'ru' => "{name}, спасибо за интерес к Women's Hub.\n\nСейчас ваша анкета не была одобрена. Если хотите уточнить детали или задать вопрос команде проекта, напишите: @lesnichenkoP",
+                'en' => "{name}, thank you for your interest in Women's Hub.\n\nAt the moment your profile has not been approved. If you would like to clarify the details or ask the project team a question, write to: @lesnichenkoP",
+                'ro' => "{name}, vă mulțumim pentru interesul față de Women's Hub.\n\nÎn acest moment profilul dvs. nu a fost aprobat. Dacă doriți să aflați detalii sau să puneți o întrebare echipei proiectului, scrieți la: @lesnichenkoP",
             ],
         ],
         'moderation_access_revoked' => [
@@ -126,9 +126,9 @@ return [
             'kind' => 'text',
             'vars' => [],
             'text' => [
-                'ru' => "Доступ к Women's hub закрыт.\n\nЕсли у вас есть вопросы по участию, напишите команде проекта: @lesnichenkoP",
-                'en' => "Access to Women's hub has been closed.\n\nIf you have questions about participation, write to the project team: @lesnichenkoP",
-                'ro' => "Accesul la Women's hub a fost închis.\n\nDacă aveți întrebări despre participare, scrieți echipei proiectului: @lesnichenkoP",
+                'ru' => "Доступ к Women's Hub закрыт.\n\nЕсли у вас есть вопросы по участию, напишите команде проекта: @lesnichenkoP",
+                'en' => "Access to Women's Hub has been closed.\n\nIf you have questions about participation, write to the project team: @lesnichenkoP",
+                'ro' => "Accesul la Women's Hub a fost închis.\n\nDacă aveți întrebări despre participare, scrieți echipei proiectului: @lesnichenkoP",
             ],
         ],
 

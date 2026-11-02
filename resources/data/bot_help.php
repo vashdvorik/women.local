@@ -24,7 +24,7 @@ return [
 
     'ru' => <<<'TXT'
 О ПЛАТФОРМЕ
-Women's hub — цифровое пространство для женщин-предпринимательниц: обучение, деловые связи, наставничество, мероприятия и поддержка бизнеса. Сайт: {site_url}. Telegram-бот — это вход в закрытую часть платформы, личный кабинет участницы.
+Women's Hub — цифровое пространство для женщин-предпринимательниц: обучение, деловые связи, наставничество, мероприятия и поддержка бизнеса. Сайт: {site_url}. Telegram-бот — это вход в закрытую часть платформы, личный кабинет участницы.
 
 КАК УСТРОЕНО УЧАСТИЕ
 1. Регистрация в боте. Нужно ответить на три вопроса: как вас зовут, чем вы занимаетесь (описание) и что вы ищете (ожидания); последний вопрос можно пропустить. Профиль создаётся из этих ответов.
@@ -61,7 +61,7 @@ TXT,
 
     'en' => <<<'TXT'
 ABOUT THE PLATFORM
-Women's hub is a digital space for women entrepreneurs: learning, business connections, mentorship, events and business support. Website: {site_url}. The Telegram bot is the entrance to the closed part of the platform, the member's personal account.
+Women's Hub is a digital space for women entrepreneurs: learning, business connections, mentorship, events and business support. Website: {site_url}. The Telegram bot is the entrance to the closed part of the platform, the member's personal account.
 
 HOW PARTICIPATION WORKS
 1. Registration in the bot. You answer three questions: your name, what you do (a description) and what you are looking for (expectations); the last one can be skipped. Your profile is created from these answers.
@@ -98,7 +98,7 @@ TXT,
 
     'ro' => <<<'TXT'
 DESPRE PLATFORMĂ
-Women's hub este un spațiu digital pentru femei antreprenoare: învățare, conexiuni de afaceri, mentorat, evenimente și sprijin pentru afaceri. Site-ul: {site_url}. Botul din Telegram este intrarea în partea închisă a platformei, cabinetul personal al membrei.
+Women's Hub este un spațiu digital pentru femei antreprenoare: învățare, conexiuni de afaceri, mentorat, evenimente și sprijin pentru afaceri. Site-ul: {site_url}. Botul din Telegram este intrarea în partea închisă a platformei, cabinetul personal al membrei.
 
 CUM FUNCȚIONEAZĂ PARTICIPAREA
 1. Înregistrarea în bot. Răspundeți la trei întrebări: cum vă cheamă, cu ce vă ocupați (o descriere) și ce căutați (așteptări); la ultima puteți sări peste. Profilul se creează din aceste răspunsuri.

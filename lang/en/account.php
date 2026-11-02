@@ -73,7 +73,7 @@ return [
     'home' => [
         'eyebrow' => 'Your space',
         'hello' => 'Hello, :name!',
-        'intro' => 'Everything a Women’s hub member needs is here. Pick a section or open the tips.',
+        'intro' => 'Everything a Women’s Hub member needs is here. Pick a section or open the tips.',
         'plan_note_label' => 'About your plan',
         'intro_community' => 'You are on the Community plan: opportunities, learning and materials. Below are all the sections of your account: what is available now and what unlocks with the Active plan.',
         'hint_title' => 'How everything is arranged',
@@ -133,7 +133,7 @@ return [
                 'how' => 'The more detailed your profile, the more accurate the matching. Open a card to see the profile.',
             ],
             'search' => [
-                'what' => 'A search for members by meaning, not by name.',
+                'what' => 'The search understands a question the way you would ask it to a person.',
                 'how' => 'Describe in plain words who you need and open a suitable profile.',
             ],
             'people' => [
@@ -328,7 +328,7 @@ return [
     'manager' => [
         'title' => 'AI manager',
         'subtitle' => 'Tells you about the platform and your plan and helps you get started.',
-        'hello' => 'Hello! I am the Women’s hub AI manager. I can explain how to use your account, what your plan includes and how to switch to another one. Ask me anything about the platform.',
+        'hello' => 'Hello! I am the Women’s Hub AI manager. I can explain how to use your account, what your plan includes and how to switch to another one. Ask me anything about the platform.',
         'placeholder' => 'Write your question…',
         'send' => 'Send',
         'typing' => 'Typing…',

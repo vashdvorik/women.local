@@ -5,7 +5,7 @@
     $locale = app()->getLocale();
     $copy = [
         'ru' => [
-            'label' => 'Women’s hub AI',
+            'label' => 'Women’s Hub AI',
             'status' => 'Онлайн',
             'role' => 'AI-помощник платформы',
             'title' => 'Найдите партнёров и возможности с помощью AI',
@@ -28,7 +28,7 @@
             'profile_public' => 'Виден участницам',
         ],
         'en' => [
-            'label' => 'Women’s hub AI',
+            'label' => 'Women’s Hub AI',
             'status' => 'Online',
             'role' => 'AI platform assistant',
             'title' => 'Find partners and opportunities with AI',
@@ -51,7 +51,7 @@
             'profile_public' => 'Visible to participants',
         ],
         'ro' => [
-            'label' => 'Women’s hub AI',
+            'label' => 'Women’s Hub AI',
             'status' => 'Online',
             'role' => 'Asistentul AI al platformei',
             'title' => 'Găsiți parteneri și oportunități cu ajutorul AI',

@@ -286,7 +286,7 @@
 5. .env НА ПРОДЕ
 ------------------------------------------------------------
 
-  APP_NAME="Women's hub"                   # название в заголовках вкладок админки и кабинета
+  APP_NAME="Women's Hub"                   # название в заголовках вкладок админки и кабинета
   APP_ENV=production                 # ОБЯЗАТЕЛЬНО: при local включится dev-вход и тестовые участницы
   APP_DEBUG=false                    # ОБЯЗАТЕЛЬНО
   APP_URL=https://womenhub.innovation.md
@@ -346,7 +346,7 @@
   MAIL_USERNAME=noreply@innovation.md    # полный адрес ящика
   MAIL_PASSWORD=...                  # пароль этого ящика; пароль со знаками # или пробелом брать в кавычки
   MAIL_FROM_ADDRESS="noreply@innovation.md"   # должен совпадать с ящиком, иначе хостинг отклонит письмо
-  MAIL_FROM_NAME="Women's hub"
+  MAIL_FROM_NAME="Women's Hub"
   Затем artisan optimize:clear. Если письма из формы уходят, но Gmail кладёт их в «Спам», в cPanel → «Email
   Deliverability» проверьте, что SPF и DKIM для домена в статусе «Valid».
 

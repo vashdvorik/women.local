@@ -9,8 +9,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Women's hub — About</title>
-    <meta name="description" content="About Women's hub: mission, community and opportunities for women entrepreneurs from both banks.">
+    <title>Women's Hub — About</title>
+    <meta name="description" content="About Women's Hub: mission, community and opportunities for women entrepreneurs from both banks.">
     <link rel="icon" type="image/png" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/brand/favicon-w4w.png') }}">
     <link rel="apple-touch-icon" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/brand/apple-touch-icon.png') }}">
     <link rel="shortcut icon" href="{{ asset_v('favicon.ico') }}">
@@ -30,7 +30,7 @@
                 <div>
                     <p class="miro-eyebrow"><span data-lang="ru">О платформе</span><span data-lang="en">About the platform</span><span data-lang="ro">Despre platformă</span></p>
                     <h1><span data-lang="ru">Место, где женщины развивают бизнес вместе</span><span data-lang="en">A place where women grow business together</span><span data-lang="ro">Un loc în care femeile dezvoltă afaceri împreună</span></h1>
-                    <p class="miro-about-hero__copy"><span data-lang="ru">Women's hub — это цифровая экосистема для обучения, деловых связей, наставничества и новых возможностей женщин-предпринимательниц с обоих берегов.</span><span data-lang="en">Women's hub is a digital ecosystem for learning, business connections, mentorship and new opportunities for women entrepreneurs from both banks.</span><span data-lang="ro">Women's hub este un ecosistem digital pentru învățare, conexiuni de business, mentorat și oportunități noi pentru femeile antreprenoare de pe ambele maluri.</span></p>
+                    <p class="miro-about-hero__copy"><span data-lang="ru">Women's Hub — это цифровая экосистема для обучения, деловых связей, наставничества и новых возможностей женщин-предпринимательниц с обоих берегов.</span><span data-lang="en">Women's Hub is a digital ecosystem for learning, business connections, mentorship and new opportunities for women entrepreneurs from both banks.</span><span data-lang="ro">Women's Hub este un ecosistem digital pentru învățare, conexiuni de business, mentorat și oportunități noi pentru femeile antreprenoare de pe ambele maluri.</span></p>
                 </div>
                 <div class="miro-about-hero__visual">
                     <img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/hero-community.webp') }}" alt="Women entrepreneurs collaborating">

@@ -22,7 +22,7 @@ class ContactMessageMail extends Mailable
         $name = trim((string) preg_replace('/\s+/u', ' ', $this->contact->name));
 
         return new Envelope(
-            subject: "Сообщение с сайта Women's hub: {$name}",
+            subject: "Сообщение с сайта Women's Hub: {$name}",
             replyTo: [new Address($this->contact->email, $name)],
         );
     }

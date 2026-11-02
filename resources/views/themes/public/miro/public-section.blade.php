@@ -15,7 +15,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title['ru'] }} — Women's hub</title>
+    <title>{{ $title['ru'] }} — Women's Hub</title>
     <meta name="description" content="{{ $intro['ru'] }}">
     <link rel="icon" type="image/png" href="{{ asset_v('themes/public/' . $sectionTheme . '/images/brand/favicon-w4w.png') }}">
     <link rel="apple-touch-icon" href="{{ asset_v('themes/public/' . $sectionTheme . '/images/brand/apple-touch-icon.png') }}">

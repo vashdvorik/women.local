@@ -2,8 +2,8 @@
 
 <nav class="miro-nav" id="miro-nav">
     <div class="miro-container miro-nav__inner">
-        <a href="{{ url('/') }}" class="miro-brand" aria-label="Women's hub">
-            <img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/brand/logo-platform.webp') }}" alt="Women's hub" class="miro-brand__logo">
+        <a href="{{ url('/') }}" class="miro-brand" aria-label="Women's Hub">
+            <img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/brand/logo-platform.webp') }}" alt="Women's Hub" class="miro-brand__logo">
         </a>
         <div class="miro-nav__links" id="miro-nav-links">
             <div class="miro-nav__dropdown" data-nav-dropdown>

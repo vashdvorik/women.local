@@ -26,7 +26,7 @@ TXT,
 
     'ru' => <<<'TXT'
 О ПЛАТФОРМЕ
-Women's hub — цифровое пространство для женщин-предпринимательниц: деловые связи, возможности (гранты, конкурсы, программы), мероприятия и поддержка бизнеса. Сайт: {site_url}.
+Women's Hub — цифровое пространство для женщин-предпринимательниц: деловые связи, возможности (гранты, конкурсы, программы), мероприятия и поддержка бизнеса. Сайт: {site_url}.
 
 КАК УСТРОЕНО УЧАСТИЕ
 1. Регистрация по почте или через Google. Если регистрация по почте, нужно подтвердить её по письму.
@@ -56,7 +56,7 @@ TXT,
 
     'en' => <<<'TXT'
 ABOUT THE PLATFORM
-Women's hub is a digital space for women entrepreneurs: business connections, opportunities (grants, competitions, programmes), events and business support. Website: {site_url}.
+Women's Hub is a digital space for women entrepreneurs: business connections, opportunities (grants, competitions, programmes), events and business support. Website: {site_url}.
 
 HOW MEMBERSHIP WORKS
 1. Sign up with email or with Google. If you sign up with email, confirm it using the message we send.
@@ -86,7 +86,7 @@ TXT,
 
     'ro' => <<<'TXT'
 DESPRE PLATFORMĂ
-Women's hub este un spațiu digital pentru femei antreprenoare: legături de afaceri, oportunități (granturi, concursuri, programe), evenimente și sprijin pentru afacere. Site: {site_url}.
+Women's Hub este un spațiu digital pentru femei antreprenoare: legături de afaceri, oportunități (granturi, concursuri, programe), evenimente și sprijin pentru afacere. Site: {site_url}.
 
 CUM FUNCȚIONEAZĂ PARTICIPAREA
 1. Înregistrare prin e-mail sau prin Google. Dacă vă înregistrați prin e-mail, confirmați adresa din mesajul primit.

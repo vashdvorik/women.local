@@ -7,8 +7,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Свяжитесь с командой Women's hub через Telegram и присоединяйтесь к сообществу.">
-    <title>Контакты — Women's hub</title>
+    <meta name="description" content="Свяжитесь с командой Women's Hub через Telegram и присоединяйтесь к сообществу.">
+    <title>Контакты — Women's Hub</title>
     <link rel="icon" type="image/png" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/brand/favicon-w4w.png') }}">
     <link rel="apple-touch-icon" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/brand/apple-touch-icon.png') }}">
     <link rel="shortcut icon" href="{{ asset_v('favicon.ico') }}">

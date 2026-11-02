@@ -5,7 +5,7 @@
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#FAF4F1;padding:32px 16px;">
     <tr><td align="center">
         <table role="presentation" width="520" cellpadding="0" cellspacing="0" style="max-width:520px;width:100%;background:#FFFDFC;border:1px solid #E9DCD5;border-radius:20px;">
-            <tr><td style="padding:32px 32px 8px;font-family:Georgia,'Times New Roman',serif;font-size:24px;color:#2A1913;">Women’s hub</td></tr>
+            <tr><td style="padding:32px 32px 8px;font-family:Georgia,'Times New Roman',serif;font-size:24px;color:#2A1913;">Women’s Hub</td></tr>
             <tr><td style="padding:8px 32px 0;font-size:16px;line-height:1.55;">{{ __('participant.mail.greeting', [], $locale) }}</td></tr>
             <tr><td style="padding:12px 32px 0;font-size:16px;line-height:1.55;">{{ $line }}</td></tr>
             <tr><td style="padding:24px 32px;">
