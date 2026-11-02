@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Plan;
 use App\Support\Locales;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,15 +22,29 @@ class Broadcast extends Model
     public const STATUS_CANCELLED = 'cancelled';
 
     /**
-     * Все одобренные участницы / с действующим тарифом (Community, Active, Private) / без тарифа. Значение 'open' у
-     * последней группы осталось от прежнего бесплатного тарифа: рассылки, сохранённые с ним, продолжают работать.
-     * Рассылка идёт в Telegram, поэтому получают её только те, кто подключил бота.
+     * Группы получательниц: все; все с действующим пакетом (Community, Active, Private); по одному пакету;
+     * «срок пакета закончился» (пакет был, но больше не действует). Не купившие пакет сюда не входят: без пакета кабинет
+     * закрыт, Telegram они подключить не могут. Ключ 'open' у последней группы остался от прежнего бесплатного тарифа:
+     * рассылки, сохранённые с ним, продолжают работать, но теперь он означает «срок закончился».
+     * Рассылка идёт в Telegram, поэтому получают её только те, кто подключил бота. Одобрение анкеты на рассылки не влияет:
+     * это скрытая проверка того, кому показывать профиль другим, а не право получать новости и возможности платформы.
+     * Ключ 'approved' у первой группы остался от прежнего названия «все одобренные».
      */
     public const AUDIENCE_APPROVED = 'approved';
     public const AUDIENCE_MEMBERS = 'members';
+    public const AUDIENCE_COMMUNITY = 'community';
+    public const AUDIENCE_ACTIVE = 'active';
+    public const AUDIENCE_PRIVATE = 'private';
     public const AUDIENCE_OPEN = 'open';
 
-    public const AUDIENCES = [self::AUDIENCE_APPROVED, self::AUDIENCE_MEMBERS, self::AUDIENCE_OPEN];
+    public const AUDIENCES = [
+        self::AUDIENCE_APPROVED,
+        self::AUDIENCE_MEMBERS,
+        self::AUDIENCE_COMMUNITY,
+        self::AUDIENCE_ACTIVE,
+        self::AUDIENCE_PRIVATE,
+        self::AUDIENCE_OPEN,
+    ];
 
     public const MAX_BUTTONS = 3;
 
@@ -61,9 +76,13 @@ class Broadcast extends Model
     public static function audienceQuery(string $audience): Builder
     {
         $query = match ($audience) {
-            self::AUDIENCE_MEMBERS => BotUser::members(),
-            self::AUDIENCE_OPEN => BotUser::approved()->whereNotIn('bot_users.id', BotUser::members()->select('bot_users.id')),
-            default => BotUser::approved(),
+            self::AUDIENCE_MEMBERS => BotUser::withPlan(Plan::Community),
+            // Ровно этот пакет и только действующий (у кого срок закончился, в группе «Срок пакета закончился»)
+            self::AUDIENCE_COMMUNITY, self::AUDIENCE_ACTIVE, self::AUDIENCE_PRIVATE => BotUser::withPlan(Plan::Community)->where('bot_users.plan', $audience),
+            self::AUDIENCE_OPEN => BotUser::query()
+                ->whereNotIn('bot_users.id', BotUser::withPlan(Plan::Community)->select('bot_users.id'))
+                ->whereHas('subscriptions'),
+            default => BotUser::query(),
         };
 
         return $query->whereNotNull('bot_users.telegram_id');
@@ -165,9 +184,12 @@ class Broadcast extends Model
     public static function audienceTitle(string $audience): string
     {
         return match ($audience) {
-            self::AUDIENCE_MEMBERS => __('Участницы с тарифом (Open, Community, Private)'),
-            self::AUDIENCE_OPEN => __('Без тарифа (зарегистрированы, но ещё не купили)'),
-            default => __('Все одобренные участницы'),
+            self::AUDIENCE_MEMBERS => __('Все с действующим пакетом (Community, Active, Private)'),
+            self::AUDIENCE_COMMUNITY => __('Только пакет Community'),
+            self::AUDIENCE_ACTIVE => __('Только пакет Active'),
+            self::AUDIENCE_PRIVATE => __('Только пакет Private'),
+            self::AUDIENCE_OPEN => __('Срок пакета закончился (были участницами с пакетом)'),
+            default => __('Все участницы (подключившие Telegram)'),
         };
     }
 }

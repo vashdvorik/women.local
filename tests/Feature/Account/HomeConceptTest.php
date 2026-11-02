@@ -128,7 +128,7 @@ class HomeConceptTest extends TestCase
         }
     }
 
-    public function test_upcoming_events_include_future_news_and_initiative_dates_but_not_past_ones(): void
+    public function test_upcoming_events_are_future_platform_news_only(): void
     {
         $future = Event::create(['slug' => 'forum', 'starts_at' => now()->addDays(5), 'is_published' => true, 'position' => 1, 'tone' => 'blue', 'url' => 'https://example.com']);
         $future->translations()->create(['locale' => 'ru', 'title' => 'Бизнес-форум']);
@@ -140,16 +140,36 @@ class HomeConceptTest extends TestCase
         Opportunity::create(['bot_user_id' => $author->id, 'type' => 'event', 'title' => 'Встреча участниц', 'body' => 'Кофе', 'event_date' => now()->addDays(9), 'location' => 'Кишинёв', 'status' => 'approved']);
 
         $html = $this->home($this->member(Plan::Community));
+        $events = substr($html, strpos($html, 'home-events-title'));
+        $events = substr($events, 0, strpos($events, '</section>'));
 
         $this->assertStringContainsString('Ближайшие события', $html);
-        $this->assertStringContainsString('Бизнес-форум', $html);
-        $this->assertStringContainsString('Встреча участниц', $html);
-        $this->assertStringContainsString('Кишинёв', $html);
+        $this->assertStringContainsString('Бизнес-форум', $events);
         $this->assertStringNotContainsString('Прошедшее событие', $html);
         $this->assertStringNotContainsString('Неопубликованное событие', $html);
-        // Инициатива есть и в «Что нового»: порядок смотрим внутри блока событий
-        $block = substr($html, strpos($html, 'home-events-title'));
-        $this->assertGreaterThan(strpos($block, 'Бизнес-форум'), strpos($block, 'Встреча участниц'), 'ближайшее раньше');
+        $this->assertStringNotContainsString('Встреча участниц', $events, 'инициативы идут отдельным блоком');
+    }
+
+    public function test_initiatives_are_a_separate_block_with_approved_ones_only(): void
+    {
+        $author = $this->member(Plan::Community);
+        Opportunity::create(['bot_user_id' => $author->id, 'type' => 'event', 'title' => 'Встреча участниц', 'body' => 'Кофе и знакомство', 'event_date' => now()->addDays(9), 'location' => 'Кишинёв', 'status' => 'approved']);
+        Opportunity::create(['bot_user_id' => $author->id, 'type' => 'project', 'title' => 'Ищу партнёров', 'body' => 'Совместный проект', 'status' => 'approved']);
+        Opportunity::create(['bot_user_id' => $author->id, 'type' => 'project', 'title' => 'Ждёт проверки', 'body' => 'Текст', 'status' => 'pending']);
+
+        foreach ([Plan::Community, Plan::Active] as $plan) {
+            $html = $this->home($this->member($plan));
+
+            $this->assertStringContainsString('Инициативы участниц', $html);
+            $block = substr($html, strpos($html, 'home-initiatives-title'));
+            $block = substr($block, 0, strpos($block, '</section>'));
+
+            $this->assertStringContainsString('Встреча участниц', $block);
+            $this->assertStringContainsString('Кишинёв', $block);
+            $this->assertStringContainsString('Ищу партнёров', $block, 'без даты и места карточка тоже выводится');
+            $this->assertStringNotContainsString('Ждёт проверки', $html);
+            $this->assertStringContainsString(route('account.opportunities.index'), $block);
+        }
     }
 
     public function test_empty_blocks_are_not_rendered(): void
@@ -158,6 +178,7 @@ class HomeConceptTest extends TestCase
 
         $this->assertStringNotContainsString('Ближайшие события', $html);
         $this->assertStringNotContainsString('Что нового', $html);
+        $this->assertStringNotContainsString('Инициативы участниц', $html);
     }
 
     public function test_the_home_renders_in_english_and_romanian(): void

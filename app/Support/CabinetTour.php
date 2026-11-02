@@ -18,13 +18,13 @@ use App\Models\BotUser;
 final class CabinetTour
 {
     /** Какие разделы объясняем и в каком порядке (остальные понятны из названия или ещё пусты). */
-    private const SECTIONS = ['manager', 'possibilities', 'assistant', 'search', 'people', 'opportunities', 'profile', 'subscription'];
+    private const SECTIONS = ['assistant', 'matches', 'search', 'people', 'possibilities', 'knowledge', 'manager', 'opportunities', 'profile', 'subscription'];
 
     /** Какие из этих разделов есть в меню на тарифе (зеркало CabinetNav::items). */
     private const BY_PLAN = [
-        'community' => ['manager', 'possibilities', 'opportunities', 'profile', 'subscription'],
-        'active' => ['manager', 'possibilities', 'assistant', 'search', 'people', 'opportunities', 'profile'],
-        'private' => ['manager', 'possibilities', 'assistant', 'search', 'people', 'opportunities', 'profile'],
+        'community' => ['possibilities', 'knowledge', 'manager', 'opportunities', 'profile', 'subscription'],
+        'active' => ['assistant', 'matches', 'search', 'people', 'possibilities', 'knowledge', 'manager', 'opportunities', 'profile'],
+        'private' => ['assistant', 'matches', 'search', 'people', 'possibilities', 'knowledge', 'manager', 'opportunities', 'profile'],
     ];
 
     /** Ключ в bot_users.cabinet_seen: подсказки этого тарифа показаны. */
@@ -78,6 +78,8 @@ final class CabinetTour
 
         if ($previous === null) {
             $steps[] = ['target' => '[data-tour-nav]', 'title' => __('account.tour.menu_title'), 'text' => __('account.tour.menu_text'), 'how' => ''];
+            $steps[] = ['target' => '[data-tour-home="plan"]', 'title' => __('account.tour.home_plan_title'), 'text' => __('account.tour.home_plan_text'), 'how' => ''];
+            $steps[] = ['target' => '[data-tour-home="feed"]', 'title' => __('account.tour.home_feed_title'), 'text' => __('account.tour.home_feed_text'), 'how' => ''];
         }
 
         foreach ($sections as $key) {

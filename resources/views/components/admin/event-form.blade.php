@@ -23,9 +23,9 @@
     <x-admin.image-field name="image_path" aspect="event" :label="__('Обложка')" :value="$event->image_path ?? ''" />
 
     <div class="grid gap-4 sm:grid-cols-2">
-        <x-forms.field :label="__('Дата публикации')" name="starts_at" type="date"
+        <x-forms.field :label="__('Дата новости или события')" name="starts_at" type="date"
                        :value="$event->starts_at?->format('Y-m-d')"
-                       :hint="__('Дата новости на сайте: на карточке и на странице новости. Подпись ниже, если она просто дата, обновится вместе с ней; свой текст вместо даты («Открыт набор») останется как есть. Порядок новостей в ленте меняется стрелками в списке.')" />
+                       :hint="__('Дата видна на карточке. Если это событие, поставьте дату, когда оно пройдёт: до этого дня оно будет в «Ближайших событиях» у участниц.')" />
 
         <x-forms.field :label="__('Цвет подложки карточки')" name="tone">
             <select id="tone" name="tone" class="field-input">
@@ -71,7 +71,7 @@
                     <x-forms.field :label="__('Подпись вместо даты :language', ['language' => $label])" name="translations[{{ $code }}][date_label]"
                                    error="translations.{{ $code }}.date_label"
                                    :value="$event->rawTranslation($code)?->date_label"
-                                   :hint="__('Необязательно: «Открыт набор». Если пусто, покажется дата публикации.')" />
+                                   :hint="__('Необязательно. Например: «Открыт набор». Если пусто, на карточке будет дата.')" />
                 </div>
                 <div class="space-y-1">
                     <label for="ev_description_{{ $code }}" class="field-label">{{ __('Описание :language', ['language' => $label]) }}</label>

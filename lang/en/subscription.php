@@ -95,6 +95,8 @@ return [
         'intro_upgrade' => 'You can switch to a higher plan: it starts right after payment.',
         'more' => 'What is included',
         'popular' => 'Most popular',
+        'upgrade_credit' => 'The unused remainder of your :from plan is taken into account: −:credit. Full price: :full.',
+        'upgrade_gift' => 'Your plan was a gift from the administrator, so it is not credited when you upgrade: the full price applies.',
         'choose' => 'Choose for :price',
     ],
 

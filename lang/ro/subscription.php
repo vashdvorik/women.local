@@ -95,6 +95,8 @@ return [
         'intro_upgrade' => 'Puteți trece la un tarif superior: începe imediat după plată.',
         'more' => 'Ce include tariful',
         'popular' => 'Cel mai popular',
+        'upgrade_credit' => 'S-a luat în calcul partea neutilizată a pachetului :from: −:credit. Preț complet: :full.',
+        'upgrade_gift' => 'Pachetul dvs. a fost oferit de administrator, de aceea nu se scade la trecere: se aplică prețul complet.',
         'choose' => 'Alege pentru :price',
     ],
 

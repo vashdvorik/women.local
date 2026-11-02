@@ -108,6 +108,25 @@ final class SubscriptionService
         });
     }
 
+    /**
+     * Закрывает оплаченные периоды, которые зачтены в цену более высокого тарифа (UpgradePricing): их остаток уже оплачен
+     * новым тарифом и не должен вернуться после него. Периоды, которые ещё не начались, сводятся к нулевой длине.
+     *
+     * @param  list<int>  $ids  id периодов подписки этой участницы
+     */
+    public function spend(BotUser $user, array $ids): void
+    {
+        DB::transaction(function () use ($user, $ids): void {
+            $user->subscriptions()->whereIn('id', $ids)->where('ends_at', '>', now())->get()
+                ->each(fn (Subscription $subscription) => $subscription->update([
+                    'starts_at' => $subscription->starts_at->gt(now()) ? now() : $subscription->starts_at,
+                    'ends_at' => now(),
+                ]));
+
+            $this->refresh($user);
+        });
+    }
+
     /** Закрывает все действующие периоды: у участницы больше нет тарифа, кабинет закрывается немедленно. */
     public function revoke(BotUser $user): void
     {

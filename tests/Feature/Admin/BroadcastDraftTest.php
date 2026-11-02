@@ -97,7 +97,7 @@ class BroadcastDraftTest extends TestCase
         $this->assertSame(route('media.publications.show', $post), $drafts[Post::class]->buttons[0]['url']);
         $this->assertSame(route('opportunities.show', $opportunity), $drafts[SiteOpportunity::class]->buttons[0]['url']);
         $this->assertSame("<b>Грант для основательниц</b>\n\nОткрыт приём заявок.", $drafts[Post::class]->texts['ru']);
-        $this->assertSame('approved', $drafts[Post::class]->audience, 'по умолчанию все одобренные');
+        $this->assertSame('approved', $drafts[Post::class]->audience, 'по умолчанию все участницы');
         $this->assertSame('open', $drafts[SiteOpportunity::class]->audience);
         $this->assertSame(['draft', 'draft'], $drafts->pluck('status')->values()->all());
     }

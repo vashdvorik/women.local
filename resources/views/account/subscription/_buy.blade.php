@@ -15,10 +15,15 @@
     $closed = $purchase->isClosed($plan);
     $canBuy = $purchase->canBuy($user, $plan);
     $pending = $closed && ! $canBuy ? $purchase->pendingRequest($user, $plan) : null;
+    // Переход на тариф выше: цена уменьшается на неиспользованную часть оплаченного тарифа (UpgradePricing); у подаренного
+    // администратором тарифа пересчёта нет, цена полная.
+    $upgrades = app(\App\Services\Subscriptions\UpgradePricing::class);
+    $quote = ! $same && ! $higher && $current->isPaid() ? $upgrades->quote($user, $plan) : null;
+    $payPrice = $quote !== null && $quote['credit'] > 0 ? $upgrades::label($quote['payable']) : $price;
     $label = $same
         ? __('subscription.page.renew', ['price' => $price])
         : ($current->isPaid()
-            ? __('subscription.page.upgrade', ['plan' => $plan->shortTitle(), 'price' => $price])
+            ? __('subscription.page.upgrade', ['plan' => $plan->shortTitle(), 'price' => $payPrice])
             : __('subscription.page.choose', ['price' => $price]));
 @endphp
 
@@ -66,5 +71,10 @@
     </form>
     @if($same && $user->plan_ends_at)
         <p class="mt-2 text-center text-xs text-gray-500">{{ __('subscription.page.renew_hint') }}</p>
+    @endif
+    @if($quote !== null && $quote['credit'] > 0)
+        <p class="mt-2 text-center text-xs leading-5 text-gray-500">{{ __('subscription.page.upgrade_credit', ['from' => $quote['from']->shortTitle(), 'credit' => $upgrades::label($quote['credit']), 'full' => $upgrades::label($quote['full'])]) }}</p>
+    @elseif($quote !== null && $quote['gift'])
+        <p class="mt-2 text-center text-xs leading-5 text-gray-500">{{ __('subscription.page.upgrade_gift') }}</p>
     @endif
 @endif

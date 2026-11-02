@@ -7,6 +7,7 @@ namespace App\Services\Payments\WebPayment;
 use App\Enums\Plan;
 use App\Models\BotUser;
 use App\Models\Payment;
+use App\Services\Subscriptions\UpgradePricing;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
@@ -41,12 +42,17 @@ final class Checkout
             throw new PaymentsUnavailable(__('subscription.errors.already_higher', ['plan' => $user->currentPlan()->title()]));
         }
 
+        // Переход на тариф выше: из цены вычитается неиспользованная часть оплаченного тарифа ниже (UpgradePricing).
+        // Для тарифа, который подарил администратор, пересчёта нет.
+        $quote = app(UpgradePricing::class)->quote($user, $plan);
+        $amount = $quote['payable'];
+
         // Не заводим новый счёт на каждое нажатие: пока предыдущий не истёк, показываем его же. Но только если цена
         // с тех пор не менялась: после смены цены в админке участница получает счёт на новую сумму.
         $existing = Payment::query()
             ->where('bot_user_id', $user->id)
             ->where('plan', $plan->value)
-            ->where('amount', $plan->priceKopecks())
+            ->where('amount', $amount)
             ->where('driver', $this->gateway->driver())
             ->where('is_test', (bool) config('webpayment.is_test'))
             ->where('status', Payment::STATUS_PENDING)
@@ -69,13 +75,17 @@ final class Checkout
                     'telegram_id' => $user->telegram_id,
                     'plan' => $plan->value,
                     'months' => $plan->months(),
-                    'amount' => $plan->priceKopecks(),
+                    'amount' => $amount,
                     'currency' => (string) config('webpayment.currency_code'),
                     'invoice_id' => $this->invoiceId($isTest),
                     'status' => Payment::STATUS_PENDING,
                     'is_test' => $isTest,
                     'driver' => $this->gateway->driver(),
                     'expires_at' => now()->addMinutes((int) config('webpayment.lifetime', 30)),
+                    // Что зачтено при переходе: после оплаты эти периоды закрываются (PaymentReconciler::activate)
+                    'payload' => $quote['credit'] > 0
+                        ? ['upgrade' => ['from' => $quote['from']->value, 'full' => $quote['full'], 'credit' => $quote['credit'], 'subscriptions' => $quote['subscriptions']]]
+                        : null,
                 ]);
             } catch (UniqueConstraintViolationException $e) {
                 if ($attempt >= self::INVOICE_ATTEMPTS) {

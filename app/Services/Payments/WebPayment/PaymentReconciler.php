@@ -164,7 +164,7 @@ final class PaymentReconciler
             return null;
         }
 
-        return $this->subscriptions->grant(
+        $subscription = $this->subscriptions->grant(
             $user,
             $payment->planEnum(),
             $payment->months,
@@ -172,6 +172,15 @@ final class PaymentReconciler
             $payment,
             'Оплата '.$payment->invoice_id,
         );
+
+        // Переход на тариф выше со скидкой за остаток: засчитанные периоды ниже стоящего тарифа закрываются
+        $credited = (array) ($payment->payload['upgrade']['subscriptions'] ?? []);
+
+        if ($credited !== []) {
+            $this->subscriptions->spend($user, $credited);
+        }
+
+        return $subscription;
     }
 
     /** @return string|null описание расхождения или null, если всё сходится */

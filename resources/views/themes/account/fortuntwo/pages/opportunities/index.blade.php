@@ -20,6 +20,11 @@
             @endif
         </header>
 
+        {{-- Скрытому участнику публиковать нельзя (иначе раскрылось бы его присутствие): объясняем, почему нет кнопки --}}
+        @if($accountUser->is_hidden)
+            <p class="mb-6 rounded-2xl border border-brand-100 bg-brand-50 px-5 py-4 text-sm leading-6 text-gray-700">{{ __('account.opportunities.hidden_note') }}</p>
+        @endif
+
         @if($opportunities->isEmpty())
             <div class="miro-empty">
                 <span class="miro-empty__mark"><svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 5v14m-7-7h14"/></svg></span>

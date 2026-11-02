@@ -968,9 +968,7 @@
     "Администратор отклонил анкету.": "An administrator rejected the profile.",
     "Администратор закрыл доступ уже одобренной участнице.": "An administrator closed access for an already approved participant.",
     "Срок подписки истёк: кабинет закрылся до нового тарифа.": "The subscription term has expired: the account is closed until a new plan.",
-    "Необязательно: «Открыт набор». Если пусто, покажется дата публикации.": "Optional: “Applications open”. If empty, the publication date is shown.",
     "дата публикации": "publication date",
-    "Дата новости на сайте: на карточке и на странице новости. Подпись ниже, если она просто дата, обновится вместе с ней; свой текст вместо даты («Открыт набор») останется как есть. Порядок новостей в ленте меняется стрелками в списке.": "The date of the news on the site: on the card and on the news page. The label below, if it is just a date, is updated together with it; your own text instead of a date (“Applications open”) stays as it is. The order of news in the list is changed with the arrows in the list.",
     "Показывается на карточке видео на сайте. Если оставить пустой, даты на карточке не будет.": "Shown on the video card on the site. If left empty, the card has no date.",
     "PDF весит :size МБ, а принять можно не больше :limit МБ. Сожмите PDF (сохраните его «для веб» или сожмите онлайн) и выберите файл снова.": "The PDF weighs :size MB, but the maximum accepted is :limit MB. Compress the PDF (save it “for web” or compress it online) and choose the file again.",
     "Не больше :limit МБ и :pages страниц.": "No more than :limit MB and :pages pages.",
@@ -1066,5 +1064,14 @@
     "watch?v=…, youtu.be/…, /shorts/…, /embed/… или /live/…. В настройках видео на YouTube должно быть разрешено встраивание на других сайтах, иначе в кабинете оно не откроется.": "watch?v=…, youtu.be/…, /shorts/…, /embed/… or /live/…. Embedding on other sites must be allowed in the video settings on YouTube, otherwise it will not open in the account.",
     "В кабинете участниц, в «Возможностях»": "In the members’ account, in “Opportunities”",
     "В кабинете участниц, в «Обучении»": "In the members’ account, in “Learning”",
-    "Опубликованная карточка видна там, где стоит галочка. Можно выбрать несколько мест. Сняв «На открытом сайте», вы оставляете её только для участниц; «В обучении» показывает её в разделе «Обучение» кабинета.": "A published card is visible wherever its box is ticked. You can pick several places. Unticking “On the public site” keeps it for members only; “Learning” shows it in the account’s Learning section."
+    "Опубликованная карточка видна там, где стоит галочка. Можно выбрать несколько мест. Сняв «На открытом сайте», вы оставляете её только для участниц; «В обучении» показывает её в разделе «Обучение» кабинета.": "A published card is visible wherever its box is ticked. You can pick several places. Unticking “On the public site” keeps it for members only; “Learning” shows it in the account’s Learning section.",
+    "Все с действующим пакетом (Community, Active, Private)": "Everyone with a current plan (Community, Active, Private)",
+    "Только пакет Community": "Community plan only",
+    "Только пакет Active": "Active plan only",
+    "Только пакет Private": "Private plan only",
+    "Срок пакета закончился (были участницами с пакетом)": "Plan has ended (were members with a plan)",
+    "Все участницы (подключившие Telegram)": "All members (who connected Telegram)",
+    "Дата видна на карточке. Если это событие, поставьте дату, когда оно пройдёт: до этого дня оно будет в «Ближайших событиях» у участниц.": "The date is shown on the card. If this is an event, set the day it takes place: until then it appears in “Upcoming events” for members.",
+    "Необязательно. Например: «Открыт набор». Если пусто, на карточке будет дата.": "Optional. For example: “Applications open”. If empty, the card shows the date.",
+    "Дата новости или события": "News or event date"
 }

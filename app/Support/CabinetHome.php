@@ -47,7 +47,8 @@ final class CabinetHome
             'tiles' => array_values(array_filter(CabinetNav::items($user), fn (array $item): bool => $item['key'] !== 'home')),
             'recs' => $premium ? self::recommendations($user) : null,
             'news' => $anyPlan ? self::news() : [],
-            'events' => $anyPlan ? self::events($user, $locale) : [],
+            'events' => $anyPlan ? self::events($locale) : [],
+            'initiatives' => $anyPlan ? self::initiatives($user, $locale) : [],
             // Что откроет Active: названия закрытых разделов (для Community)
             'locked' => $premium ? [] : array_values(array_map(fn (array $i): string => $i['label'], array_filter(CabinetNav::items($user), fn (array $i): bool => $i['locked']))),
         ];
@@ -132,29 +133,32 @@ final class CabinetHome
     }
 
     /**
-     * Ближайшие события: новости платформы с датой впереди и инициативы участниц с датой события, по возрастанию даты.
+     * Ближайшие события: новости платформы с датой впереди, по возрастанию даты.
      *
      * @return list<array<string, mixed>>
      */
-    private static function events(BotUser $user, string $locale): array
+    private static function events(string $locale): array
     {
-        $items = collect(self::shared($locale)['events']);
+        return collect(self::shared($locale)['events'])->sortBy('at')->take(8)->values()->all();
+    }
 
-        $initiatives = Opportunity::query()->visibleTo($user)->approved()->whereDate('event_date', '>=', today())->orderBy('event_date')->limit(8)->get();
+    /**
+     * Инициативы участниц отдельным блоком: одобренные, новые сверху. Фото у инициатив нет, карточки только с текстом.
+     *
+     * @return list<array<string, mixed>>
+     */
+    private static function initiatives(BotUser $user, string $locale): array
+    {
+        return Opportunity::query()->visibleTo($user)->approved()->latest()->limit(8)->get()
+            ->map(function (Opportunity $initiative) use ($locale): array {
+                $when = $initiative->event_date?->copy()->locale($locale)->isoFormat('D MMMM');
 
-        foreach ($initiatives as $initiative) {
-            $items->push([
-                'title' => $initiative->title,
-                'date' => $initiative->event_date->copy()->locale($locale)->isoFormat('D MMMM'),
-                'place' => (string) $initiative->location,
-                'image' => null,
-                'href' => route('account.opportunities.index'),
-                'external' => false,
-                'at' => $initiative->event_date->getTimestamp(),
-            ]);
-        }
-
-        return $items->sortBy('at')->take(8)->values()->all();
+                return [
+                    'kicker' => implode(' · ', array_filter([$when, (string) $initiative->location])),
+                    'title' => $initiative->title,
+                    'text' => Str::limit(strip_tags((string) $initiative->body), 120),
+                ];
+            })->all();
     }
 
     /**

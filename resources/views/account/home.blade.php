@@ -23,7 +23,7 @@
             <button type="button" data-tour-start class="mt-2 text-sm font-semibold text-brand-700 hover:underline">{{ __('account.tour.replay') }}</button>
         </div>
 
-        <div class="home-hero__cards">
+        <div class="home-hero__cards" data-tour-home="plan">
             @if($plan['active'])
                 <div class="home-stat">
                     <p class="home-stat__label">{{ __('account.home.your_plan') }}</p>
@@ -50,7 +50,7 @@
     </section>
 
     {{-- Разделы: короткие плитки для быстрого перехода (закрытые для пакета с замком) --}}
-    <nav class="mb-8" aria-label="{{ __('account.home.tiles_title') }}">
+    <nav class="mb-8" aria-label="{{ __('account.home.tiles_title') }}" data-tour-home="feed">
         <div class="home-tiles">
             @foreach($tiles as $tile)
                 <a href="{{ route($tile['route']) }}" class="home-tile {{ $tile['locked'] ? 'home-tile--locked' : '' }}" @if($tile['locked']) title="{{ __('account.home.tile_locked') }}" @endif>
@@ -147,6 +147,27 @@
                     @else
                         </div>
                     @endif
+                @endforeach
+            </div>
+        </section>
+    @endif
+
+    {{-- Инициативы участниц: отдельно от событий --}}
+    @if($initiatives !== [])
+        <section class="home-section" aria-labelledby="home-initiatives-title">
+            <div class="home-section__head">
+                <h2 id="home-initiatives-title" class="home-section__title">{{ __('account.home.initiatives_title') }}</h2>
+                <a href="{{ route('account.opportunities.index') }}" class="home-section__more">{{ __('account.home.all_initiatives') }} →</a>
+            </div>
+            <div class="home-rail">
+                @foreach($initiatives as $initiative)
+                    <a href="{{ route('account.opportunities.index') }}" class="home-card">
+                        <span class="home-card__body">
+                            @if($initiative['kicker'] !== '')<span class="home-card__kicker">{{ $initiative['kicker'] }}</span>@endif
+                            <span class="home-card__title">{{ $initiative['title'] }}</span>
+                            @if($initiative['text'] !== '')<span class="home-card__text">{{ $initiative['text'] }}</span>@endif
+                        </span>
+                    </a>
                 @endforeach
             </div>
         </section>

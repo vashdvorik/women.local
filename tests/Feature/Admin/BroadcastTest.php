@@ -98,14 +98,16 @@ class BroadcastTest extends TestCase
     public function test_the_form_shows_how_many_will_receive_the_message(): void
     {
         BotUser::factory()->active()->count(2)->create();
-        BotUser::factory()->approved()->create();
+        BotUser::factory()->approved()->create();   // без пакета и без подписок: Telegram не подключить, в группах по пакетам нет
+        BotUser::factory()->active()->create()->forceFill(['plan_ends_at' => now()->subDay()])->save();   // срок закончился
         BotUser::factory()->pending()->create();
 
         $html = $this->actingAsAdmin()->get(route('admin.broadcasts.create'))->assertOk()->getContent();
 
-        $this->assertStringContainsString('получат: 3', $html, 'все одобренные');
-        $this->assertStringContainsString('получат: 2', $html, 'платные');
-        $this->assertStringContainsString('получат: 1', $html, 'бесплатные');
+        $this->assertStringContainsString('получат: 5', $html, 'все участницы, в том числе с неодобренной анкетой');
+        $this->assertStringContainsString('получат: 2', $html, 'с действующим пакетом и только Active');
+        $this->assertStringContainsString('получат: 0', $html, 'Community и Private: никого');
+        $this->assertStringContainsString('получат: 1', $html, 'срок закончился');
     }
 
     // ---------------------------------------------------------------- проверки формы
@@ -215,17 +217,19 @@ class BroadcastTest extends TestCase
         $en = BotUser::factory()->private()->create(['locale' => 'en']);
         $ro = BotUser::factory()->active()->create(['locale' => 'ro']);   // перевода на румынский нет: придёт русский
         $open = BotUser::factory()->approved()->create(['locale' => 'ru']);
-        BotUser::factory()->pending()->create();                              // не одобрена: не получит
+        // Анкета не одобрена (скрытая проверка): на рассылку это не влияет, пакет у неё есть, поэтому она получит
+        $unapproved = BotUser::factory()->pending()->create(['locale' => 'ru']);
+        $unapproved->forceFill(['plan' => 'community', 'plan_ends_at' => now()->addMonths(6)])->save();
 
         $this->submit($this->payload(['action' => 'send', 'send_mode' => 'now', 'audience' => 'members']))->assertRedirect();
 
         $broadcast = Broadcast::firstOrFail();
         $this->assertSame('sent', $broadcast->status);
-        $this->assertSame([3, 3, 0, 0], [$broadcast->total, $broadcast->sent, $broadcast->failed, $broadcast->blocked]);
+        $this->assertSame([4, 4, 0, 0], [$broadcast->total, $broadcast->sent, $broadcast->failed, $broadcast->blocked]);
         $this->assertNotNull($broadcast->finished_at);
 
         $byChat = collect($this->sent())->mapWithKeys(fn (Request $r) => [(string) $this->body($r)['chat_id'] => $this->body($r)]);
-        $this->assertEqualsCanonicalizing([(string) $ru->telegram_id, (string) $en->telegram_id, (string) $ro->telegram_id], $byChat->keys()->all());
+        $this->assertEqualsCanonicalizing([(string) $ru->telegram_id, (string) $en->telegram_id, (string) $ro->telegram_id, (string) $unapproved->telegram_id], $byChat->keys()->all());
         $this->assertArrayNotHasKey((string) $open->telegram_id, $byChat->all(), 'бесплатный тариф не в выбранной группе');
         $this->assertSame('Приходите на встречу в пятницу!', $byChat[(string) $ru->telegram_id]['text']);
         $this->assertSame('Join us on Friday!', $byChat[(string) $en->telegram_id]['text']);
@@ -234,19 +238,38 @@ class BroadcastTest extends TestCase
         $this->assertSame('Зарегистрироваться', json_decode($byChat[(string) $ro->telegram_id]['reply_markup'], true)['inline_keyboard'][0][0]['text']);
     }
 
-    public function test_the_three_audiences_pick_the_right_people(): void
+    public function test_the_audiences_pick_the_right_people_by_plan(): void
     {
-        $paid = BotUser::factory()->active()->create();
+        $community = BotUser::factory()->community()->create();
+        $active = BotUser::factory()->active()->create();
         $private = BotUser::factory()->private()->create();
         $open = BotUser::factory()->approved()->create();
-        $pending = BotUser::factory()->pending()->create();
+        $ended = BotUser::factory()->active()->create();
+        $ended->forceFill(['plan_ends_at' => now()->subDay()])->save();
+        $pending = BotUser::factory()->pending()->create();   // анкета не одобрена, пакета нет
+        $unapproved = BotUser::factory()->pending()->create();
+        $unapproved->forceFill(['plan' => 'community', 'plan_ends_at' => now()->addMonths(3)])->save();
 
         $ids = fn (string $audience) => Broadcast::audienceQuery($audience)->pluck('bot_users.id')->all();
 
-        $this->assertEqualsCanonicalizing([$paid->id, $private->id, $open->id], $ids('approved'));
-        $this->assertEqualsCanonicalizing([$paid->id, $private->id], $ids('members'));
-        $this->assertSame([$open->id], $ids('open'));
-        $this->assertNotContains($pending->id, $ids('approved'));
+        // Одобрение анкеты на рассылку не влияет: всё решают пакет и подключённый Telegram
+        $this->assertEqualsCanonicalizing([$community->id, $active->id, $private->id, $open->id, $ended->id, $pending->id, $unapproved->id], $ids('approved'));
+        $this->assertEqualsCanonicalizing([$community->id, $active->id, $private->id, $unapproved->id], $ids('members'));
+        $this->assertEqualsCanonicalizing([$community->id, $unapproved->id], $ids('community'));
+        $this->assertSame([$active->id], $ids('active'));
+        $this->assertSame([$private->id], $ids('private'));
+        $this->assertSame([$ended->id], $ids('open'), 'срок закончился; не купившие сюда не входят');
+    }
+
+    public function test_the_form_offers_only_current_plan_groups(): void
+    {
+        $html = $this->actingAsAdmin()->get(route('admin.broadcasts.create'))->assertOk()->getContent();
+
+        foreach (['Все участницы (подключившие Telegram)', 'Все с действующим пакетом', 'Только пакет Community', 'Только пакет Active', 'Только пакет Private', 'Срок пакета закончился'] as $title) {
+            $this->assertStringContainsString($title, $html);
+        }
+        $this->assertStringNotContainsString('Open', $html);
+        $this->assertStringNotContainsString('Без тарифа', $html);
     }
 
     public function test_a_member_who_blocked_the_bot_is_marked_and_the_rest_still_get_the_message(): void
