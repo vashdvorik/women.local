@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="miro-page pos-article">
-        <a href="{{ route('account.possibilities.index') }}" class="miro-button miro-button--text mb-4">← {{ __('account.possibilities.back') }}</a>
+        <a href="{{ $article['back_url'] }}" class="miro-button miro-button--text mb-4">← {{ $article['back_label'] }}</a>
 
         <header class="miro-page-header">
             <div class="miro-page-header__copy">

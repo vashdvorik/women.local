@@ -244,6 +244,8 @@ return [
         'videos_hint' => 'Apăsați pe un videoclip pentru a-l deschide chiar aici.',
         'watch' => 'Vizionează',
         'close' => 'Închide',
+        'materials_title' => 'Materiale',
+        'back' => 'Toată instruirea',
     ],
 
     'opportunities' => [

@@ -11,6 +11,7 @@ class SiteOpportunityRequest extends ArticleRequest
             'deadline_at' => ['nullable', 'date'],
             'show_on_site' => ['nullable', 'boolean'],
             'show_in_cabinet' => ['nullable', 'boolean'],
+            'show_in_learning' => ['nullable', 'boolean'],
         ];
     }
 }

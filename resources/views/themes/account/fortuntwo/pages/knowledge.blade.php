@@ -11,6 +11,33 @@
             </div>
         </header>
 
+        @if($cards->isNotEmpty())
+            {{-- Текстовые карточки: «Возможности» в админке с галочкой «В кабинете участниц, в «Обучении»». Выглядят как в разделе «Возможности». --}}
+            <section aria-labelledby="learning-cards-title" @class(['mb-10' => $videos->isNotEmpty()])>
+                @if($videos->isNotEmpty())
+                    <h2 id="learning-cards-title" class="lv-title mb-4">{{ __('account.knowledge.materials_title') }}</h2>
+                @endif
+                <div class="pos-grid">
+                    @foreach($cards as $card)
+                        <a href="{{ $card['href'] }}" class="pos-card">
+                            @if($card['image'])
+                                <span class="pos-card__image"><img src="{{ $card['image'] }}" alt="" loading="lazy"></span>
+                            @endif
+                            <span class="pos-card__body">
+                                <span class="pos-card__meta">
+                                    @if($card['badge'] !== '')<span class="pos-card__badge">{{ $card['badge'] }}</span>@endif
+                                    @if($card['date'] !== '')<span class="pos-card__date">{{ $card['date'] }}</span>@endif
+                                </span>
+                                <h3 class="pos-card__title">{{ $card['title'] }}</h3>
+                                @if($card['excerpt'] !== '')<p class="pos-card__excerpt">{{ $card['excerpt'] }}</p>@endif
+                                <span class="pos-card__more">{{ __('account.possibilities.more') }} →</span>
+                            </span>
+                        </a>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+
         @if($videos->isNotEmpty())
             {{-- Обучающие видео (админка: «Кабинеты участниц → Обучающие видео»). Видео открывается в окне поверх страницы:
                  YouTube без cookie (youtube-nocookie) и без рекомендаций чужих роликов; окно закрывается кнопкой, Esc и щелчком мимо. --}}
@@ -54,7 +81,7 @@
                     </div>
                 </div>
             </section>
-        @else
+        @elseif($cards->isEmpty())
             <div class="miro-card miro-card--pink p-6 sm:p-10">
                 <div class="grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
                     <div>

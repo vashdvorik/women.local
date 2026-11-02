@@ -191,6 +191,7 @@ Route::middleware(RequireAccountAuth::class)
         // RequirePlan показывает сообщение и кнопку «Купить подписку» (запись и запросы AI он отклоняет редиректом и 403).
         Route::middleware('plan:community')->group(function (): void {
             Route::get('/knowledge', [AccountController::class, 'knowledge'])->name('knowledge');
+            Route::get('/knowledge/{opportunity}', [SiteOpportunityController::class, 'showLearning'])->name('knowledge.show');
             Route::get('/opportunities', [OpportunityController::class, 'index'])->name('opportunities.index');
             Route::get('/manager', [ManagerController::class, 'index'])->name('manager');
             Route::get('/manager/history', [ManagerController::class, 'history'])->name('manager.history');

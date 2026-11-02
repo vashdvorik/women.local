@@ -1062,5 +1062,8 @@
     "Видео показывается участницам.": "The video is now shown to members.",
     "Видео скрыто от участниц.": "The video is now hidden from members.",
     "Укажите название по-русски.": "Enter the title in Russian.",
-    "watch?v=…, youtu.be/…, /shorts/…, /embed/… или /live/…. В настройках видео на YouTube должно быть разрешено встраивание на других сайтах, иначе в кабинете оно не откроется.": "watch?v=…, youtu.be/…, /shorts/…, /embed/… or /live/…. Embedding on other sites must be allowed in the video settings on YouTube, otherwise it will not open in the account."
+    "watch?v=…, youtu.be/…, /shorts/…, /embed/… или /live/…. В настройках видео на YouTube должно быть разрешено встраивание на других сайтах, иначе в кабинете оно не откроется.": "watch?v=…, youtu.be/…, /shorts/…, /embed/… or /live/…. Embedding on other sites must be allowed in the video settings on YouTube, otherwise it will not open in the account.",
+    "В кабинете участниц, в «Возможностях»": "In the members’ account, in “Opportunities”",
+    "В кабинете участниц, в «Обучении»": "In the members’ account, in “Learning”",
+    "Опубликованная карточка видна там, где стоит галочка. Можно выбрать несколько мест. Сняв «На открытом сайте», вы оставляете её только для участниц; «В обучении» показывает её в разделе «Обучение» кабинета.": "A published card is visible wherever its box is ticked. You can pick several places. Unticking “On the public site” keeps it for members only; “Learning” shows it in the account’s Learning section."
 }

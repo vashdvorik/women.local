@@ -53,8 +53,8 @@ class SaveArticle
             if (array_key_exists('deadline_at', $data)) {
                 $article->deadline_at = $data['deadline_at'] ?: null;
             }
-            // Где показывать возможность: галочки «на сайте» и «в кабинете» (только у возможностей)
-            foreach (['show_on_site', 'show_in_cabinet'] as $flag) {
+            // Где показывать возможность: галочки «на сайте», «в кабинете» и «в обучении» (только у возможностей)
+            foreach (['show_on_site', 'show_in_cabinet', 'show_in_learning'] as $flag) {
                 if (array_key_exists($flag, $data)) {
                     $article->{$flag} = (bool) $data[$flag];
                 }

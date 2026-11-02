@@ -17,6 +17,7 @@ class SiteOpportunity extends Model
     protected $attributes = [
         'show_on_site' => true,
         'show_in_cabinet' => true,
+        'show_in_learning' => false,
     ];
 
     protected $fillable = [
@@ -29,6 +30,7 @@ class SiteOpportunity extends Model
         'tag_id',
         'show_on_site',
         'show_in_cabinet',
+        'show_in_learning',
     ];
 
     protected function casts(): array
@@ -39,7 +41,14 @@ class SiteOpportunity extends Model
             'deadline_at' => 'date',
             'show_on_site' => 'boolean',
             'show_in_cabinet' => 'boolean',
+            'show_in_learning' => 'boolean',
         ];
+    }
+
+    /** Карточки раздела кабинета «Обучение» (вместе с published()). */
+    public function scopeInLearning(Builder $query): Builder
+    {
+        return $query->where('show_in_learning', true);
     }
 
     /** Возможности, открытые на публичном сайте (вместе с published()). */

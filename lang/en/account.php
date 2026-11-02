@@ -244,6 +244,8 @@ return [
         'videos_hint' => 'Click a video to open it right here.',
         'watch' => 'Watch',
         'close' => 'Close',
+        'materials_title' => 'Materials',
+        'back' => 'All learning',
     ],
 
     'opportunities' => [

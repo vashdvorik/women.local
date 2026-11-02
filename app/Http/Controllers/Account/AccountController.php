@@ -165,7 +165,9 @@ class AccountController extends Controller
     {
         $videos = \App\Models\LearningVideo::query()->published()->ordered()->with('translations')->get();
 
-        return $this->themedView('knowledge', compact('videos'));
+        $cards = SiteOpportunityController::learningCards();
+
+        return $this->themedView('knowledge', compact('videos', 'cards'));
     }
 
     public function assistantMessage(Request $request, AiAssistantService $assistant): JsonResponse

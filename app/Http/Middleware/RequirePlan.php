@@ -33,6 +33,7 @@ class RequirePlan
         'account.possibilities.*' => 'possibilities',
         'account.manager' => 'manager',
         'account.knowledge' => 'knowledge',
+        'account.knowledge.*' => 'knowledge',
     ];
 
     public function handle(Request $request, Closure $next, string $plan = 'active'): Response

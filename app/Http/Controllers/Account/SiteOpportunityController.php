@@ -25,43 +25,82 @@ class SiteOpportunityController extends Controller
             ->orderByDesc('published_at')
             ->paginate(12);
 
-        $cards = $items->getCollection()->map(function (SiteOpportunity $item) use ($locale): array {
-            $card = PublicCards::opportunity($item);
-
-            return [
-                'href' => route('account.possibilities.show', $item->slug),
-                'image' => $card['image'],
-                'badge' => self::pick($card['badge'] ?? [], $locale),
-                'date' => self::pick($card['date'] ?? [], $locale),
-                'title' => self::pick($card['title'] ?? [], $locale),
-                'excerpt' => self::pick($card['excerpt'] ?? [], $locale),
-            ];
-        });
+        $cards = $items->getCollection()->map(fn (SiteOpportunity $item): array => self::card($item, $locale, 'account.possibilities.show'));
 
         return $this->themedView('possibilities.index', ['items' => $items, 'cards' => $cards]);
     }
 
     public function show(string $opportunity): View
     {
-        $locale = app()->getLocale();
-
         $item = SiteOpportunity::with(['translations', 'tag.translations'])
             ->published()->inCabinet()
             ->where('slug', $opportunity)
             ->firstOrFail();
 
-        $card = PublicCards::opportunity($item);
+        return $this->themedView('possibilities.show', [
+            'article' => self::article($item, app()->getLocale(), route('account.possibilities.index'), __('account.possibilities.back')),
+        ]);
+    }
+
+    /** Карточка из «Возможностей», выложенная и в раздел «Обучение» (галочка «В обучении»): та же страница, но с возвратом в обучение. */
+    public function showLearning(string $opportunity): View
+    {
+        $item = SiteOpportunity::with(['translations', 'tag.translations'])
+            ->published()->inLearning()
+            ->where('slug', $opportunity)
+            ->firstOrFail();
 
         return $this->themedView('possibilities.show', [
-            'article' => [
-                'image' => $card['image'],
-                'badge' => self::pick($card['badge'] ?? [], $locale),
-                'date' => self::pick($card['date'] ?? [], $locale),
-                'title' => self::pick($card['title'] ?? [], $locale),
-                'blocks' => $item->renderBlocks($locale),
-                'locale' => $locale,
-            ],
+            'article' => self::article($item, app()->getLocale(), route('account.knowledge'), __('account.knowledge.back')),
         ]);
+    }
+
+    /**
+     * Карточки раздела «Обучение»: возможности редактора с галочкой «В обучении».
+     *
+     * @return \Illuminate\Support\Collection<int, array<string, mixed>>
+     */
+    public static function learningCards(): \Illuminate\Support\Collection
+    {
+        $locale = app()->getLocale();
+
+        return SiteOpportunity::with(['translations', 'tag.translations'])
+            ->published()->inLearning()
+            ->orderByDesc('published_at')
+            ->get()
+            ->map(fn (SiteOpportunity $item): array => self::card($item, $locale, 'account.knowledge.show'));
+    }
+
+    /** @return array{href: string, image: ?string, badge: string, date: string, title: string, excerpt: string} */
+    private static function card(SiteOpportunity $item, string $locale, string $route): array
+    {
+        $card = PublicCards::opportunity($item);
+
+        return [
+            'href' => route($route, $item->slug),
+            'image' => $card['image'],
+            'badge' => self::pick($card['badge'] ?? [], $locale),
+            'date' => self::pick($card['date'] ?? [], $locale),
+            'title' => self::pick($card['title'] ?? [], $locale),
+            'excerpt' => self::pick($card['excerpt'] ?? [], $locale),
+        ];
+    }
+
+    /** @return array<string, mixed> */
+    private static function article(SiteOpportunity $item, string $locale, string $backUrl, string $backLabel): array
+    {
+        $card = PublicCards::opportunity($item);
+
+        return [
+            'image' => $card['image'],
+            'badge' => self::pick($card['badge'] ?? [], $locale),
+            'date' => self::pick($card['date'] ?? [], $locale),
+            'title' => self::pick($card['title'] ?? [], $locale),
+            'blocks' => $item->renderBlocks($locale),
+            'locale' => $locale,
+            'back_url' => $backUrl,
+            'back_label' => $backLabel,
+        ];
     }
 
     /**
