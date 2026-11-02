@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Account;
 
+use App\Support\EmailTypo;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 
@@ -27,6 +29,11 @@ class RegisterRequest extends FormRequest
             'password' => ['required', 'string', 'min:8', 'max:128', 'confirmed'],
             'consent' => ['accepted'],
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        EmailTypo::guard($validator, (string) $this->input('email'), __('participant.validation.email_typo'));
     }
 
     public function messages(): array

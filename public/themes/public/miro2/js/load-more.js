@@ -46,7 +46,13 @@
 
                 var added = Array.prototype.slice.call(box.content.children);
                 added.forEach(function (item) { item.classList.add('is-new'); });
+
+                // Новые карточки встают над кнопкой, и браузер («привязка прокрутки») сам прокручивает страницу вниз, чтобы кнопка
+                // осталась на месте: выглядит как резкий скачок в конец. Возвращаем прежнюю позицию: новые карточки раскрываются
+                // там, где была кнопка, под уже прочитанными.
+                var scrollTop = window.pageYOffset;
                 list.appendChild(box.content);
+                window.scrollTo(0, scrollTop);
 
                 if (data.next) {
                     link.href = data.next;

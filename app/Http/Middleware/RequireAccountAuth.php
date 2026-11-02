@@ -50,6 +50,22 @@ class RequireAccountAuth
             return redirect()->route('account.login')->with('error', __('participant.login.access_closed'));
         }
 
+        // Смена пароля закрывает все уже открытые входы под ним: у сессии запоминается «отпечаток» пароля на момент первого
+        // обращения к кабинету, и если пароль потом изменился (сброс, вход через Google с заменой пароля), сессия
+        // недействительна. Так остаётся без доступа тот, кто знал прежний пароль.
+        $stamp = hash_hmac('sha256', (string) $user->password, (string) config('app.key'));
+        $stored = $request->session()->get('participant_password_stamp');
+
+        if ($stored === null) {
+            $request->session()->put('participant_password_stamp', $stamp);
+        } elseif (! hash_equals((string) $stored, $stamp)) {
+            $guard->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()->route('account.login')->with('error', __('participant.login.session_closed'));
+        }
+
         view()->share('accountUser', $user);
         view()->share('accountTheme', SiteSetting::accountTheme());
 

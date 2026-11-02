@@ -19,6 +19,10 @@ use Illuminate\Support\Str;
  *
  * Участница, чья почта уже есть в базе, входит в тот же кабинет (Google подтверждает почту); новой создаётся кабинет
  * с подтверждённой почтой, дальше она заполняет анкету, как и после обычной регистрации.
+ *
+ * Защита от захвата аккаунта: если на эту почту кто-то уже регистрировался с паролем, но так и не подтвердил её (то есть
+ * мог быть не владельцем почты), при входе через Google пароль меняется на случайный, а «запомнить меня» сбрасывается.
+ * Иначе тот, кто занял чужую почту заранее, входил бы в подтверждённый уже кабинет по своему паролю.
  */
 class GoogleController extends Controller
 {
@@ -95,11 +99,17 @@ class GoogleController extends Controller
             return $this->failed(__('participant.login.access_closed'));
         }
 
+        // Почта была зарегистрирована с паролем, но не подтверждена: пароль мог задать посторонний (см. описание класса).
+        $takenInAdvance = $user->email_verified_at === null && filled($user->password);
+
         // Google подтвердил почту: подтверждение письмом не нужно, а аккаунт привязывается к Google.
         $user->forceFill([
             'google_id' => $user->google_id ?? $googleId,
             'email_verified_at' => $user->email_verified_at ?? now(),
-        ])->save();
+        ] + ($takenInAdvance ? [
+            'password' => Str::random(40),
+            'remember_token' => Str::random(60),
+        ] : []))->save();
 
         Auth::guard('participant')->login($user, true);
         $request->session()->regenerate();

@@ -36,6 +36,10 @@
                         <span class="min-w-[12rem] text-ui font-semibold">{{ $closedPlan->title('ru') }}</span>
                         @if($unlocked[$closedPlan->value] ?? false)
                             <span class="badge badge--published">{{ __('покупка открыта') }}</span>
+                        @elseif($holds[$closedPlan->value] ?? false)
+                            {{-- Этот тариф у неё есть или был: продлить его она может сама, открывать покупку не нужно --}}
+                            <span class="badge badge--published">{{ __('продление открыто') }}</span>
+                            <span class="text-ui text-ink-muted">{{ __('Этот тариф у неё уже был: продлить его она может сама.') }}</span>
                         @else
                             <button type="submit" class="btn-primary">{{ __('Открыть покупку') }}</button>
                             <label class="flex items-center gap-2 text-ui text-ink-muted">
@@ -48,7 +52,7 @@
             </div>
         @endif
 
-        @if($profile->isApproved())
+        @unless($profile->isRejected())
             <x-forms.error-summary />
 
             <details class="card" open>
@@ -117,8 +121,8 @@
                 </div>
             @endif
         @else
-            <div class="card text-ui text-ink-muted">{{ __('Тариф выдаётся только одобренным участницам. Сначала одобрите профиль.') }}</div>
-        @endif
+            <div class="card text-ui text-ink-muted">{{ __('Анкета участницы отклонена: доступ закрыт, тариф выдать нельзя. Чтобы выдать тариф, сначала одобрите профиль.') }}</div>
+        @endunless
 
         <div class="card space-y-3">
             <h2 class="text-section font-semibold">{{ __('История периодов') }}</h2>

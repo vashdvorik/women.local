@@ -101,6 +101,9 @@ final class SubscriptionService
             $user->forceFill(['plan_notified_stage' => 0])->save();
             $this->refresh($user);
 
+            // Как и при обычной выдаче: заявки на этот тариф и ниже стоящие закрыты, человек его получил.
+            app(PlanPurchase::class)->markPurchased($user, $plan);
+
             return $subscription;
         });
     }

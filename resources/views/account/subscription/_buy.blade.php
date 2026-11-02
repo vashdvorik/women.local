@@ -4,7 +4,8 @@
 
     Покупка тарифа может быть закрыта администратором («Подписки → Закрыть покупку»): тогда вместо «Купить» стоит форма
     «Оставить заявку», а после заявки — пояснение, что менеджер позвонит. Когда менеджер откроет покупку лично, кнопка
-    «Купить» появляется снова (PlanPurchase::canBuy).
+    «Купить» появляется снова (PlanPurchase::canBuy). Тариф, который у участницы есть или был (подарен, выдан, оплачен),
+    продлевается всегда, закрыт он или нет.
 --}}
 @php
     $purchase = app(\App\Services\Subscriptions\PlanPurchase::class);
@@ -53,7 +54,7 @@
         </form>
     @endif
 @else
-    @if($closed && $canBuy)
+    @if($closed && $purchase->isUnlockedFor($user, $plan))
         <p class="mb-2 text-center text-xs font-medium text-brand-700">{{ __('participant.plans.unlocked') }}</p>
     @endif
     <form method="POST" action="{{ route('account.subscription.checkout') }}">

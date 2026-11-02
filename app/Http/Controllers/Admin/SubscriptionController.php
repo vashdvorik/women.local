@@ -89,6 +89,8 @@ class SubscriptionController extends Controller
             'payments' => $profile->payments()->latest('id')->limit(10)->get(),
             'closedPlans' => array_values(array_filter(Plan::paid(), fn (Plan $plan): bool => app(PlanPurchase::class)->isClosed($plan))),
             'unlocked' => collect(Plan::paid())->mapWithKeys(fn (Plan $plan): array => [$plan->value => app(PlanPurchase::class)->unlockedRequest($profile, $plan) !== null]),
+            // Тарифы, которые у участницы есть или были: их продление закрытие продаж не касается.
+            'holds' => collect(Plan::paid())->mapWithKeys(fn (Plan $plan): array => [$plan->value => app(PlanPurchase::class)->hasHad($profile, $plan)]),
         ]);
     }
 
@@ -198,7 +200,8 @@ class SubscriptionController extends Controller
             'note' => __('заметка'),
         ]);
 
-        abort_unless($profile->isApproved(), 422, __('Тариф можно подарить только одобренной участнице.'));
+        // Купить тариф участница может и до проверки анкеты, поэтому и выдать его вручную можно: закрыт он только отклонённым.
+        abort_if($profile->isRejected(), 422, __('Анкета участницы отклонена: доступ закрыт, тариф выдать нельзя.'));
 
         $plan = Plan::from($data['plan']);
         $note = trim((string) ($data['note'] ?? '')) ?: __('Подарок');
@@ -226,7 +229,7 @@ class SubscriptionController extends Controller
             'note' => __('заметка'),
         ]);
 
-        abort_unless($profile->isApproved(), 422, __('Тариф можно выдать только одобренной участнице.'));
+        abort_if($profile->isRejected(), 422, __('Анкета участницы отклонена: доступ закрыт, тариф выдать нельзя.'));
 
         $plan = Plan::from($data['plan']);
         $note = trim((string) ($data['note'] ?? '')) ?: __('Выдано в админке');

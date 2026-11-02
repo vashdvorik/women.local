@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Account\ChangeEmailRequest;
 use App\Models\BotUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -45,6 +46,36 @@ class EmailVerificationController extends Controller
         }
 
         return back()->with('success', __('participant.verification.resent'));
+    }
+
+    /**
+     * Смена почты, пока она не подтверждена: человек ошибся адресом при регистрации. Письмо уходит на новый адрес, а старые
+     * ссылки перестают действовать (подпись ссылки зависит от адреса).
+     */
+    public function changeEmail(ChangeEmailRequest $request): RedirectResponse
+    {
+        /** @var BotUser $user */
+        $user = Auth::guard('participant')->user();
+
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->route('account.onboarding');
+        }
+
+        $email = (string) $request->validated('email');
+
+        if ($email !== $user->email) {
+            $user->forceFill(['email' => $email])->save();
+        }
+
+        try {
+            $user->sendEmailVerification();
+        } catch (\Throwable $e) {
+            Log::warning('Не удалось отправить письмо подтверждения на исправленную почту', ['user' => $user->id, 'error' => $e->getMessage()]);
+
+            return back()->with('error', __('participant.verification.invalid'));
+        }
+
+        return back()->with('success', __('participant.verification.email_changed', ['email' => $email]));
     }
 
     /**

@@ -92,6 +92,10 @@
         batch.forEach(function (participant) {
             fragment.appendChild(buildCard(participant));
         });
+        // The new cards land above the button, and the browser's scroll anchoring then scrolls the page down to keep the
+        // button in place: it looks like a sudden jump to the end. Remember the position and put it back, so the new
+        // cards open right where the button was.
+        var scrollTop = window.pageYOffset;
         grid.appendChild(fragment);
         shown += batch.length;
         updateCount();
@@ -108,6 +112,8 @@
             var wrapper = loadMoreBtn.closest('.miro-participants-loadmore');
             if (wrapper) wrapper.style.display = 'none';
         }
+
+        window.scrollTo(0, scrollTop);
     }
 
     loadMoreBtn.addEventListener('click', loadNextPage);

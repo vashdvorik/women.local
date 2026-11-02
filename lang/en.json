@@ -342,7 +342,6 @@
     "Например: перевод на счёт 12.10, чек №…": "For example: transfer to the account on 12.10, receipt No…",
     "Выдать тариф": "Grant the plan",
     "Закрыть доступ": "Close access",
-    "Тариф выдаётся только одобренным участницам. Сначала одобрите профиль.": "A plan is granted to approved participants only. Approve the profile first.",
     "История периодов": "Period history",
     "Платных периодов не было.": "There were no paid periods.",
     "С": "From",
@@ -584,12 +583,10 @@
     "Цены сохранены. Новая цена действует для новых платежей; уже оплаченные подписки не меняются.": "Prices saved. The new price applies to new payments; subscriptions already paid for do not change.",
     "тариф": "plan",
     "заметка": "note",
-    "Тариф можно подарить только одобренной участнице.": "A plan can be gifted to an approved participant only.",
     "Подарок": "Gift",
     "Подарок оформлен: :plan включён до :date. Участница об этом не уведомляется.": "Gift issued: :plan is on until :date. The participant is not notified.",
     "срок в месяцах": "term in months",
     "дата окончания": "end date",
-    "Тариф можно выдать только одобренной участнице.": "A plan can be granted to an approved participant only.",
     "Выдано в админке": "Granted in the admin panel",
     "Тариф :plan включён до :date.": "The :plan plan is on until :date.",
     "Тег создан.": "Tag created.",
@@ -1048,5 +1045,9 @@
     "Telegram не принял бота (:error). Проверьте токен бота в настройках сервера: рассылка продолжится сама, когда он заработает.": "Telegram did not accept the bot (:error). Check the bot token in the server settings: the broadcast will resume on its own once it works.",
     "Telegram не отвечает или отклоняет сообщения (:error). Рассылка на паузе и продолжится сама.": "Telegram is not responding or is rejecting messages (:error). The broadcast is paused and will resume on its own.",
     "Участница об этом не узнает: уведомление не отправляется. Её профиль станет виден другим участницам, когда у неё действует тариф. (:name)": "The participant will not be told: no notification is sent. Her profile will become visible to other members while she has an active plan. (:name)",
-    "Участница об этом не узнает: уведомление не отправляется. Её профиль станет виден другим участницам, когда у неё действует тариф.": "The participant will not be told: no notification is sent. Her profile will become visible to other members while she has an active plan."
+    "Участница об этом не узнает: уведомление не отправляется. Её профиль станет виден другим участницам, когда у неё действует тариф.": "The participant will not be told: no notification is sent. Her profile will become visible to other members while she has an active plan.",
+    "Анкета участницы отклонена: доступ закрыт, тариф выдать нельзя.": "The participant's profile was rejected: access is closed, a plan cannot be granted.",
+    "Анкета участницы отклонена: доступ закрыт, тариф выдать нельзя. Чтобы выдать тариф, сначала одобрите профиль.": "The participant's profile was rejected: access is closed, a plan cannot be granted. To grant one, approve the profile first.",
+    "продление открыто": "renewal is open",
+    "Этот тариф у неё уже был: продлить его она может сама.": "She has had this plan before: she can renew it herself."
 }

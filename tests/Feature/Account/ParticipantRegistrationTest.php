@@ -96,7 +96,10 @@ class ParticipantRegistrationTest extends TestCase
         $wrongHash = URL::temporarySignedRoute('account.verification.verify', now()->addDay(), ['id' => $user->id, 'hash' => sha1('other@example.test')]);
         $this->get($wrongHash)->assertRedirect(route('account.login'));
 
-        $this->get(route('account.verification.verify', ['id' => $user->id, 'hash' => sha1($user->email)]))->assertForbidden();
+        // Ссылка без подписи ничего не подтверждает; человек видит не английскую 403, а вход с просьбой запросить новое письмо.
+        $this->get(route('account.verification.verify', ['id' => $user->id, 'hash' => sha1($user->email)]))
+            ->assertRedirect(route('account.login'))
+            ->assertSessionHas('error');
 
         $this->assertNull($user->fresh()->email_verified_at);
     }

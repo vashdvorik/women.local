@@ -139,7 +139,9 @@ PROMPT;
             $monthly = \Illuminate\Support\Facades\Lang::has('subscription.plans.'.$item->value.'.monthly', $locale) ? ', about '.$item->pricePerMonth().' per month' : '';
             $lines[] = '- '.$item->title($locale).': '.$item->price().' per year'.$monthly
                 .($item === $plan ? ' (HER CURRENT PLAN)' : '')
-                .(in_array($item->value, $closed, true) ? '; purchase by request (manager calls her and opens payment)' : '; can be bought right away on the Subscription page')
+                .(in_array($item->value, $closed, true) && ! app(\App\Services\Subscriptions\PlanPurchase::class)->canBuy($user, $item)
+                    ? '; purchase by request (manager calls her and opens payment)'
+                    : '; she can buy or renew it right away on the Subscription page')
                 .'. '.__('subscription.plans.'.$item->value.'.lead', [], $locale).' '.implode(' ', $features);
         }
 

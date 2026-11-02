@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -47,6 +48,33 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('20,1', function (Request $request) {
             return Limit::perMinute(20)->by($request->ip());
         });
+
+        // Формы кабинета: регистрация, вход, «Забыли пароль», новый пароль. Раньше лимит был «N в минуту с одного IP», а у
+        // мобильных операторов и в офисах один IP у многих людей: часть участниц упиралась в чужие попытки. Теперь IP-лимит
+        // широкий (от флуда), а узкие лимиты считаются по почте: один адрес не получит лавину писем, а разные люди не мешают друг другу.
+        $email = fn (Request $request): string => Str::lower(trim((string) $request->input('email')));
+
+        RateLimiter::for('account-register', fn (Request $request) => [
+            Limit::perMinute(40)->by('ip:'.$request->ip()),
+            Limit::perMinute(4)->by('ip-email:'.$request->ip().'|'.$email($request)),
+            Limit::perHour(6)->by('email:'.$email($request)),
+        ]);
+
+        RateLimiter::for('account-forgot', fn (Request $request) => [
+            Limit::perMinute(40)->by('ip:'.$request->ip()),
+            Limit::perMinute(3)->by('ip-email:'.$request->ip().'|'.$email($request)),
+            Limit::perHour(6)->by('email:'.$email($request)),
+        ]);
+
+        RateLimiter::for('account-login', fn (Request $request) => [
+            Limit::perMinute(120)->by('ip:'.$request->ip()),
+            Limit::perMinute(20)->by('ip-email:'.$request->ip().'|'.$email($request)),
+        ]);
+
+        RateLimiter::for('account-reset', fn (Request $request) => [
+            Limit::perMinute(60)->by('ip:'.$request->ip()),
+            Limit::perMinute(10)->by('ip-email:'.$request->ip().'|'.$email($request)),
+        ]);
 
         // Грубый заслон от флуда на форму входа в админку: не больше 30 запросов
         // в минуту с одного адреса. Настоящий перебор пароля (в том числе

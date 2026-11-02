@@ -123,13 +123,13 @@ Route::post('/telegram/webhook', function (Nutgram $bot) {
 // Кабинет: регистрация и вход по почте (guard «participant»), быстрый вход через Google, восстановление пароля.
 // Входа через Telegram нет: бот только присылает уведомления.
 Route::get('/app/account/login', [AuthController::class, 'showLogin'])->name('account.login');
-Route::post('/app/account/login', [AuthController::class, 'login'])->middleware('throttle:20,1')->name('account.login.submit');
+Route::post('/app/account/login', [AuthController::class, 'login'])->middleware('throttle:account-login')->name('account.login.submit');
 Route::get('/app/account/register', [AuthController::class, 'showRegister'])->name('account.register');
-Route::post('/app/account/register', [AuthController::class, 'register'])->middleware('throttle:10,1')->name('account.register.submit');
+Route::post('/app/account/register', [AuthController::class, 'register'])->middleware('throttle:account-register')->name('account.register.submit');
 Route::get('/app/account/forgot-password', [PasswordResetController::class, 'forgotForm'])->name('account.password.forgot');
-Route::post('/app/account/forgot-password', [PasswordResetController::class, 'forgotSend'])->middleware('throttle:5,1')->name('account.password.email');
+Route::post('/app/account/forgot-password', [PasswordResetController::class, 'forgotSend'])->middleware('throttle:account-forgot')->name('account.password.email');
 Route::get('/app/account/reset-password/{token}', [PasswordResetController::class, 'resetForm'])->name('account.password.reset');
-Route::post('/app/account/reset-password', [PasswordResetController::class, 'resetStore'])->middleware('throttle:10,1')->name('account.password.update');
+Route::post('/app/account/reset-password', [PasswordResetController::class, 'resetStore'])->middleware('throttle:account-reset')->name('account.password.update');
 Route::get('/app/account/google', [GoogleController::class, 'redirect'])->middleware('throttle:20,1')->name('account.google');
 Route::get('/app/account/google/callback', [GoogleController::class, 'callback'])->middleware('throttle:20,1')->name('account.google.callback');
 // Ссылка из письма: подписана Laravel, действует сутки, работает и в другом браузере.
@@ -164,6 +164,7 @@ Route::middleware(RequireAccountAuth::class)
         // Шаги до кабинета: подтверждение почты и анкета (RequireAccountAuth пускает сюда, пока они не пройдены).
         Route::get('/email/verify', [EmailVerificationController::class, 'notice'])->name('verification.notice');
         Route::post('/email/verify/resend', [EmailVerificationController::class, 'resend'])->middleware('throttle:3,1')->name('verification.resend');
+        Route::post('/email/verify/change', [EmailVerificationController::class, 'changeEmail'])->middleware('throttle:5,1')->name('verification.change');
         Route::get('/onboarding', [OnboardingController::class, 'show'])->name('onboarding');
         Route::post('/onboarding', [OnboardingController::class, 'store'])->name('onboarding.store');
 
