@@ -141,7 +141,7 @@
                 </a>
             </div>
 
-            <x-admin.nav-group group="opportunities" :label="__('Возможности')" />
+            <x-admin.nav-group group="opportunities" :label="__('Возможности/обучение')" />
             <div class="nav-collapsible" :class="open.opportunities ? '' : 'nav-collapsible--closed'">
                 <a href="{{ route('admin.opportunities.index') }}"
                    class="nav-sub @if($isList('admin.opportunities')) nav-sub--active @endif">

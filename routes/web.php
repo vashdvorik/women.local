@@ -191,13 +191,15 @@ Route::middleware(RequireAccountAuth::class)
         // RequirePlan показывает сообщение и кнопку «Купить подписку» (запись и запросы AI он отклоняет редиректом и 403).
         Route::middleware('plan:community')->group(function (): void {
             Route::get('/knowledge', [AccountController::class, 'knowledge'])->name('knowledge');
-            Route::get('/knowledge/{opportunity}', [SiteOpportunityController::class, 'showLearning'])->name('knowledge.show');
+            Route::get('/knowledge/news/{post}', [SiteOpportunityController::class, 'showLearningPost'])->name('knowledge.post');
+            Route::get('/knowledge/{opportunity}',[SiteOpportunityController::class, 'showLearning'])->name('knowledge.show');
             Route::get('/opportunities', [OpportunityController::class, 'index'])->name('opportunities.index');
             Route::get('/manager', [ManagerController::class, 'index'])->name('manager');
             Route::get('/manager/history', [ManagerController::class, 'history'])->name('manager.history');
             Route::post('/manager/messages', [ManagerController::class, 'message'])->middleware('throttle:20,1')->name('manager.message');
             Route::get('/possibilities', [SiteOpportunityController::class, 'index'])->name('possibilities.index');
-            Route::get('/possibilities/{opportunity}', [SiteOpportunityController::class, 'show'])->name('possibilities.show');
+            Route::get('/possibilities/news/{post}', [SiteOpportunityController::class, 'showPost'])->name('possibilities.post');
+            Route::get('/possibilities/{opportunity}',[SiteOpportunityController::class, 'show'])->name('possibilities.show');
         });
 
         Route::middleware('plan:active')->group(function (): void {

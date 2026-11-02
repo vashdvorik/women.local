@@ -43,14 +43,11 @@ class CabinetHomeTest extends TestCase
         $this->assertStringContainsString(__('account.home.bot_help'), $html);
     }
 
-    public function test_every_section_of_the_menu_has_a_tile_that_explains_it(): void
+    public function test_every_section_of_the_menu_has_a_short_tile(): void
     {
         $html = $this->as($this->active())->get(route('account.index'))->assertOk()->getContent();
 
-        foreach (['assistant', 'matches', 'search', 'people', 'opportunities', 'knowledge', 'profile', 'subscription'] as $key) {
-            $this->assertStringContainsString(__("account.home.tiles.{$key}.what"), $html, "{$key}: что это");
-            $this->assertStringContainsString(__("account.home.tiles.{$key}.how"), $html, "{$key}: как пользоваться");
-        }
+        // Плитки главной теперь короткая навигация: название и значок, без длинных пояснений (они ушли в подсказки)
         foreach (['account.assistant', 'account.matches', 'account.search', 'account.people', 'account.opportunities.index', 'account.knowledge', 'account.profile', 'account.subscription'] as $route) {
             $this->assertStringContainsString('href="'.route($route).'"', $html, $route);
         }

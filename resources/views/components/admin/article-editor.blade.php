@@ -144,7 +144,7 @@
 
                 <x-forms.field :label="__('Автор')" name="author" x-model="author" />
 
-                @if($isOpportunity)
+                @if($type === 'post' || $isOpportunity)
                     <fieldset class="space-y-2">
                         <legend class="field-label">{{ __('Где показывать') }}</legend>
                         @foreach(['show_on_site' => __('На открытом сайте'), 'show_in_cabinet' => __('В кабинете участниц, в «Возможностях»'), 'show_in_learning' => __('В кабинете участниц, в «Обучении»')] as $flag => $flagLabel)
@@ -156,7 +156,9 @@
                         @endforeach
                         <p class="field-hint">{{ __('Опубликованная карточка видна там, где стоит галочка. Можно выбрать несколько мест. Сняв «На открытом сайте», вы оставляете её только для участниц; «В обучении» показывает её в разделе «Обучение» кабинета.') }}</p>
                     </fieldset>
+                @endif
 
+                @if($isOpportunity)
                     <div class="space-y-1">
                         <label class="field-label">{{ __('Подать заявку до') }}</label>
                         <input type="date" x-model="deadlineAt"

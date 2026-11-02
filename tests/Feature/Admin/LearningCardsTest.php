@@ -4,8 +4,11 @@ namespace Tests\Feature\Admin;
 
 use App\Enums\Plan;
 use App\Models\BotUser;
+use App\Models\Broadcast;
+use App\Models\Post;
 use App\Models\SiteOpportunity;
 use App\Models\Subscription;
+use App\Services\Broadcasts\BroadcastDrafts;
 use App\Services\Subscriptions\SubscriptionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Concerns\SubscriptionHelpers;
@@ -144,5 +147,111 @@ class LearningCardsTest extends TestCase
         $draft = app(\App\Services\Broadcasts\BroadcastDrafts::class)->create($item, \App\Models\Broadcast::AUDIENCE_APPROVED, null);
 
         $this->assertSame(route('account.knowledge.show', 'lesson'), $draft->buttons[0]['url']);
+    }
+
+    // ------------------------------------------------------------------ новости
+
+    private function news(string $slug, string $title, array $flags = [], string $status = 'published'): Post
+    {
+        $post = Post::create(array_merge([
+            'slug' => $slug,
+            'status' => $status,
+            'published_at' => $status === 'published' ? now()->subHours(2) : null,
+        ], $flags));
+        $post->translations()->create(['locale' => 'ru', 'title' => $title, 'excerpt' => "Кратко: {$title}"]);
+
+        return $post;
+    }
+
+    public function test_news_defaults_to_the_open_site_only_and_the_form_has_the_three_places(): void
+    {
+        $post = new Post();
+        $this->assertTrue($post->show_on_site);
+        $this->assertFalse($post->show_in_cabinet);
+        $this->assertFalse($post->show_in_learning);
+
+        $this->actingAsAdmin()->get(route('admin.posts.create'))->assertOk()
+            ->assertSee('name="show_in_cabinet"', false)->assertSee('name="show_in_learning"', false)->assertSee('name="show_on_site"', false);
+    }
+
+    public function test_the_flags_of_a_news_item_are_saved_from_the_admin_form(): void
+    {
+        $post = $this->news('n1', 'Новость');
+
+        $this->actingAsAdmin()->put(route('admin.posts.update', $post), [
+            'translations' => ['ru' => ['title' => 'Новость', 'excerpt' => 'Кратко']],
+            'show_on_site' => '0', 'show_in_cabinet' => '1', 'show_in_learning' => '1',
+        ])->assertSessionHasNoErrors();
+
+        $post->refresh();
+        $this->assertFalse($post->show_on_site);
+        $this->assertTrue($post->show_in_cabinet);
+        $this->assertTrue($post->show_in_learning);
+    }
+
+    public function test_news_shows_up_in_the_chosen_cabinet_sections_together_with_opportunities(): void
+    {
+        $this->card('opp', 'Грант-возможность', ['show_in_cabinet' => true]);
+        $this->news('for-possibilities', 'Новость в возможностях', ['show_in_cabinet' => true]);
+        $this->news('for-learning', 'Новость в обучении', ['show_in_learning' => true]);
+        $this->news('plain', 'Обычная новость');
+        $this->news('draft', 'Черновик новости', ['show_in_cabinet' => true, 'show_in_learning' => true], 'draft');
+        $member = $this->member();
+
+        $this->asParticipant($member)->get(route('account.possibilities.index'))->assertOk()
+            ->assertSee('Грант-возможность')->assertSee('Новость в возможностях')
+            ->assertSee(route('account.possibilities.post', 'for-possibilities'), false)
+            ->assertDontSee('Новость в обучении')->assertDontSee('Обычная новость')->assertDontSee('Черновик новости');
+
+        $this->app['auth']->forgetGuards();
+        $this->flushSession();
+
+        $this->asParticipant($member)->get(route('account.knowledge'))->assertOk()
+            ->assertSee('Новость в обучении')
+            ->assertSee(route('account.knowledge.post', 'for-learning'), false)
+            ->assertDontSee('Новость в возможностях')->assertDontSee('Обычная новость')->assertDontSee('Грант-возможность');
+    }
+
+    public function test_a_news_item_opens_in_the_cabinet_with_a_way_back(): void
+    {
+        $this->news('n-possibilities', 'Новость А', ['show_in_cabinet' => true]);
+        $this->news('n-learning', 'Новость Б', ['show_in_learning' => true]);
+        $member = $this->member();
+
+        $this->asParticipant($member)->get(route('account.possibilities.post', 'n-possibilities'))->assertOk()
+            ->assertSee('Новость А')->assertSee('href="'.route('account.possibilities.index').'"', false);
+        $this->asParticipant($member)->get(route('account.knowledge.post', 'n-learning'))->assertOk()
+            ->assertSee('Новость Б')->assertSee('href="'.route('account.knowledge').'"', false);
+
+        // чужой раздел и неотмеченные новости не открываются
+        $this->asParticipant($member)->get(route('account.knowledge.post', 'n-possibilities'))->assertNotFound();
+        $this->asParticipant($member)->get(route('account.possibilities.post', 'n-learning'))->assertNotFound();
+    }
+
+    public function test_hiding_a_news_item_from_the_open_site_keeps_it_for_members(): void
+    {
+        $this->news('closed', 'Закрытая новость', ['show_on_site' => false, 'show_in_cabinet' => true]);
+        $this->news('open', 'Открытая новость');
+
+        $this->get(route('media.publications'))->assertOk()->assertSee('Открытая новость')->assertDontSee('Закрытая новость');
+        $this->get(route('media.publications.show', 'closed'))->assertNotFound();
+        $this->get(route('media.publications.show', 'open'))->assertOk();
+
+        $this->asParticipant($this->member())->get(route('account.possibilities.index'))->assertOk()->assertSee('Закрытая новость');
+    }
+
+    public function test_the_telegram_draft_of_a_hidden_news_item_links_into_the_cabinet(): void
+    {
+        $drafts = app(BroadcastDrafts::class);
+        $audience = Broadcast::AUDIENCE_APPROVED;
+
+        $open = $this->news('open', 'Открытая')->load('translations');
+        $this->assertSame(route('media.publications.show', 'open'), $drafts->create($open, $audience, null)->buttons[0]['url']);
+
+        $learning = $this->news('learn', 'Обучающая', ['show_on_site' => false, 'show_in_learning' => true])->load('translations');
+        $this->assertSame(route('account.knowledge.post', 'learn'), $drafts->create($learning, $audience, null)->buttons[0]['url']);
+
+        $both = $this->news('both', 'Обе', ['show_on_site' => false, 'show_in_cabinet' => true, 'show_in_learning' => true])->load('translations');
+        $this->assertSame(route('account.possibilities.post', 'both'), $drafts->create($both, $audience, null)->buttons[0]['url']);
     }
 }

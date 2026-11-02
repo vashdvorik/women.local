@@ -87,7 +87,12 @@ class BroadcastDrafts
     {
         return match (true) {
             $item instanceof Event => $item->cardLink()['href'] ?? route('events'),
-            $item instanceof Post => route('media.publications.show', $item),
+            $item instanceof Post => match (true) {
+                (bool) $item->show_on_site => route('media.publications.show', $item),
+                ! $item->show_in_cabinet && $item->show_in_learning => route('account.knowledge.post', $item->slug),
+                $item->show_in_cabinet => route('account.possibilities.post', $item->slug),
+                default => route('media.publications.show', $item),
+            },
             // Возможность только для участниц на открытом сайте не открывается: ссылка ведёт в кабинет (после входа)
             $item instanceof SiteOpportunity => match (true) {
                 (bool) $item->show_on_site => route('opportunities.show', $item),

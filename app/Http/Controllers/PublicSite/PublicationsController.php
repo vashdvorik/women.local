@@ -20,7 +20,7 @@ class PublicationsController extends ContentPageController
     {
         [$cards, $posts] = $this->cachedCards(
             'publications.list',
-            fn () => Post::with(['translations', 'tag.translations'])->published()->orderByDesc('published_at'),
+            fn () => Post::with(['translations', 'tag.translations'])->published()->onSite()->orderByDesc('published_at'),
             fn (Post $post) => PublicCards::post($post),
         );
 
@@ -53,7 +53,7 @@ class PublicationsController extends ContentPageController
             'publications',
             $this->tri('Публикации', 'Publications', 'Publicații'),
             $post,
-            fn (bool $withDrafts) => ($withDrafts ? Post::query() : Post::published())->with(['translations', 'tag.translations'])->where('slug', $post)->first(),
+            fn (bool $withDrafts) => ($withDrafts ? Post::query() : Post::published()->onSite())->with(['translations', 'tag.translations'])->where('slug', $post)->first(),
             fn (Post $item) => $this->articleData($item),
         );
     }

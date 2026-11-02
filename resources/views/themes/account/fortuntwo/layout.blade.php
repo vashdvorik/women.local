@@ -59,15 +59,27 @@
             <nav class="flex-1 overflow-y-auto px-3" data-tour-nav>
                 <p class="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-gray-400">{{ __('account.nav_title') }}</p>
                 @php $navItems = \App\Support\CabinetNav::items($accountUser, includeLocked: false); @endphp
-                @foreach($navItems as $item)
-                    @php $active = request()->routeIs($item['route']) || request()->routeIs($item['route'] . '.*'); @endphp
-                    <a href="{{ route($item['route']) }}" @click="sidebarOpen = false" data-tour="{{ $item['key'] }}"
-                       class="group mb-0.5 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all duration-150 {{ $active ? 'bg-brand-50 font-semibold text-brand-700' : 'font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}">
-                        <span class="account-nav-icon flex h-8 w-8 shrink-0 items-center justify-center rounded-lg {{ $active ? 'account-nav-icon--active text-white' : 'bg-gray-100 text-gray-400 group-hover:bg-gray-200' }}">
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['path'] }}"/></svg>
-                        </span>
-                        <span class="flex-1">{{ $item['label'] }}</span>
-                    </a>
+                {{-- ACTIVE и PRIVATE: редкие разделы сложены в группу «Ещё» (открыта, если текущая страница внутри неё) --}}
+                @foreach(\App\Support\CabinetNav::sidebar($accountUser) as $entry)
+                    @if(! empty($entry['group']))
+                        @php $groupOpen = collect($entry['items'])->contains(fn ($child) => request()->routeIs($child['route']) || request()->routeIs($child['route'].'.*')); @endphp
+                        <details class="account-nav-group mb-0.5" data-tour-group @if($groupOpen) open @endif>
+                            <summary class="account-nav-link flex cursor-pointer list-none items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-500 transition hover:bg-gray-50 hover:text-gray-900">
+                                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-400">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="{{ \App\Support\CabinetNav::moreIcon() }}"/></svg>
+                                </span>
+                                <span class="flex-1">{{ $entry['label'] }}</span>
+                                <svg class="account-nav-group__chevron h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </summary>
+                            <div class="account-nav-group__body">
+                                @foreach($entry['items'] as $item)
+                                    @include('themes.account.fortuntwo.partials.sidebar-link', ['item' => $item])
+                                @endforeach
+                            </div>
+                        </details>
+                    @else
+                        @include('themes.account.fortuntwo.partials.sidebar-link', ['item' => $entry])
+                    @endif
                 @endforeach
             </nav>
 

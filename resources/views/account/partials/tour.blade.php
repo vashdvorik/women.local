@@ -50,6 +50,9 @@
         if (!step.target || window.innerWidth < 1024) return null;
         var el = document.querySelector(step.target);
         if (!el) return null;
+        // Раздел может лежать в свёрнутой группе меню «Ещё»: раскрываем её, чтобы его было видно
+        var group = el.closest('details');
+        if (group && !group.open) group.open = true;
         var box = el.getBoundingClientRect();
         return box.width > 0 && box.height > 0 ? el : null;
     }

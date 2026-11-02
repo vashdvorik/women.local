@@ -1,4 +1,4 @@
-<x-layouts.admin :title="__('Возможности')">
+<x-layouts.admin :title="__('Возможности/обучение')">
     <x-slot:actions>
         <a href="{{ route('admin.opportunities.create') }}" class="btn-primary">{{ __('Добавить возможность') }}</a>
     </x-slot:actions>

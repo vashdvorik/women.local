@@ -130,7 +130,7 @@ class AdminCampTest extends TestCase
 
         $news = strpos($content, '<span>Новости</span>');
         $projects = strpos($content, '<span>Проекты</span>');
-        $opportunities = strpos($content, '<span>Возможности</span>');
+        $opportunities = strpos($content, '<span>Возможности/обучение</span>');
         $experts = strpos($content, '<span>Эксперты</span>');
 
         $this->assertTrue($news < $projects && $projects < $opportunities && $opportunities < $experts);

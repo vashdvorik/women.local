@@ -10,6 +10,8 @@ use App\Models\Event;
 use App\Models\EventTranslation;
 use App\Models\Expert;
 use App\Models\ExpertTranslation;
+use App\Models\LearningVideo;
+use App\Models\LearningVideoTranslation;
 use App\Models\Post;
 use App\Models\PostTranslation;
 use App\Models\Project;
@@ -64,6 +66,7 @@ final class PublicCache
         SiteOpportunity::class, SiteOpportunityTranslation::class,
         Project::class, ProjectTranslation::class,
         Video::class, VideoTranslation::class,
+        LearningVideo::class, LearningVideoTranslation::class,
         Catalog::class, CatalogTranslation::class,
         Tag::class, TagTranslation::class,
     ];

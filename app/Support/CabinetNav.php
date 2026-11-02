@@ -72,9 +72,57 @@ final class CabinetNav
             'path' => self::ICONS[$d[0]],
             'min' => $d[3],
             'locked' => $d[3] === Plan::Active && ! $paid,
+            // Разделы, которые открываются только с ACTIVE (и выше): в меню помечаются словом PREMIUM
+            'premium' => $d[3] === Plan::Active,
         ], $definitions);
 
         return $includeLocked ? $items : array_values(array_filter($items, fn (array $item): bool => ! $item['locked']));
+    }
+
+    /** Разделы, которые на тарифах ACTIVE и PRIVATE убираются в раскрывающуюся группу «Ещё»: они нужны реже остальных. */
+    private const MINOR = ['manager', 'opportunities', 'subscription'];
+
+    /** Порядок бокового меню на ACTIVE и PRIVATE: после «Главной» сначала разделы PREMIUM, затем общие; «Ещё» — перед «Профилем». */
+    private const ORDER = ['home', 'assistant', 'matches', 'search', 'people', 'possibilities', 'knowledge', '@more', 'profile'];
+
+    /**
+     * Боковое меню: на ACTIVE и PRIVATE разделы PREMIUM идут сразу после «Главной», а реже нужные сложены в группу «Ещё»,
+     * чтобы меню умещалось на экране ноутбука. На COMMUNITY разделов мало: меню плоское, как есть. Нижняя панель и плитки
+     * главной берут обычный items().
+     *
+     * @return list<array<string, mixed>> раздел из items() либо группа ['group' => true, 'key', 'label', 'items' => [...]]
+     */
+    public static function sidebar(?BotUser $user): array
+    {
+        $items = self::items($user, includeLocked: false);
+
+        if ($user === null || ! $user->hasPlan(Plan::Active)) {
+            return $items;
+        }
+
+        $byKey = [];
+        $minor = [];
+
+        foreach ($items as $item) {
+            if (in_array($item['key'], self::MINOR, true)) {
+                $minor[] = $item;
+            } else {
+                $byKey[$item['key']] = $item;
+            }
+        }
+
+        $group = ['group' => true, 'key' => 'more', 'label' => __('account.nav.group_more'), 'items' => $minor];
+        $entries = [];
+
+        foreach (self::ORDER as $key) {
+            if ($key === '@more') {
+                $entries[] = $group;
+            } elseif (isset($byKey[$key])) {
+                $entries[] = $byKey[$key];
+            }
+        }
+
+        return $entries;
     }
 
     /** Контур иконки раздела (viewBox 24) по его ключу: для кнопок вне меню, например плавающей кнопки AI-менеджера. */
