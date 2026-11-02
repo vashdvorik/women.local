@@ -209,17 +209,18 @@ class SubscriptionPriceAndGiftTest extends TestCase
         $this->assertSame(Plan::Community, $user->fresh()->currentPlan());
     }
 
-    public function test_the_manage_page_offers_a_gift_first_and_the_manual_grant_is_quiet_by_default(): void
+    public function test_the_manage_page_has_an_open_manual_grant_without_a_preselected_plan_and_it_is_quiet_by_default(): void
     {
         $user = BotUser::factory()->approved()->create();
 
         $html = $this->actingAsAdmin()->get(route('admin.subscriptions.edit', $user))->assertOk()
-            ->assertSee('Подарить подписку')
-            ->assertSee('Подарить на год')
-            ->assertSee('участница ничего не получит', false)
+            ->assertDontSee('Подарить подписку')
+            ->assertSee('Другой срок или точная дата')
+            ->assertSee('Выберите тариф')
             ->getContent();
 
-        $this->assertStringContainsString(route('admin.subscriptions.gift', $user), $html);
+        $this->assertStringContainsString('<details class="card" open>', $html, 'блок выдачи тарифа раскрыт');
+        $this->assertDoesNotMatchRegularExpression('~<option value="(community|active|private)"[^>]*\bselected\b~', $html, 'тариф заранее не выбран');
         $this->assertDoesNotMatchRegularExpression('~name="notify"[^>]*\bchecked\b~', $html, 'галочка «сообщить» по умолчанию снята');
 
         // Ручная выдача без галочки тоже молчит.

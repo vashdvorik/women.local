@@ -637,3 +637,7 @@ body.account-theme-fortuntwo .mgr-panel .mgr-chat { flex: 1; padding-top: 12px; 
     body.account-theme-fortuntwo .mgr-panel { inset: 0; width: auto; max-width: none; height: auto; border: 0; border-radius: 0; }
     body.account-theme-fortuntwo .mgr-page .mgr-chat { height: calc(100vh - 260px); padding: 14px; }
 }
+
+/* Тариф участницы среди карточек: тёмная метка и обводка, чтобы сразу было видно, какой действует */
+body.account-theme-fortuntwo .sub-card--current { position: relative; border-color: var(--fortun-primary); box-shadow: 0 0 0 3px rgba(42, 25, 19, .12), 0 6px 18px rgba(33, 20, 15, .06); }
+body.account-theme-fortuntwo .sub-card__badge--current { background: var(--fortun-primary); }

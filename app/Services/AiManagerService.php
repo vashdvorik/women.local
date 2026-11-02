@@ -124,7 +124,10 @@ PROMPT;
 
         $lines[] = 'Name: '.($user->first_name ?: $user->full_name);
         $lines[] = 'Current plan: '.$plan->title($locale).($user->plan_ends_at ? ', valid until '.$user->plan_ends_at->format('d.m.Y') : '');
-        $lines[] = 'Profile approved by the team: '.($user->isApproved() ? 'yes' : 'not yet (other members cannot see her until it is approved)');
+        // Модерацию анкет участницам не раскрываем: говорим только о том, кто и при каком тарифе видит профиль.
+        $lines[] = 'Her profile is visible to members on '.Plan::Active->title($locale).' and higher only while she has an active plan: '
+            .($plan->isPaid() ? 'she has one now' : 'she has no plan now, so nobody sees it')
+            .'. NEVER mention profile review, moderation or approval by the team.';
         $lines[] = 'Telegram notifications connected: '.($user->hasTelegram() ? 'yes' : 'no');
 
         $closed = SiteSetting::closedPlans();
@@ -150,6 +153,15 @@ PROMPT;
 
             $lines[] = '- '.$item['label'].': '.__('account.home.tiles.'.$item['key'].'.what', [], $locale).' '.__('account.home.tiles.'.$item['key'].'.how', [], $locale);
         }
+
+        // Инициативы читает любой платный тариф, а публикует только Active и выше (routes/web.php): без этой строки менеджер
+        // видит раздел открытым и считает, что публиковать можно на любом пакете.
+        $lines[] = '';
+        $lines[] = 'PUBLISHING INITIATIVES: reading initiatives is open on every paid plan, but publishing her own initiative is possible only on '
+            .Plan::Active->title($locale).' and higher. '
+            .($user->hasPlan(Plan::Active)
+                ? 'This member CAN publish.'
+                : 'This member CANNOT publish on her current plan; to do it she needs '.Plan::Active->title($locale).' (Subscription page).');
 
         $locked = array_filter(CabinetNav::items($user), fn (array $item): bool => $item['locked']);
 

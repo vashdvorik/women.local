@@ -73,7 +73,8 @@ return [
     'home' => [
         'eyebrow' => 'Spațiul dvs.',
         'hello' => 'Bună ziua, :name!',
-        'intro' => 'Aici este tot ce are nevoie o membră Women’s hub. Începeți cu pașii de mai jos sau alegeți o secțiune.',
+        'intro' => 'Aici este tot ce are nevoie o membră Women’s hub. Alegeți o secțiune sau deschideți sfaturile.',
+        'plan_note_label' => 'Despre tariful dvs.',
         'intro_community' => 'Aveți tariful Community: oportunități, instruire și materiale. Mai jos sunt toate secțiunile cabinetului: ce este disponibil acum și ce se deschide cu tariful Active.',
         'hint_title' => 'Cum este organizat totul',
         'hint_mobile' => 'Meniul este mereu în partea de jos a ecranului: secțiunile principale și butonul „Mai mult” cu toate celelalte. Cardurile de mai jos sunt aceleași secțiuni, cu o explicație ce conțin și cum se folosesc.',

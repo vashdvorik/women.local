@@ -210,6 +210,7 @@ Route::middleware(RequireAccountAuth::class)
         });
 
         Route::post('/tour-seen', [AccountController::class, 'tourSeen'])->name('tour.seen');
+        Route::post('/notice-seen', [AccountController::class, 'noticeSeen'])->name('notice.seen');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     });
 

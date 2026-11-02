@@ -32,7 +32,19 @@ class AccountController extends Controller
         return view('account.home', [
             'user' => $user,
             'showTour' => \App\Support\CabinetTour::shouldAutoStart($user),
+            // Заметка «что доступно на вашем тарифе» нужна тем, у кого не весь кабинет (Community), пока её не закрыли
+            'showPlanNote' => ! $user->hasPlan(\App\Enums\Plan::Active) && ! $user->hasSeen('notice:plan'),
         ] + CabinetHome::build($user, app()->getLocale()));
+    }
+
+    /** Заметка о тарифе на главной закрыта: больше не показывается. */
+    public function noticeSeen(): \Illuminate\Http\Response
+    {
+        /** @var BotUser $user */
+        $user = view()->shared('accountUser');
+        $user->markSeen('notice:plan');
+
+        return response()->noContent();
     }
 
     /** Подсказки текущего тарифа пройдены или закрыты: сами больше не появятся (на главной их можно открыть кнопкой). */

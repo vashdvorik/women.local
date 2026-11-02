@@ -51,36 +51,7 @@
         @if($profile->isApproved())
             <x-forms.error-summary />
 
-            <form method="POST" action="{{ route('admin.subscriptions.gift', $profile) }}" class="card space-y-5">
-                @csrf
-
-                <div>
-                    <h2 class="text-section font-semibold">{{ __('Подарить подписку') }}</h2>
-                    <p class="field-hint mt-1">
-                        {{ __('Тариф включится на год, участница ничего не получит: ни сообщения в Telegram, ни письма, просто откроется доступ. Если такой тариф уже действует, год добавится к его концу.') }}
-                    </p>
-                </div>
-
-                <div class="space-y-1">
-                    <label for="gift-plan" class="field-label">{{ __('Тариф') }}</label>
-                    <select id="gift-plan" name="plan" class="field-input">
-                        @foreach(\App\Enums\Plan::paid() as $plan)
-                            <option value="{{ $plan->value }}" @selected(old('plan', 'active') === $plan->value)>
-                                {{ $plan->title('ru') }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="space-y-1">
-                    <label for="gift-note" class="field-label">{{ __('Заметка (видна только администраторам)') }}</label>
-                    <input id="gift-note" type="text" name="note" maxlength="200" value="{{ old('note') }}" placeholder="{{ __('Например: подарок за выступление на встрече') }}" class="field-input">
-                </div>
-
-                <button type="submit" class="btn-primary">{{ __('Подарить на год') }}</button>
-            </form>
-
-            <details class="card" @if($errors->any() && old('mode')) open @endif>
+            <details class="card" open>
                 <summary class="cursor-pointer text-section font-semibold">{{ __('Другой срок или точная дата') }}</summary>
             <form method="POST" action="{{ route('admin.subscriptions.grant', $profile) }}" class="mt-4 space-y-5"
                   x-data="{ mode: @js(old('mode', 'months')) }">
@@ -92,9 +63,11 @@
 
                 <div class="space-y-1">
                     <label for="plan" class="field-label">{{ __('Тариф') }}</label>
-                    <select id="plan" name="plan" class="field-input">
+                    <select id="plan" name="plan" class="field-input" required>
+                        {{-- Первым стоит пустой пункт: тариф заранее не выбран, чтобы не выдать его по ошибке --}}
+                        <option value="" disabled @selected(! old('plan'))>{{ __('Выберите тариф') }}</option>
                         @foreach(\App\Enums\Plan::paid() as $plan)
-                            <option value="{{ $plan->value }}" @selected(old('plan', 'active') === $plan->value)>
+                            <option value="{{ $plan->value }}" @selected(old('plan') === $plan->value)>
                                 {{ $plan->title() }} — {{ __(':price в год', ['price' => $plan->priceLabel()]) }}
                             </option>
                         @endforeach

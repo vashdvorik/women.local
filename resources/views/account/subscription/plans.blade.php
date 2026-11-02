@@ -19,7 +19,8 @@
     use App\Enums\Plan;
 
     $hasPlan = $current->isPaid();
-    $offers = array_values(array_filter(Plan::paid(), fn (Plan $plan): bool => $plan->rank() > $current->rank()));
+    // Показываем все три тарифа: свой отмечен «Ваш тариф», тарифы ниже помечены как уже входящие, выше можно оформить
+    $offers = Plan::paid();
 @endphp
 <div class="mx-auto max-w-6xl">
     @include('account.partials.notices')
@@ -28,7 +29,7 @@
         <h1 class="text-3xl font-semibold tracking-tight">{{ $hasPlan ? __('subscription.page.heading_current') : __('subscription.page.heading_choose') }}</h1>
         @if(! $hasPlan)
             <p class="mt-3 text-sm leading-6 text-gray-600">{{ __('subscription.page.intro_choose') }}</p>
-        @elseif($offers !== [])
+        @elseif($current !== Plan::Private)
             <p class="mt-3 text-sm leading-6 text-gray-600">{{ __('subscription.page.intro_upgrade') }}</p>
         @endif
     </header>
@@ -46,17 +47,16 @@
                     <p class="sub-current__until">{{ __('subscription.page.until', ['date' => $user->plan_ends_at->format('d.m.Y')]) }}</p>
                 @endif
             </div>
-            <div class="sub-current__action">
-                @include('account.subscription._buy', ['plan' => $current, 'current' => $current, 'user' => $user])
-            </div>
         </section>
     @endif
 
     @if($offers !== [])
         <div class="sub-grid sub-grid--{{ count($offers) }}">
             @foreach($offers as $plan)
-                <section class="sub-card sub-card--{{ $plan->value }}{{ $plan->value === $popular ? ' sub-card--popular' : '' }}" aria-labelledby="plan-{{ $plan->value }}">
-                    @if($plan->value === $popular)
+                <section class="sub-card sub-card--{{ $plan->value }}{{ $plan->value === $popular && $plan !== $current ? ' sub-card--popular' : '' }}{{ $plan === $current ? ' sub-card--current' : '' }}" aria-labelledby="plan-{{ $plan->value }}">
+                    @if($plan === $current)
+                        <span class="sub-card__badge sub-card__badge--current">{{ __('subscription.page.your_plan') }}</span>
+                    @elseif($plan->value === $popular)
                         <span class="sub-card__badge">{{ __('subscription.page.popular') }}</span>
                     @endif
                     <div class="sub-card__head">

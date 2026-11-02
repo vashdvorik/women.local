@@ -18,20 +18,24 @@
     <header class="mb-6 max-w-3xl">
         <p class="text-xs font-semibold uppercase tracking-widest text-brand-600">{{ __('account.home.eyebrow') }}</p>
         <h1 class="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">{{ __('account.home.hello', ['name' => $name]) }}</h1>
-        <p class="mt-3 text-sm leading-6 text-gray-600">{{ $paid ? __('account.home.intro') : __('account.home.intro_community') }}</p>
+        @if($paid)
+            <p class="mt-3 text-sm leading-6 text-gray-600">{{ __('account.home.intro') }}</p>
+        @endif
         <button type="button" data-tour-start class="mt-3 text-sm font-semibold text-brand-700 hover:underline">{{ __('account.tour.replay') }}</button>
     </header>
 
-    {{-- Открыть сообщество: только у тарифа Open --}}
-    @unless($paid)
-        <section class="mb-6 flex flex-col gap-4 rounded-3xl border border-brand-100 bg-brand-50 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6" aria-labelledby="upgrade-title">
-            <div class="max-w-2xl">
-                <h2 id="upgrade-title" class="text-base font-semibold">{{ __('subscription.community_home.upgrade_title') }}</h2>
-                <p class="mt-1.5 text-sm leading-6 text-gray-600">{{ __('subscription.community_home.upgrade_text') }}</p>
-            </div>
-            <a href="{{ route('account.subscription') }}" class="inline-flex shrink-0 justify-center rounded-xl bg-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700">{{ __('subscription.community_home.upgrade_cta') }}</a>
+    {{-- Заметка о тарифе Community: что доступно сейчас и что откроет Active. Закрывается и больше не показывается --}}
+    @if($showPlanNote ?? false)
+        <section x-data="{ open: true }" x-show="open" x-cloak
+                 class="mb-6 flex items-start gap-4 rounded-2xl border border-brand-100 bg-brand-50 p-4 sm:items-center sm:p-5" aria-label="{{ __('account.home.plan_note_label') }}">
+            <p class="min-w-0 flex-1 text-sm leading-6 text-gray-700">{{ __('account.home.intro_community') }}</p>
+            <form method="POST" action="{{ route('account.notice.seen') }}" class="shrink-0"
+                  @submit.prevent="open = false; fetch($el.action, { method: 'POST', body: new FormData($el), headers: { 'Accept': 'application/json' }, credentials: 'same-origin' })">
+                @csrf
+                <button type="submit" class="rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-brand-700 shadow-sm ring-1 ring-brand-100 transition hover:bg-brand-50">{{ __('account.tour.close') }}</button>
+            </form>
         </section>
-    @endunless
+    @endif
 
     {{-- Разделы кабинета: то же, что в меню, с пояснением --}}
     <section class="mb-10" aria-labelledby="home-tiles-title">
@@ -60,85 +64,6 @@
             @endforeach
         </div>
     </section>
-
-    {{-- Что нового: возможности участниц видят все тарифы, новых участниц и каталог — Community и Private --}}
-    <section class="mb-10" aria-labelledby="home-fresh-title">
-        <h2 id="home-fresh-title" class="mb-4 text-base font-semibold">{{ __('account.home.fresh_title') }}</h2>
-        <div class="grid gap-6 {{ $paid ? 'lg:grid-cols-2' : '' }}">
-            @if(true)
-                <div class="flex flex-col rounded-3xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
-                    <h3 class="text-sm font-semibold">{{ __('account.home.fresh_opportunities') }}</h3>
-                    @forelse($opportunities as $item)
-                        <article class="mt-4 border-t border-gray-100 pt-4 first:border-0 first:pt-0">
-                            <p class="text-xs text-gray-500">{{ $item->created_at->format('d.m.Y') }}@if($item->author) · {{ $item->author->full_name }}@endif</p>
-                            <h4 class="mt-1 text-sm font-semibold leading-snug"><a href="{{ route('account.opportunities.index') }}" class="hover:text-brand-700 hover:underline">{{ $item->title }}</a></h4>
-                        </article>
-                    @empty
-                        <p class="mt-4 text-sm text-gray-500">{{ __('account.home.fresh_empty') }}</p>
-                    @endforelse
-                    <a href="{{ route('account.opportunities.index') }}" class="mt-auto pt-5 text-sm font-medium text-brand-700 hover:underline">{{ __('account.home.fresh_all_opportunities') }} →</a>
-                </div>
-
-            @endif
-            @if($paid)
-                <div class="flex flex-col rounded-3xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
-                    <h3 class="text-sm font-semibold">{{ __('account.home.fresh_members') }}</h3>
-                    @forelse($members as $member)
-                        <a href="{{ route('account.people.show', $member->id) }}" class="mt-4 flex items-start gap-3 border-t border-gray-100 pt-4 first:border-0 first:pt-0">
-                            @if($member->avatar_path)
-                                <img src="{{ Storage::url($member->avatar_path) }}" alt="" class="h-9 w-9 shrink-0 rounded-full object-cover" loading="lazy">
-                            @else
-                                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-sm font-medium text-brand-700" aria-hidden="true">{{ mb_strtoupper(mb_substr((string) $member->full_name, 0, 1)) }}</span>
-                            @endif
-                            <span class="min-w-0">
-                                <span class="block text-sm font-semibold leading-snug hover:text-brand-700">{{ $member->full_name }}</span>
-                                <span class="mt-0.5 block text-xs leading-5 text-gray-500">{{ filled($member->description) ? \Illuminate\Support\Str::limit($member->description, 90) : __('account.home.no_description') }}</span>
-                            </span>
-                        </a>
-                    @empty
-                        <p class="mt-4 text-sm text-gray-500">{{ __('account.home.fresh_empty') }}</p>
-                    @endforelse
-                    <a href="{{ route('account.people') }}" class="mt-auto pt-5 text-sm font-medium text-brand-700 hover:underline">{{ __('account.home.fresh_all_members') }} →</a>
-                </div>
-            @endif
-        </div>
-    </section>
-
-    @unless($paid)
-        {{-- Тариф Open: то, что есть на публичном сайте --}}
-        @php
-            $sections = [
-                ['key' => 'news', 'title' => __('subscription.community_home.news'), 'all' => route('events')],
-                ['key' => 'publications', 'title' => __('subscription.community_home.publications'), 'all' => route('media.publications')],
-                ['key' => 'opportunities', 'title' => __('subscription.community_home.opportunities'), 'all' => route('opportunities')],
-            ];
-        @endphp
-        <div class="mb-10 grid gap-6 lg:grid-cols-3">
-            @foreach($sections as $section)
-                <section class="flex flex-col rounded-3xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6" aria-labelledby="feed-{{ $section['key'] }}">
-                    <h2 id="feed-{{ $section['key'] }}" class="text-base font-semibold">{{ $section['title'] }}</h2>
-
-                    @forelse($feed[$section['key']] as $item)
-                        <article class="mt-4 border-t border-gray-100 pt-4 first:mt-4 first:border-0 first:pt-0">
-                            @if($item['date'] !== '')
-                                <p class="text-xs text-gray-500">{{ $item['date'] }}</p>
-                            @endif
-                            <h3 class="mt-1 text-sm font-semibold leading-snug">
-                                <a href="{{ $item['href'] }}"@if($item['external']) target="_blank" rel="noopener"@endif class="hover:text-brand-700 hover:underline">{{ $item['title'] }}</a>
-                            </h3>
-                            @if($item['excerpt'] !== '')
-                                <p class="mt-1 line-clamp-2 text-sm leading-6 text-gray-600">{{ $item['excerpt'] }}</p>
-                            @endif
-                        </article>
-                    @empty
-                        <p class="mt-4 text-sm text-gray-500">{{ __('subscription.community_home.empty') }}</p>
-                    @endforelse
-
-                    <a href="{{ $section['all'] }}" target="_blank" rel="noopener" class="mt-auto pt-5 text-sm font-medium text-brand-700 hover:underline">{{ __('subscription.community_home.all') }} →</a>
-                </section>
-            @endforeach
-        </div>
-    @endunless
 </div>
 @include('account.partials.tour', ['tourSteps' => \App\Support\CabinetTour::steps($user), 'replaySteps' => \App\Support\CabinetTour::steps($user, true), 'autoStart' => $showTour ?? false])
 @endsection

@@ -13,6 +13,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -69,6 +70,37 @@ class BotUser extends Model implements AuthenticatableContract, CanResetPassword
         'embedding_updated_at' => 'datetime',
         'is_hidden'            => 'boolean',
     ];
+
+    /**
+     * Имя и фамилия без повтора: «Иванова Анна (Иванова Анна)» показывается и сохраняется как «Иванова Анна». Такое имя
+     * попадает из старых записей и профилей, где к имени дописывали его же в скобках.
+     */
+    protected function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value): ?string => self::tidyName($value),
+            set: fn (?string $value): ?string => self::tidyName($value),
+        );
+    }
+
+    public static function tidyName(?string $name): ?string
+    {
+        if ($name === null) {
+            return null;
+        }
+
+        $name = trim((string) preg_replace('/\s+/u', ' ', $name));
+
+        if (preg_match('/^(.+?)\s*\(\s*(.+?)\s*\)$/u', $name, $match) === 1) {
+            $words = fn (string $text): array => collect(preg_split('/[\s,]+/u', mb_strtolower($text), -1, PREG_SPLIT_NO_EMPTY) ?: [])->sort()->values()->all();
+
+            if ($words($match[1]) === $words($match[2])) {
+                return trim($match[1]);
+            }
+        }
+
+        return $name;
+    }
 
     /**
      * Почта, которую показываем людям: указанная участницей «для связи», а если её нет, регистрационная. Вход в кабинет и
