@@ -142,7 +142,7 @@ return [
             ],
             'opportunities' => [
                 'what' => 'Cereri, parteneriate și evenimente publicate chiar de membre.',
-                'how' => 'Deschideți o inițiativă pentru detalii și pentru a contacta autoarea sau publicați-o pe a dvs.',
+                'how' => 'Deschideți o inițiativă pentru detalii și scrieți autoarei. Puteți publica inițiativele proprii cu tariful Active: un moderator le verifică înainte de afișare.',
             ],
             'knowledge' => [
                 'what' => 'Materialele educaționale ale platformei.',
@@ -246,6 +246,7 @@ return [
         'title' => 'Inițiative',
         'subtitle' => 'Cereri, oferte, întâlniri și evenimente din partea membrelor comunității.',
         'add' => 'Adaugă o inițiativă',
+        'add_locked' => 'Puteți publica inițiative cu tariful Active →',
         'empty_title' => 'Nu există inițiative publicate încă',
         'empty_text' => 'Cereri, oferte, întâlniri și evenimente noi ale membrelor vor apărea aici.',
         'publish_first' => 'Publică prima →',

@@ -21,6 +21,10 @@ class CabinetPremoderationTest extends TestCase
 
     private function actingAsParticipant(BotUser $user): static
     {
+        // Каждая участница в своей сессии: внутри одного теста сторож входа иначе помнит предыдущую.
+        $this->flushSession();
+        $this->app['auth']->forgetGuards();
+
         return $this->withSession($this->participantSession($user));
     }
 

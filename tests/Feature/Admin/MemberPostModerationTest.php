@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Admin;
 
-use App\Jobs\NotifyOpportunity;
 use App\Models\BotUser;
 use App\Models\Opportunity;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -63,7 +62,7 @@ class MemberPostModerationTest extends TestCase
             ->assertOk()->assertSee('Описание публикации')->assertSee('Кишинёв');
     }
 
-    public function test_approving_publishes_and_notifies_participants_once(): void
+    public function test_approving_publishes_the_post_and_sends_nothing(): void
     {
         Queue::fake();
         $post = $this->makePost();
@@ -72,11 +71,13 @@ class MemberPostModerationTest extends TestCase
 
         $this->assertTrue($post->fresh()->isApproved());
         $this->assertNotNull($post->fresh()->moderated_at);
-        Queue::assertPushed(NotifyOpportunity::class, 1);
 
-        // Повторное одобрение не рассылает уведомление второй раз.
+        // Одобрение только открывает инициативу в кабинете: ни автору, ни остальным ничего не отправляется (проверка скрытая).
+        // Повторное одобрение ничего не меняет.
+        $moderatedAt = $post->fresh()->moderated_at;
         $this->actingAsAdmin()->post(route('admin.member-posts.approve', $post))->assertRedirect();
-        Queue::assertPushed(NotifyOpportunity::class, 1);
+        $this->assertEquals($moderatedAt, $post->fresh()->moderated_at);
+        Queue::assertNothingPushed();
     }
 
     public function test_rejecting_hides_the_post_without_notifying(): void

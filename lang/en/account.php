@@ -142,7 +142,7 @@ return [
             ],
             'opportunities' => [
                 'what' => 'Requests, partnerships and events published by members themselves.',
-                'how' => 'Open an initiative for details and to contact the author, or publish your own.',
+                'how' => 'Open an initiative to see the details and write to its author. You can publish your own with the Active plan: a moderator checks each one before it is shown.',
             ],
             'knowledge' => [
                 'what' => 'The platform’s learning materials.',
@@ -246,6 +246,7 @@ return [
         'title' => 'Initiatives',
         'subtitle' => 'Requests, offers, meetups and events from community members.',
         'add' => 'Add an initiative',
+        'add_locked' => 'You can publish initiatives on the Active plan →',
         'empty_title' => 'No initiatives published yet',
         'empty_text' => 'New requests, offers, meetups and events from members will appear here.',
         'publish_first' => 'Publish the first one →',

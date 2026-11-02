@@ -82,6 +82,18 @@ class GoogleTakeoverTest extends TestCase
             ->assertRedirect(route('account.login'));
     }
 
+    public function test_signing_in_as_another_participant_in_the_same_session_is_not_treated_as_a_password_change(): void
+    {
+        $first = BotUser::factory()->create();
+        $second = BotUser::factory()->create();
+
+        // Сначала вошла первая и побывала в кабинете, затем в той же сессии вошла вторая.
+        $this->actingAs($first, 'participant')->get(route('account.subscription'))->assertOk();
+        $this->app['auth']->forgetGuards();
+
+        $this->actingAs($second->fresh(), 'participant')->get(route('account.subscription'))->assertOk();
+    }
+
     public function test_the_remember_me_token_is_rotated(): void
     {
         $user = $this->squatter('anna@example.test');

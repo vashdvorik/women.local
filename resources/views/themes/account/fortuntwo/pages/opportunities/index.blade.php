@@ -9,9 +9,14 @@
                 <h1 class="miro-page-title">{{ __('account.opportunities.title') }}</h1>
                 <p class="miro-page-description">{{ __('account.opportunities.subtitle') }}</p>
             </div>
-            {{-- Читают все тарифы; публикуют с Community. Скрытый участник только читает: публиковать он не может. --}}
-            @if(! $accountUser->is_hidden && $accountUser->canSeeContacts())
-                <a href="{{ route('account.opportunities.create') }}" class="miro-button miro-button--dark">{{ __('account.opportunities.add') }}</a>
+            {{-- Читают все тарифы, добавляют с Active (там же каждую инициативу проверяет модератор). Тем, у кого тариф ниже, вместо
+                 кнопки подсказка, как получить такую возможность. Скрытый участник только читает: публиковать он не может. --}}
+            @if(! $accountUser->is_hidden)
+                @if($accountUser->canSeeContacts())
+                    <a href="{{ route('account.opportunities.create') }}" class="miro-button miro-button--dark">{{ __('account.opportunities.add') }}</a>
+                @else
+                    <a href="{{ route('account.subscription') }}" class="miro-button miro-button--outline">{{ __('account.opportunities.add_locked') }}</a>
+                @endif
             @endif
         </header>
 
