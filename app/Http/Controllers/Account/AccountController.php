@@ -160,9 +160,12 @@ class AccountController extends Controller
         return $this->themedView('search', compact('query', 'results'));
     }
 
+    /** «Обучение»: обучающие видео, которые администратор включил для кабинета; пока их нет, показывается заглушка. */
     public function knowledge(): View
     {
-        return $this->themedView('knowledge');
+        $videos = \App\Models\LearningVideo::query()->published()->ordered()->with('translations')->get();
+
+        return $this->themedView('knowledge', compact('videos'));
     }
 
     public function assistantMessage(Request $request, AiAssistantService $assistant): JsonResponse

@@ -240,6 +240,10 @@ return [
         'coming_title' => 'Modulele de învățare vor apărea în curând',
         'coming_text' => 'Aici vor fi video, checklisturi, șabloane și sarcini practice despre finanțe, marketing, vânzări, export și leadership.',
         'modules' => ['Finanțe', 'Marketing', 'Export', 'Leadership'],
+        'videos_title' => 'Videoclipuri pentru dvs.',
+        'videos_hint' => 'Apăsați pe un videoclip pentru a-l deschide chiar aici.',
+        'watch' => 'Vizionează',
+        'close' => 'Închide',
     ],
 
     'opportunities' => [

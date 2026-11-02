@@ -31,6 +31,7 @@ final class AdminCamp
         'admin.subscriptions.*',
         'admin.plan-requests.*',
         'admin.manager-questions.*',
+        'admin.learning-videos.*',
         'admin.payments.*',
         'admin.broadcasts.*',
     ];

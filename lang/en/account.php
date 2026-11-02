@@ -240,6 +240,10 @@ return [
         'coming_title' => 'Learning modules are coming soon',
         'coming_text' => 'Videos, checklists, templates and practical tasks on finance, marketing, sales, export and leadership will appear here.',
         'modules' => ['Finance', 'Marketing', 'Export', 'Leadership'],
+        'videos_title' => 'Videos for you',
+        'videos_hint' => 'Click a video to open it right here.',
+        'watch' => 'Watch',
+        'close' => 'Close',
     ],
 
     'opportunities' => [

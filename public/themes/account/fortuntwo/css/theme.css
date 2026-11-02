@@ -637,3 +637,26 @@ body.account-theme-fortuntwo .mgr-panel .mgr-chat { flex: 1; padding-top: 12px; 
 /* Тариф участницы среди карточек: тёмная метка и обводка, чтобы сразу было видно, какой действует */
 body.account-theme-fortuntwo .sub-card--current { position: relative; border-color: var(--fortun-primary); box-shadow: 0 0 0 3px rgba(42, 25, 19, .12), 0 6px 18px rgba(33, 20, 15, .06); }
 body.account-theme-fortuntwo .sub-card__badge--current { background: var(--fortun-primary); }
+
+/* Обучающие видео в разделе «Обучение»: карточки и окно плеера */
+body.account-theme-fortuntwo .lv-title { margin: 0; color: var(--fortun-ink-deep); font-size: 20px; font-weight: 600; }
+body.account-theme-fortuntwo .lv-hint { margin: 6px 0 20px; color: var(--fortun-slate); font-size: 14px; line-height: 1.5; }
+body.account-theme-fortuntwo .lv-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+@media (min-width: 640px) { body.account-theme-fortuntwo .lv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1280px) { body.account-theme-fortuntwo .lv-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+body.account-theme-fortuntwo .lv-card { display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--fortun-hairline-strong); border-radius: 20px; background: var(--fortun-canvas); box-shadow: 0 6px 18px rgba(33, 20, 15, .06); }
+body.account-theme-fortuntwo .lv-card__cover { position: relative; display: block; width: 100%; padding: 0; border: 0; background: var(--fortun-surface-cream); cursor: pointer; aspect-ratio: 16 / 9; overflow: hidden; }
+body.account-theme-fortuntwo .lv-card__cover img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .25s ease; }
+body.account-theme-fortuntwo .lv-card__cover:hover img { transform: scale(1.03); }
+body.account-theme-fortuntwo .lv-card__cover:focus-visible { outline: 3px solid var(--fortun-primary); outline-offset: -3px; }
+body.account-theme-fortuntwo .lv-card__play { position: absolute; inset: 0; margin: auto; display: grid; width: 56px; height: 56px; place-items: center; border-radius: 9999px; background: rgba(42, 25, 19, .82); color: #fff; box-shadow: 0 6px 18px rgba(33, 20, 15, .3); }
+body.account-theme-fortuntwo .lv-card__body { padding: 16px 18px 20px; }
+body.account-theme-fortuntwo .lv-card__title { margin: 0; color: var(--fortun-ink-deep); font-size: 16px; font-weight: 600; line-height: 1.35; }
+body.account-theme-fortuntwo .lv-card__text { margin: 8px 0 0; color: var(--fortun-slate); font-size: 14px; line-height: 1.55; white-space: pre-line; overflow-wrap: anywhere; }
+body.account-theme-fortuntwo .lv-modal { position: fixed; inset: 0; z-index: 80; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(33, 20, 15, .72); }
+body.account-theme-fortuntwo .lv-modal__box { position: relative; width: 100%; max-width: 960px; }
+body.account-theme-fortuntwo .lv-modal__frame { width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 16px; background: #000; }
+body.account-theme-fortuntwo .lv-modal__frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+body.account-theme-fortuntwo .lv-modal__close { position: absolute; right: 0; top: -44px; width: 40px; height: 40px; border: 0; border-radius: 9999px; background: rgba(255, 255, 255, .15); color: #fff; font-size: 28px; line-height: 1; cursor: pointer; }
+body.account-theme-fortuntwo .lv-modal__close:hover { background: rgba(255, 255, 255, .3); }
+body.account-theme-fortuntwo .lv-modal__caption { margin: 12px 4px 0; color: #fff; font-size: 15px; font-weight: 600; line-height: 1.4; }

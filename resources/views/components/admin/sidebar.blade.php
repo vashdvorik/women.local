@@ -70,6 +70,10 @@
                 <x-admin.nav-icon name="news" /><span>{{ __('Посты участниц') }}</span>
                 @if($pendingMemberPosts > 0)<span class="nav-counter">{{ $pendingMemberPosts }}</span>@endif
             </a>
+            <a href="{{ route('admin.learning-videos.index') }}"
+               class="nav-link @if(request()->routeIs('admin.learning-videos.*')) nav-link--active @endif">
+                <x-admin.nav-icon name="video" /><span>{{ __('Обучающие видео') }}</span>
+            </a>
             <a href="{{ route('admin.broadcasts.index') }}"
                class="nav-link @if(request()->routeIs('admin.broadcasts.*')) nav-link--active @endif">
                 <x-admin.nav-icon name="send" /><span>{{ __('Рассылка в Telegram') }}</span>

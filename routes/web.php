@@ -253,6 +253,17 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::put('albums/{album}', [Admin\AlbumController::class, 'update'])->name('albums.update');
         Route::delete('albums/{album}', [Admin\AlbumController::class, 'destroy'])->name('albums.destroy');
 
+        // Обучающие видео для кабинета участницы («Кабинеты участниц → Обучающие видео»): отдельно от видео открытого сайта.
+        Route::get('learning-videos', [Admin\LearningVideoController::class, 'index'])->name('learning-videos.index');
+        Route::post('learning-videos/reorder', [Admin\LearningVideoController::class, 'reorder'])->name('learning-videos.reorder');
+        Route::get('learning-videos/create', [Admin\LearningVideoController::class, 'create'])->name('learning-videos.create');
+        Route::post('learning-videos', [Admin\LearningVideoController::class, 'store'])->name('learning-videos.store');
+        Route::get('learning-videos/{learningVideo}/edit', [Admin\LearningVideoController::class, 'edit'])->name('learning-videos.edit');
+        Route::put('learning-videos/{learningVideo}', [Admin\LearningVideoController::class, 'update'])->name('learning-videos.update');
+        Route::post('learning-videos/{learningVideo}/toggle', [Admin\LearningVideoController::class, 'toggle'])->name('learning-videos.toggle');
+        Route::delete('learning-videos/{learningVideo}', [Admin\LearningVideoController::class, 'destroy'])->name('learning-videos.destroy');
+        Route::post('learning-videos/{learningVideo}/move', [Admin\LearningVideoController::class, 'move'])->name('learning-videos.move');
+
         Route::get('videos', [Admin\VideoController::class, 'index'])->name('videos.index');
         Route::post('videos/reorder', [Admin\VideoController::class, 'reorder'])->name('videos.reorder');
         Route::get('videos/create', [Admin\VideoController::class, 'create'])->name('videos.create');
