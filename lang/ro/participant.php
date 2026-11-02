@@ -167,7 +167,6 @@ return [
             'note' => 'Conectați Telegram în profil ca să primiți astfel de mesaje și acolo.',
         ],
         'moderation' => [
-            'approved' => ['subject' => 'Profil aprobat — Women’s Hub', 'line' => 'Profilul dvs. a fost aprobat: acum celelalte membre ale platformei vă văd.'],
             'rejected' => ['subject' => 'Decizia privind profilul — Women’s Hub', 'line' => 'Vă mulțumim pentru interesul față de Women’s Hub. În acest moment profilul dvs. nu a fost aprobat. Pentru detalii, scrieți-ne prin pagina „Contacte” de pe site.'],
             'revoked' => ['subject' => 'Acces închis — Women’s Hub', 'line' => 'Accesul la Women’s Hub a fost închis. Dacă aveți întrebări despre participare, scrieți-ne prin pagina „Contacte” de pe site.'],
             'button' => 'Deschide cabinetul',

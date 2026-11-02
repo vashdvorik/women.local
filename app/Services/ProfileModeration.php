@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\Mail;
 use Nutgram\Laravel\Facades\Telegram;
 
 /**
- * Модерация анкет участниц: смена статуса и уведомление участницы. Уведомление уходит в Telegram, если она его
- * подключила, иначе письмом на почту.
+ * Модерация анкет участниц: смена статуса. Проверка скрытая: одобрение участнице не сообщается ни в Telegram, ни письмом
+ * (она просто начинает отображаться другим участницам, если у неё действует тариф). Об отказе и о закрытии доступа
+ * уведомление уходит в Telegram, если она его подключила, иначе письмом на почту.
  *
  * Сбой отправки не откатывает решение модератора: статус уже сохранён, а неудача пишется в лог.
  *
@@ -27,11 +28,6 @@ class ProfileModeration
         $profile->update([
             'status' => BotUser::STATUS_APPROVED,
             'approved_at' => now(),
-        ]);
-
-        $this->notify($profile, 'moderation_approved', ModerationNoticeMail::APPROVED, [
-            'name' => BotMessages::firstName($profile->full_name),
-            'url' => route('account.index'),
         ]);
     }
 

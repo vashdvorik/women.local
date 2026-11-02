@@ -37,7 +37,7 @@ return [
 
     'groups' => [
         'link' => ['title' => 'Подключение Telegram', 'hint' => 'Участница подключает Telegram по ссылке из кабинета («Мой профиль → Подключить Telegram»). Ответы бота на подключение и на любое другое сообщение.'],
-        'moderation' => ['title' => 'Решение по анкете', 'hint' => 'Сообщения, которые уходят участнице с подключённым Telegram, когда администратор одобряет или отклоняет анкету либо закрывает доступ. Без Telegram то же приходит письмом.'],
+        'moderation' => ['title' => 'Решение по анкете', 'hint' => 'Сообщения, которые уходят участнице с подключённым Telegram, когда администратор отклоняет анкету либо закрывает доступ (об одобрении участнице не сообщается: проверка скрытая). Без Telegram то же приходит письмом.'],
         'subscription' => ['title' => 'Подписка', 'hint' => 'Сообщения о тарифе: подписка включена, напоминания об окончании. Тарифы: Community, Active и Private (платные, на год). Без Telegram то же приходит письмом.'],
         'menu' => ['title' => 'Команды', 'hint' => 'Описание команды /start в меню Telegram.'],
     ],
@@ -95,18 +95,6 @@ return [
         ],
 
         // ---------------------------------------------------------------- Решение по анкете
-        'moderation_approved' => [
-            'group' => 'moderation',
-            'title' => 'Анкета одобрена',
-            'when' => 'Администратор одобрил анкету участницы.',
-            'kind' => 'text',
-            'vars' => ['name' => 'Имя участницы', 'url' => 'Ссылка на кабинет'],
-            'text' => [
-                'ru' => "🎉 {name}, ваша анкета одобрена.\n\nТеперь другие участницы платформы вас видят. Заходите в кабинет:\n{url}",
-                'en' => "🎉 {name}, your profile has been approved.\n\nOther members of the platform can now see you. Open your account:\n{url}",
-                'ro' => "🎉 {name}, profilul dvs. a fost aprobat.\n\nAcum celelalte membre ale platformei vă văd. Intrați în cabinet:\n{url}",
-            ],
-        ],
         'moderation_rejected' => [
             'group' => 'moderation',
             'title' => 'Анкета отклонена',

@@ -914,7 +914,6 @@
     "Закрыть заявку без покупки?": "Close the request without a purchase?",
     "Закрыть заявку": "Close request",
     "Почта и телефон": "Email and phone",
-    ":name получит уведомление, и другие участницы начнут её видеть.": ":name will be notified, and other members will start seeing her.",
     "Доступ к платформе будет закрыт, участница получит уведомление.": "Access to the platform will be closed and the participant will be notified.",
     "Участница получит уведомление об отказе.": "The participant will be notified of the refusal.",
     "Почта:": "Email:",
@@ -987,7 +986,6 @@
     "Здесь всё, что относится к <b class=\"text-ink\">закрытому кабинету участниц</b>, тарифам и уведомлениям в Telegram. Публичный сайт (новости, проекты, возможности, медиатека и т. д.) — на вкладке <b class=\"text-ink\">«Внешний сайт»</b> вверху меню.": "Everything about the <b class=\"text-ink\">private members’ area</b>, plans and Telegram notifications is here. The public site (news, projects, opportunities, media library, etc.) is on the <b class=\"text-ink\">“External site”</b> tab at the top of the menu.",
     "Новая участница регистрируется на сайте по почте или через Google, заполняет анкету и выбирает тариф. Анкета попадает в <b class=\"text-ink\">«Профили участниц»</b>. Кнопки <b class=\"text-ink\">«Одобрить»</b> и <b class=\"text-ink\">«Отклонить»</b> сразу отправляют ей уведомление: в Telegram, если она его подключила, иначе письмом. Пока профиль не одобрен, другие участницы его не видят.": "A new member signs up on the site with her email or Google, fills in her profile and chooses a plan. The profile lands in <b class=\"text-ink\">“Member profiles”</b>. The <b class=\"text-ink\">“Approve”</b> and <b class=\"text-ink\">“Reject”</b> buttons notify her right away: in Telegram if she has connected it, otherwise by email. Until a profile is approved, other members cannot see it.",
     "Статус меняется кнопками «Одобрить» и «Отклонить» на странице профиля: они же отправляют участнице уведомление в Telegram или письмом.": "The status is changed with the “Approve” and “Reject” buttons on the profile page: they also notify the participant in Telegram or by email.",
-    "Участница получит уведомление (в Telegram или письмом), а её профиль станет виден другим участницам.": "The participant will get a notification (in Telegram or by email), and her profile will become visible to other members.",
     "Доступ к платформе будет закрыт, участница получит уведомление (в Telegram или письмом).": "Access to the platform will be closed, and the participant will get a notification (in Telegram or by email).",
     "Участница получит уведомление об отказе (в Telegram или письмом).": "The participant will get a rejection notification (in Telegram or by email).",
     "Сообщить участнице: в Telegram или письмом (по умолчанию тариф включается молча)": "Notify the participant: in Telegram or by email (by default the plan is switched on silently)",
@@ -1048,5 +1046,7 @@
     "Рассылка ждёт: Telegram просит не отправлять слишком часто": "The broadcast is waiting: Telegram asks not to send too often",
     "Продолжится сама через :seconds с. Ничего делать не нужно.": "It will resume on its own in :seconds s. Nothing needs to be done.",
     "Telegram не принял бота (:error). Проверьте токен бота в настройках сервера: рассылка продолжится сама, когда он заработает.": "Telegram did not accept the bot (:error). Check the bot token in the server settings: the broadcast will resume on its own once it works.",
-    "Telegram не отвечает или отклоняет сообщения (:error). Рассылка на паузе и продолжится сама.": "Telegram is not responding or is rejecting messages (:error). The broadcast is paused and will resume on its own."
+    "Telegram не отвечает или отклоняет сообщения (:error). Рассылка на паузе и продолжится сама.": "Telegram is not responding or is rejecting messages (:error). The broadcast is paused and will resume on its own.",
+    "Участница об этом не узнает: уведомление не отправляется. Её профиль станет виден другим участницам, когда у неё действует тариф. (:name)": "The participant will not be told: no notification is sent. Her profile will become visible to other members while she has an active plan. (:name)",
+    "Участница об этом не узнает: уведомление не отправляется. Её профиль станет виден другим участницам, когда у неё действует тариф.": "The participant will not be told: no notification is sent. Her profile will become visible to other members while she has an active plan."
 }

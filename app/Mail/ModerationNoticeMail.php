@@ -9,10 +9,9 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 
-/** Письмо о решении по анкете участнице, которая не подключила Telegram: одобрена, отклонена, доступ закрыт. */
+/** Письмо о решении по анкете участнице, которая не подключила Telegram: отклонена, доступ закрыт (об одобрении не пишем: проверка скрытая). */
 class ModerationNoticeMail extends Mailable
 {
-    public const APPROVED = 'approved';
     public const REJECTED = 'rejected';
     public const REVOKED = 'revoked';
 

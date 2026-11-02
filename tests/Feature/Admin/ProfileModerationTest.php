@@ -58,9 +58,11 @@ class ProfileModerationTest extends TestCase
             ->assertSee('Анна Ожидающая');
     }
 
-    public function test_approve_sets_status_and_notifies_participant(): void
+    public function test_approve_sets_status_and_stays_silent_for_the_participant(): void
     {
-        $profile = BotUser::factory()->pending()->create(['full_name' => 'Анна Ожидающая']);
+        \Illuminate\Support\Facades\Mail::fake();
+        \Illuminate\Support\Facades\Http::fake();
+        $profile = BotUser::factory()->pending()->create(['full_name' => 'Анна Ожидающая', 'email' => 'anna@example.test']);
 
         $this->actingAsAdmin()
             ->post(route('admin.profiles.approve', $profile))
@@ -70,6 +72,9 @@ class ProfileModerationTest extends TestCase
         $profile->refresh();
         $this->assertSame(BotUser::STATUS_APPROVED, $profile->status);
         $this->assertNotNull($profile->approved_at);
+        \Illuminate\Support\Facades\Mail::assertNothingSent();
+        \Illuminate\Support\Facades\Mail::assertNothingQueued();
+        \Illuminate\Support\Facades\Http::assertNothingSent();
     }
 
     public function test_reject_pending_profile_sets_rejected_status(): void

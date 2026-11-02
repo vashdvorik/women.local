@@ -167,7 +167,6 @@ return [
             'note' => 'Connect Telegram in your profile to receive such messages there too.',
         ],
         'moderation' => [
-            'approved' => ['subject' => 'Profile approved — Women’s Hub', 'line' => 'Your profile has been approved: other members of the platform can now see you.'],
             'rejected' => ['subject' => 'Decision on your profile — Women’s Hub', 'line' => 'Thank you for your interest in Women’s Hub. At the moment your profile has not been approved. To clarify the details, write to us through the Contacts page of the website.'],
             'revoked' => ['subject' => 'Access closed — Women’s Hub', 'line' => 'Access to Women’s Hub has been closed. If you have questions about participation, write to us through the Contacts page of the website.'],
             'button' => 'Open my account',

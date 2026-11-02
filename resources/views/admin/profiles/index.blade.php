@@ -98,7 +98,7 @@
                                                 :action="route('admin.profiles.approve', $profile)"
                                                 :label="__('Одобрить')"
                                                 :title="__('Одобрить профиль?')"
-                                                :message="__(':name получит уведомление, и другие участницы начнут её видеть.', ['name' => $profile->full_name ?: __('Участница')])" />
+                                                :message="__('Участница об этом не узнает: уведомление не отправляется. Её профиль станет виден другим участницам, когда у неё действует тариф. (:name)', ['name' => $profile->full_name ?: __('Участница')])" />
                                         @endunless
                                         @unless($profile->isRejected())
                                             <x-admin.confirm-button

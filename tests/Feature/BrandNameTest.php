@@ -62,7 +62,7 @@ class BrandNameTest extends TestCase
     {
         $registry = require base_path('resources/data/bot_messages.php');
 
-        foreach (['start_info', 'link_success', 'moderation_approved', 'subscription_activated'] as $key) {
+        foreach (['start_info', 'link_success', 'moderation_rejected', 'subscription_activated'] as $key) {
             $this->assertArrayHasKey($key, $registry['messages'], $key);
 
             foreach (['ru', 'en', 'ro'] as $locale) {
