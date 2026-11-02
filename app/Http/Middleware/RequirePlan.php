@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * Страница не уводит участницу в другой раздел: на месте раздела (меню кабинета остаётся, раздел подсвечен) показывается
  * сообщение «Этот раздел входит в тариф … и выше» и кнопка «Купить подписку», которая ведёт на страницу «Подписка».
- * Запрос с JSON (ИИ-помощник) получает 403 со ссылкой на оплату, запись (POST и т. п.) — редирект на «Подписку».
+ * Запрос с JSON (AI-помощник) получает 403 со ссылкой на оплату, запись (POST и т. п.) — редирект на «Подписку».
  */
 class RequirePlan
 {
@@ -31,6 +31,7 @@ class RequirePlan
         'account.people.show' => 'people',
         'account.opportunities.*' => 'opportunities',
         'account.possibilities.*' => 'possibilities',
+        'account.manager' => 'manager',
         'account.knowledge' => 'knowledge',
     ];
 

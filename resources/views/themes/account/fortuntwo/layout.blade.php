@@ -10,6 +10,7 @@
     <meta name="robots" content="noindex,nofollow">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset_v('themes/account/fortuntwo/images/brand/favicon-w4w.png') }}">
+    <link rel="shortcut icon" href="{{ asset_v('favicon.ico') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Prata&display=swap" rel="stylesheet">
@@ -55,12 +56,12 @@
                 @endforeach
             </div>
 
-            <nav class="flex-1 overflow-y-auto px-3">
+            <nav class="flex-1 overflow-y-auto px-3" data-tour-nav>
                 <p class="mb-2 px-3 text-[10px] font-semibold uppercase tracking-widest text-gray-400">{{ __('account.nav_title') }}</p>
                 @php $navItems = \App\Support\CabinetNav::items($accountUser, includeLocked: false); @endphp
                 @foreach($navItems as $item)
                     @php $active = request()->routeIs($item['route']) || request()->routeIs($item['route'] . '.*'); @endphp
-                    <a href="{{ route($item['route']) }}" @click="sidebarOpen = false"
+                    <a href="{{ route($item['route']) }}" @click="sidebarOpen = false" data-tour="{{ $item['key'] }}"
                        class="group mb-0.5 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all duration-150 {{ $active ? 'bg-brand-50 font-semibold text-brand-700' : 'font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900' }}">
                         <span class="account-nav-icon flex h-8 w-8 shrink-0 items-center justify-center rounded-lg {{ $active ? 'account-nav-icon--active text-white' : 'bg-gray-100 text-gray-400 group-hover:bg-gray-200' }}">
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['path'] }}"/></svg>
@@ -108,6 +109,14 @@
         $barItems = array_values(array_filter($navItems, fn ($item) => in_array($item['key'], $barKeys, true)));
     @endphp
     {{-- Одна страница в меню (тарифа ещё нет): нижняя панель не нужна, «Подписка» открывается из верхней полосы --}}
+    {{-- AI-менеджер: плавающая кнопка и окно на всех страницах кабинета, где есть тариф; на его собственной странице чат уже открыт --}}
+    @if($accountUser->currentPlan()->isPaid())
+        @unless(request()->routeIs('account.manager'))
+            @include('account.partials.manager-widget')
+        @endunless
+        <script defer src="{{ asset_v('themes/account/fortuntwo/js/manager.js') }}"></script>
+    @endif
+
     @if(count($navItems) > 1)
     <nav class="account-bottom-nav fixed inset-x-0 bottom-0 z-20 border-t border-gray-200 bg-white lg:hidden" aria-label="{{ __('account.nav_title') }}">
         <div class="mx-auto flex max-w-lg items-stretch justify-around pb-[env(safe-area-inset-bottom)]">

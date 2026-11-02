@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 /**
- * Команда ai:check-assistant: показывает, какая модель реально отвечает ИИ-помощнику, и никогда не печатает ключ.
+ * Команда ai:check-assistant: показывает, какая модель реально отвечает AI-помощнику, и никогда не печатает ключ.
  */
 class CheckAssistantModelTest extends TestCase
 {

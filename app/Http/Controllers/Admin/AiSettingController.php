@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 /**
- * ИИ-провайдеры и назначение моделей функциям платформы (раньше — Filament AiProviderSettings).
+ * AI-провайдеры и назначение моделей функциям платформы (раньше — Filament AiProviderSettings).
  * Ключи хранятся зашифрованными (SiteSetting) и в панели больше не показываются.
  */
 class AiSettingController extends Controller
@@ -59,7 +59,7 @@ class AiSettingController extends Controller
         ]);
 
         return redirect()->route('admin.cabinets.settings', ['tab' => 'ai'])
-            ->with('success', __('Настройки ИИ сохранены.'));
+            ->with('success', __('Настройки AI сохранены.'));
     }
 
     /** Пробный запрос к провайдеру по значениям формы; ничего не сохраняет. */

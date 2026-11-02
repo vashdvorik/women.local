@@ -88,7 +88,7 @@ class SeedersTest extends TestCase
         $this->assertSame('fortuntwo', SiteSetting::accountTheme(), 'недостающее добавлено');
     }
 
-    // ------------------------------------------------------------------ параметры ИИ
+    // ------------------------------------------------------------------ параметры AI
 
     public function test_ai_setting_seeder_restores_the_ai_configuration(): void
     {
@@ -148,7 +148,7 @@ class SeedersTest extends TestCase
         $this->assertSame($this->eventsTotal(), $this->newsWithBody(), 'у новостей архива настоящий текст, у остальных вне боевого сервера демо-текст');
         $this->assertSame(28, BotUser::count());
         $this->assertSame(0, BotUser::where('status', '!=', BotUser::STATUS_APPROVED)->count());
-        $this->assertSame(10, SiteSetting::count()); // две темы, четыре настройки ИИ и списки загруженных новостей, альбомов, видео и экспертов
+        $this->assertSame(10, SiteSetting::count()); // две темы, четыре настройки AI и списки загруженных новостей, альбомов, видео и экспертов
 
         $this->assertSame(['admin@example.test'], User::pluck('email')->all(), 'создаётся только администратор');
 
@@ -183,7 +183,7 @@ class SeedersTest extends TestCase
         $this->assertSame($this->archiveNewsWithBody(), $this->newsWithBody(), 'на боевом сервере тексты только у настоящих новостей архива, демо-текст не создаётся');
         $this->assertFalse(User::all()->contains(fn (User $u) => password_verify('password', $u->password)));
 
-        // Выбор провайдера ИИ остаётся за админом.
+        // Выбор провайдера AI остаётся за админом.
         $this->assertNull(SiteSetting::query()->where('key', SiteSetting::AI_FEATURES_KEY)->first());
         $this->assertSame('gemini', SiteSetting::embeddingFeatureConfig()['provider']);
     }
@@ -371,7 +371,7 @@ class SeedersTest extends TestCase
         $this->assertFalse(Route::has('dev.account.login.submit'));
         $this->get('/dev/account-login')->assertNotFound();
 
-        // Ни одного демо-маршрута. (Слово test не ищем: так называется кнопка проверки ключей ИИ в админке.)
+        // Ни одного демо-маршрута. (Слово test не ищем: так называется кнопка проверки ключей AI в админке.)
         foreach (Route::getRoutes() as $route) {
             $this->assertDoesNotMatchRegularExpression(
                 '#(^|/)(dev|demo|design-system|welcome|preview|debug|telescope|horizon|phpinfo)(/|$)#i',

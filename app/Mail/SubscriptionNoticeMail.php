@@ -33,6 +33,7 @@ class SubscriptionNoticeMail extends Mailable
 
         return new Content(
             view: 'mail.participant.action',
+            text: 'mail.participant.action-text',
             with: [
                 'locale' => $locale,
                 'line' => __("participant.mail.subscription.{$this->kind}.line", $this->vars, $locale),

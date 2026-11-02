@@ -24,6 +24,7 @@ final class CabinetNav
         'matches' => 'M13 10V3L4 14h7v7l9-11h-7z',
         'search' => 'M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z',
         'people' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z',
+        'manager' => 'M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z',
         'possibilities' => 'M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.5 6.6 19.5l1.2-6L3.3 9.3l6.1-.7L12 3z',
         'opportunities' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
         'knowledge' => 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
@@ -45,6 +46,7 @@ final class CabinetNav
 
         $definitions = [
             ['home', 'account.index', 'account.nav.home', null],
+            ['manager', 'account.manager', 'account.nav.manager', Plan::Community],
             ['possibilities', 'account.possibilities.index', 'account.nav.possibilities', Plan::Community],
             ['assistant', 'account.assistant', 'account.nav.assistant', Plan::Active],
             ['matches', 'account.matches', 'account.nav.matches', Plan::Active],
@@ -73,6 +75,12 @@ final class CabinetNav
         ], $definitions);
 
         return $includeLocked ? $items : array_values(array_filter($items, fn (array $item): bool => ! $item['locked']));
+    }
+
+    /** Контур иконки раздела (viewBox 24) по его ключу: для кнопок вне меню, например плавающей кнопки AI-менеджера. */
+    public static function icon(string $key): string
+    {
+        return self::ICONS[$key] ?? '';
     }
 
     /** Иконка «Ещё» нижней панели (открывает полное меню). */

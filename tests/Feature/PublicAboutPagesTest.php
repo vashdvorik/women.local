@@ -166,7 +166,7 @@ class PublicAboutPagesTest extends TestCase
         preg_match_all('#<div class="miro-about__group[^"]*">(.*?)</div>\s*</div>#s', $html, $groups);
         $this->assertCount(2, $groups[1]);
         $this->assertSame([3, 7], array_map(fn (string $group) => substr_count($group, 'class="miro-about__card"'), $groups[1]));
-        foreach (['Мой профиль', 'Каталог участниц', 'Подбор контактов', 'Поиск по запросу', 'ИИ-помощник', 'Возможности', 'Обучение', 'Telegram-бот', 'Подписка и оплаты'] as $feature) {
+        foreach (['Мой профиль', 'Каталог участниц', 'Подбор контактов', 'Поиск по запросу', 'AI-помощник', 'Возможности', 'Обучение', 'Telegram-бот', 'Подписка и оплаты'] as $feature) {
             $this->assertStringContainsString($feature, $html, $feature);
         }
         $this->assertStringContainsString('/themes/public/miro/images/illustrations/cabinet.svg', $html);

@@ -34,6 +34,7 @@ class BotUser extends Model implements AuthenticatableContract, CanResetPassword
         'telegram_id',
         'telegram_username',
         'email',
+        'contact_email',
         'phone',
         'locale',
         'avatar_path',
@@ -68,6 +69,17 @@ class BotUser extends Model implements AuthenticatableContract, CanResetPassword
         'embedding_updated_at' => 'datetime',
         'is_hidden'            => 'boolean',
     ];
+
+    /**
+     * Почта, которую показываем людям: указанная участницей «для связи», а если её нет, регистрационная. Вход в кабинет и
+     * письма платформы всегда идут на регистрационную (email).
+     */
+    public function displayEmail(): ?string
+    {
+        $contact = trim((string) $this->contact_email);
+
+        return $contact !== '' ? $contact : ($this->email ?: null);
+    }
 
     // ------------------------------------------------------------------ вход по почте
 
@@ -174,7 +186,7 @@ class BotUser extends Model implements AuthenticatableContract, CanResetPassword
 
     /**
      * Участницы платформы: одобренные с любым действующим платным тарифом (Community, Active, Private). Каталог, подбор
-     * контактов, ИИ-помощник и рассылки работают только по ним. Профили Community видны участницам Active и Private
+     * контактов, AI-помощник и рассылки работают только по ним. Профили Community видны участницам Active и Private
      * (самим Community поиск закрыт), поэтому в каталог попадают все платные тарифы.
      */
     public function scopeMembers(Builder $query): Builder
@@ -184,7 +196,7 @@ class BotUser extends Model implements AuthenticatableContract, CanResetPassword
 
     /**
      * Участницы, которых могут видеть и находить другие: члены сообщества (members) без отметки «скрыт». Каталог, поиск,
-     * подбор контактов, ИИ-помощник и «новые участницы» берут только их. Скрытые (администратор, спонсор, партнёр) пользуются
+     * подбор контактов, AI-помощник и «новые участницы» берут только их. Скрытые (администратор, спонсор, партнёр) пользуются
      * платформой изнутри и получают рассылки (для них audience по-прежнему members), но другим не видны. Отметку ставит только
      * администратор платформы: в $fillable поля нет.
      */

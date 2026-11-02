@@ -82,6 +82,8 @@ return [
         'full_name' => 'Full name',
         'phone' => 'Phone',
         'phone_hint' => 'For example, +373 600 00 000',
+        'contact_email' => 'Contact email',
+        'contact_email_hint' => 'Optional. If you enter one, members will see it; otherwise we show the email you signed up with. Sign-in and platform emails go to your registration email.',
         'description' => 'About you and your work',
         'description_hint' => 'What you do, your experience or your business.',
         'expectation' => 'What you expect from the platform',
@@ -90,6 +92,7 @@ return [
     ],
 
     'validation' => [
+        'contact_email_invalid' => 'Enter an email like name@example.com or leave the field empty.',
         'email_required' => 'Enter your email.',
         'email_invalid' => 'Check the email address.',
         'email_taken' => 'This email is already registered. Sign in or recover your password.',

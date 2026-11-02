@@ -29,6 +29,7 @@ class ModerationNoticeMail extends Mailable
 
         return new Content(
             view: 'mail.participant.action',
+            text: 'mail.participant.action-text',
             with: [
                 'locale' => $locale,
                 'line' => __("participant.mail.moderation.{$this->kind}.line", [], $locale),

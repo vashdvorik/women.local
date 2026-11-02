@@ -19,6 +19,7 @@ class ProfileUpdateRequest extends FormRequest
         return [
             'full_name'   => ['required', 'string', 'max:120'],
             'phone'       => ['required', 'string', 'max:32', OnboardingRequest::phoneRule()],
+            'contact_email' => ['nullable', 'string', 'email:rfc', 'max:191'],
             'description' => ['nullable', 'string', 'max:1000'],
             'expectation' => ['nullable', 'string', 'max:1000'],
             // Фото профиля: необязательно; квадрат 512 px режется из него автоматически (App\Services\AvatarStore).
@@ -34,6 +35,8 @@ class ProfileUpdateRequest extends FormRequest
             'full_name.max'      => __('account.validation.full_name_max'),
             'phone.required'     => __('participant.validation.phone_required'),
             'phone.max'          => __('participant.validation.phone_invalid'),
+            'contact_email.email' => __('participant.validation.contact_email_invalid'),
+            'contact_email.max'  => __('participant.validation.contact_email_invalid'),
             'description.max'    => __('account.validation.description_max'),
             'expectation.max'    => __('account.validation.expectation_max'),
             'photo.uploaded'     => __('account.validation.photo_max'),

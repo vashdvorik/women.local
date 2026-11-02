@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 /**
  * Главная кабинета (account.index) — навигационная: список «С чего начать» с галочками, плитки всех разделов с
- * пояснением, «Что нового», подсказка «как тут всё устроено»; на телефоне — нижняя панель. Чат с ИИ-помощником живёт в
+ * пояснением, «Что нового», подсказка «как тут всё устроено»; на телефоне — нижняя панель. Чат с AI-помощником живёт в
  * своём разделе (account.assistant).
  */
 class CabinetHomeTest extends TestCase
@@ -62,7 +62,7 @@ class CabinetHomeTest extends TestCase
         $html = $this->as($this->active())->get(route('account.profile'))->assertOk()->getContent();
 
         $this->assertMatchesRegularExpression('~href="'.preg_quote(route('account.index'), '~').'"[^>]*>(?:(?!</a>).)*Главная~su', $html);
-        $this->assertMatchesRegularExpression('~href="'.preg_quote(route('account.assistant'), '~').'"[^>]*>(?:(?!</a>).)*ИИ-помощник~su', $html);
+        $this->assertMatchesRegularExpression('~href="'.preg_quote(route('account.assistant'), '~').'"[^>]*>(?:(?!</a>).)*AI-помощник~su', $html);
     }
 
     public function test_the_chat_lives_on_its_own_page_for_paid_members_and_is_explained_for_open(): void
@@ -212,7 +212,7 @@ class CabinetHomeTest extends TestCase
         $this->assertStringContainsString(__('account.home.steps_progress', ['done' => 0, 'total' => 2]), $html);
         $this->assertStringContainsString(__('account.home.steps.subscription.title'), $html);
 
-        // Закрытые разделы с замком (их пять: ИИ-помощник, рекомендации, поиск, каталог, возможности и «Обучение» — шесть).
+        // Закрытые разделы с замком (их пять: AI-помощник, рекомендации, поиск, каталог, возможности и «Обучение» — шесть).
         $this->assertSame(6, substr_count($html, __('account.home.tile_locked')));
         // Открытые разделы без замка, закрытые ведут туда же, где объясняют подписку.
         $this->assertStringContainsString('href="'.route('account.search').'"', $html);

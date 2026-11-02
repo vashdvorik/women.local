@@ -8,14 +8,14 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 /**
- * «Настройки кабинетов» — лагерь «Кабинеты участниц»: тема кабинета, ИИ-провайдеры (поиск,
+ * «Настройки кабинетов» — лагерь «Кабинеты участниц»: тема кабинета, AI-провайдеры (поиск,
  * подбор контактов и AI-помощник в кабинете) и база знаний помощника. Каждая вкладка — своя
  * форма со своим обработчиком: ThemeSettingController, AiSettingController,
  * AssistantKnowledgeController.
  */
 class CabinetSettingController extends Controller
 {
-    private const TABS = ['theme', 'ai', 'knowledge'];
+    private const TABS = ['theme', 'ai', 'knowledge', 'manager'];
 
     public function edit(Request $request): View
     {
@@ -46,6 +46,7 @@ class CabinetSettingController extends Controller
             'agentKeySet' => $agent['provider'] === 'openrouter' ? $openRouter['api_key_configured'] : $deepSeek['api_key_configured'],
 
             'knowledge' => SiteSetting::aiAssistantKnowledge(),
+            'managerKnowledge' => SiteSetting::managerKnowledge(),
         ]);
     }
 }

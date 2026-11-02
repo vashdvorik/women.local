@@ -18,7 +18,7 @@ use Tests\TestCase;
 
 /**
  * Что видит и чего не видит участница на каждом тарифе. Open — только то, что есть на публичном сайте;
- * каталог участниц, подбор, поиск, ИИ-помощник и публикации возможностей — с Community и выше.
+ * каталог участниц, подбор, поиск, AI-помощник и публикации возможностей — с Community и выше.
  */
 class AccessGateTest extends TestCase
 {
@@ -178,7 +178,7 @@ class AccessGateTest extends TestCase
         $this->assertStringContainsString('Каталог для всех', $html);
         $this->assertStringNotContainsString('Черновик новости', $html);
         $this->assertStringNotContainsString('Публикация из будущего', $html);
-        // Приглашение подписаться; закрытые разделы (каталог, поиск, ИИ-помощник) показаны с замком и ведут на страницу
+        // Приглашение подписаться; закрытые разделы (каталог, поиск, AI-помощник) показаны с замком и ведут на страницу
         // с объяснением, а их данных на главной нет.
         $this->assertStringContainsString(__('subscription.community_home.upgrade_cta'), $html);
         $this->assertStringContainsString(route('account.subscription'), $html);
@@ -251,13 +251,13 @@ class AccessGateTest extends TestCase
             $open = $this->asParticipant(BotUser::factory()->approved()->create())->get(route('account.subscription'))->assertOk()->getContent();
             $this->assertStringContainsString('href="'.route('account.subscription').'"', $open, "{$theme}: пункт «Подписка»");
             $this->assertStringNotContainsString('/account/private', $open, "{$theme}: вкладки Private нет");
-            $this->assertStringContainsString(route('account.assistant'), $open, "{$theme}: пункт «ИИ-помощник» виден и Open (ведёт на объяснение подписки)");
+            $this->assertStringContainsString(route('account.assistant'), $open, "{$theme}: пункт «AI-помощник» виден и Open (ведёт на объяснение подписки)");
             $this->assertMatchesRegularExpression('~href="'.preg_quote(route('account.index'), '~').'"[^>]*>(?:(?!</a>).)*Главная~su', $open, "{$theme}: у Open первый пункт — «Главная»");
 
             foreach ([BotUser::factory()->active()->create(), BotUser::factory()->private()->create()] as $paid) {
                 $html = $this->asParticipant($paid)->get(route('account.subscription'))->assertOk()->getContent();
                 $this->assertStringNotContainsString('/account/private', $html, "{$theme}: вкладки Private нет и у платных");
-                $this->assertStringContainsString('ИИ-помощник', $html, "{$theme}: у платных остаётся «ИИ-помощник»");
+                $this->assertStringContainsString('AI-помощник', $html, "{$theme}: у платных остаётся «AI-помощник»");
             }
         }
     }

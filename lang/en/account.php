@@ -20,6 +20,7 @@ return [
     'nav' => [
         'home' => 'Home',
         'possibilities' => 'Opportunities',
+        'manager' => 'AI manager',
         'assistant' => 'AI assistant',
         'matches' => 'Recommendations',
         'search' => 'Contact search',
@@ -114,6 +115,10 @@ return [
         'tile_locked' => 'In the Active subscription',
         'tile_how' => 'How to use it:',
         'tiles' => [
+            'manager' => [
+                'what' => 'Explains how to use your account and what your plan includes.',
+                'how' => 'Ask in your own words, for example “how do I connect Telegram?”.',
+            ],
             'possibilities' => [
                 'what' => 'Grants, competitions, programmes and partner offers published by the platform team.',
                 'how' => 'Open a card to read the terms and deadlines.',
@@ -299,6 +304,43 @@ return [
         'empty_text' => 'New opportunities will appear here as soon as the platform team publishes them.',
         'more' => 'Read more',
         'back' => 'All opportunities',
+    ],
+
+    // Подсказки при первом входе в кабинет
+    'tour' => [
+        'congrats_title' => 'Congratulations!',
+        'congrats_first' => 'You have successfully joined the :plan package. The features of your package are now open in your account: let us show you where everything is.',
+        'congrats_upgrade' => 'You have successfully upgraded to the :plan package. New features are now open in your account: let us show you what is new.',
+        'congrats_plain' => 'You have successfully upgraded to the :plan package. All the features of this package are now open to you.',
+        'congrats_details' => 'See the details of your package privileges on the “Subscription” page.',
+        'menu_title' => 'Account menu',
+        'menu_text' => 'All sections are in the menu: on the left on a computer, at the bottom of the screen and under “More” on a phone.',
+        'progress' => 'Step :n of :total',
+        'next' => 'Next',
+        'back' => 'Back',
+        'close' => 'Close',
+        'done' => 'Done',
+        'replay' => 'Show tips',
+    ],
+
+    // AI-менеджер кабинета
+    'manager' => [
+        'title' => 'AI manager',
+        'subtitle' => 'Tells you about the platform and your plan and helps you get started.',
+        'hello' => 'Hello! I am the Women’s hub AI manager. I can explain how to use your account, what your plan includes and how to switch to another one. Ask me anything about the platform.',
+        'placeholder' => 'Write your question…',
+        'send' => 'Send',
+        'typing' => 'Typing…',
+        'open' => 'Ask the manager',
+        'close' => 'Close',
+        's1' => 'What does my plan include?',
+        's2' => 'How do I use the account?',
+        's3' => 'How do I switch to another plan?',
+        's4' => 'How do I connect Telegram?',
+        'unavailable' => 'I cannot answer right now. I will pass your question to the platform team, and you can try asking again a little later.',
+        'limit' => 'You have used today’s limit of questions (:count a day). Please come back tomorrow.',
+        'error' => 'The question could not be sent. Check your connection and try again.',
+        'note' => 'The manager answers about the platform and your plan. It does not change plans or take payments.',
     ],
 
 ];

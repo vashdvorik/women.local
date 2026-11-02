@@ -28,6 +28,7 @@ class PlanPurchaseOpenedMail extends Mailable
 
         return new Content(
             view: 'mail.participant.action',
+            text: 'mail.participant.action-text',
             with: [
                 'locale' => $locale,
                 'line' => __('participant.mail.opened.line', ['plan' => $this->plan->title($locale)], $locale),

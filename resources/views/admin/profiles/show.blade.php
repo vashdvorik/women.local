@@ -37,6 +37,12 @@
                                 @endif
                             </dd>
                         </div>
+                        @if($profile->contact_email)
+                            <div class="flex gap-2">
+                                <dt class="text-ink-muted">{{ __('Почта для связи:') }}</dt>
+                                <dd><a href="mailto:{{ $profile->contact_email }}" class="text-accent">{{ $profile->contact_email }}</a></dd>
+                            </div>
+                        @endif
                         <div class="flex gap-2">
                             <dt class="text-ink-muted">{{ __('Телефон:') }}</dt>
                             <dd>
@@ -90,7 +96,7 @@
         <div class="card flex flex-wrap items-center justify-between gap-3">
             <p class="text-reading text-ink-muted max-w-xl">
                 {{ $profile->is_hidden
-                    ? __('Профиль скрыт: другие участницы не видят его в каталоге, поиске, рекомендациях и ИИ-помощнике, а публиковать инициативы он не может. Рассылки он получает.')
+                    ? __('Профиль скрыт: другие участницы не видят его в каталоге, поиске, рекомендациях и AI-помощнике, а публиковать инициативы он не может. Рассылки он получает.')
                     : __('Профиль виден другим участницам. Скройте его, если человек (администратор, спонсор, партнёр) должен быть внутри платформы, но оставаться незаметным.') }}
             </p>
             <form method="POST" action="{{ route('admin.profiles.visibility', $profile) }}">

@@ -13,7 +13,7 @@ use Tests\TestCase;
  *
  * Не считается названием и потому разрешено: «Platform for Women Entrepreneurs» и «Платформа женщин предпринимателей» как
  * подзаголовок-пояснение под заголовком лендинга, слоганы о «двух берегах» и общая формулировка «a women entrepreneurs
- * platform» в подсказке для ИИ.
+ * platform» в подсказке для AI.
  */
 class BrandNameTest extends TestCase
 {

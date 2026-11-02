@@ -20,6 +20,7 @@ return [
     'nav' => [
         'home' => 'Acasă',
         'possibilities' => 'Oportunități',
+        'manager' => 'Manager AI',
         'assistant' => 'Asistent AI',
         'matches' => 'Recomandări',
         'search' => 'Căutare contacte',
@@ -114,6 +115,10 @@ return [
         'tile_locked' => 'În abonamentul Active',
         'tile_how' => 'Cum se folosește:',
         'tiles' => [
+            'manager' => [
+                'what' => 'Explică cum folosiți contul și ce include tariful dvs.',
+                'how' => 'Întrebați cu cuvintele dvs., de exemplu „cum conectez Telegram?”.',
+            ],
             'possibilities' => [
                 'what' => 'Granturi, concursuri, programe și oferte ale partenerilor, publicate de echipa platformei.',
                 'how' => 'Deschideți cardul ca să citiți condițiile și termenele.',
@@ -299,6 +304,43 @@ return [
         'empty_text' => 'Oportunitățile noi vor apărea aici imediat ce echipa platformei le publică.',
         'more' => 'Detalii',
         'back' => 'Toate oportunitățile',
+    ],
+
+    // Подсказки при первом входе в кабинет
+    'tour' => [
+        'congrats_title' => 'Felicitări!',
+        'congrats_first' => 'Ați ales cu succes pachetul :plan. În contul dvs. s-au deschis posibilitățile pachetului: vă arătăm unde se află totul.',
+        'congrats_upgrade' => 'Ați trecut cu succes la pachetul :plan. În contul dvs. s-au deschis noi posibilități: vă arătăm ce este nou.',
+        'congrats_plain' => 'Ați trecut cu succes la pachetul :plan. Toate posibilitățile acestui pachet vă sunt deschise.',
+        'congrats_details' => 'Detaliile privilegiilor pachetului găsiți pe pagina „Abonament”.',
+        'menu_title' => 'Meniul contului',
+        'menu_text' => 'Toate secțiunile sunt în meniu: în stânga pe calculator, în josul ecranului și la „Mai mult” pe telefon.',
+        'progress' => 'Pasul :n din :total',
+        'next' => 'Înainte',
+        'back' => 'Înapoi',
+        'close' => 'Închide',
+        'done' => 'Gata',
+        'replay' => 'Arată sfaturile',
+    ],
+
+    // AI-менеджер кабинета
+    'manager' => [
+        'title' => 'Manager AI',
+        'subtitle' => 'Vă povestește despre platformă și tariful dvs. și vă ajută să vă obișnuiți.',
+        'hello' => 'Bună ziua! Sunt managerul AI al Women’s hub. Vă explic cum folosiți contul, ce include tariful dvs. și cum treceți la altul. Întrebați orice despre platformă.',
+        'placeholder' => 'Scrieți întrebarea…',
+        'send' => 'Trimite',
+        'typing' => 'Scrie…',
+        'open' => 'Întrebați managerul',
+        'close' => 'Închide',
+        's1' => 'Ce include tariful meu?',
+        's2' => 'Cum folosesc contul?',
+        's3' => 'Cum trec la alt tarif?',
+        's4' => 'Cum conectez Telegram?',
+        'unavailable' => 'Momentan nu pot răspunde. Voi transmite întrebarea echipei platformei, iar dvs. puteți încerca din nou puțin mai târziu.',
+        'limit' => 'Limita de întrebări pe azi a fost atinsă (:count pe zi). Reveniți mâine.',
+        'error' => 'Întrebarea nu a putut fi trimisă. Verificați conexiunea și încercați din nou.',
+        'note' => 'Managerul răspunde despre platformă și tarif. Nu schimbă tarife și nu primește plăți.',
     ],
 
 ];

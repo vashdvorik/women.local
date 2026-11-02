@@ -16,6 +16,7 @@
     <title>@yield('title') — {{ __('account.brand') }}</title>
     <meta name="robots" content="noindex,nofollow">
     <link rel="icon" type="image/png" href="{{ $themeFavicon }}">
+    <link rel="shortcut icon" href="{{ asset_v('favicon.ico') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Prata&display=swap" rel="stylesheet">

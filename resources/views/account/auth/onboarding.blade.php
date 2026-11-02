@@ -24,6 +24,13 @@
             @error('phone')<p class="account-login-fielderror">{{ $message }}</p>@enderror
         </div>
         <div>
+            <label for="contact_email" class="account-login-label">{{ __('participant.onboarding.contact_email') }}</label>
+            <input id="contact_email" name="contact_email" type="email" value="{{ old('contact_email', $user->contact_email) }}" maxlength="191" autocomplete="email" placeholder="{{ $user->email }}"
+                   class="account-login-input @error('contact_email') is-invalid @enderror">
+            <p class="account-login-hint">{{ __('participant.onboarding.contact_email_hint') }}</p>
+            @error('contact_email')<p class="account-login-fielderror">{{ $message }}</p>@enderror
+        </div>
+        <div>
             <label for="description" class="account-login-label">{{ __('participant.onboarding.description') }}</label>
             <textarea id="description" name="description" rows="4" required maxlength="1000"
                       class="account-login-input @error('description') is-invalid @enderror">{{ old('description', $user->description) }}</textarea>

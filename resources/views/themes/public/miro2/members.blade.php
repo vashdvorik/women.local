@@ -25,6 +25,7 @@
     <title>Women's hub — Participants</title>
     <link rel="icon" type="image/png" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/brand/favicon-w4w.png') }}">
     <link rel="apple-touch-icon" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/brand/apple-touch-icon.png') }}">
+    <link rel="shortcut icon" href="{{ asset_v('favicon.ico') }}">
     <meta name="description" content="Public directory of participants of Women's hub.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

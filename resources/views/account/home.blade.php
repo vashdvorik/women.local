@@ -1,17 +1,13 @@
 {{--
-    Главная кабинета (account.index) для всех тарифов: человек сразу видит, где что лежит и с чего начать, а не упирается
-    в чат. Список «С чего начать» с галочками, плитки всех разделов (дублируют меню, с пояснением «что это» и «как
+    Главная кабинета (account.index) для всех тарифов: человек сразу видит, где что лежит. При первом входе поверх страницы
+    идут подсказки («Далее» / «Закрыть», account/partials/tour.blade.php), потом их можно открыть снова. Плитки всех разделов (дублируют меню, с пояснением «что это» и «как
     пользоваться»), «Что нового». У Open те же плитки, закрытые разделы с замком, вместо «Что нового» — материалы
     публичного сайта и приглашение подписаться.
-    Переменные: App\Support\CabinetHome::build() (name, paid, steps, doneCount, tiles, opportunities, members, feed) и $user.
+    Переменные: App\Support\CabinetHome::build() (name, paid, tiles, opportunities, members, feed), $user и $showTour (показать подсказки сами).
 --}}
 @extends('themes.account.'.($accountTheme ?? \App\Models\SiteSetting::DEFAULT_ACCOUNT_THEME).'.layout')
 
 @section('title', __('account.nav.home'))
-
-@php
-    $allDone = $doneCount === count($steps);
-@endphp
 
 @section('notices_inline', '1')
 
@@ -23,6 +19,7 @@
         <p class="text-xs font-semibold uppercase tracking-widest text-brand-600">{{ __('account.home.eyebrow') }}</p>
         <h1 class="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">{{ __('account.home.hello', ['name' => $name]) }}</h1>
         <p class="mt-3 text-sm leading-6 text-gray-600">{{ $paid ? __('account.home.intro') : __('account.home.intro_community') }}</p>
+        <button type="button" data-tour-start class="mt-3 text-sm font-semibold text-brand-700 hover:underline">{{ __('account.tour.replay') }}</button>
     </header>
 
     {{-- Открыть сообщество: только у тарифа Open --}}
@@ -35,54 +32,6 @@
             <a href="{{ route('account.subscription') }}" class="inline-flex shrink-0 justify-center rounded-xl bg-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700">{{ __('subscription.community_home.upgrade_cta') }}</a>
         </section>
     @endunless
-
-    {{-- С чего начать --}}
-    <section class="account-home-steps mb-8 rounded-3xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6" aria-labelledby="home-steps-title">
-        <div class="flex flex-wrap items-baseline justify-between gap-2">
-            <h2 id="home-steps-title" class="text-base font-semibold">{{ __('account.home.steps_title') }}</h2>
-            <p class="text-xs font-medium text-gray-500">{{ __('account.home.steps_progress', ['done' => $doneCount, 'total' => count($steps)]) }}</p>
-        </div>
-        <div class="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-gray-100" role="progressbar" aria-valuemin="0" aria-valuemax="{{ count($steps) }}" aria-valuenow="{{ $doneCount }}">
-            <div class="h-full rounded-full bg-brand-600 transition-all" style="width: {{ count($steps) > 0 ? (int) round($doneCount / count($steps) * 100) : 0 }}%"></div>
-        </div>
-
-        @if($allDone)
-            <p class="mt-4 text-sm text-gray-600">{{ __('account.home.steps_all_done') }}</p>
-        @else
-            <ol class="mt-4 space-y-3">
-                @foreach($steps as $i => $step)
-                    <li class="account-home-step flex items-start gap-3 {{ $step['done'] ? 'account-home-step--done' : '' }}">
-                        <span class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold {{ $step['done'] ? 'bg-emerald-100 text-emerald-700' : 'bg-brand-50 text-brand-700' }}" aria-hidden="true">
-                            @if($step['done'])✓@else{{ $i + 1 }}@endif
-                        </span>
-                        <div class="min-w-0 flex-1">
-                            <p class="text-sm font-semibold {{ $step['done'] ? 'text-gray-400 line-through' : '' }}">{{ __('account.home.steps.'.$step['key'].'.title') }}</p>
-                            <p class="mt-0.5 text-sm leading-5 text-gray-600">{{ __('account.home.steps.'.$step['key'].'.text') }}</p>
-                        </div>
-                        @if($step['done'])
-                            <span class="shrink-0 pt-1 text-xs font-medium text-emerald-700">{{ __('account.home.step_done') }}</span>
-                        @else
-                            <a href="{{ route($step['route']) }}" class="shrink-0 rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-brand-700">{{ __('account.home.step_open') }}</a>
-                        @endif
-                    </li>
-                @endforeach
-            </ol>
-        @endif
-    </section>
-
-    {{-- Как тут всё устроено (после «С чего начать», чтобы главное действие было на первом экране): закрывается и больше не показывается на этом устройстве --}}
-    <section x-data="{ open: (() => { try { return ! localStorage.getItem('cabinetHintClosed'); } catch (e) { return true; } })() }"
-             x-show="open" x-cloak
-             class="account-home-hint mb-6 flex items-start gap-3 rounded-2xl border border-brand-100 bg-brand-50 p-4 sm:p-5" aria-labelledby="home-hint-title">
-        <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-semibold text-white" aria-hidden="true">i</span>
-        <div class="min-w-0 flex-1">
-            <h2 id="home-hint-title" class="text-sm font-semibold">{{ __('account.home.hint_title') }}</h2>
-            <p class="mt-1 text-sm leading-6 text-gray-700 lg:hidden">{{ __('account.home.hint_mobile') }}</p>
-            <p class="mt-1 hidden text-sm leading-6 text-gray-700 lg:block">{{ __('account.home.hint_desktop') }}</p>
-            <button type="button" class="mt-3 rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-brand-700 shadow-sm ring-1 ring-brand-100 transition hover:bg-brand-50"
-                    @click="open = false; try { localStorage.setItem('cabinetHintClosed', '1'); } catch (e) {}">{{ __('account.home.hint_close') }}</button>
-        </div>
-    </section>
 
     {{-- Разделы кабинета: то же, что в меню, с пояснением --}}
     <section class="mb-10" aria-labelledby="home-tiles-title">
@@ -191,4 +140,5 @@
         </div>
     @endunless
 </div>
+@include('account.partials.tour', ['tourSteps' => \App\Support\CabinetTour::steps($user), 'replaySteps' => \App\Support\CabinetTour::steps($user, true), 'autoStart' => $showTour ?? false])
 @endsection

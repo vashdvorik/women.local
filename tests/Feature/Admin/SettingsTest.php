@@ -49,7 +49,7 @@ class SettingsTest extends TestCase
                 ->assertSee('Сжатие изображений')
                 ->assertSee('Тема сайта')
                 // Настройки кабинета участниц живут в другом лагере админки.
-                ->assertDontSee('ИИ-провайдеры')
+                ->assertDontSee('AI-провайдеры')
                 ->assertDontSee('База знаний ассистента')
                 ->assertDontSee('Тема кабинета участницы');
         }
@@ -62,7 +62,7 @@ class SettingsTest extends TestCase
                 ->get(route('admin.cabinets.settings', ['tab' => $tab]))
                 ->assertOk()
                 ->assertSee('Тема кабинета')
-                ->assertSee('ИИ-провайдеры')
+                ->assertSee('AI-провайдеры')
                 ->assertSee('База знаний ассистента')
                 ->assertDontSee('Сжатие изображений')
                 ->assertDontSee('Тема публичного сайта');

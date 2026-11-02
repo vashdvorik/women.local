@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Cache;
  *
  *   php artisan db:seed --class=SiteSettingSeeder
  *
- * Параметры ИИ вынесены в AiSettingSeeder: они зависят от окружения.
+ * Параметры AI вынесены в AiSettingSeeder: они зависят от окружения.
  */
 class SiteSettingSeeder extends Seeder
 {

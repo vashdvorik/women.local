@@ -27,6 +27,7 @@ class ResetParticipantPasswordMail extends Mailable
     {
         return new Content(
             view: 'mail.participant.action',
+            text: 'mail.participant.action-text',
             with: [
                 'locale' => $this->language,
                 'line' => __('participant.mail.reset.line', [], $this->language),

@@ -82,6 +82,8 @@ return [
         'full_name' => 'Nume și prenume',
         'phone' => 'Telefon',
         'phone_hint' => 'De exemplu, +373 600 00 000',
+        'contact_email' => 'E-mail de contact',
+        'contact_email_hint' => 'Opțional. Dacă îl indicați, participantele îl vor vedea; altfel afișăm e-mailul cu care v-ați înregistrat. Autentificarea și mesajele platformei merg la e-mailul de înregistrare.',
         'description' => 'Despre dumneavoastră și activitatea dumneavoastră',
         'description_hint' => 'Cu ce vă ocupați, ce experiență sau ce afacere aveți.',
         'expectation' => 'Ce așteptați de la platformă',
@@ -90,6 +92,7 @@ return [
     ],
 
     'validation' => [
+        'contact_email_invalid' => 'Indicați un e-mail de forma name@example.com sau lăsați câmpul gol.',
         'email_required' => 'Indicați e-mailul.',
         'email_invalid' => 'Verificați adresa de e-mail.',
         'email_taken' => 'Acest e-mail este deja înregistrat. Intrați sau recuperați parola.',

@@ -30,6 +30,9 @@
     // Новые заявки на закрытые тарифы: менеджеру нужно позвонить.
     $newPlanRequests = \App\Models\PlanRequest::where('status', \App\Models\PlanRequest::STATUS_NEW)->count();
 
+    // Вопросы участниц AI-менеджеру, на которые он не нашёл ответа: ждут, пока админ дополнит знания или ответит сам.
+    $managerQuestions = \App\Models\ManagerMessage::unanswered()->count();
+
     // Платежи, которые банк подтвердил, а мы нет (расхождение суммы и т. п.): ждут решения администратора.
     $problemPayments = \App\Models\Payment::where('status', \App\Models\Payment::STATUS_VERIFYING)->where('updated_at', '<=', now()->subMinutes(15))->count();
 
@@ -79,6 +82,11 @@
                class="nav-link @if(request()->routeIs('admin.plan-requests.*')) nav-link--active @endif">
                 <x-admin.nav-icon name="users" /><span>{{ __('Заявки на тариф') }}</span>
                 @if($newPlanRequests > 0)<span class="nav-counter" title="{{ __('Новые заявки: нужно позвонить') }}">{{ $newPlanRequests }}</span>@endif
+            </a>
+            <a href="{{ route('admin.manager-questions.index') }}"
+               class="nav-link @if(request()->routeIs('admin.manager-questions.*')) nav-link--active @endif">
+                <x-admin.nav-icon name="inbox" /><span>{{ __('Вопросы AI-менеджеру') }}</span>
+                @if($managerQuestions > 0)<span class="nav-counter" title="{{ __('Вопросы без ответа') }}">{{ $managerQuestions }}</span>@endif
             </a>
             <a href="{{ route('admin.payments.index') }}"
                class="nav-link @if(request()->routeIs('admin.payments.*')) nav-link--active @endif">

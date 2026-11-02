@@ -316,7 +316,7 @@ final class AboutContent
                 'eyebrow' => self::t('Личный кабинет', 'Personal cabinet', 'Cabinet personal'),
                 'title' => self::t('Что вы получаете в кабинете', 'What you get in the cabinet', 'Ce primești în cabinet'),
                 'intro' => self::t(
-                    'Кабинет открывается после регистрации по почте и выбора тарифа. Community даёт возможности и обучающие материалы; поиск участниц, подбор контактов и ИИ-помощник входят в Active и Private.',
+                    'Кабинет открывается после регистрации по почте и выбора тарифа. Community даёт возможности и обучающие материалы; поиск участниц, подбор контактов и AI-помощник входят в Active и Private.',
                     'The cabinet opens after you sign up by email and choose a plan. Community gives opportunities and learning materials; member search, contact matching and the AI assistant are part of Active and Private.',
                     'Cabinetul se deschide după înregistrarea prin e-mail și alegerea unui tarif. Community oferă oportunități și materiale de instruire; căutarea participantelor, selecția de contacte și asistentul AI fac parte din Active și Private.',
                 ),
@@ -361,7 +361,7 @@ final class AboutContent
                                 'Describe what you need in plain words and get the matching members.',
                                 'Descrie ce ai nevoie în cuvinte simple și primește participantele potrivite.'),
                             self::card('chat',
-                                'ИИ-помощник', 'AI assistant', 'Asistent AI',
+                                'AI-помощник', 'AI assistant', 'Asistent AI',
                                 'Подскажет, как лучше рассказать о себе, и поможет обновить профиль.',
                                 'Suggests how to present yourself better and helps you update your profile.',
                                 'Îți sugerează cum să te prezinți mai bine și te ajută să-ți actualizezi profilul.'),

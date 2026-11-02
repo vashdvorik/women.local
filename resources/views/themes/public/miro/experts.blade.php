@@ -13,6 +13,7 @@
     <title>Women's hub — Experts</title>
     <link rel="icon" type="image/png" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/favicon-w4w.png') }}">
     <link rel="apple-touch-icon" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro') . '/images/brand/apple-touch-icon.png') }}">
+    <link rel="shortcut icon" href="{{ asset_v('favicon.ico') }}">
     <meta name="description" content="Public catalogue of experts and leaders of Women's hub.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

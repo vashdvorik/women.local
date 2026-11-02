@@ -36,7 +36,10 @@
                         {{ '@' . $person->telegram_username }}
                     </a>
                 @endif
-                @unless($person->phone || $person->telegram_username)
+                @if($person->displayEmail())
+                    <a href="mailto:{{ $person->displayEmail() }}" class="mt-4 block break-all text-center text-sm text-[#756158] underline">{{ $person->displayEmail() }}</a>
+                @endif
+                @unless($person->phone || $person->telegram_username || $person->displayEmail())
                     <p class="mt-7 text-center text-sm leading-6 text-[#21140F]/60">{{ __('account.not_specified') }}</p>
                 @endunless
             </aside>

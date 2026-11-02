@@ -26,4 +26,9 @@ return [
      */
     'search_min_score' => 0.65,
 
+    /*
+     * AI-менеджер кабинета: сколько вопросов участница может задать за сутки (защита от лишних расходов на AI).
+     */
+    'manager_daily_limit' => (int) env('AI_MANAGER_DAILY_LIMIT', 40),
+
 ];

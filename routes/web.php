@@ -5,6 +5,7 @@ use App\Http\Controllers\Account\AuthController;
 use App\Http\Controllers\Account\DevAccountLoginController;
 use App\Http\Controllers\Account\EmailVerificationController;
 use App\Http\Controllers\Account\GoogleController;
+use App\Http\Controllers\Account\ManagerController;
 use App\Http\Controllers\Account\OnboardingController;
 use App\Http\Controllers\Account\OpportunityController;
 use App\Http\Controllers\Account\PasswordResetController;
@@ -185,11 +186,14 @@ Route::middleware(RequireAccountAuth::class)
         Route::match(['GET', 'POST'], '/subscription/fail', [SubscriptionController::class, 'result'])->name('subscription.fail');
 
         // Тариф Open (600) читает: возможности участниц и обучение. Поиск, подбор, каталог участниц с контактами,
-        // ИИ-помощник и публикация собственных возможностей входят в Community и Private. На месте закрытого раздела
-        // RequirePlan показывает сообщение и кнопку «Купить подписку» (запись и запросы ИИ он отклоняет редиректом и 403).
+        // AI-помощник и публикация собственных возможностей входят в Community и Private. На месте закрытого раздела
+        // RequirePlan показывает сообщение и кнопку «Купить подписку» (запись и запросы AI он отклоняет редиректом и 403).
         Route::middleware('plan:community')->group(function (): void {
             Route::get('/knowledge', [AccountController::class, 'knowledge'])->name('knowledge');
             Route::get('/opportunities', [OpportunityController::class, 'index'])->name('opportunities.index');
+            Route::get('/manager', [ManagerController::class, 'index'])->name('manager');
+            Route::get('/manager/history', [ManagerController::class, 'history'])->name('manager.history');
+            Route::post('/manager/messages', [ManagerController::class, 'message'])->middleware('throttle:20,1')->name('manager.message');
             Route::get('/possibilities', [SiteOpportunityController::class, 'index'])->name('possibilities.index');
             Route::get('/possibilities/{opportunity}', [SiteOpportunityController::class, 'show'])->name('possibilities.show');
         });
@@ -205,6 +209,7 @@ Route::middleware(RequireAccountAuth::class)
             Route::resource('opportunities', OpportunityController::class)->only(['create', 'store', 'destroy']);
         });
 
+        Route::post('/tour-seen', [AccountController::class, 'tourSeen'])->name('tour.seen');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     });
 
@@ -336,12 +341,13 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::put('settings', [Admin\SettingController::class, 'update'])->name('settings.update');
         Route::put('settings/theme', [Admin\ThemeSettingController::class, 'site'])->name('settings.theme');
 
-        // Кабинеты участниц: инфопанель и «Настройки кабинетов» — тема кабинета, ИИ, база знаний.
+        // Кабинеты участниц: инфопанель и «Настройки кабинетов» — тема кабинета, AI, база знаний.
         // (Профили, посты участниц и статистика — выше и ниже; лагерь определяет App\Support\AdminCamp.)
         Route::get('cabinets', [Admin\CabinetDashboardController::class, 'index'])->name('cabinets.dashboard');
         Route::get('cabinets/settings', [Admin\CabinetSettingController::class, 'edit'])->name('cabinets.settings');
         Route::put('cabinets/settings/theme', [Admin\ThemeSettingController::class, 'cabinet'])->name('cabinets.settings.theme');
         Route::put('cabinets/settings/knowledge', [Admin\AssistantKnowledgeController::class, 'update'])->name('cabinets.settings.knowledge');
+        Route::put('cabinets/settings/manager', [Admin\ManagerKnowledgeController::class, 'update'])->name('cabinets.settings.manager');
         Route::put('cabinets/settings/ai', [Admin\AiSettingController::class, 'update'])->name('cabinets.settings.ai.update');
         Route::post('cabinets/settings/ai/test/{provider}', [Admin\AiSettingController::class, 'test'])->name('cabinets.settings.ai.test');
 
@@ -354,6 +360,8 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::post('subscriptions/{profile}/unlock', [Admin\SubscriptionController::class, 'unlock'])->name('subscriptions.unlock');
 
         // Заявки на закрытые тарифы («Оставить заявку»): менеджер звонит и открывает покупку лично.
+        Route::get('manager-questions', [Admin\ManagerQuestionController::class, 'index'])->name('manager-questions.index');
+        Route::post('manager-questions/{message}/handled', [Admin\ManagerQuestionController::class, 'handled'])->name('manager-questions.handled');
         Route::get('plan-requests', [Admin\PlanRequestController::class, 'index'])->name('plan-requests.index');
         Route::post('plan-requests/{planRequest}/contacted', [Admin\PlanRequestController::class, 'contacted'])->name('plan-requests.contacted');
         Route::post('plan-requests/{planRequest}/unlock', [Admin\PlanRequestController::class, 'unlock'])->name('plan-requests.unlock');

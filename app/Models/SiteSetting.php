@@ -25,6 +25,9 @@ class SiteSetting extends Model
 
     public const AI_ASSISTANT_KNOWLEDGE_KEY = 'ai_assistant_knowledge';
 
+    /** Знания AI-менеджера кабинета (правила и текст о платформе на трёх языках); пока пусто, действует resources/data/manager_knowledge.php. */
+    public const AI_MANAGER_KNOWLEDGE_KEY = 'ai_manager_knowledge';
+
     public const SUBSCRIPTION_PRICES_KEY = 'subscription_prices';
 
     /** Тарифы, покупка которых закрыта: вместо «Купить» стоит «Оставить заявку» (менеджер откроет покупку лично). */
@@ -387,6 +390,37 @@ class SiteSetting extends Model
             'en' => is_string($value['en'] ?? null) ? $value['en'] : '',
             'ro' => is_string($value['ro'] ?? null) ? $value['ro'] : '',
         ];
+    }
+
+    /**
+     * Знания AI-менеджера: то, что ввёл админ, а в пустых полях стартовый текст из resources/data/manager_knowledge.php.
+     * Так менеджер отвечает с первого дня, а правка в админке заменяет стартовый текст там, где она есть.
+     *
+     * @return array{rules: string, ru: string, en: string, ro: string}
+     */
+    public static function managerKnowledge(): array
+    {
+        $stored = self::settingValue(self::AI_MANAGER_KNOWLEDGE_KEY);
+        $default = require resource_path('data/manager_knowledge.php');
+        $knowledge = [];
+
+        foreach (['rules', 'ru', 'en', 'ro'] as $key) {
+            $value = is_string($stored[$key] ?? null) ? trim($stored[$key]) : '';
+            $knowledge[$key] = $value !== '' ? $value : trim((string) ($default[$key] ?? ''));
+        }
+
+        return $knowledge;
+    }
+
+    /** @param array{rules?: string, ru?: string, en?: string, ro?: string} $knowledge */
+    public static function setManagerKnowledge(array $knowledge): void
+    {
+        self::updateOrCreate(['key' => self::AI_MANAGER_KNOWLEDGE_KEY], ['value' => [
+            'rules' => trim((string) ($knowledge['rules'] ?? '')),
+            'ru' => trim((string) ($knowledge['ru'] ?? '')),
+            'en' => trim((string) ($knowledge['en'] ?? '')),
+            'ro' => trim((string) ($knowledge['ro'] ?? '')),
+        ]]);
     }
 
     /** @param array{rules?: string, ru?: string, en?: string, ro?: string} $knowledge */

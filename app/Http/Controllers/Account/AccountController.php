@@ -26,12 +26,30 @@ class AccountController extends Controller
         /** @var BotUser $user */
         $user = view()->shared('accountUser');
 
-        // Главная — навигационная для всех тарифов: список «С чего начать», плитки разделов (закрытые для Community с замком),
-        // «Что нового». У Community вместо «Что нового» — материалы публичного сайта и предложение перейти на Active.
-        return view('account.home', ['user' => $user] + CabinetHome::build($user, app()->getLocale()));
+        // Главная — навигационная для всех тарифов: плитки разделов (закрытые для Community с замком), «Что нового».
+        // У Community вместо «Что нового» — материалы публичного сайта и предложение перейти на Active. При первом
+        // входе поверх страницы идут подсказки: их показываем, пока участница не нажала «Далее» до конца или «Закрыть».
+        return view('account.home', [
+            'user' => $user,
+            'showTour' => \App\Support\CabinetTour::shouldAutoStart($user),
+        ] + CabinetHome::build($user, app()->getLocale()));
     }
 
-    /** Чат с ИИ-помощником кабинета (подбор контактов и возможностей); открыт с тарифа Active. */
+    /** Подсказки текущего тарифа пройдены или закрыты: сами больше не появятся (на главной их можно открыть кнопкой). */
+    public function tourSeen(): \Illuminate\Http\Response
+    {
+        /** @var BotUser $user */
+        $user = view()->shared('accountUser');
+        $plan = $user->currentPlan();
+
+        if ($plan->isPaid()) {
+            $user->markSeen(\App\Support\CabinetTour::seenKey($plan));
+        }
+
+        return response()->noContent();
+    }
+
+    /** Чат с AI-помощником кабинета (подбор контактов и возможностей); открыт с тарифа Active. */
     public function assistant(): View
     {
         return $this->themedView('assistant');
@@ -85,7 +103,7 @@ class AccountController extends Controller
         $people = BotUser::discoverable()
             ->whereKeyNot($accountUser->getKey())
             ->orderBy('full_name')
-            ->get(['id', 'full_name', 'phone', 'telegram_username', 'description', 'expectation', 'avatar_path']);
+            ->get(['id', 'full_name', 'email', 'contact_email', 'phone', 'telegram_username', 'description', 'expectation', 'avatar_path']);
 
         return $this->themedView('people', compact('people'));
     }
@@ -154,7 +172,7 @@ class AccountController extends Controller
                 app()->getLocale(),
             );
 
-            // Шаг «Спросите ИИ-помощника» на главной отмечается, когда она задала настоящий вопрос и получила ответ.
+            // Шаг «Спросите AI-помощника» на главной отмечается, когда она задала настоящий вопрос и получила ответ.
             $user->markSeen('assistant');
 
             return response()->json($reply);

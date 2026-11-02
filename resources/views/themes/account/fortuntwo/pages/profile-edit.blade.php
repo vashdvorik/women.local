@@ -44,6 +44,12 @@
                 @error('phone')<p class="mt-2 text-xs font-medium text-[#8C4842]">{{ $message }}</p>@enderror
             </div>
             <div class="miro-form-field">
+                <label for="contact_email">{{ __('participant.onboarding.contact_email') }}</label>
+                <input id="contact_email" name="contact_email" type="email" value="{{ old('contact_email', $accountUser->contact_email) }}" maxlength="191" autocomplete="email" placeholder="{{ $accountUser->email }}">
+                <small>{{ __('participant.onboarding.contact_email_hint') }}</small>
+                @error('contact_email')<p class="mt-2 text-xs font-medium text-[#8C4842]">{{ $message }}</p>@enderror
+            </div>
+            <div class="miro-form-field">
                 <label for="description">{{ __('account.profile_edit.description_label') }} <span>1000</span></label>
                 <textarea id="description" name="description" maxlength="1000" placeholder="{{ __('account.profile_edit.description_placeholder') }}">{{ old('description', $accountUser->description) }}</textarea>
                 <small>{{ __('account.profile_edit.description_help') }}</small>
