@@ -1,7 +1,7 @@
 @props(['item'])
 
 {{-- Галочка «Создать черновик для рассылки» в формах новости, публикации и возможности. Сам материал она не меняет и
-     ничего не отправляет: создаёт черновик в разделе «Рассылка», где админ правит текст и отправляет (сразу или по
+     ничего не отправляет: создаёт черновик в разделе «Рассылка в Telegram», где админ правит текст и отправляет (сразу или по
      расписанию). На один материал черновик создаётся один раз. --}}
 @php
     $existing = $item->exists ? app(\App\Services\Broadcasts\BroadcastDrafts::class)->existing($item) : collect();
@@ -16,7 +16,7 @@
             @foreach($existing as $broadcast)
                 <li class="flex flex-wrap items-center gap-2 text-ui">
                     <span class="badge {{ $broadcast->statusBadge() }}">{{ $broadcast->statusLabel() }}</span>
-                    <a href="{{ route('admin.broadcasts.show', $broadcast) }}" class="table-link" target="_blank" rel="noopener">{{ __('Открыть в разделе «Рассылка»') }}</a>
+                    <a href="{{ route('admin.broadcasts.show', $broadcast) }}" class="table-link" target="_blank" rel="noopener">{{ __('Открыть в разделе «Рассылка в Telegram»') }}</a>
                 </li>
             @endforeach
         </ul>
@@ -25,7 +25,7 @@
             <input type="checkbox" name="broadcast_draft" value="1" class="mt-1" @checked(old('broadcast_draft'))>
             <span>
                 <span class="font-medium">{{ __('Создать черновик для рассылки') }}</span>
-                <span class="block text-ink-muted">{{ __('После сохранения в разделе «Рассылка» появится черновик: заголовок и описание на трёх языках, обложка и кнопка «Подробнее» со ссылкой на страницу. Ничего не отправляется: поправьте текст там и отправьте сразу или в назначенное время. Отправляйте после публикации, пока материал не опубликован, ссылка не откроется.') }}</span>
+                <span class="block text-ink-muted">{{ __('После сохранения в разделе «Рассылка в Telegram» появится черновик: заголовок и описание на трёх языках, обложка и кнопка «Подробнее» со ссылкой на страницу. Ничего не отправляется: поправьте текст там и отправьте сразу или в назначенное время. Отправляйте после публикации, пока материал не опубликован, ссылка не откроется.') }}</span>
             </span>
         </label>
         <div class="space-y-1">

@@ -8,6 +8,8 @@ use App\Models\Broadcast;
 use App\Models\BroadcastDelivery;
 use App\Models\SiteSetting;
 use App\Services\Broadcasts\BroadcastLauncher;
+use App\Services\Broadcasts\BroadcastSender;
+use App\Support\SchedulerHealth;
 use App\Services\Broadcasts\TelegramBroadcaster;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -38,6 +40,8 @@ class BroadcastController extends Controller
     {
         return view('admin.broadcasts.index', [
             'broadcasts' => Broadcast::query()->latest('id')->paginate(20),
+            'schedulerStale' => SchedulerHealth::isStale(),
+            'schedulerLast' => SchedulerHealth::lastBeat(),
         ]);
     }
 
@@ -88,6 +92,9 @@ class BroadcastController extends Controller
             'deliveries' => $deliveries,
             'filter' => $filter,
             'audienceCount' => $broadcast->isActive() && $broadcast->total === 0 ? $broadcast->recipients()->count() : $broadcast->total,
+            'schedulerStale' => SchedulerHealth::isStale(),
+            'schedulerLast' => SchedulerHealth::lastBeat(),
+            'pausedFor' => $broadcast->status === Broadcast::STATUS_SENDING ? app(BroadcastSender::class)->pausedFor($broadcast->id) : 0,
         ]);
     }
 

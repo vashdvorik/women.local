@@ -102,6 +102,16 @@ class TelegramBroadcaster
             return DeliveryOutcome::blocked($description);
         }
 
+        // Бот не принят (неверный или отозванный токен): слать дальше бессмысленно, рассылка встанет на паузу.
+        if ($code === 401 || $code === 404) {
+            return DeliveryOutcome::fatal($description);
+        }
+
+        // Нет ответа, таймаут или сбой на стороне Telegram: сообщение не потеряно, повторим позже.
+        if ($code === 0 || $code >= 500) {
+            return DeliveryOutcome::transient($description);
+        }
+
         return DeliveryOutcome::failed($description);
     }
 

@@ -8,11 +8,15 @@ use App\Models\BroadcastDelivery;
 use App\Models\BotUser;
 use App\Models\SiteSetting;
 use App\Services\Broadcasts\BroadcastLauncher;
+use App\Services\Broadcasts\BroadcastSender;
+use App\Services\Broadcasts\TelegramBroadcaster;
 use App\Support\BroadcastText;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -74,7 +78,7 @@ class BroadcastTest extends TestCase
     {
         $broadcast = Broadcast::create(['texts' => ['ru' => 'Текст'], 'audience' => 'approved', 'status' => 'draft']);
 
-        $this->actingAsAdmin()->get(route('admin.broadcasts.index'))->assertOk()->assertSee('Новая рассылка')->assertSee('Рассылка');
+        $this->actingAsAdmin()->get(route('admin.broadcasts.index'))->assertOk()->assertSee('Новая рассылка')->assertSee('Рассылка в Telegram');
         $this->actingAsAdmin()->get(route('admin.broadcasts.create'))->assertOk()->assertSee('Кому отправить')->assertSee('Кнопка 1')->assertSee('Отправить мне для проверки')->assertSee('Зарегистрироваться');
         $this->actingAsAdmin()->get(route('admin.broadcasts.edit', $broadcast))->assertOk();
         $this->actingAsAdmin()->get(route('admin.broadcasts.show', $broadcast))->assertOk();
@@ -277,7 +281,7 @@ class BroadcastTest extends TestCase
         $this->assertSame([1, 0, 1, 0], [$broadcast->total, $broadcast->sent, $broadcast->failed, $broadcast->blocked]);
     }
 
-    public function test_telegram_asking_to_wait_is_retried_and_the_message_is_not_lost(): void
+    public function test_telegram_asking_to_wait_pauses_the_broadcast_and_the_message_is_not_lost(): void
     {
         $user = BotUser::factory()->active()->create();
         Http::fake(['api.telegram.org/*' => Http::sequence()
@@ -286,7 +290,18 @@ class BroadcastTest extends TestCase
 
         $this->submit($this->payload(['action' => 'send', 'send_mode' => 'now']))->assertRedirect();
 
+        // Рассылка на паузе, участница не потеряна и не помечена ошибкой.
+        $broadcast = Broadcast::firstOrFail();
+        $this->assertSame('sending', $broadcast->status);
+        $this->assertSame('pending', BroadcastDelivery::where('bot_user_id', $user->id)->firstOrFail()->status);
+        $this->assertGreaterThan(0, app(BroadcastSender::class)->pausedFor($broadcast->id));
+
+        // Пауза прошла: планировщик продолжает сам.
+        Cache::forget(BroadcastSender::pauseKey($broadcast->id));
+        $this->artisan('broadcasts:dispatch-due')->assertSuccessful();
+
         $this->assertSame('sent', BroadcastDelivery::where('bot_user_id', $user->id)->firstOrFail()->status);
+        $this->assertSame('sent', $broadcast->fresh()->status);
         $this->assertCount(2, $this->sent());
     }
 
@@ -515,5 +530,71 @@ class BroadcastTest extends TestCase
         // Тег не закрыт: разметка не применяется совсем.
         $this->assertSame('Привет &lt;b&gt;всем', BroadcastText::html('Привет <b>всем'));
         $this->assertSame('Привет всем', BroadcastText::plain('Привет <b>всем</b>'));
+    }
+
+    // ------------------------------------------------------------------ большие рассылки: без зависания и двойных сообщений
+
+    public function test_a_large_audience_gets_exactly_one_message_each(): void
+    {
+        $this->fakeTelegram();
+        $users = BotUser::factory()->active()->count(120)->create();
+
+        $this->submit($this->payload(['action' => 'send', 'send_mode' => 'now']))->assertRedirect();
+
+        $broadcast = Broadcast::firstOrFail();
+        $this->assertSame('sent', $broadcast->status);
+        $this->assertSame([120, 120], [$broadcast->total, $broadcast->sent]);
+        $chatIds = collect($this->sent())->map(fn (Request $request) => (string) $this->body($request)['chat_id']);
+        $this->assertCount(120, $chatIds);
+        $this->assertSame(120, $chatIds->unique()->count(), 'никому не уходит второе сообщение');
+        $this->assertEqualsCanonicalizing($users->pluck('telegram_id')->map(fn ($id) => (string) $id)->all(), $chatIds->all());
+    }
+
+    public function test_a_second_runner_does_not_start_while_the_first_one_works(): void
+    {
+        $this->fakeTelegram();
+        $user = BotUser::factory()->active()->create();
+        $broadcast = Broadcast::create(['texts' => ['ru' => 'Текст'], 'audience' => 'approved', 'status' => 'sending']);
+        BroadcastDelivery::create(['broadcast_id' => $broadcast->id, 'bot_user_id' => $user->id, 'telegram_id' => $user->telegram_id, 'locale' => 'ru', 'status' => 'pending']);
+
+        // Первый запуск ещё держит замок: второй воркер (или повтор очереди) ничего не отправляет.
+        $lock = Cache::lock('broadcast-send-'.$broadcast->id, 60);
+        $this->assertTrue($lock->get());
+
+        SendBroadcast::dispatchSync($broadcast->id);
+
+        $this->assertSame([], $this->sent());
+        $this->assertSame('sending', $broadcast->fresh()->status);
+
+        $lock->release();
+        SendBroadcast::dispatchSync($broadcast->id);
+
+        $this->assertCount(1, $this->sent());
+        $this->assertSame('sent', $broadcast->fresh()->status);
+    }
+
+    public function test_when_telegram_asks_to_wait_the_worker_is_released_instead_of_sleeping(): void
+    {
+        Queue::fake();
+        Http::fake(['api.telegram.org/*' => Http::response(['ok' => false, 'error_code' => 429, 'description' => 'Too Many Requests', 'parameters' => ['retry_after' => 25]], 429)]);
+        $user = BotUser::factory()->active()->create();
+        $broadcast = Broadcast::create(['texts' => ['ru' => 'Текст'], 'audience' => 'approved', 'status' => 'sending']);
+
+        $started = microtime(true);
+        (new SendBroadcast($broadcast->id))->handle(app(BroadcastSender::class));
+
+        $this->assertLessThan(5, microtime(true) - $started, 'воркер не засыпает на время паузы Telegram');
+        $this->assertSame('pending', BroadcastDelivery::where('bot_user_id', $user->id)->firstOrFail()->status, 'участница не потеряна');
+        $this->assertSame('sending', $broadcast->fresh()->status);
+        $this->assertEqualsWithDelta(26, app(BroadcastSender::class)->pausedFor($broadcast->id), 2);
+        Queue::assertNothingPushed();
+    }
+
+    public function test_one_run_is_shorter_than_the_queue_retry_so_no_other_worker_can_grab_it(): void
+    {
+        $retryAfter = (int) config('queue.connections.database.retry_after');
+
+        $this->assertLessThan($retryAfter, BroadcastSender::SLICE_SECONDS + 20, 'срез вместе с последним запросом короче retry_after очереди');
+        $this->assertLessThan($retryAfter, (new SendBroadcast(1))->timeout);
     }
 }

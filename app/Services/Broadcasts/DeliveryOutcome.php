@@ -11,6 +11,10 @@ final class DeliveryOutcome
     public const FAILED = 'failed';
     /** Telegram просит подождать (429): сообщение ещё не отправлено. */
     public const RETRY = 'retry';
+    /** Временный сбой (сеть, таймаут, 5xx Telegram): сообщение не отправлено, попробуем позже, до трёх раз. */
+    public const TRANSIENT = 'transient';
+    /** Telegram не принимает самого бота (неверный токен, 401/404): дальше слать бессмысленно, рассылка встаёт на паузу. */
+    public const FATAL = 'fatal';
 
     private function __construct(
         public readonly string $status,
@@ -31,6 +35,16 @@ final class DeliveryOutcome
     public static function failed(string $error): self
     {
         return new self(self::FAILED, mb_substr($error, 0, 500));
+    }
+
+    public static function transient(string $error): self
+    {
+        return new self(self::TRANSIENT, mb_substr($error, 0, 500));
+    }
+
+    public static function fatal(string $error): self
+    {
+        return new self(self::FATAL, mb_substr($error, 0, 500));
     }
 
     public static function retry(int $seconds): self

@@ -72,7 +72,7 @@
             </a>
             <a href="{{ route('admin.broadcasts.index') }}"
                class="nav-link @if(request()->routeIs('admin.broadcasts.*')) nav-link--active @endif">
-                <x-admin.nav-icon name="send" /><span>{{ __('Рассылка') }}</span>
+                <x-admin.nav-icon name="send" /><span>{{ __('Рассылка в Telegram') }}</span>
             </a>
             <a href="{{ route('admin.subscriptions.index') }}"
                class="nav-link @if(request()->routeIs('admin.subscriptions.*')) nav-link--active @endif">

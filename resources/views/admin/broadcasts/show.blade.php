@@ -11,8 +11,10 @@
     $percent = $broadcast->total > 0 ? (int) round($done / $broadcast->total * 100) : 0;
 @endphp
 
-<x-layouts.admin :title="__('Рассылка')">
+<x-layouts.admin :title="__('Рассылка в Telegram')">
     <div class="space-y-4">
+        @include('admin.broadcasts._health')
+
         <div class="card space-y-4">
             <div class="flex flex-wrap items-start justify-between gap-3">
                 <div class="space-y-1">

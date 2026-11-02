@@ -37,9 +37,15 @@
                 <button type="submit" class="btn-secondary">{{ __('Найти') }}</button>
             </form>
 
-            <button type="button" class="btn-danger" x-show="ids.length > 0" x-cloak @click="open = true">
-                {{ __('Удалить выбранные') }} (<span x-text="ids.length"></span>)
-            </button>
+            <div class="flex flex-wrap items-center gap-2">
+                {{-- Файл с теми же участницами, что на экране (вкладка и поиск учитываются) --}}
+                <a href="{{ route('admin.profiles.export', array_filter(['status' => $status, 'q' => $search, 'hidden' => $onlyHidden ? 1 : null])) }}" class="btn-secondary">
+                    {{ __('Выгрузить в файл') }}
+                </a>
+                <button type="button" class="btn-danger" x-show="ids.length > 0" x-cloak @click="open = true">
+                    {{ __('Удалить выбранные') }} (<span x-text="ids.length"></span>)
+                </button>
+            </div>
         </div>
 
         @if($profiles->isEmpty())

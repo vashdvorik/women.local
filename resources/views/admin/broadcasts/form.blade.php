@@ -8,7 +8,7 @@
     $minTime = now(\App\Models\Broadcast::TIMEZONE)->addMinutes(2)->format('Y-m-d\TH:i');
 @endphp
 
-<x-layouts.admin :title="$isEdit ? __('Рассылка') : __('Новая рассылка')">
+<x-layouts.admin :title="$isEdit ? __('Рассылка в Telegram') : __('Новая рассылка')">
     <form method="POST" enctype="multipart/form-data" class="max-w-3xl space-y-6"
           action="{{ $isEdit ? route('admin.broadcasts.update', $broadcast) : route('admin.broadcasts.store') }}"
           x-data="{ mode: @js($mode), audience: @js($audience), counts: @js($counts) }">

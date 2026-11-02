@@ -13,7 +13,7 @@ class BroadcastDelivery extends Model
     public const FAILED = 'failed';
     public const BLOCKED = 'blocked';
 
-    protected $fillable = ['broadcast_id', 'bot_user_id', 'telegram_id', 'locale', 'status', 'error', 'sent_at'];
+    protected $fillable = ['broadcast_id', 'bot_user_id', 'telegram_id', 'locale', 'status', 'attempts', 'error', 'sent_at'];
 
     protected function casts(): array
     {

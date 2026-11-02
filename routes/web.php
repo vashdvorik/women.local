@@ -308,6 +308,7 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
 
         // Профили участниц из Telegram-бота: модерация (раньше — Filament BotUserResource).
         Route::get('profiles', [Admin\ProfileController::class, 'index'])->name('profiles.index');
+        Route::get('profiles/export.csv', [Admin\ProfileController::class, 'export'])->name('profiles.export');
         Route::delete('profiles', [Admin\ProfileController::class, 'bulkDestroy'])->name('profiles.bulk-destroy');
         Route::get('profiles/{profile}', [Admin\ProfileController::class, 'show'])->name('profiles.show');
         Route::get('profiles/{profile}/edit', [Admin\ProfileController::class, 'edit'])->name('profiles.edit');

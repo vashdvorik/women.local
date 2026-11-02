@@ -11,9 +11,6 @@ use App\Models\Broadcast;
  */
 class BroadcastLauncher
 {
-    /** Сколько минут рассылка может не двигаться, прежде чем её запустят заново (упал воркер очереди). */
-    private const STALLED_MINUTES = 10;
-
     public function start(Broadcast $broadcast): bool
     {
         $started = Broadcast::query()
@@ -40,10 +37,10 @@ class BroadcastLauncher
     }
 
     /**
-     * Раз в минуту (artisan broadcasts:dispatch-due): наступило время запланированной рассылки — запускаем; рассылка
-     * зависла (воркер упал посреди отправки) — запускаем заново, отправленным она повторно не пишет.
+     * Раз в минуту (artisan broadcasts:dispatch-due): наступило время запланированной рассылки — запускаем. Идущие и
+     * оборвавшиеся рассылки ведёт BroadcastSender::pump, поэтому отдельно «будить зависшие» не нужно.
      *
-     * @return int сколько рассылок запущено или возобновлено
+     * @return int сколько запланированных рассылок запущено
      */
     public function dispatchDue(): int
     {
@@ -54,15 +51,6 @@ class BroadcastLauncher
             ->where('scheduled_at', '<=', now())
             ->each(function (Broadcast $broadcast) use (&$count) {
                 $count += $this->start($broadcast) ? 1 : 0;
-            });
-
-        Broadcast::query()
-            ->where('status', Broadcast::STATUS_SENDING)
-            ->where('updated_at', '<', now()->subMinutes(self::STALLED_MINUTES))
-            ->each(function (Broadcast $broadcast) use (&$count) {
-                $broadcast->touch();
-                SendBroadcast::dispatch($broadcast->id);
-                $count++;
             });
 
         return $count;

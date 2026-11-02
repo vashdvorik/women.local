@@ -1,5 +1,7 @@
-<x-layouts.admin :title="__('Рассылка')">
+<x-layouts.admin :title="__('Рассылка в Telegram')">
     <div class="space-y-4">
+        @include('admin.broadcasts._health')
+
         <div class="card flex flex-wrap items-center justify-between gap-3">
             <p class="text-ui text-ink-muted max-w-2xl">
                 {{ __('Сообщение участницам в Telegram (получат только те, кто подключил Telegram в профиле): текст на трёх языках, фото и кнопки-ссылки. Можно отправить сразу или в назначенное время, а отчёт покажет, кому оно дошло.') }}
