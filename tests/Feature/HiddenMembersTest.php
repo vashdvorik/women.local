@@ -74,7 +74,7 @@ class HiddenMembersTest extends TestCase
         $this->assertNotContains($hidden->id, $found);
     }
 
-    public function test_hidden_members_are_not_among_the_newest_members_on_the_cabinet_home(): void
+    public function test_the_cabinet_home_does_not_show_other_members_at_all_and_never_a_hidden_one(): void
     {
         $viewer = $this->member('Зрительница');
         $this->member('Новая Видимая');
@@ -82,7 +82,8 @@ class HiddenMembersTest extends TestCase
 
         $html = $this->asParticipant($viewer)->get(route('account.index'))->assertOk()->getContent();
 
-        $this->assertStringContainsString('Новая Видимая', $html);
+        // Блок «новые участницы» с главной убран: «Что нового» показывает только возможности и обучение.
+        $this->assertStringNotContainsString('Новая Видимая', $html);
         $this->assertStringNotContainsString('Новый Скрытый Спонсор', $html);
     }
 
@@ -155,7 +156,7 @@ class HiddenMembersTest extends TestCase
 
         $list = $this->actingAsAdmin()->get(route('admin.profiles.index'))->assertOk()->getContent();
         $this->assertStringContainsString('Скрыт', $list);
-        $this->assertStringContainsString('Показать', $list);
+        $this->assertMatchesRegularExpression('#role="switch" aria-checked="true"[^>]*>\s*<span class="switch" aria-hidden="true"></span><span>Режим невидимки</span>#u', $list);
 
         $onlyHidden = $this->actingAsAdmin()->get(route('admin.profiles.index', ['hidden' => 1]))->assertOk()->getContent();
         $this->assertStringContainsString('Спонсор проекта', $onlyHidden);
@@ -180,7 +181,7 @@ class HiddenMembersTest extends TestCase
         $profile = $this->member('Спонсор');
 
         $this->actingAsAdmin()->get(route('admin.profiles.show', $profile))
-            ->assertOk()->assertSee('Скрыть от других участниц')->assertSee(route('admin.profiles.visibility', $profile));
+            ->assertOk()->assertSee('Режим невидимки')->assertSee(route('admin.profiles.visibility', $profile));
     }
 
     public function test_only_the_administrator_can_hide_a_profile(): void
@@ -202,7 +203,7 @@ class HiddenMembersTest extends TestCase
 
         // Поле не принимается формой профиля: скрыть себя может только администратор.
         $this->asParticipant($user)->post(route('account.profile.update'), [
-            'full_name' => 'Участница', 'description' => 'Описание', 'expectation' => 'Запрос', 'is_hidden' => 1,
+            'full_name' => 'Участница', 'phone' => '+373 69 123456', 'description' => 'Описание', 'expectation' => 'Запрос', 'is_hidden' => 1,
         ])->assertRedirect(route('account.profile'));
 
         $this->assertFalse($user->fresh()->is_hidden);

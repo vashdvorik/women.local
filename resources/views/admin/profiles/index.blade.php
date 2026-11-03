@@ -1,9 +1,9 @@
 @php
     $tabs = [
         '' => [__('Все'), $counts->sum()],
-        \App\Models\BotUser::STATUS_PENDING => [__('Ожидают'), $counts[\App\Models\BotUser::STATUS_PENDING] ?? 0],
-        \App\Models\BotUser::STATUS_APPROVED => [__('Одобрены'), $counts[\App\Models\BotUser::STATUS_APPROVED] ?? 0],
-        \App\Models\BotUser::STATUS_REJECTED => [__('Отклонены'), $counts[\App\Models\BotUser::STATUS_REJECTED] ?? 0],
+        \App\Models\BotUser::STATUS_PENDING => [__('Скрыты от других'), $counts[\App\Models\BotUser::STATUS_PENDING] ?? 0],
+        \App\Models\BotUser::STATUS_APPROVED => [__('Видимы другим'), $counts[\App\Models\BotUser::STATUS_APPROVED] ?? 0],
+        \App\Models\BotUser::STATUS_REJECTED => [__('Заблокированы'), $counts[\App\Models\BotUser::STATUS_REJECTED] ?? 0],
     ];
 @endphp
 
@@ -14,6 +14,17 @@
                    toggleAll() { this.ids = this.all ? [...this.pageIds] : []; },
                    sync() { this.all = this.ids.length === this.pageIds.length && this.pageIds.length > 0; } }">
 
+        {{-- Памятка: три независимые вещи, которые часто путают --}}
+        <details class="card text-reading">
+            <summary class="cursor-pointer font-semibold">{{ __('Что значат кнопки и состояния') }}</summary>
+            <ul class="mt-3 space-y-2 text-ink-muted">
+                <li><span class="font-semibold text-ink">{{ __('Видима другим / Скрыта от других.') }}</span> {{ __('Показывать ли профиль другим участницам в каталоге, поиске, подборе контактов и AI-помощнике. Работает, только пока у неё действует платный пакет. Участнице ничего не отправляется, на её кабинет и рассылки не влияет. После регистрации профиль скрыт; после первой оплаты или подарка пакета он становится видимым сам, дальше решает администратор.') }}</li>
+                <li><span class="font-semibold text-ink">{{ __('Режим невидимки.') }}</span> {{ __('Для администраторов, спонсоров и партнёров: человек пользуется платформой, получает рассылки, но другие его не видят и не находят, а инициативы он публиковать не может. Сильнее, чем «Скрыта от других»: перекрывает «Видима другим».') }}</li>
+                <li><span class="font-semibold text-ink">{{ __('Заблокировать / Разблокировать.') }}</span> {{ __('Единственное, что закрывает вход в кабинет. Блокировать можно любую участницу в любое время. Ей придёт уведомление, рассылки прекратятся, профиль пропадёт из каталога; данные и платежи сохраняются. Разблокировка возвращает всё как было, уведомления нет.') }}</li>
+                <li><span class="font-semibold text-ink">{{ __('Удалить.') }}</span> {{ __('Профиль стирается из базы безвозвратно.') }}</li>
+            </ul>
+        </details>
+
         <div class="tabs">
             @foreach($tabs as $key => [$label, $count])
                 <a href="{{ route('admin.profiles.index', array_filter(['status' => $key, 'q' => $search])) }}"
@@ -21,10 +32,10 @@
                     {{ $label }}<span class="text-ink-faint">{{ $count }}</span>
                 </a>
             @endforeach
-            {{-- Скрытые от других участниц: администратор, спонсоры, партнёры. --}}
+            {{-- Режим невидимки: администратор, спонсоры, партнёры. --}}
             <a href="{{ route('admin.profiles.index', array_filter(['hidden' => 1, 'q' => $search])) }}"
                class="tab @if($onlyHidden) tab--active @endif">
-                {{ __('Скрытые') }}<span class="text-ink-faint">{{ $hiddenCount }}</span>
+                {{ __('Режим невидимки') }}<span class="text-ink-faint">{{ $hiddenCount }}</span>
             </a>
         </div>
 
@@ -56,7 +67,7 @@
             </div>
         @else
             <div class="overflow-x-auto">
-                <table class="data-table">
+                <table class="data-table [&_td]:!px-2 [&_th]:!px-2">
                     <thead>
                         <tr>
                             <th class="w-10">
@@ -65,8 +76,8 @@
                             </th>
                             <th class="min-w-[11rem]"><x-admin.sort-link column="full_name" :label="__('Имя')" /></th>
                             <th class="whitespace-nowrap">{{ __('Почта и телефон') }}</th>
-                            <th class="whitespace-nowrap"><x-admin.sort-link column="status" :label="__('Статус')" /></th>
-                            <th class="whitespace-nowrap"><x-admin.sort-link column="created_at" :label="__('Дата заявки')" /></th>
+                            <th class="whitespace-nowrap" title="{{ __('Нажмите на переключатель: перед изменением откроется окно с пояснением.') }}"><x-admin.sort-link column="status" :label="__('Видимость')" /></th>
+                            <th class="hidden whitespace-nowrap xl:table-cell"><x-admin.sort-link column="created_at" :label="__('Дата заявки')" /></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -82,47 +93,25 @@
                                     <a href="{{ route('admin.profiles.show', $profile) }}" class="table-link">
                                         {{ $profile->full_name ?: __('Без имени') }}
                                     </a>
-                                    @if($profile->is_hidden)
-                                        <span class="badge badge--draft ml-2" title="{{ __('Другие участницы этот профиль не видят и не находят.') }}">{{ __('Скрыт') }}</span>
-                                    @endif
                                 </td>
                                 <td class="text-ink-muted">
                                     {{ $profile->email }}@if($profile->phone)<br>{{ $profile->phone }}@endif
                                 </td>
-                                <td><x-admin.profile-status-badge :status="$profile->status" /></td>
-                                <td class="whitespace-nowrap text-ink-muted">{{ $profile->created_at?->format('d.m.Y H:i') }}</td>
                                 <td>
-                                    <div class="flex items-center justify-end gap-1 whitespace-nowrap">
-                                        @unless($profile->isApproved())
-                                            <x-admin.confirm-button
-                                                :action="route('admin.profiles.approve', $profile)"
-                                                :label="__('Одобрить')"
-                                                :title="__('Одобрить профиль?')"
-                                                :message="__('Участница об этом не узнает: уведомление не отправляется. Её профиль станет виден другим участницам, когда у неё действует тариф. (:name)', ['name' => $profile->full_name ?: __('Участница')])" />
-                                        @endunless
-                                        @unless($profile->isRejected())
-                                            <x-admin.confirm-button
-                                                :action="route('admin.profiles.reject', $profile)"
-                                                :label="__('Отклонить')"
-                                                :title="__('Отклонить профиль?')"
-                                                :message="$profile->isApproved()
-                                                    ? __('Доступ к платформе будет закрыт, участница получит уведомление.')
-                                                    : __('Участница получит уведомление об отказе.')"
-                                                :danger="true" />
-                                        @endunless
-                                        {{-- Быстрое скрытие: человек остаётся внутри, но другие его не видят и не находят. --}}
-                                        <form method="POST" action="{{ route('admin.profiles.visibility', $profile) }}">
-                                            @csrf
-                                            <button type="submit" class="btn-quiet"
-                                                    title="{{ $profile->is_hidden ? __('Сделать профиль видимым для других участниц') : __('Скрыть профиль от других участниц: человек остаётся внутри, но его не видно и не найти') }}">
-                                                {{ $profile->is_hidden ? __('Показать') : __('Скрыть') }}
-                                            </button>
-                                        </form>
+                                    <div class="flex flex-col items-start gap-1.5 py-1.5">
+                                        <x-admin.profile-moderation :profile="$profile" part="switches" />
+                                    </div>
+                                </td>
+                                <td class="hidden whitespace-nowrap text-ink-muted xl:table-cell" title="{{ $profile->created_at?->format('d.m.Y H:i') }}">{{ $profile->created_at?->format('d.m.Y') }}</td>
+                                <td>
+                                    <div class="flex items-center justify-end gap-2 whitespace-nowrap">
                                         <a href="{{ route('admin.profiles.edit', $profile) }}" class="btn-quiet">{{ __('Изменить') }}</a>
+                                        <x-admin.profile-moderation :profile="$profile" part="lock" />
                                         <x-admin.delete-button
                                             :action="route('admin.profiles.destroy', $profile)"
                                             :subject="$profile->full_name ?: __('Без имени')"
-                                            :noun="__('профиль')" />
+                                            :noun="__('профиль')"
+                                            :compact="true" />
                                     </div>
                                 </td>
                             </tr>

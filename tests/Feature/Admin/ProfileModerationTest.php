@@ -29,7 +29,7 @@ class ProfileModerationTest extends TestCase
             ->assertOk()
             ->assertSee('Анна Ожидающая')
             ->assertSee('Мария Одобренная')
-            ->assertSee('Ожидают');
+            ->assertSee('Скрыты от других')->assertSee('Видимы другим')->assertSee('Заблокированы');
     }
 
     public function test_list_filters_by_status_and_search(): void
@@ -77,22 +77,114 @@ class ProfileModerationTest extends TestCase
         \Illuminate\Support\Facades\Http::assertNothingSent();
     }
 
-    public function test_reject_pending_profile_sets_rejected_status(): void
+    public function test_blocking_a_pending_profile_sets_the_blocked_status(): void
     {
         $profile = BotUser::factory()->pending()->create();
 
-        $this->actingAsAdmin()->post(route('admin.profiles.reject', $profile))->assertRedirect();
+        $this->actingAsAdmin()->post(route('admin.profiles.block', $profile))->assertRedirect();
 
         $this->assertSame(BotUser::STATUS_REJECTED, $profile->fresh()->status);
     }
 
-    public function test_reject_approved_profile_revokes_access(): void
+    public function test_blocking_an_approved_profile_revokes_access(): void
     {
         $profile = BotUser::factory()->approved()->create();
 
-        $this->actingAsAdmin()->post(route('admin.profiles.reject', $profile))->assertRedirect();
+        $this->actingAsAdmin()->post(route('admin.profiles.block', $profile))->assertRedirect();
 
         $this->assertSame(BotUser::STATUS_REJECTED, $profile->fresh()->status);
+    }
+
+    public function test_hiding_from_others_returns_the_profile_to_pending_without_a_notice(): void
+    {
+        \Illuminate\Support\Facades\Mail::fake();
+        $profile = BotUser::factory()->approved()->create();
+
+        $this->actingAsAdmin()->post(route('admin.profiles.unapprove', $profile))->assertRedirect()->assertSessionHas('success');
+
+        $this->assertSame(BotUser::STATUS_PENDING, $profile->fresh()->status);
+        \Illuminate\Support\Facades\Mail::assertNothingSent();
+        \Illuminate\Support\Facades\Mail::assertNothingQueued();
+    }
+
+    public function test_unblocking_returns_the_mark_the_profile_had_before_the_block(): void
+    {
+        $visible = BotUser::factory()->approved()->create();
+        $hidden = BotUser::factory()->pending()->create();
+
+        foreach ([$visible, $hidden] as $profile) {
+            $this->actingAsAdmin()->post(route('admin.profiles.block', $profile))->assertRedirect();
+            $this->assertSame(BotUser::STATUS_REJECTED, $profile->fresh()->status);
+            $this->actingAsAdmin()->post(route('admin.profiles.unblock', $profile))->assertRedirect()->assertSessionHas('success');
+        }
+
+        $this->assertSame(BotUser::STATUS_APPROVED, $visible->fresh()->status);
+        $this->assertSame(BotUser::STATUS_PENDING, $hidden->fresh()->status);
+        $this->assertNull($visible->fresh()->status_before_block);
+    }
+
+    public function test_a_blocked_profile_cannot_be_made_visible_before_it_is_unblocked(): void
+    {
+        $profile = BotUser::factory()->pending()->create();
+        $this->actingAsAdmin()->post(route('admin.profiles.block', $profile));
+
+        $this->actingAsAdmin()->post(route('admin.profiles.approve', $profile))->assertSessionHas('error');
+        $this->actingAsAdmin()->post(route('admin.profiles.unapprove', $profile))->assertSessionHas('error');
+
+        $this->assertSame(BotUser::STATUS_REJECTED, $profile->fresh()->status);
+    }
+
+    public function test_blocking_twice_does_not_lose_the_mark_from_before_the_block(): void
+    {
+        $profile = BotUser::factory()->approved()->create();
+
+        $this->actingAsAdmin()->post(route('admin.profiles.block', $profile));
+        $this->actingAsAdmin()->post(route('admin.profiles.block', $profile));
+        $this->actingAsAdmin()->post(route('admin.profiles.unblock', $profile));
+
+        $this->assertSame(BotUser::STATUS_APPROVED, $profile->fresh()->status);
+    }
+
+    public function test_every_button_explains_what_will_happen(): void
+    {
+        $visible = BotUser::factory()->approved()->create(['full_name' => 'Видимая Анна']);
+        $hidden = BotUser::factory()->pending()->create(['full_name' => 'Скрытая Мария']);
+        $blocked = BotUser::factory()->pending()->create(['full_name' => 'Закрытая Ирина']);
+        $this->actingAsAdmin()->post(route('admin.profiles.block', $blocked));
+
+        $html = $this->actingAsAdmin()->get(route('admin.profiles.index'))->assertOk()->getContent();
+
+        foreach (['Скрыть от других', 'Режим невидимки', 'Заблокировать', 'Разблокировать', 'Что значат кнопки и состояния', 'class="btn-lock"', 'class="btn-unlock"'] as $text) {
+            $this->assertStringContainsString($text, $html, $text);
+        }
+        $this->assertStringContainsString('title="Закрывает вход в кабинет.', $html);
+        $this->assertStringContainsString('Разблокировать участницу? (Закрытая Ирина)', $html);
+        // У заблокированной нет кнопок видимости: сначала разблокировка
+        $this->assertSame(1, substr_count($html, 'Сейчас профиль скрыт от других участниц'));
+    }
+
+    public function test_the_participant_page_shows_the_same_buttons_with_explanations(): void
+    {
+        $profile = BotUser::factory()->approved()->create(['full_name' => 'Видимая Анна']);
+
+        $this->actingAsAdmin()->get(route('admin.profiles.show', $profile))
+            ->assertOk()
+            ->assertSee('Видимость и доступ')
+            ->assertSee('Видима другим.')
+            ->assertSee('Заблокировать участницу?', false);
+    }
+
+    public function test_blocked_participants_get_no_mailings(): void
+    {
+        $open = BotUser::factory()->approved()->create(['telegram_id' => 111]);
+        $blocked = BotUser::factory()->approved()->create(['telegram_id' => 222]);
+        $this->actingAsAdmin()->post(route('admin.profiles.block', $blocked));
+
+        // Неизвестная группа берёт всех: заблокированной в ней всё равно нет
+        $ids = \App\Models\Broadcast::audienceQuery('unknown-audience')->pluck('bot_users.id')->all();
+
+        $this->assertContains($open->id, $ids);
+        $this->assertNotContains($blocked->id, $ids);
     }
 
     public function test_edit_updates_texts_but_never_the_status(): void

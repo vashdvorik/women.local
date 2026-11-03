@@ -61,6 +61,16 @@
     .btn-secondary { @apply btn rounded-sm  px-4 bg-surface text-ink border border-hairline hover:bg-surface-sunken; }
     .btn-quiet     { @apply btn rounded-sm  px-3 bg-transparent text-accent hover:bg-accent-soft; }
     .btn-danger    { @apply btn rounded-sm  px-4 bg-surface text-danger border border-hairline hover:bg-danger-soft; }
+    /* Блокировка участницы: единственная кнопка, закрывающая вход, поэтому заметно отличается от остальных */
+    /* Переключатель «вкл / выкл» в таблицах: состояние видно сразу, нажатие просит подтверждение */
+    .switch-row    { @apply inline-flex items-center gap-2 text-ui text-ink cursor-pointer text-left whitespace-nowrap; }
+    .switch        { @apply relative inline-block h-5 w-9 shrink-0 rounded-pill bg-neutral-soft border border-hairline transition-colors; }
+    .switch::after { content: ""; @apply absolute left-0.5 top-0.5 h-3.5 w-3.5 rounded-pill bg-surface shadow transition-transform; }
+    .switch-row[aria-checked="true"] .switch { @apply bg-accent border-accent; }
+    .switch-row[aria-checked="true"] .switch::after { transform: translateX(1rem); }
+    .switch-row:focus-visible .switch { @apply ring-2 ring-accent ring-offset-2; }
+    .btn-lock      { @apply btn rounded-sm  px-3 bg-danger text-white border border-danger hover:opacity-90; }
+    .btn-unlock    { @apply btn rounded-sm  px-3 bg-success-soft text-success border border-success hover:opacity-90; }
 
     .btn-icon {
         @apply inline-flex items-center justify-center w-8 h-8 rounded-sm text-ink-muted

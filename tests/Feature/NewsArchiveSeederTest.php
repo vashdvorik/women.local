@@ -480,7 +480,11 @@ class NewsArchiveSeederTest extends TestCase
         {
             protected function items(): array
             {
-                return array_slice(parent::items(), 0, 1);
+                // Самая свежая новость, у которой есть несколько фото (у новостей-афиш одна картинка, а проверкам переделки
+                // кадров нужны обложка и ещё как минимум два кадра в тексте).
+                $photos = fn (array $item): int => count(glob(public_path('themes/public/miro/images/news/archive/'.$item['key'].'/*.webp')) ?: []);
+
+                return array_slice(array_values(array_filter(parent::items(), fn (array $item) => $photos($item) >= 5)), 0, 1);
             }
         };
     }

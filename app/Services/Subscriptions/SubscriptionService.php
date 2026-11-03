@@ -8,6 +8,7 @@ use App\Enums\Plan;
 use App\Models\BotUser;
 use App\Models\Payment;
 use App\Models\Subscription;
+use App\Services\ProfileModeration;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,8 @@ use InvalidArgumentException;
 final class SubscriptionService
 {
     /**
-     * Включает тариф на $months месяцев.
+     * Включает тариф на $months месяцев. Первая подписка за всё время (оплата, подарок администратора, любой источник)
+     * сама делает профиль видимым другим участницам; дальше видимость решает администратор.
      */
     public function grant(
         BotUser $user,
@@ -44,6 +46,7 @@ final class SubscriptionService
 
         return DB::transaction(function () use ($user, $plan, $months, $source, $payment, $note): Subscription {
             $now = now();
+            $firstSubscription = ! $user->subscriptions()->exists();
 
             // Продление того же тарифа продолжается с конца уже оплаченного периода.
             $lastEnd = $user->subscriptions()
@@ -61,6 +64,10 @@ final class SubscriptionService
                 'payment_id' => $payment?->id,
                 'note' => $note,
             ]);
+
+            if ($firstSubscription && $user->status === BotUser::STATUS_PENDING) {
+                app(ProfileModeration::class)->approve($user);
+            }
 
             // Новая оплата — новая серия напоминаний.
             $user->forceFill(['plan_notified_stage' => 0])->save();

@@ -85,7 +85,10 @@ class Broadcast extends Model
             default => BotUser::query(),
         };
 
-        return $query->whereNotNull('bot_users.telegram_id');
+        // Заблокированным рассылки не приходят (видимость другим на рассылку не влияет, блокировка влияет)
+        return $query
+            ->where('bot_users.status', '!=', BotUser::STATUS_REJECTED)
+            ->whereNotNull('bot_users.telegram_id');
     }
 
     public function recipients(): Builder

@@ -209,6 +209,8 @@ class PlanAndServiceTest extends TestCase
         $private = BotUser::factory()->private()->create();
         $pendingPaid = BotUser::factory()->pending()->create();
         $this->service->grant($pendingPaid, Plan::Active, 12);
+        // Первая подписка сама делает профиль видимым; здесь нужна участница, которую администратор потом скрыл
+        $pendingPaid->forceFill(['status' => BotUser::STATUS_PENDING])->save();
         $expired = BotUser::factory()->active()->create();
         $expired->subscriptions()->update(['ends_at' => now()->subDay()]);
         $expired->forceFill(['plan_ends_at' => now()->subDay()])->save();

@@ -102,9 +102,9 @@ return [
             'kind' => 'text',
             'vars' => ['name' => 'Имя участницы'],
             'text' => [
-                'ru' => "{name}, спасибо за интерес к Women's Hub.\n\nСейчас ваша анкета не была одобрена. Если хотите уточнить детали или задать вопрос команде проекта, напишите: @lesnichenkoP",
-                'en' => "{name}, thank you for your interest in Women's Hub.\n\nAt the moment your profile has not been approved. If you would like to clarify the details or ask the project team a question, write to: @lesnichenkoP",
-                'ro' => "{name}, vă mulțumim pentru interesul față de Women's Hub.\n\nÎn acest moment profilul dvs. nu a fost aprobat. Dacă doriți să aflați detalii sau să puneți o întrebare echipei proiectului, scrieți la: @lesnichenkoP",
+                'ru' => "{name}, спасибо за интерес к Women's Hub.\n\nСейчас ваша анкета не была одобрена. Если хотите уточнить детали или задать вопрос команде проекта, напишите нам через страницу «Контакты» на сайте.",
+                'en' => "{name}, thank you for your interest in Women's Hub.\n\nAt the moment your profile has not been approved. If you would like to clarify the details or ask the project team a question, write to us through the “Contact” page on the website.",
+                'ro' => "{name}, vă mulțumim pentru interesul față de Women's Hub.\n\nÎn acest moment profilul dvs. nu a fost aprobat. Dacă doriți să aflați detalii sau să puneți o întrebare echipei proiectului, scrieți-ne prin pagina „Contact” de pe site.",
             ],
         ],
         'moderation_access_revoked' => [
@@ -114,9 +114,9 @@ return [
             'kind' => 'text',
             'vars' => [],
             'text' => [
-                'ru' => "Доступ к Women's Hub закрыт.\n\nЕсли у вас есть вопросы по участию, напишите команде проекта: @lesnichenkoP",
-                'en' => "Access to Women's Hub has been closed.\n\nIf you have questions about participation, write to the project team: @lesnichenkoP",
-                'ro' => "Accesul la Women's Hub a fost închis.\n\nDacă aveți întrebări despre participare, scrieți echipei proiectului: @lesnichenkoP",
+                'ru' => "Доступ к Women's Hub закрыт.\n\nЕсли у вас есть вопросы по участию, напишите команде проекта через страницу «Контакты» на сайте.",
+                'en' => "Access to Women's Hub has been closed.\n\nIf you have questions about participation, write to the project team through the “Contact” page on the website.",
+                'ro' => "Accesul la Women's Hub a fost închis.\n\nDacă aveți întrebări despre participare, scrieți echipei proiectului prin pagina „Contact” de pe site.",
             ],
         ],
 

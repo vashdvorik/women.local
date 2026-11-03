@@ -12,9 +12,10 @@ use Illuminate\Support\Facades\Mail;
 use Nutgram\Laravel\Facades\Telegram;
 
 /**
- * Модерация анкет участниц: смена статуса. Проверка скрытая: одобрение участнице не сообщается ни в Telegram, ни письмом
- * (она просто начинает отображаться другим участницам, если у неё действует тариф). Об отказе и о закрытии доступа
- * уведомление уходит в Telegram, если она его подключила, иначе письмом на почту.
+ * Модерация анкет участниц: видимость другим (approve / unapprove), блокировка и разблокировка. Видимость участнице
+ * не сообщается ни в Telegram, ни письмом (она просто начинает или перестаёт отображаться другим участницам, если у неё
+ * действует тариф). О блокировке уведомление уходит в Telegram, если она его подключила, иначе письмом на почту; о
+ * разблокировке не сообщается.
  *
  * Сбой отправки не откатывает решение модератора: статус уже сохранён, а неудача пишется в лог.
  *
@@ -23,6 +24,7 @@ use Nutgram\Laravel\Facades\Telegram;
  */
 class ProfileModeration
 {
+    /** «Видима другим»: профиль попадает в каталог, поиск и подбор других участниц, пока у неё действует тариф. Без уведомления. */
     public function approve(BotUser $profile): void
     {
         $profile->update([
@@ -31,15 +33,47 @@ class ProfileModeration
         ]);
     }
 
-    public function reject(BotUser $profile): void
+    /** «Скрыта от других»: профиль уходит из каталога, поиска и подбора. Кабинет, тариф и рассылки остаются. Без уведомления. */
+    public function unapprove(BotUser $profile): void
     {
+        $profile->update(['status' => BotUser::STATUS_PENDING]);
+    }
+
+    /**
+     * Блокировка: вход в кабинет закрыт, профиль не виден другим. Можно заблокировать кого угодно и когда угодно.
+     * Прежняя отметка «видима / скрыта» запоминается, чтобы разблокировка вернула именно её.
+     */
+    public function block(BotUser $profile): void
+    {
+        if ($profile->isRejected()) {
+            return;
+        }
+
         $wasApproved = $profile->isApproved();
 
-        $profile->update(['status' => BotUser::STATUS_REJECTED]);
+        $profile->forceFill([
+            'status' => BotUser::STATUS_REJECTED,
+            'status_before_block' => $profile->status,
+        ])->save();
 
         $wasApproved
             ? $this->notify($profile, 'moderation_access_revoked', ModerationNoticeMail::REVOKED)
             : $this->notify($profile, 'moderation_rejected', ModerationNoticeMail::REJECTED, ['name' => BotMessages::firstName($profile->full_name)]);
+    }
+
+    /** Разблокировка: вход открыт, отметка «видима / скрыта» такая, какой была до блокировки. Участнице ничего не отправляется. */
+    public function unblock(BotUser $profile): void
+    {
+        if (! $profile->isRejected()) {
+            return;
+        }
+
+        $before = $profile->status_before_block;
+
+        $profile->forceFill([
+            'status' => $before === BotUser::STATUS_APPROVED ? BotUser::STATUS_APPROVED : BotUser::STATUS_PENDING,
+            'status_before_block' => null,
+        ])->save();
     }
 
     /** @param array<string, scalar|null> $vars */

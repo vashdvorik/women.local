@@ -49,10 +49,14 @@ class PublicButtonsTest extends TestCase
     public function test_light_buttons_do_not_override_colours_inline(): void
     {
         // Инлайн-цвет на кнопке не доходит до надписи внутри неё, поэтому светлую кнопку задают классом.
-        $html = $this->get('/partners')->assertOk()->getContent();
+        // На странице «Партнёры» кнопок больше нет (одни знаки партнёров), розовая кнопка стоит на «Как стать участницей».
+        $join = $this->get('/members/join')->assertOk()->getContent();
+        $this->assertMatchesRegularExpression('#class="[^"]*miro-button--pink"#', $join);
 
-        $this->assertMatchesRegularExpression('#class="miro-button miro-button--pink"[^>]*><span data-lang="ru">Стать партнёром#u', $html);
-        $this->assertDoesNotMatchRegularExpression('#miro-button--primary"[^>]*style="background:var\(--miro-pink\)#', $html);
+        foreach (['/partners', '/members/join'] as $url) {
+            $html = $url === '/members/join' ? $join : $this->get($url)->assertOk()->getContent();
+            $this->assertDoesNotMatchRegularExpression('#miro-button[^"]*"[^>]*style="[^"]*background:var\(--miro-pink\)#', $html, $url);
+        }
     }
 
     public function test_landing_secondary_buttons_are_light_on_dark_only_in_the_nav_and_hero(): void

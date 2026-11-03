@@ -21,7 +21,7 @@
                         <h2 class="text-section font-semibold">{{ $profile->full_name ?: __('Без имени') }}</h2>
                         <x-admin.profile-status-badge :status="$profile->status" />
                         @if($profile->is_hidden)
-                            <span class="badge badge--draft">{{ __('Скрыт от других участниц') }}</span>
+                            <span class="badge badge--draft" title="{{ __('Режим невидимки: другие участницы этот профиль не видят и не находят.') }}">{{ __('Невидимка') }}</span>
                         @endif
                     </div>
 
@@ -113,41 +113,37 @@
             </div>
         </div>
 
-        {{-- Скрыть от других участниц: человек пользуется платформой изнутри, но другие его не видят и не находят; публиковать инициативы он не может. --}}
-        <div class="card flex flex-wrap items-center justify-between gap-3">
-            <p class="text-reading text-ink-muted max-w-xl">
-                {{ $profile->is_hidden
-                    ? __('Профиль скрыт: другие участницы не видят его в каталоге, поиске, рекомендациях и AI-помощнике, а публиковать инициативы он не может. Рассылки он получает.')
-                    : __('Профиль виден другим участницам. Скройте его, если человек (администратор, спонсор, партнёр) должен быть внутри платформы, но оставаться незаметным.') }}
-            </p>
-            <form method="POST" action="{{ route('admin.profiles.visibility', $profile) }}">
-                @csrf
-                <button type="submit" class="btn-secondary">
-                    {{ $profile->is_hidden ? __('Показать другим участницам') : __('Скрыть от других участниц') }}
-                </button>
-            </form>
+        {{-- Состояние профиля и кнопки модерации: что значит каждое состояние и что произойдёт при нажатии, написано рядом. --}}
+        <div class="card space-y-4">
+            <h3 class="form-section-title">{{ __('Видимость и доступ') }}</h3>
+            <dl class="space-y-2 text-reading">
+                <div>
+                    <dt class="inline font-semibold">{{ $profile->isRejected() ? __('Заблокирована.') : __('Доступ открыт.') }}</dt>
+                    <dd class="inline text-ink-muted">{{ $profile->isRejected()
+                        ? __('Войти в кабинет она не может, рассылки не приходят. Нажмите «Разблокировать», чтобы вернуть доступ.')
+                        : __('Она пользуется кабинетом. Заблокировать можно в любой момент: вход закроется, а ей придёт уведомление.') }}</dd>
+                </div>
+                @unless($profile->isRejected())
+                    <div>
+                        <dt class="inline font-semibold">{{ $profile->isApproved() ? __('Видима другим.') : __('Скрыта от других.') }}</dt>
+                        <dd class="inline text-ink-muted">{{ $profile->isApproved()
+                            ? __('Её находят в каталоге, поиске, подборе контактов и AI-помощнике, пока у неё действует платный пакет.')
+                            : __('Её нет в каталоге, поиске, подборе контактов и AI-помощнике. Кабинет, пакет и рассылки работают.') }}</dd>
+                    </div>
+                    <div>
+                        <dt class="inline font-semibold">{{ $profile->is_hidden ? __('Режим невидимки включён.') : __('Режим невидимки выключен.') }}</dt>
+                        <dd class="inline text-ink-muted">{{ $profile->is_hidden
+                            ? __('Другие участницы её не видят и не находят, а публиковать инициативы она не может. Рассылки она получает.')
+                            : __('Включайте для администратора, спонсора или партнёра: человек остаётся внутри платформы, но другие его не замечают.') }}</dd>
+                    </div>
+                @endunless
+            </dl>
+            <div class="flex flex-wrap items-center gap-2">
+                <x-admin.profile-moderation :profile="$profile" :page="true" />
+            </div>
         </div>
 
         <div class="flex flex-wrap items-center gap-2">
-            @unless($profile->isApproved())
-                <x-admin.confirm-button
-                    :action="route('admin.profiles.approve', $profile)"
-                    :label="__('Одобрить')"
-                    trigger="btn-primary"
-                    :title="__('Одобрить профиль?')"
-                    :message="__('Участница об этом не узнает: уведомление не отправляется. Её профиль станет виден другим участницам, когда у неё действует тариф.')" />
-            @endunless
-            @unless($profile->isRejected())
-                <x-admin.confirm-button
-                    :action="route('admin.profiles.reject', $profile)"
-                    :label="__('Отклонить')"
-                    trigger="btn-danger"
-                    :title="__('Отклонить профиль?')"
-                    :message="$profile->isApproved()
-                        ? __('Доступ к платформе будет закрыт, участница получит уведомление (в Telegram или письмом).')
-                        : __('Участница получит уведомление об отказе (в Telegram или письмом).')"
-                    :danger="true" />
-            @endunless
             <x-admin.delete-button
                 :action="route('admin.profiles.destroy', $profile)"
                 :subject="$profile->full_name ?: __('Без имени')"

@@ -20,11 +20,17 @@ class PublicAboutPagesTest extends TestCase
         return number_format($price, 0, ',', "\u{00A0}");
     }
 
+    /** Middleware KeepNamesTogether склеивает «Woman’s Hub» неразрывным пробелом; для сравнения возвращаем обычный. */
+    private function plain(string $html): string
+    {
+        return str_replace("\u{00A0}", ' ', $html);
+    }
+
     // ---------------------------------------------------------------- «Приоритеты»
 
     public function test_the_priorities_page_is_built_from_the_regulations_and_has_no_demo_content(): void
     {
-        $html = $this->get(route('about.priorities'))->assertOk()->getContent();
+        $html = $this->plain($this->get(route('about.priorities'))->assertOk()->getContent());
 
         $this->assertMatchesRegularExpression('#<h1><span data-lang="ru">Приоритеты</span><span data-lang="en">Priorities</span><span data-lang="ro">Priorități</span></h1>#', $html);
         $this->assertStringContainsString('<title>Приоритеты — Women', $html);
@@ -84,7 +90,7 @@ class PublicAboutPagesTest extends TestCase
 
         // Заявка в Telegram, Комиссия, выбор пакета и оплата в кабинете, затем возможности.
         $positions = array_map(fn (string $text) => strpos($html, $text), [
-            'Подайте заявку', 'Заявку рассматривает Комиссия', 'Выберите пакет и оплатите', 'Пользуйтесь возможностями',
+            'Зарегистрируйтесь', 'Заявку рассматривает Комиссия', 'Выберите тариф и оплатите', 'Пользуйтесь возможностями',
         ]);
         $this->assertNotContains(false, $positions);
         $sorted = $positions;
@@ -92,7 +98,7 @@ class PublicAboutPagesTest extends TestCase
         $this->assertSame($sorted, $positions);
 
         $this->assertStringContainsString('Комиссия по отбору участниц из шести человек', $html);
-        $this->assertStringContainsString('откройте раздел «Подписка»', $html);
+        $this->assertStringContainsString('оплатите картой на защищённой странице банка', $html);
         $this->assertStringContainsString('Данные карты платформа не получает.', $html);
 
         // Нет прежней заглушки.
@@ -100,17 +106,18 @@ class PublicAboutPagesTest extends TestCase
         $this->assertStringNotContainsString('miro-public-steps', $html);
     }
 
-    public function test_the_join_page_applications_go_to_the_telegram_bot(): void
+    public function test_the_join_page_applications_go_to_the_registration(): void
     {
         $html = $this->get(route('members.join'))->assertOk()->getContent();
-        $bot = config('site.bot_url');
+        $register = route('account.register');
 
-        $this->assertSame('https://t.me/WomenComBot', $bot);
-        // Кнопка в шапке, две кнопки пакетов Community и Private и кнопка внизу.
-        $this->assertSame(4, substr_count($html, 'href="'.$bot.'" target="_blank" rel="noopener"'));
-        foreach (['Подать заявку в Telegram', 'Apply in Telegram', 'Depune cererea în Telegram'] as $label) {
+        // Кнопка в шапке, три кнопки пакетов (Community, Active, Private) и кнопка внизу.
+        $this->assertSame(5, substr_count($html, 'href="'.$register.'" target="_blank" rel="noopener"'));
+        foreach (['Зарегистрироваться', 'Sign up', 'Înregistrează-te'] as $label) {
             $this->assertStringContainsString($label, $html, $label);
         }
+        // Бот больше не принимает заявки: в Telegram не ведёт ни одна кнопка заявки.
+        $this->assertStringNotContainsString('href="'.config('site.bot_url').'" target="_blank" rel="noopener" class="miro-button', $html);
         // Вход для тех, кто уже участница.
         $this->assertStringContainsString('href="'.route('account.login').'"', $html);
     }
@@ -119,37 +126,43 @@ class PublicAboutPagesTest extends TestCase
     {
         $html = $this->get(route('members.join'))->assertOk()->getContent();
 
-        foreach (['WOMEN’S HUB OPEN', 'WOMEN’S HUB COMMUNITY', 'WOMEN’S HUB PRIVATE'] as $name) {
-            $this->assertStringContainsString($name, $html, $name);
+        foreach (['WOMEN’S HUB COMMUNITY', 'WOMEN’S HUB ACTIVE', 'WOMEN’S HUB PRIVATE'] as $name) {
+            $this->assertStringContainsString($name, $this->plain($html), $name);
         }
+        $this->assertStringNotContainsString('WOMEN’S HUB OPEN', $this->plain($html), 'пакета Open больше нет');
         $this->assertSame(3, substr_count($html, 'class="miro-about__plan '));
 
-        // Перечни возможностей слово в слово из lang/subscription.php: 7, 10 и 10 пунктов на каждом языке.
+        // Перечни возможностей слово в слово из lang/subscription.php: столько пунктов, сколько там записано.
+        $counts = array_map(fn (string $plan) => count(__("subscription.plans.{$plan}.features", [], 'ru')), ['community', 'active', 'private']);
         preg_match_all('#<ul class="miro-about__plan-list">(.*?)</ul>#s', $html, $lists);
-        $this->assertSame([7, 10, 10], array_map(fn (string $list) => substr_count($list, '<li>'), $lists[1]));
-        foreach (array_merge(__('subscription.plans.community.features', [], 'ru'), __('subscription.plans.private.features', [], 'ru'), __('subscription.plans.community.features', [], 'en'), __('subscription.plans.private.features', [], 'ro')) as $feature) {
-            $this->assertStringContainsString(e($feature), $html, $feature);
+        $this->assertSame($counts, array_map(fn (string $list) => substr_count($list, '<li>'), $lists[1]));
+        foreach (['ru', 'en', 'ro'] as $locale) {
+            foreach (['community', 'active', 'private'] as $plan) {
+                foreach (__("subscription.plans.{$plan}.features", [], $locale) as $feature) {
+                    $this->assertStringContainsString(e($feature), $this->plain($html), $feature);
+                }
+            }
         }
 
         // Цены по умолчанию из config/subscription.php.
         $this->assertStringContainsString('class="miro-about__plan-amount">600<', $html);
-        $this->assertStringContainsString('class="miro-about__plan-amount">'.$this->nbsp(20000).'<', $html);
+        $this->assertStringContainsString('class="miro-about__plan-amount">'.$this->nbsp(5000).'<', $html);
+        $this->assertStringContainsString('class="miro-about__plan-amount">'.$this->nbsp(19000).'<', $html);
         $this->assertStringContainsString('руб. / в год', $html);
         $this->assertStringContainsString('rub. / per year', $html);
         $this->assertStringContainsString('rub. / pe an', $html);
-        // Открытый доступ бесплатен и не даёт статуса резидента.
-        $this->assertStringContainsString('Открытый доступ не даёт статуса резидента', $html);
     }
 
     public function test_package_prices_follow_the_admin_settings(): void
     {
-        SiteSetting::setSubscriptionPrices(['community' => 700, 'private' => 19000]);
+        SiteSetting::setSubscriptionPrices(['community' => 700, 'active' => 5500, 'private' => 19500]);
 
         $html = $this->get(route('members.join'))->assertOk()->getContent();
 
         $this->assertStringContainsString('class="miro-about__plan-amount">700<', $html);
-        $this->assertStringContainsString('class="miro-about__plan-amount">'.$this->nbsp(19000).'<', $html);
-        $this->assertStringNotContainsString($this->nbsp(20000), $html);
+        $this->assertStringContainsString('class="miro-about__plan-amount">'.$this->nbsp(5500).'<', $html);
+        $this->assertStringContainsString('class="miro-about__plan-amount">'.$this->nbsp(19500).'<', $html);
+        $this->assertStringNotContainsString($this->nbsp(5000), $html);
     }
 
     public function test_the_join_page_tells_about_the_terms_the_cabinet_and_the_questions(): void
@@ -162,11 +175,11 @@ class PublicAboutPagesTest extends TestCase
         }
         $this->assertStringContainsString('href="'.route('about.regulations').'#packages"', $html);
 
-        // Возможности кабинета: три доступны после одобрения (Open), семь с Community и Private (как в routes: plan:active).
+        // Возможности кабинета: три открывает Community, семь добавляют Active и Private (как в routes: plan:active).
         preg_match_all('#<div class="miro-about__group[^"]*">(.*?)</div>\s*</div>#s', $html, $groups);
         $this->assertCount(2, $groups[1]);
         $this->assertSame([3, 7], array_map(fn (string $group) => substr_count($group, 'class="miro-about__card"'), $groups[1]));
-        foreach (['Мой профиль', 'Каталог участниц', 'Подбор контактов', 'Поиск по запросу', 'AI-помощник', 'Возможности', 'Обучение', 'Telegram-бот', 'Подписка и оплаты'] as $feature) {
+        foreach (['Мой профиль', 'Каталог участниц', 'Подбор контактов', 'Поиск по запросу', 'AI-помощник', 'Возможности', 'Обучение', 'Подписка и оплаты'] as $feature) {
             $this->assertStringContainsString($feature, $html, $feature);
         }
         $this->assertStringContainsString('/themes/public/miro/images/illustrations/cabinet.svg', $html);

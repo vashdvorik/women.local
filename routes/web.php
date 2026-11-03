@@ -341,7 +341,9 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::put('profiles/{profile}', [Admin\ProfileController::class, 'update'])->name('profiles.update');
         Route::post('profiles/{profile}/visibility', [Admin\ProfileController::class, 'toggleVisibility'])->name('profiles.visibility');
         Route::post('profiles/{profile}/approve', [Admin\ProfileController::class, 'approve'])->name('profiles.approve');
-        Route::post('profiles/{profile}/reject', [Admin\ProfileController::class, 'reject'])->name('profiles.reject');
+        Route::post('profiles/{profile}/unapprove', [Admin\ProfileController::class, 'unapprove'])->name('profiles.unapprove');
+        Route::post('profiles/{profile}/block', [Admin\ProfileController::class, 'block'])->name('profiles.block');
+        Route::post('profiles/{profile}/unblock', [Admin\ProfileController::class, 'unblock'])->name('profiles.unblock');
         Route::delete('profiles/{profile}', [Admin\ProfileController::class, 'destroy'])->name('profiles.destroy');
 
         // Посты участниц из кабинета: премодерация.

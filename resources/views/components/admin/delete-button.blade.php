@@ -1,7 +1,13 @@
-@props(['action', 'subject', 'noun' => __('запись')])
+@props(['action', 'subject', 'noun' => __('запись'), 'compact' => false])
 
 <div x-data="{ open: false }" class="inline-block">
-    <button type="button" @click="open = true" class="btn-danger">{{ __('Удалить') }}</button>
+    @if($compact)
+        <button type="button" @click="open = true" class="btn-icon hover:text-danger hover:bg-danger-soft" title="{{ __('Удалить') }}" aria-label="{{ __('Удалить') }}">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 7h12M10 7V5h4v2m-6 0l.7 11a1 1 0 001 .9h4.6a1 1 0 001-.9L16 7M10.5 11v5m3-5v5"/></svg>
+        </button>
+    @else
+        <button type="button" @click="open = true" class="btn-danger">{{ __('Удалить') }}</button>
+    @endif
 
     <template x-teleport="body">
         <div x-show="open" x-transition.opacity class="modal-backdrop" hidden

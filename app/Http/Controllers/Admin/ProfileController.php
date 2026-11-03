@@ -91,7 +91,7 @@ class ProfileController extends Controller
             fwrite($out, "\xEF\xBB\xBF");
             fputcsv($out, [
                 'ID', __('Имя и фамилия'), __('Имя'), __('Почта регистрации'), __('Почта для связи'), __('Телефон'), __('Регион'),
-                'Telegram', 'Telegram ID', __('Язык'), __('Статус анкеты'), __('Скрыта от участниц'), __('Тариф'), __('Статус тарифа'),
+                'Telegram', 'Telegram ID', __('Язык'), __('Статус анкеты'), __('Режим невидимки'), __('Тариф'), __('Статус тарифа'),
                 __('Тариф действует до'), __('Оплачено, руб.'), __('Чем занимается'), __('Что ищет'), __('Почта подтверждена'),
                 __('Вход через Google'), __('Дата регистрации'), __('Анкета заполнена'), __('Одобрена'), __('Первый вход в кабинет'),
             ], ';');
@@ -115,7 +115,7 @@ class ProfileController extends Controller
                             $user->telegram_username ? '@'.$user->telegram_username : '',
                             $user->telegram_id,
                             $user->locale,
-                            match ($user->status) { BotUser::STATUS_APPROVED => __('Одобрена'), BotUser::STATUS_REJECTED => __('Отклонена'), BotUser::STATUS_PENDING => __('Ожидает'), default => (string) $user->status },
+                            match ($user->status) { BotUser::STATUS_APPROVED => __('Видима другим'), BotUser::STATUS_REJECTED => __('Заблокирована'), BotUser::STATUS_PENDING => __('Скрыта от других'), default => (string) $user->status },
                             $user->is_hidden ? $yes : $no,
                             $stored->isPaid() ? $stored->title() : '',
                             $planStatus,
@@ -180,22 +180,47 @@ class ProfileController extends Controller
         $profile->forceFill(['is_hidden' => ! $profile->is_hidden])->save();
 
         return back()->with('success', $profile->is_hidden
-            ? __('Профиль скрыт от других участниц.')
-            : __('Профиль снова виден другим участницам.'));
+            ? __('Режим невидимки включён: другие участницы её не видят и не находят.')
+            : __('Режим невидимки выключен.'));
     }
 
+    /** «Видима другим». У заблокированной сначала снимают блокировку: отметка меняется только у тех, кто внутри. */
     public function approve(BotUser $profile, ProfileModeration $moderation): RedirectResponse
     {
+        if ($profile->isRejected()) {
+            return back()->with('error', __('Участница заблокирована. Сначала разблокируйте её.'));
+        }
+
         $moderation->approve($profile);
 
-        return back()->with('success', __('Профиль участницы одобрен.'));
+        return back()->with('success', __('Профиль виден другим участницам (пока у неё действует тариф).'));
     }
 
-    public function reject(BotUser $profile, ProfileModeration $moderation): RedirectResponse
+    /** «Скрыта от других». */
+    public function unapprove(BotUser $profile, ProfileModeration $moderation): RedirectResponse
     {
-        $moderation->reject($profile);
+        if ($profile->isRejected()) {
+            return back()->with('error', __('Участница заблокирована. Сначала разблокируйте её.'));
+        }
 
-        return back()->with('success', __('Профиль участницы отклонён.'));
+        $moderation->unapprove($profile);
+
+        return back()->with('success', __('Профиль скрыт от других участниц.'));
+    }
+
+    /** Блокировка: можно заблокировать любую участницу в любой момент. */
+    public function block(BotUser $profile, ProfileModeration $moderation): RedirectResponse
+    {
+        $moderation->block($profile);
+
+        return back()->with('success', __('Участница заблокирована: вход в кабинет закрыт.'));
+    }
+
+    public function unblock(BotUser $profile, ProfileModeration $moderation): RedirectResponse
+    {
+        $moderation->unblock($profile);
+
+        return back()->with('success', __('Участница разблокирована: вход в кабинет снова открыт.'));
     }
 
     public function destroy(BotUser $profile): RedirectResponse

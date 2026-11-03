@@ -23,7 +23,10 @@ trait SubscriptionHelpers
 
     protected function asParticipant(BotUser $user): static
     {
-        return $this->withSession($this->sessionFor($user));
+        // Страж кабинета помнит прежнюю участницу: без сброса второй вызов в том же тесте открыл бы страницу под первой.
+        $this->app['auth']->forgetGuards();
+
+        return $this->flushSession()->withSession($this->sessionFor($user));
     }
 
     /** Подключает страницу «банка» для разработки: в обычной работе она есть только при APP_ENV=local. */

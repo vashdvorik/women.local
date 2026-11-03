@@ -37,7 +37,7 @@
         </div>
     @else
         {{-- Заявку нельзя отправить случайным нажатием: сначала окно подтверждения (Esc и «Отмена» закрывают его) --}}
-        <form method="POST" action="{{ route('account.plan-request.store') }}" class="space-y-3"
+        <form method="POST" id="plan-request-{{ $plan->value }}" action="{{ route('account.plan-request.store') }}" class="space-y-3"
               x-data="{ confirm: false }" @keydown.escape.window="confirm = false">
             @csrf
             <input type="hidden" name="plan" value="{{ $plan->value }}">
@@ -46,16 +46,19 @@
                 {{ __('participant.plans.request') }}
             </button>
 
+            {{-- Окно переносится в body: внутри карточки «fixed» считался бы от неё и не закрывал весь экран (сверху оставалась полоска). Кнопка «Да» привязана к форме атрибутом form. --}}
+            <template x-teleport="body">
             <div x-show="confirm" x-cloak class="sub-confirm" role="dialog" aria-modal="true" aria-labelledby="confirm-{{ $plan->value }}" @click.self="confirm = false">
                 <div class="sub-confirm__box">
                     <h3 id="confirm-{{ $plan->value }}" class="sub-confirm__title">{{ __('participant.plans.confirm_title') }}</h3>
                     <p class="sub-confirm__text">{{ __('participant.plans.confirm_text', ['plan' => $plan->title()]) }}</p>
                     <div class="sub-confirm__actions">
                         <button type="button" class="sub-confirm__cancel" @click="confirm = false">{{ __('participant.plans.confirm_cancel') }}</button>
-                        <button type="submit" class="sub-confirm__send">{{ __('participant.plans.confirm_send') }}</button>
+                        <button type="submit" form="plan-request-{{ $plan->value }}" class="sub-confirm__send">{{ __('participant.plans.confirm_send') }}</button>
                     </div>
                 </div>
             </div>
+            </template>
         </form>
     @endif
 @else

@@ -7,11 +7,20 @@
     'trigger' => 'btn-quiet',   // класс кнопки, открывающей окно
     'confirm' => null,          // подпись кнопки подтверждения (по умолчанию — label)
     'danger' => false,
+    'hint' => null,             // подсказка при наведении на кнопку: что произойдёт
+    'toggle' => null,           // null — обычная кнопка; true / false — переключатель «вкл / выкл» с подписью label
 ])
 
 {{-- Подтверждение действия в модальном окне (как у delete-button, но для любого действия). --}}
 <div x-data="{ open: false }" class="inline-block">
-    <button type="button" @click="open = true" class="{{ $trigger }}">{{ $label }}</button>
+    @if($toggle === null)
+        <button type="button" @click="open = true" class="{{ $trigger }}"@if($hint) title="{{ $hint }}"@endif>{{ $label }}</button>
+    @else
+        {{-- Переключатель: состояние видно сразу, нажатие открывает окно подтверждения с пояснением --}}
+        <button type="button" role="switch" aria-checked="{{ $toggle ? 'true' : 'false' }}" @click="open = true" class="switch-row"@if($hint) title="{{ $hint }}"@endif>
+            <span class="switch" aria-hidden="true"></span><span>{{ $label }}</span>
+        </button>
+    @endif
 
     <template x-teleport="body">
         <div x-show="open" x-transition.opacity class="modal-backdrop" hidden
