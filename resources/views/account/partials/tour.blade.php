@@ -57,6 +57,55 @@
         return box.width > 0 && box.height > 0 ? el : null;
     }
 
+    // Карточка стоит там, где она помещается целиком: справа от элемента, иначе слева, иначе под ним, иначе над ним.
+    // Возвращает false, если места рядом с элементом нет нигде (широкий элемент на низком экране): тогда карточка прижата
+    // к низу и может его закрыть, и вызывающий подтягивает элемент к верху экрана и расставляет заново. Всегда внутри окна.
+    function place(box, pad) {
+        var fits = true;
+        var gap = 16;
+        var margin = 16;
+        var w = card.offsetWidth;
+        var h = card.offsetHeight;
+        var vw = window.innerWidth;
+        var vh = window.innerHeight;
+        var clampX = function (x) { return Math.max(margin, Math.min(vw - w - margin, x)); };
+        var clampY = function (y) { return Math.max(margin, Math.min(vh - h - margin, y)); };
+        var middleY = box.top + box.height / 2 - h / 2;
+        var middleX = box.left + box.width / 2 - w / 2;
+        var left;
+        var top;
+
+        if (box.right + pad + gap + w + margin <= vw) {
+            left = box.right + pad + gap; top = clampY(middleY);
+        } else if (box.left - pad - gap - w - margin >= 0) {
+            left = box.left - pad - gap - w; top = clampY(middleY);
+        } else if (box.bottom + pad + gap + h + margin <= vh) {
+            left = clampX(middleX); top = box.bottom + pad + gap;
+        } else if (box.top - pad - gap - h - margin >= 0) {
+            left = clampX(middleX); top = box.top - pad - gap - h;
+        } else {
+            left = clampX(middleX); top = vh - h - margin;
+            fits = false;
+        }
+
+        card.style.left = left + 'px';
+        card.style.top = top + 'px';
+
+        return fits;
+    }
+
+    // Подсветка вокруг элемента
+    function frame(el, pad) {
+        var box = el.getBoundingClientRect();
+        spot.hidden = false;
+        spot.style.top = (box.top - pad) + 'px';
+        spot.style.left = (box.left - pad) + 'px';
+        spot.style.width = (box.width + pad * 2) + 'px';
+        spot.style.height = (box.height + pad * 2) + 'px';
+
+        return box;
+    }
+
     function show(n) {
         index = Math.max(0, Math.min(steps.length - 1, n));
         var step = steps[index];
@@ -71,17 +120,15 @@
 
         var el = targetOf(step);
         if (el) {
-            el.scrollIntoView({ block: 'nearest' });
-            var box = el.getBoundingClientRect();
             var pad = 6;
-            spot.hidden = false;
-            spot.style.top = (box.top - pad) + 'px';
-            spot.style.left = (box.left - pad) + 'px';
-            spot.style.width = (box.width + pad * 2) + 'px';
-            spot.style.height = (box.height + pad * 2) + 'px';
+            el.scrollIntoView({ block: 'nearest' });
             root.classList.remove('tour--center');
-            card.style.left = (box.right + pad + 16) + 'px';
-            card.style.top = Math.max(16, Math.min(window.innerHeight - card.offsetHeight - 16, box.top + box.height / 2 - card.offsetHeight / 2)) + 'px';
+
+            if (!place(frame(el, pad), pad)) {
+                // Рядом места нет: подтягиваем элемент к верху экрана, чтобы карточка встала под ним и ничего не закрыла
+                el.scrollIntoView({ block: 'start' });
+                place(frame(el, pad), pad);
+            }
         } else {
             spot.hidden = true;
             root.classList.add('tour--center');

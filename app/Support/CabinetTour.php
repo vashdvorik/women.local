@@ -77,7 +77,7 @@ final class CabinetTour
         }
 
         if ($previous === null) {
-            $steps[] = ['target' => '[data-tour-nav]', 'title' => __('account.tour.menu_title'), 'text' => __('account.tour.menu_text'), 'how' => ''];
+            $steps[] = ['target' => '[data-tour-nav]', 'title' => __('account.tour.menu_title'), 'text' => $user->hasPlan(Plan::Active) ? __('account.tour.menu_text') : __('account.tour.menu_text_community'), 'how' => ''];
             $steps[] = ['target' => '[data-tour-home="plan"]', 'title' => __('account.tour.home_plan_title'), 'text' => __('account.tour.home_plan_text'), 'how' => ''];
             $steps[] = ['target' => '[data-tour-home="feed"]', 'title' => __('account.tour.home_feed_title'), 'text' => __('account.tour.home_feed_text'), 'how' => ''];
         }

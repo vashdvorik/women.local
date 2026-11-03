@@ -1144,5 +1144,22 @@
     "Начато оформление пакета": "Plan checkout started",
     "Подключения Telegram": "Telegram connections",
     "Без текста": "No text",
-    "Кнопка :n": "Button :n"
+    "Кнопка :n": "Button :n",
+    "Активность участниц": "Member activity",
+    "Активность участниц в кабинете": "Member activity in the cabinet",
+    "Инструменты за период: :period.": "Tools for the period: :period.",
+    "Заходы считаются с :date (прошло дней: :days).": "Visits are counted from :date (days passed: :days).",
+    "Данных о заходах пока нет: учёт включён, но заходов после запуска ещё не было.": "No visit data yet: tracking is on, but there have been no visits since the launch.",
+    "Ключевые цифры": "Key figures",
+    ":visits дней с заходом, в среднем :avg на участницу": ":visits days with a visit, :avg per member on average",
+    ":active из :paid заходили за 30 дней": ":active of :paid visited in 30 days",
+    "Левый столбик — сколько разных участниц заходило в месяц; правый — «дни с заходом» (участница и день считаются один раз).": "The left bar shows how many different members visited in the month; the right bar shows “days with a visit” (a member and a day are counted once).",
+    "За период: :period. Процент — доля от всех участниц, заходивших за этот период.": "For the period: :period. The percentage is the share of all members who visited in that period.",
+    "Участниц с действующим пакетом, которые не заходили :days дней и больше: :count.": "Members with a current plan who have not visited for :days days or more: :count.",
+    "Рассылки в Telegram": "Telegram broadcasts",
+    "Доставлено, заблокировали бота и нажатия на кнопки.": "Delivered, blocked the bot and button clicks.",
+    "За 30 дней": "In 30 days",
+    "заблокировали бота: :n": "blocked the bot: :n",
+    "из :paid с действующим пакетом": "of :paid with a current plan",
+    "«Прочитано» Telegram боту не сообщает, поэтому такой цифры нет. Ссылки, вписанные прямо в текст сообщения, не считаются: считаются только кнопки.": "“Read” is not reported to a bot by Telegram, so there is no such number. Links written directly in the message text are not counted: only buttons are."
 }

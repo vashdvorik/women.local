@@ -357,6 +357,7 @@ return [
         'congrats_details' => 'See the details of your package privileges on the “Subscription” page.',
         'menu_title' => 'Account menu',
         'menu_text' => 'All sections are in the menu: on the left on a computer, at the bottom of the screen and under “More” on a phone. Sections marked PREMIUM are included in the ACTIVE and PRIVATE plans, and the less frequent ones (“AI manager”, “Initiatives”, “Subscription”) are in the “More” group.',
+        'menu_text_community' => 'All sections are in the menu: on the left on a computer, at the bottom of the screen and under “More” on a phone. The other sections, such as recommendations, contact search and platform profiles, open with the ACTIVE plan.',
         'home_plan_title' => 'Your plan and profile',
         'home_plan_text' => 'At the top you see your plan and when it ends: a “Renew” link appears a month before the end. Next to it is how complete your profile is and a hint on what to add so that you are easier to find.',
         'home_feed_title' => 'Sections and rows on the home page',

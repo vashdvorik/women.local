@@ -681,7 +681,7 @@ body.account-theme-fortuntwo .account-nav-group__body { padding-left: 14px; }
 
 /* Главная кабинета: шапка со статусом, короткие плитки разделов и горизонтальные ленты */
 body.account-theme-fortuntwo .home-hero { display: grid; gap: 20px; }
-@media (min-width: 900px) { body.account-theme-fortuntwo .home-hero { grid-template-columns: minmax(0, 1fr) auto; align-items: end; } }
+@media (min-width: 1200px) { body.account-theme-fortuntwo .home-hero { grid-template-columns: minmax(240px, 1fr) minmax(0, 540px); align-items: end; } }
 body.account-theme-fortuntwo .home-hero__cards { display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (max-width: 520px) { body.account-theme-fortuntwo .home-hero__cards { grid-template-columns: minmax(0, 1fr); } }
 body.account-theme-fortuntwo .home-stat { min-width: 200px; padding: 14px 16px; border: 1px solid #EBDDD3; border-radius: 18px; background: #FFFBF8; }
@@ -695,7 +695,7 @@ body.account-theme-fortuntwo .home-meter span { display: block; height: 100%; bo
 
 body.account-theme-fortuntwo .home-tiles { display: grid; gap: 10px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (min-width: 640px) { body.account-theme-fortuntwo .home-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (min-width: 1024px) { body.account-theme-fortuntwo .home-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 1280px) { body.account-theme-fortuntwo .home-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 body.account-theme-fortuntwo .home-tile { display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 8px 12px; border: 1px solid #EBDDD3; border-radius: 16px; background: #fff; color: #21140F; font-size: 14px; font-weight: 500; transition: border-color .15s ease, box-shadow .15s ease; }
 body.account-theme-fortuntwo .home-tile:hover { border-color: #C99A73; box-shadow: 0 6px 18px rgba(116, 71, 47, .08); }
 body.account-theme-fortuntwo .home-tile__icon { display: flex; flex-shrink: 0; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 10px; background: #F1E3DA; color: #74472F; }
@@ -730,7 +730,7 @@ body.account-theme-fortuntwo .home-upgrade__list li { padding: 3px 10px; border-
 @media (max-width: 420px) {
     body.account-theme-fortuntwo .home-tile { gap: 8px; padding: 8px 10px; font-size: 13px; }
     body.account-theme-fortuntwo .home-tile__icon { width: 30px; height: 30px; }
-    body.account-theme-fortuntwo .home-tile__label { overflow-wrap: anywhere; }
+    body.account-theme-fortuntwo .home-tile__label { overflow-wrap: break-word; }
 }
 
 /* Стрелки у лент главной: полоса прокрутки скрыта, листать можно кнопками и свайпом */
@@ -747,4 +747,19 @@ body.account-theme-fortuntwo .home-rail-wrap--static .home-rail-btn { display: n
     body.account-theme-fortuntwo .home-rail-btn { width: 34px; height: 34px; }
     body.account-theme-fortuntwo .home-rail-btn--prev { left: -6px; }
     body.account-theme-fortuntwo .home-rail-btn--next { right: -6px; }
+}
+
+/* Плитки главной: метка PREMIUM «висит» на верхней рамке плитки в углу и не занимает ширину рядом с названием, поэтому
+   название не сжимается и не перекрывается на любом экране. Замок закрытого раздела компактный и остаётся в строке. */
+body.account-theme-fortuntwo .home-tile { position: relative; }
+body.account-theme-fortuntwo .home-tile .account-premium-tag { position: absolute; top: -7px; right: 12px; z-index: 1; padding: 1px 7px; font-size: 8px; box-shadow: 0 0 0 2px #FAF4F1; }
+body.account-theme-fortuntwo .home-tile__label { overflow-wrap: break-word; hyphens: auto; }
+body.account-theme-fortuntwo .home-tile__lock { width: 14px; height: 14px; }
+/* Самые узкие телефоны (до 360 px): плитка плотнее, чтобы длинные слова («Возможности», «Рекомендации») не рвались */
+@media (max-width: 360px) {
+    body.account-theme-fortuntwo .home-tiles { gap: 8px; }
+    body.account-theme-fortuntwo .home-tile { gap: 6px; padding: 8px; font-size: 12px; }
+    body.account-theme-fortuntwo .home-tile__icon { width: 26px; height: 26px; border-radius: 8px; }
+    body.account-theme-fortuntwo .home-tile__icon svg { width: 16px; height: 16px; }
+    body.account-theme-fortuntwo .home-tile .account-premium-tag { right: 8px; }
 }

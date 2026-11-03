@@ -10,9 +10,7 @@
 
 <x-layouts.admin :title="__('Статистика платформы')">
     <x-slot:actions>
-        @if($tab === 'community')
-            <a href="{{ route('admin.statistics.pdf') }}" class="btn-primary">{{ __('Скачать PDF') }}</a>
-        @endif
+        <a href="{{ route('admin.statistics.pdf', array_filter(['tab' => $tab, 'period' => $tab === 'activity' ? $period : null])) }}" class="btn-primary">{{ __('Скачать PDF') }}</a>
         <button type="button" onclick="window.print()" class="btn-secondary hidden md:inline-flex">{{ __('Печать') }}</button>
     </x-slot:actions>
 

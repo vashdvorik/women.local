@@ -60,7 +60,8 @@ class StatisticsActivityTest extends TestCase
         $this->actingAsAdmin()->get(route('admin.statistics.index', ['tab' => 'activity']))->assertOk()
             ->assertSee('Данных об активности пока нет')
             ->assertSee('Посещения по месяцам')
-            ->assertDontSee('Скачать PDF')
+            ->assertSee('Скачать PDF')
+            ->assertSee(e(route('admin.statistics.pdf', ['tab' => 'activity', 'period' => '30'])), false)
             ->assertSee('Учёт идёт меньше');
     }
 
@@ -241,6 +242,51 @@ class StatisticsActivityTest extends TestCase
 
         foreach (['activity', 'broadcasts', 'community'] as $tab) {
             $this->actingAs($intruder)->get(route('admin.statistics.index', ['tab' => $tab]))->assertForbidden();
+        }
+    }
+
+    public function test_each_tab_has_its_own_pdf_with_the_same_numbers(): void
+    {
+        $a = $this->member();
+        $this->visit($a, 'matches', now()->toDateString(), 4);
+
+        $make = fn (array $query) => $this->actingAsAdmin()->get(route('admin.statistics.pdf', $query));
+
+        foreach ([[[], 'impact-report'], [['tab' => 'activity'], 'activity-report'], [['tab' => 'activity', 'period' => 'all'], 'activity-report'], [['tab' => 'broadcasts'], 'broadcasts-report']] as [$query, $name]) {
+            $response = $make($query)->assertOk();
+
+            $this->assertSame('application/pdf', $response->headers->get('Content-Type'));
+            $this->assertStringContainsString($name.'-'.now()->format('Y-m-d').'.pdf', $response->headers->get('Content-Disposition'));
+            $this->assertStringStartsWith('%PDF', $response->getContent(), $name);
+        }
+
+        // неизвестная вкладка и период не ломают выгрузку
+        $make(['tab' => 'hack', 'period' => 'hack'])->assertOk();
+        $make(['tab' => 'activity', 'period' => 'hack'])->assertOk();
+    }
+
+    public function test_the_activity_pdf_view_renders_with_data_and_without_it(): void
+    {
+        $empty = view('admin.statistics.pdf-activity', app(ActivityReport::class)->activity('30') + ['generatedAt' => '03.11.2026 10:00'])->render();
+        $this->assertStringContainsString('Активность участниц в кабинете', $empty);
+        $this->assertStringContainsString('Данных о заходах пока нет', $empty);
+
+        $a = $this->member();
+        $this->visit($a, 'matches', now()->toDateString(), 4);
+        $html = view('admin.statistics.pdf-activity', app(ActivityReport::class)->activity('all') + ['generatedAt' => '03.11.2026 10:00'])->render();
+
+        foreach (['Ключевые цифры', 'Посещения по месяцам', 'Какими инструментами пользуются', 'Рекомендации', 'История по месяцам', 'Всё время'] as $text) {
+            $this->assertStringContainsString($text, $html, $text);
+        }
+    }
+
+    public function test_the_pdfs_are_closed_to_non_admins(): void
+    {
+        config(['admin.email' => 'someone-else@example.test']);
+        $intruder = \App\Models\User::factory()->create(['email' => 'intruder@example.test']);
+
+        foreach (['community', 'activity', 'broadcasts'] as $tab) {
+            $this->actingAs($intruder)->get(route('admin.statistics.pdf', ['tab' => $tab]))->assertForbidden();
         }
     }
 }

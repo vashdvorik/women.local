@@ -66,6 +66,15 @@ class CabinetTourTest extends TestCase
         $this->assertStringContainsString('«Ещё»', $steps[0]['text']);
     }
 
+    public function test_the_menu_step_of_community_does_not_mention_premium_or_the_more_group(): void
+    {
+        $text = CabinetTour::steps($this->member(Plan::Community), replay: true)[0]['text'];
+
+        $this->assertStringNotContainsString('PREMIUM', $text);
+        $this->assertStringNotContainsString('группе «Ещё»', $text);
+        $this->assertStringContainsString('ACTIVE', $text);
+    }
+
     public function test_community_tour_has_no_premium_sections_but_has_learning(): void
     {
         $targets = $this->targets(CabinetTour::steps($this->member(Plan::Community), replay: true));

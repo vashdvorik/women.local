@@ -357,6 +357,7 @@ return [
         'congrats_details' => 'Detaliile privilegiilor pachetului găsiți pe pagina „Abonament”.',
         'menu_title' => 'Meniul contului',
         'menu_text' => 'Toate secțiunile sunt în meniu: în stânga pe calculator, în josul ecranului și la „Mai mult” pe telefon. Secțiunile marcate PREMIUM sunt incluse în pachetele ACTIVE și PRIVATE, iar cele mai rar folosite („Manager AI”, „Inițiative”, „Abonament”) sunt în grupul „Mai mult”.',
+        'menu_text_community' => 'Toate secțiunile sunt în meniu: în stânga pe calculator, în josul ecranului și la „Mai mult” pe telefon. Celelalte secțiuni, de exemplu recomandările, căutarea de contacte și profilurile platformei, se deschid cu pachetul ACTIVE.',
         'home_plan_title' => 'Pachetul și profilul dvs.',
         'home_plan_text' => 'Sus vedeți pachetul și până când este valabil: cu o lună înainte de final apare linkul „Prelungiți”. Alături este cât de complet este profilul și un indiciu ce să adăugați ca să fiți mai ușor de găsit.',
         'home_feed_title' => 'Secțiuni și benzi pe pagina principală',
