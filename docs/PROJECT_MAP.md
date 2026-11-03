@@ -550,7 +550,7 @@ routes/
 app/Http/
 ├── Controllers/Account/    cabinet/auth/opportunities controllers
 ├── Controllers/Admin/      разделы админки
-├── Controllers/PublicSite/ публичные страницы с материалами из админки
+├── Controllers/PublicSite/ публичные страницы с материалами из админки; SitemapController отдаёт /sitemap.xml и /robots.txt (файла public/robots.txt нет)
 ├── Middleware/             SetLocale, RequireAccountAuth
 └── Requests/Account/       profile/opportunity validation
 

@@ -27,6 +27,10 @@ use SergiX44\Nutgram\Nutgram;
 
 Route::get('/', PublicSite\LandingController::class);
 
+// Карта сайта и robots.txt для поисковиков (файла public/robots.txt нет: его отдаёт приложение).
+Route::get('/sitemap.xml', [PublicSite\SitemapController::class, 'sitemap'])->name('sitemap');
+Route::get('/robots.txt', [PublicSite\SitemapController::class, 'robots'])->name('robots');
+
 Route::get('/members', function () {
     return PublicThemeView::render('members');
 })->name('members');

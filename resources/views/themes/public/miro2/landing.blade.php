@@ -12,8 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Women's Hub</title>
-    <meta name="description" content="Пространство для женщин-предпринимательниц: обучение, контакты, AI-рекомендации и возможности роста.">
+    <x-seo title="Women's Hub — платформа для женщин-предпринимательниц" description="Пространство для женщин-предпринимательниц: обучение, контакты, AI-рекомендации и возможности роста." />
     <link rel="icon" type="image/png" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/brand/favicon-w4w.png') }}">
     <link rel="apple-touch-icon" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/brand/apple-touch-icon.png') }}">
     <link rel="shortcut icon" href="{{ asset_v('favicon.ico') }}">

@@ -22,11 +22,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Women's Hub — Participants</title>
+    <x-seo title="Участницы — Women's Hub" description="Каталог участниц Women's Hub: женщины-предпринимательницы, их бизнесы и компетенции." />
     <link rel="icon" type="image/png" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/brand/favicon-w4w.png') }}">
     <link rel="apple-touch-icon" href="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/brand/apple-touch-icon.png') }}">
     <link rel="shortcut icon" href="{{ asset_v('favicon.ico') }}">
-    <meta name="description" content="Public directory of participants of Women's Hub.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Prata&display=swap" rel="stylesheet">
