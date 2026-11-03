@@ -51,9 +51,11 @@ final class CabinetTour
         $items = collect(CabinetNav::items($user, includeLocked: false))->keyBy('key');
         $previous = $replay ? null : self::previousPlan($user, $plan);
 
+        // Разделы идут в том порядке, в каком они стоят в боковом меню (сверху вниз, включая группу «Ещё»), чтобы
+        // карточка подсказки не прыгала по меню вверх и вниз.
         $sections = array_values(array_filter(
-            self::SECTIONS,
-            fn (string $key): bool => $items->has($key) && in_array($key, self::BY_PLAN[$plan->value] ?? [], true),
+            self::menuOrder($user),
+            fn (string $key): bool => in_array($key, self::SECTIONS, true) && $items->has($key) && in_array($key, self::BY_PLAN[$plan->value] ?? [], true),
         ));
 
         // Переход на тариф выше: рассказываем только о том, чего на прежнем тарифе не было
@@ -78,8 +80,6 @@ final class CabinetTour
 
         if ($previous === null) {
             $steps[] = ['target' => '[data-tour-nav]', 'title' => __('account.tour.menu_title'), 'text' => $user->hasPlan(Plan::Active) ? __('account.tour.menu_text') : __('account.tour.menu_text_community'), 'how' => ''];
-            $steps[] = ['target' => '[data-tour-home="plan"]', 'title' => __('account.tour.home_plan_title'), 'text' => __('account.tour.home_plan_text'), 'how' => ''];
-            $steps[] = ['target' => '[data-tour-home="feed"]', 'title' => __('account.tour.home_feed_title'), 'text' => __('account.tour.home_feed_text'), 'how' => ''];
         }
 
         foreach ($sections as $key) {
@@ -91,7 +91,33 @@ final class CabinetTour
             ];
         }
 
+        // Закончив с меню слева, переходим к самой странице: пакет и плитки разделов
+        if ($previous === null) {
+            $steps[] = ['target' => '[data-tour-home="plan"]', 'title' => __('account.tour.home_plan_title'), 'text' => __('account.tour.home_plan_text'), 'how' => ''];
+            $steps[] = ['target' => '[data-tour-home="feed"]', 'title' => __('account.tour.home_feed_title'), 'text' => __('account.tour.home_feed_text'), 'how' => ''];
+        }
+
         return $steps;
+    }
+
+    /**
+     * Ключи разделов в порядке бокового меню сверху вниз; разделы из группы «Ещё» идут в месте самой группы.
+     *
+     * @return list<string>
+     */
+    private static function menuOrder(BotUser $user): array
+    {
+        $keys = [];
+
+        foreach (CabinetNav::sidebar($user) as $entry) {
+            if (! empty($entry['group'])) {
+                array_push($keys, ...array_column($entry['items'], 'key'));
+            } else {
+                $keys[] = $entry['key'];
+            }
+        }
+
+        return $keys;
     }
 
     /** Самый высокий из прежних тарифов, на котором подсказки уже показывались (ниже текущего), либо null. */

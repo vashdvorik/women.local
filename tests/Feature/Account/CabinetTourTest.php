@@ -44,8 +44,6 @@ class CabinetTourTest extends TestCase
 
         $this->assertSame([
             '[data-tour-nav]',
-            '[data-tour-home="plan"]',
-            '[data-tour-home="feed"]',
             '[data-tour="assistant"]',
             '[data-tour="matches"]',
             '[data-tour="search"]',
@@ -55,7 +53,25 @@ class CabinetTourTest extends TestCase
             '[data-tour="manager"]',
             '[data-tour="opportunities"]',
             '[data-tour="profile"]',
+            '[data-tour-home="plan"]',
+            '[data-tour-home="feed"]',
         ], $targets);
+    }
+
+    public function test_the_community_tour_goes_down_the_menu_without_jumping_back(): void
+    {
+        $user = $this->member(Plan::Community);
+        $menu = collect(\App\Support\CabinetNav::sidebar($user))->pluck('key')->all();
+
+        $sections = collect(CabinetTour::steps($user, replay: true))
+            ->pluck('target')
+            ->filter(fn (?string $target) => str_starts_with((string) $target, '[data-tour="'))
+            ->map(fn (string $target) => preg_replace('/^\[data-tour="(.+)"\]$/', '$1', $target))
+            ->values()->all();
+
+        // Каждый раздел стоит в подсказках в том же порядке, что и в боковом меню
+        $this->assertSame(array_values(array_intersect($menu, $sections)), $sections);
+        $this->assertNotEmpty($sections);
     }
 
     public function test_the_menu_step_tells_about_premium_and_the_more_group(): void

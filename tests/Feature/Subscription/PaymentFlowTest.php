@@ -239,11 +239,24 @@ class PaymentFlowTest extends TestCase
         $this->assertTrue($user->plan_ends_at->isFuture());
         $this->assertSame($payment->id, $user->subscriptions()->first()->payment_id);
 
-        // Страница «Успешно» показывает итог из нашей базы.
+        // Оплата прошла: из нашей базы сразу ведёт в кабинет, а там всплывающее окно «Оплата прошла».
         $this->asParticipant($user)
             ->get(route('account.subscription.success', ['invoiceid' => $payment->invoice_id]))
+            ->assertRedirect(route('account.index'))
+            ->assertSessionHas('payment_paid', fn (array $paid) => $paid['plan'] === Plan::Active->title() && $paid['date'] === $user->plan_ends_at->format('d.m.Y'));
+
+        $this->asParticipant($user)
+            ->withSession(['payment_paid' => ['plan' => 'WOMEN’S HUB ACTIVE', 'date' => '03.11.2027']])
+            ->get(route('account.index'))
             ->assertOk()
-            ->assertSee(__('subscription.result.paid_title'));
+            ->assertSee('pay-popup__card', false)
+            ->assertSee(__('subscription.result.popup_title'));
+
+        // Без оплаты окна на главной нет.
+        $this->asParticipant($user)
+            ->get(route('account.index'))
+            ->assertOk()
+            ->assertDontSee('pay-popup__card', false);
 
         // Сообщение в Telegram о включённой подписке.
         $texts = collect(Telegram::getRequestHistory())

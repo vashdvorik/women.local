@@ -84,7 +84,7 @@ class SubscriptionController extends Controller
      * Что написано в адресе, значения не имеет: статус берётся только из нашей базы, а если счёт ещё не закрыт,
      * мы сами спрашиваем банк (GetState). Искать можно только свои счета.
      */
-    public function result(Request $request): View
+    public function result(Request $request): View|RedirectResponse
     {
         $user = $this->user();
 
@@ -101,6 +101,17 @@ class SubscriptionController extends Controller
             $payment->isOpen() => 'processing',
             default => 'failed',
         };
+
+        // Оплата прошла: сразу в кабинет, а «Оплата прошла» показывает всплывающее окно на главной (account/home.blade.php).
+        // Переход нужен ещё и затем, чтобы меню и доступы собрались уже с новым пакетом.
+        if ($state === 'paid') {
+            $fresh = $user->fresh();
+
+            return redirect()->route('account.index')->with('payment_paid', [
+                'plan' => $payment->planEnum()->title(),
+                'date' => $fresh->plan_ends_at?->format('d.m.Y'),
+            ]);
+        }
 
         return view('account.subscription.result', [
             'user' => $user->fresh(),

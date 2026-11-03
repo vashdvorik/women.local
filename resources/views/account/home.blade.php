@@ -239,5 +239,38 @@
     });
 })();
 </script>
+{{-- «Оплата прошла»: после успешной оплаты SubscriptionController::result ведёт сюда и кладёт данные в сессию. Пока окно
+     открыто, подсказки первого входа ждут (событие payment-popup:closed, см. account/partials/tour.blade.php). --}}
+@if(is_array($paid = session('payment_paid')))
+    <div class="pay-popup" data-payment-popup role="dialog" aria-modal="true" aria-labelledby="pay-popup-title">
+        <div class="pay-popup__card">
+            <div class="pay-popup__icon" aria-hidden="true">
+                <svg width="38" height="38" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <h2 id="pay-popup-title" class="pay-popup__title">{{ __('subscription.result.popup_title') }}</h2>
+            <p class="pay-popup__plan">{{ __('subscription.result.popup_text', ['plan' => $paid['plan'], 'date' => $paid['date']]) }}</p>
+            <p class="pay-popup__hint">{{ __('subscription.result.popup_hint') }}</p>
+            <button type="button" class="pay-popup__btn" data-payment-popup-close>{{ __('subscription.result.popup_button') }}</button>
+        </div>
+    </div>
+    <script>
+    (function () {
+        var popup = document.querySelector('[data-payment-popup]');
+        if (!popup) return;
+        var button = popup.querySelector('[data-payment-popup-close]');
+        function close() {
+            if (popup.hidden) return;
+            popup.hidden = true;
+            document.removeEventListener('keydown', onKey);
+            document.dispatchEvent(new CustomEvent('payment-popup:closed'));
+        }
+        function onKey(event) { if (event.key === 'Escape') close(); }
+        button.addEventListener('click', close);
+        popup.addEventListener('click', function (event) { if (event.target === popup) close(); });
+        document.addEventListener('keydown', onKey);
+        button.focus();
+    })();
+    </script>
+@endif
 @include('account.partials.tour',['tourSteps' => \App\Support\CabinetTour::steps($user), 'replaySteps' => \App\Support\CabinetTour::steps($user, true), 'autoStart' => $showTour ?? false])
 @endsection

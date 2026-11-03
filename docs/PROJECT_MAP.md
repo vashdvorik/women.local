@@ -219,7 +219,7 @@ Web middleware подключает `SetLocale` глобально для web-г
 |---|---|---|
 | `GET /app/account/subscription` | `account.subscription` | Три тарифа, текущий тариф, история платежей, кнопки оплаты и продления |
 | `POST /app/account/subscription/checkout` | `account.subscription.checkout` | Создаёт счёт и отдаёт форму на платёжный сайт банка (throttle `8,1`) |
-| `GET/POST /app/account/subscription/success`, `/fail` | `account.subscription.success/fail` | SuccessURL / FailURL банка; итог берут из нашей базы, не из адреса |
+| `GET/POST /app/account/subscription/success`, `/fail` | `account.subscription.success/fail` | SuccessURL / FailURL банка; итог берут из нашей базы, не из адреса; оплата прошла → редирект на главную с окном «Оплата прошла» (сессия `payment_paid`), иначе страница с причинами и кнопками |
 | `GET/POST /payment/result` | `payment.result` | ResultURL банка; без сессии и CSRF, отвечает `OK`/`ERROR` |
 
 Меню кабинета — один список в `App\Support\CabinetNav::items()` (боковая панель, нижняя панель на телефоне и плитки на главной). Общий layout кабинета — `resources/views/account/layout.blade.php`. Он содержит sidebar, языковой переключатель, logout, Telegram WebApp initialization и скрывает logout внутри Telegram Mini App.

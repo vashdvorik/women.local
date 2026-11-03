@@ -167,6 +167,14 @@
     });
     window.addEventListener('resize', function () { if (!root.hidden) show(index); });
 
-    if (autoStart && autoSteps.length) window.setTimeout(function () { open(autoSteps); }, 500);
+    if (autoStart && autoSteps.length) {
+        // После оплаты поверх главной стоит окно «Оплата прошла»: подсказки начинаются, когда его закроют.
+        var payPopup = document.querySelector('[data-payment-popup]');
+        if (payPopup && !payPopup.hidden) {
+            document.addEventListener('payment-popup:closed', function () { window.setTimeout(function () { open(autoSteps); }, 300); }, { once: true });
+        } else {
+            window.setTimeout(function () { open(autoSteps); }, 500);
+        }
+    }
 })();
 </script>
