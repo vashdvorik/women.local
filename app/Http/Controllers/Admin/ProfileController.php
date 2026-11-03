@@ -156,7 +156,7 @@ class ProfileController extends Controller
 
     public function show(BotUser $profile): View
     {
-        return view('admin.profiles.show', ['profile' => $profile]);
+        return view('admin.profiles.show', ['profile' => $profile, 'activity' => app(\App\Services\ActivityReport::class)->profile($profile)]);
     }
 
     public function edit(BotUser $profile): View

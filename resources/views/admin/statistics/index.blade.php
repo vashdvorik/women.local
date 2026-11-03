@@ -10,10 +10,25 @@
 
 <x-layouts.admin :title="__('Статистика платформы')">
     <x-slot:actions>
-        <a href="{{ route('admin.statistics.pdf') }}" class="btn-primary">{{ __('Скачать PDF') }}</a>
+        @if($tab === 'community')
+            <a href="{{ route('admin.statistics.pdf') }}" class="btn-primary">{{ __('Скачать PDF') }}</a>
+        @endif
         <button type="button" onclick="window.print()" class="btn-secondary hidden md:inline-flex">{{ __('Печать') }}</button>
     </x-slot:actions>
 
+    {{-- Вкладки: состав сообщества, активность в кабинете, рассылки в Telegram. Считается только открытая вкладка. --}}
+    <div class="tabs mb-6 overflow-x-auto no-scrollbar rounded-sm">
+        @foreach(['community' => __('Сообщество'), 'activity' => __('Активность'), 'broadcasts' => __('Рассылки')] as $key => $label)
+            <a href="{{ route('admin.statistics.index', ['tab' => $key]) }}"
+               class="tab whitespace-nowrap @if($tab === $key) tab--active @endif">{{ $label }}</a>
+        @endforeach
+    </div>
+
+    @if($tab === 'activity')
+        @include('admin.statistics._activity')
+    @elseif($tab === 'broadcasts')
+        @include('admin.statistics._broadcasts')
+    @else
     <div class="space-y-6">
 
         {{-- Итог: индекс готовности + воронка заявок --}}
@@ -173,4 +188,5 @@
             </div>
         </div>
     </div>
+    @endif
 </x-layouts.admin>

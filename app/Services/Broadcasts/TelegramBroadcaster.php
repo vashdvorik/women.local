@@ -15,10 +15,11 @@ use Throwable;
  */
 class TelegramBroadcaster
 {
-    public function send(Broadcast $broadcast, int|string $chatId, string $locale): DeliveryOutcome
+    /** @param  string|null  $token  личный токен получательницы: кнопки идут через счётчик кликов; без него адреса прямые */
+    public function send(Broadcast $broadcast, int|string $chatId, string $locale, ?string $token = null): DeliveryOutcome
     {
         $text = $broadcast->text($locale);
-        $markup = $this->markup($broadcast->buttonsFor($locale));
+        $markup = $this->markup($broadcast->buttonsFor($locale, $token));
 
         $response = $this->call($broadcast, $chatId, BroadcastText::html($text), 'HTML', $markup);
 

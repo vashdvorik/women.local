@@ -62,6 +62,7 @@ class BotUser extends Model implements AuthenticatableContract, CanResetPassword
         'password'             => 'hashed',
         'approved_at'          => 'datetime',
         'cabinet_opened_at'    => 'datetime',
+        'last_seen_at'         => 'datetime',
         'cabinet_reminded_at'  => 'datetime',
         'cabinet_seen'         => 'array',
         'plan_ends_at'         => 'datetime',

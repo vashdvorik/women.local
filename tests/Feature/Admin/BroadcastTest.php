@@ -237,6 +237,34 @@ class BroadcastTest extends TestCase
         $this->assertSame('Зарегистрироваться', json_decode($byChat[(string) $ro->telegram_id]['reply_markup'], true)['inline_keyboard'][0][0]['text']);
     }
 
+    public function test_buttons_of_sent_messages_go_through_the_personal_click_counter(): void
+    {
+        $this->fakeTelegram();
+        $a = BotUser::factory()->active()->create(['locale' => 'ru']);
+        $b = BotUser::factory()->active()->create(['locale' => 'en']);
+
+        $this->submit($this->payload(['action' => 'send', 'send_mode' => 'now', 'audience' => 'members']))->assertRedirect();
+
+        $broadcast = Broadcast::firstOrFail();
+        $tokenA = $broadcast->deliveries()->where('bot_user_id', $a->id)->value('token');
+        $tokenB = $broadcast->deliveries()->where('bot_user_id', $b->id)->value('token');
+
+        $this->assertNotEmpty($tokenA);
+        $this->assertNotSame($tokenA, $tokenB, 'у каждой получательницы свой токен');
+
+        $byChat = collect($this->sent())->mapWithKeys(fn (Request $r) => [(string) $this->body($r)['chat_id'] => $this->body($r)]);
+        $urlA = json_decode($byChat[(string) $a->telegram_id]['reply_markup'], true)['inline_keyboard'][0][0]['url'];
+        $urlB = json_decode($byChat[(string) $b->telegram_id]['reply_markup'], true)['inline_keyboard'][0][0]['url'];
+
+        $this->assertSame(route('broadcast.go', ['token' => $tokenA, 'button' => 0]), $urlA);
+        $this->assertSame(route('broadcast.go', ['token' => $tokenB, 'button' => 0]), $urlB);
+
+        // Переход по её ссылке ведёт на настоящий адрес кнопки и записывает клик именно этой участницы
+        $this->get($urlA)->assertRedirect('https://example.test/register');
+        $this->assertSame(1, $broadcast->deliveries()->where('bot_user_id', $a->id)->value('clicks'));
+        $this->assertSame(0, $broadcast->deliveries()->where('bot_user_id', $b->id)->value('clicks'));
+    }
+
     public function test_the_audiences_pick_the_right_people_by_plan(): void
     {
         $community = BotUser::factory()->community()->create();

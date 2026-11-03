@@ -81,6 +81,27 @@
             </div>
         </div>
 
+        {{-- Активность в кабинете: когда была, как часто заходит, чем пользуется (учёт идёт с запуска, см. «Статистика → Активность») --}}
+        <div class="card space-y-3">
+            <h2 class="form-section-title">{{ __('Активность в кабинете') }}</h2>
+            @if($activity['daysTotal'] === 0)
+                <p class="text-ui text-ink-muted">{{ __('Заходов в кабинет после включения учёта пока нет.') }}@if($profile->last_seen_at) {{ __('Последний вход: :date.', ['date' => $activity['lastSeen']]) }}@endif</p>
+            @else
+                <dl class="grid gap-x-8 gap-y-2 text-ui sm:grid-cols-2">
+                    <div class="flex justify-between gap-3"><dt class="text-ink-muted">{{ __('Последний вход') }}</dt><dd class="font-semibold">{{ $activity['lastSeen'] ?? '—' }}</dd></div>
+                    <div class="flex justify-between gap-3"><dt class="text-ink-muted">{{ __('Дней с заходом за 30 дней') }}</dt><dd class="font-semibold">{{ $activity['days30'] }}</dd></div>
+                    <div class="flex justify-between gap-3"><dt class="text-ink-muted">{{ __('Дней с заходом всего') }}</dt><dd class="font-semibold">{{ $activity['daysTotal'] }}</dd></div>
+                    <div class="flex justify-between gap-3"><dt class="text-ink-muted">{{ __('Первый учтённый заход') }}</dt><dd class="font-semibold">{{ $activity['firstSeen'] ?? '—' }}</dd></div>
+                    <div class="flex justify-between gap-3"><dt class="text-ink-muted">{{ __('Нажатий на кнопки рассылок') }}</dt><dd class="font-semibold">{{ $activity['clicks'] }}</dd></div>
+                </dl>
+                <ul class="divide-y divide-hairline-soft text-ui">
+                    @foreach($activity['usage'] as $row)
+                        <li class="flex justify-between gap-3 py-1.5"><span>{{ $row['label'] }}</span><span class="text-ink-muted">{{ __(':hits раз, :days дн.', ['hits' => $row['hits'], 'days' => $row['days']]) }}</span></li>
+                    @endforeach
+                </ul>
+            @endif
+        </div>
+
         <div class="card space-y-5">
             <div>
                 <h3 class="form-section-title">{{ __('Что представляет') }}</h3>

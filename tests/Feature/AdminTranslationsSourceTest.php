@@ -26,7 +26,7 @@ class AdminTranslationsSourceTest extends TestCase
     private const PHP_FILES = [
         'app/Http/Controllers/Admin', 'app/Http/Controllers/Concerns', 'app/Http/Requests', 'app/Actions',
         'app/Enums/PublishStatus.php', 'app/Models/Broadcast.php', 'app/Models/Payment.php', 'app/Models/Subscription.php',
-        'app/Services/ImpactReport.php', 'app/Support/AdminSection.php', 'app/Support/TelegramHtml.php', 'app/Support/BotMessages.php',
+        'app/Services/ImpactReport.php', 'app/Services/ActivityReport.php', 'app/Support/AdminSection.php', 'app/Support/TelegramHtml.php', 'app/Support/BotMessages.php',
     ];
 
     /**

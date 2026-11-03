@@ -3,20 +3,33 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\ActivityReport;
 use App\Services\ImpactReport;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 /**
- * «Статистика платформы» и её PDF-выгрузка (раньше — Filament ImpactMetrics).
- * PDF — обычная загрузка файла по обычному маршруту, а не действие компонента.
+ * «Статистика»: три вкладки. «Сообщество» — состав и готовность базы (ImpactReport, она же уходит в PDF),
+ * «Активность» — заходы и инструменты кабинета, «Рассылки» — доставка и клики по рассылкам в Telegram (ActivityReport).
+ * Считается только открытая вкладка. PDF — обычная загрузка файла по обычному маршруту, а не действие компонента.
  */
 class StatisticsController extends Controller
 {
-    public function index(ImpactReport $report): View
+    private const TABS = ['community', 'activity', 'broadcasts'];
+
+    public function index(Request $request, ImpactReport $report, ActivityReport $activity): View
     {
-        return view('admin.statistics.index', $report->viewData());
+        $tab = in_array($request->query('tab'), self::TABS, true) ? $request->query('tab') : 'community';
+
+        $data = match ($tab) {
+            'activity' => $activity->activity($request->string('period', '30')->toString()),
+            'broadcasts' => $activity->broadcasts(),
+            default => $report->viewData(),
+        };
+
+        return view('admin.statistics.index', ['tab' => $tab] + $data);
     }
 
     public function pdf(ImpactReport $report): Response

@@ -102,20 +102,21 @@ class Broadcast extends Model
     }
 
     /**
-     * Кнопки на языке участницы: подпись на её языке или русская, адрес один.
+     * Кнопки на языке участницы: подпись на её языке или русская, адрес один. С личным токеном получательницы адрес кнопки
+     * заменяется ссылкой-переходником (route broadcast.go): так считаются клики. Без токена (пробное сообщение себе) адрес прямой.
      *
      * @return list<array{text: string, url: string}>
      */
-    public function buttonsFor(string $locale): array
+    public function buttonsFor(string $locale, ?string $token = null): array
     {
         $buttons = [];
 
-        foreach ((array) $this->buttons as $button) {
+        foreach (array_values((array) $this->buttons) as $index => $button) {
             $url = trim((string) ($button['url'] ?? ''));
             $label = trim((string) ($button['label'][$locale] ?? '')) ?: trim((string) ($button['label'][Locales::PRIMARY] ?? ''));
 
             if ($url !== '' && $label !== '') {
-                $buttons[] = ['text' => $label, 'url' => $url];
+                $buttons[] = ['text' => $label, 'url' => $token !== null ? route('broadcast.go', ['token' => $token, 'button' => $index]) : $url];
             }
         }
 

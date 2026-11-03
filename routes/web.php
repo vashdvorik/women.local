@@ -156,8 +156,15 @@ if (app()->environment('local')) {
     Route::post('/dev/fake-bank/complete', [FakeBankController::class, 'complete'])->name('dev.fakebank.complete');
 }
 
+// Кнопки рассылок в Telegram ведут через этот переходник: он записывает клик и отправляет на адрес кнопки (адрес берётся из
+// самой рассылки, а не из запроса, поэтому открытого перенаправления нет).
+Route::get('/r/{token}/{button}', \App\Http\Controllers\BroadcastGoController::class)
+    ->where(['token' => '[A-Za-z0-9]{16,32}', 'button' => '[0-9]{1,2}'])
+    ->middleware('throttle:120,1')
+    ->name('broadcast.go');
+
 // Account: protected cabinet
-Route::middleware(RequireAccountAuth::class)
+Route::middleware([RequireAccountAuth::class, \App\Http\Middleware\TrackCabinetActivity::class])
     ->prefix('app/account')
     ->name('account.')
     ->group(function (): void {

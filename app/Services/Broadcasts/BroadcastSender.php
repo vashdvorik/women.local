@@ -7,6 +7,7 @@ namespace App\Services\Broadcasts;
 use App\Models\Broadcast;
 use App\Models\BroadcastDelivery;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Throwable;
 
 /**
@@ -165,7 +166,11 @@ class BroadcastSender
                     return 0;
                 }
 
-                $outcome = $this->telegram->send($broadcast, $delivery->telegram_id, $delivery->locale);
+                if (blank($delivery->token)) {
+                    $delivery->forceFill(['token' => Str::random(24)])->save();
+                }
+
+                $outcome = $this->telegram->send($broadcast, $delivery->telegram_id, $delivery->locale, (string) $delivery->token);
 
                 if ($outcome->status === DeliveryOutcome::RETRY) {
                     // Telegram просит подождать: эта участница остаётся «ждёт», рассылка встаёт на указанную им паузу.
@@ -244,6 +249,7 @@ class BroadcastSender
                     'broadcast_id' => $broadcast->id,
                     'bot_user_id' => $user->id,
                     'telegram_id' => $user->telegram_id,
+                    'token' => Str::random(24),
                     'locale' => $user->messageLocale(),
                     'status' => BroadcastDelivery::PENDING,
                     'created_at' => now(),
