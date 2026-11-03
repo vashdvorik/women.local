@@ -379,6 +379,46 @@ class SiteSetting extends Model
         ]);
     }
 
+    /**
+     * Что админ задал отдельно для AI-менеджера: пустые поля значат «как у AI-помощника» (null).
+     *
+     * @return array{provider: ?string, model: ?string, temperature: ?float, max_tokens: ?int, timeout: ?int}
+     */
+    public static function managerFeatureOverrides(): array
+    {
+        $value = self::settingValue(self::AI_FEATURES_KEY);
+
+        return [
+            'provider' => in_array($value['manager_provider'] ?? null, ['openrouter', 'deepseek'], true) ? $value['manager_provider'] : null,
+            'model' => is_string($value['manager_model'] ?? null) && trim($value['manager_model']) !== '' ? trim($value['manager_model']) : null,
+            'temperature' => is_numeric($value['manager_temperature'] ?? null) ? (float) $value['manager_temperature'] : null,
+            'max_tokens' => is_numeric($value['manager_max_tokens'] ?? null) ? (int) $value['manager_max_tokens'] : null,
+            'timeout' => is_numeric($value['manager_timeout'] ?? null) ? (int) $value['manager_timeout'] : null,
+        ];
+    }
+
+    /**
+     * Настройки модели AI-менеджера: свои значения там, где они заданы, остальное как у AI-помощника.
+     *
+     * @return array{provider: string, model: string, temperature: float, max_tokens: int, timeout: int}
+     */
+    public static function managerFeatureConfig(): array
+    {
+        return array_merge(self::agentFeatureConfig(), array_filter(self::managerFeatureOverrides(), fn (mixed $v): bool => $v !== null));
+    }
+
+    /** @param array{provider: ?string, model: ?string, temperature: ?float, max_tokens: ?int, timeout: ?int} $config null — «как у AI-помощника» */
+    public static function setManagerFeatureConfig(array $config): void
+    {
+        self::storeFeatureConfig([
+            'manager_provider' => $config['provider'],
+            'manager_model' => $config['model'],
+            'manager_temperature' => $config['temperature'],
+            'manager_max_tokens' => $config['max_tokens'],
+            'manager_timeout' => $config['timeout'],
+        ]);
+    }
+
     /** @return array{rules: string, ru: string, en: string, ro: string} */
     public static function aiAssistantKnowledge(): array
     {

@@ -184,5 +184,39 @@
         </p>
     </section>
 
+    {{-- ---------- AI-менеджер ---------- --}}
+    <section class="card space-y-4">
+        <div class="flex items-start justify-between gap-4">
+            <div>
+                <h4 class="text-ui-strong font-semibold">{{ __('AI-менеджер') }}</h4>
+                <p class="field-hint">{{ __('Своя модель для чата «AI-менеджер» в кабинете. Пустое поле значит «как у AI-помощника», поэтому менеджеру можно оставить лёгкую модель, а помощнику поставить более сильную.') }}</p>
+            </div>
+            @if($managerKeySet)<span class="badge badge--published">{{ __('Активна') }}</span>@else<span class="badge badge--pending">{{ __('Нет ключа для выбранного провайдера') }}</span>@endif
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+            <x-forms.field :label="__('Провайдер')" name="manager_provider">
+                <select id="manager_provider" name="manager_provider" class="field-input">
+                    <option value="">{{ __('Как у AI-помощника') }} ({{ $agent['provider'] === 'openrouter' ? 'OpenRouter' : 'DeepSeek' }})</option>
+                    @foreach(['openrouter' => 'OpenRouter', 'deepseek' => __('DeepSeek напрямую')] as $value => $label)
+                        <option value="{{ $value }}" @selected(old('manager_provider', $manager['provider']) === $value)>{{ $label }}</option>
+                    @endforeach
+                </select>
+            </x-forms.field>
+            <x-forms.field :label="__('Chat-модель')" name="manager_model" list="agent-models" :value="$manager['model']"
+                           :placeholder="__('Как у AI-помощника') . ': ' . $agent['model']"
+                           :hint="__('Для OpenRouter указывайте модель с префиксом вендора, например openai/gpt-oss-20b. Оставьте пустым, чтобы менеджер пользовался моделью помощника.')" />
+            <x-forms.field label="Temperature" name="manager_temperature" type="number" min="0" max="2" step="0.1" :value="$manager['temperature']"
+                           :placeholder="__('Как у AI-помощника') . ': ' . $agent['temperature']" />
+            <x-forms.field :label="__('Максимум токенов')" name="manager_max_tokens" type="number" min="64" max="32768" :value="$manager['max_tokens']"
+                           :placeholder="__('Как у AI-помощника') . ': ' . $agent['max_tokens']" />
+            <x-forms.field :label="__('Тайм-аут, секунд')" name="manager_timeout" type="number" min="5" max="120" :value="$manager['timeout']"
+                           :placeholder="__('Как у AI-помощника') . ': ' . $agent['timeout']" />
+        </div>
+        <p class="rounded-sm bg-surface-sunken p-3 text-caption text-ink-muted">
+            {{ __('Сейчас менеджер работает на модели:') }} <b class="text-ink">{{ $managerConfig['model'] }}</b>
+            ({{ $managerConfig['provider'] === 'openrouter' ? 'OpenRouter' : 'DeepSeek' }})
+        </p>
+    </section>
+
     <button type="submit" class="btn-primary">{{ __('Сохранить все настройки') }}</button>
 </form>

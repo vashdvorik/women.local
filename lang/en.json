@@ -1209,5 +1209,14 @@
     "Выключить": "Turn off",
     "Включить": "Turn on",
     "Режим невидимки включён: другие участницы её не видят и не находят.": "Invisible mode is on: other participants cannot see or find her.",
-    "Показывать ли профиль другим участницам в каталоге, поиске, подборе контактов и AI-помощнике. Работает, только пока у неё действует платный пакет. Участнице ничего не отправляется, на её кабинет и рассылки не влияет. После регистрации профиль скрыт; после первой оплаты или подарка пакета он становится видимым сам, дальше решает администратор.": "Whether the profile is shown to other participants in the directory, search, contact matching and the AI assistant. It works only while her paid plan is active. The participant is not notified, and her account and mailings are not affected. After registration the profile is hidden; after the first plan payment or gift it becomes visible by itself, after that the administrator decides."
+    "Показывать ли профиль другим участницам в каталоге, поиске, подборе контактов и AI-помощнике. Работает, только пока у неё действует платный пакет. Участнице ничего не отправляется, на её кабинет и рассылки не влияет. После регистрации профиль скрыт; после первой оплаты или подарка пакета он становится видимым сам, дальше решает администратор.": "Whether the profile is shown to other participants in the directory, search, contact matching and the AI assistant. It works only while her paid plan is active. The participant is not notified, and her account and mailings are not affected. After registration the profile is hidden; after the first plan payment or gift it becomes visible by itself, after that the administrator decides.",
+    "Своя модель для чата «AI-менеджер» в кабинете. Пустое поле значит «как у AI-помощника», поэтому менеджеру можно оставить лёгкую модель, а помощнику поставить более сильную.": "A separate model for the “AI manager” chat in the account. An empty field means “same as the AI assistant”, so the manager can keep a light model while the assistant gets a stronger one.",
+    "Как у AI-помощника": "Same as the AI assistant",
+    "Для OpenRouter указывайте модель с префиксом вендора, например openai/gpt-oss-20b. Оставьте пустым, чтобы менеджер пользовался моделью помощника.": "For OpenRouter use a model with the vendor prefix, for example openai/gpt-oss-20b. Leave empty so the manager uses the assistant’s model.",
+    "Сейчас менеджер работает на модели:": "The manager currently runs on the model:",
+    "AI-менеджер: провайдер": "AI manager: provider",
+    "AI-менеджер: модель": "AI manager: model",
+    "AI-менеджер: temperature": "AI manager: temperature",
+    "AI-менеджер: максимум токенов": "AI manager: maximum tokens",
+    "AI-менеджер: тайм-аут": "AI manager: timeout"
 }

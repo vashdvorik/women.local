@@ -26,6 +26,7 @@ class CabinetSettingController extends Controller
         $deepSeek = SiteSetting::deepSeekProviderConfig();
         $embedding = SiteSetting::embeddingFeatureConfig();
         $agent = SiteSetting::agentFeatureConfig();
+        $managerConfig = SiteSetting::managerFeatureConfig();
 
         $geminiKeySet = $gemini['api_key_configured'] || filled(config('ai.gemini.key'));
 
@@ -42,7 +43,10 @@ class CabinetSettingController extends Controller
             'embedding' => $embedding,
             'searchMinScore' => SiteSetting::searchMinScore(),
             'agent' => $agent,
+            'manager' => SiteSetting::managerFeatureOverrides(),
+            'managerConfig' => $managerConfig,
             'embeddingKeySet' => $embedding['provider'] === 'gemini' ? $geminiKeySet : $openRouter['api_key_configured'],
+            'managerKeySet' => $managerConfig['provider'] === 'openrouter' ? $openRouter['api_key_configured'] : $deepSeek['api_key_configured'],
             'agentKeySet' => $agent['provider'] === 'openrouter' ? $openRouter['api_key_configured'] : $deepSeek['api_key_configured'],
 
             'knowledge' => SiteSetting::aiAssistantKnowledge(),

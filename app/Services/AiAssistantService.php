@@ -139,13 +139,14 @@ PROMPT;
 
     /**
      * Один обмен с провайдером AI (настройки «Агент» из админки): системная инструкция, история и вопрос, ответ как есть.
-     * Им пользуется помощник в кабинете.
+     * Им пользуется помощник в кабинете. $config — настройки модели вместо «Агента» (так работает AI-менеджер со своей моделью).
      *
      * @param list<array{role: string, content: string}> $history
+     * @param array{provider: string, model: string, temperature: float, max_tokens: int, timeout: int}|null $config
      */
-    public function chat(string $system, string $message, array $history): string
+    public function chat(string $system, string $message, array $history, ?array $config = null): string
     {
-        $config = array_merge(SiteSetting::agentFeatureConfig(), $this->configOverride);
+        $config ??= array_merge(SiteSetting::agentFeatureConfig(), $this->configOverride);
         $provider = $config['provider'] === 'openrouter' ? 'openrouter' : 'deepseek';
         $key = $provider === 'openrouter' ? SiteSetting::openRouterProviderApiKey() : SiteSetting::deepSeekProviderApiKey();
         $baseUrl = $provider === 'openrouter' ? SiteSetting::openRouterProviderConfig()['base_url'] : SiteSetting::deepSeekProviderConfig()['base_url'];

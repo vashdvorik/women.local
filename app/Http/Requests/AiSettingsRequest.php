@@ -58,6 +58,12 @@ class AiSettingsRequest extends FormRequest
                 'agent_temperature' => ['required', 'numeric', 'min:0', 'max:2'],
                 'agent_max_tokens' => ['required', 'integer', 'min:64', 'max:32768'],
                 'agent_timeout' => ['required', 'integer', 'min:5', 'max:120'],
+                // AI-менеджер: всё необязательно, пустое поле — «как у AI-помощника»
+                'manager_provider' => ['nullable', 'in:openrouter,deepseek'],
+                'manager_model' => ['nullable', 'string', 'max:160'],
+                'manager_temperature' => ['nullable', 'numeric', 'min:0', 'max:2'],
+                'manager_max_tokens' => ['nullable', 'integer', 'min:64', 'max:32768'],
+                'manager_timeout' => ['nullable', 'integer', 'min:5', 'max:120'],
             ],
         );
     }
@@ -87,6 +93,11 @@ class AiSettingsRequest extends FormRequest
             'agent_temperature' => __('AI-помощник: temperature'),
             'agent_max_tokens' => __('AI-помощник: максимум токенов'),
             'agent_timeout' => __('AI-помощник: тайм-аут'),
+            'manager_provider' => __('AI-менеджер: провайдер'),
+            'manager_model' => __('AI-менеджер: модель'),
+            'manager_temperature' => __('AI-менеджер: temperature'),
+            'manager_max_tokens' => __('AI-менеджер: максимум токенов'),
+            'manager_timeout' => __('AI-менеджер: тайм-аут'),
         ];
     }
 }

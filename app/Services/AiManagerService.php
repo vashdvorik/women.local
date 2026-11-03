@@ -15,7 +15,7 @@ use RuntimeException;
  * AI-менеджер кабинета: отвечает участнице, как устроена платформа и её тариф, и помогает освоиться. Ничего не делает за
  * неё (не меняет тарифы, не принимает платежи) и не видит чужих профилей. Знает три вещи: текст из админки (или
  * стартовый resources/data/manager_knowledge.php), данные этой участницы (тариф, срок, открытые и закрытые ей разделы)
- * и актуальные тарифы (цены и состав из настроек сайта). Провайдер и модель те же, что у «Агента» (AiAssistantService::chat).
+ * и актуальные тарифы (цены и состав из настроек сайта). Провайдер и модель свои (админка → «Настройки кабинетов» → AI, блок «AI-менеджер»); пустые поля значат «как у Агента».
  *
  * Переписка сохраняется (ManagerMessage). Если ответа не нашлось, модель отвечает answered: false, и вопрос попадает в
  * админку («Вопросы AI-менеджеру»), чтобы команда дописала знания или ответила сама.
@@ -56,7 +56,7 @@ final class AiManagerService
         ]);
 
         try {
-            $payload = $this->ai->chat($this->systemPrompt($user, $locale), $message, $history);
+            $payload = $this->ai->chat($this->systemPrompt($user, $locale), $message, $history, SiteSetting::managerFeatureConfig());
             $decoded = $this->decode($payload);
             $reply = $this->plain((string) ($decoded['reply'] ?? $payload));
             $answered = (bool) ($decoded['answered'] ?? true);

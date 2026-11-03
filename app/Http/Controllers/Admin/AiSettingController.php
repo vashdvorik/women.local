@@ -58,6 +58,16 @@ class AiSettingController extends Controller
             'timeout' => (int) $data['agent_timeout'],
         ]);
 
+        $blank = fn (string $key): bool => ! isset($data[$key]) || trim((string) $data[$key]) === '';
+
+        SiteSetting::setManagerFeatureConfig([
+            'provider' => $blank('manager_provider') ? null : $data['manager_provider'],
+            'model' => $blank('manager_model') ? null : trim($data['manager_model']),
+            'temperature' => $blank('manager_temperature') ? null : (float) $data['manager_temperature'],
+            'max_tokens' => $blank('manager_max_tokens') ? null : (int) $data['manager_max_tokens'],
+            'timeout' => $blank('manager_timeout') ? null : (int) $data['manager_timeout'],
+        ]);
+
         return redirect()->route('admin.cabinets.settings', ['tab' => 'ai'])
             ->with('success', __('Настройки AI сохранены.'));
     }

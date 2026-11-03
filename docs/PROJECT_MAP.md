@@ -612,3 +612,5 @@ php artisan config:clear
 - queue: наличие worker и записей в `jobs`;
 - landing: активную тему в `/admin/settings` (вкладка «Темы сайта») и публичный `/`;
 - Telegram: webhook status и команды `/start`, `/login` после деплоя.
+
+**Модели AI.** «Настройки кабинетов» → вкладка «AI»: ключи провайдеров (Gemini, OpenRouter, DeepSeek) и три независимые функции: embeddings (поиск и подбор), «AI-помощник» (чат-подбор, `SiteSetting::agentFeatureConfig()`) и «AI-менеджер» (`SiteSetting::managerFeatureConfig()`: свои провайдер, модель, temperature, токены, тайм-аут; пустое поле значит «как у AI-помощника»). `AiAssistantService::chat()` принимает готовые настройки, менеджер передаёт свои. Тест: `tests/Feature/Admin/ManagerModelSettingsTest.php`.
