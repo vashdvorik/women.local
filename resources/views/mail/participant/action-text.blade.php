@@ -4,6 +4,11 @@
 {{ $line }}
 
 {{ $button }}: {{ $url }}
+@if(! empty($code))
+
+{{ $codeLine }} {{ $code }}
+{{ $codeNote }}
+@endif
 
 {{ $note }}
 

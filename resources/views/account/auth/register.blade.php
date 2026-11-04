@@ -4,6 +4,19 @@
 @section('subtitle', __('participant.register.subtitle'))
 
 @section('content')
+{{-- Тому, у кого кабинет уже есть, а на регистрацию он попал по ссылке: крупная подсказка сверху --}}
+<a href="{{ route('account.login') }}" class="account-login-switch">
+    <span>{{ __('participant.register.have_account') }}</span> <b>{{ __('participant.register.login_link') }} →</b>
+</a>
+
+@if($errors->first('email') === __('participant.validation.email_taken'))
+    {{-- Почта уже зарегистрирована (часто это человек, который создал кабинет на другом устройстве): прямой выход --}}
+    <div class="account-login-firsttime" role="alert">
+        <p><b>{{ __('participant.register.taken_title') }}</b><br>{{ __('participant.register.taken_text') }}</p>
+        <a href="{{ route('account.login') }}" class="account-login-button account-login-button--big">{{ __('participant.register.taken_button') }}</a>
+    </div>
+@endif
+
 <div class="account-login-card p-7">
     <h1 class="account-login-heading mb-5 text-center text-xl">{{ __('participant.register.heading') }}</h1>
 
@@ -43,9 +56,4 @@
         @include('account.auth._google', ['label' => __('participant.google.register')])
     @endif
 </div>
-
-<p class="mt-5 text-center text-sm account-login-muted">
-    {{ __('participant.register.have_account') }}
-    <a href="{{ route('account.login') }}" class="account-login-link">{{ __('participant.register.login_link') }}</a>
-</p>
 @endsection

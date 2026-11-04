@@ -527,6 +527,11 @@
         .miro-partner-chip:hover { border-color: var(--miro-hairline-strong); box-shadow: 0 10px 24px rgba(33, 20, 15, .05); }
         /* Ширину каждому знаку задаёт атрибут width в вёрстке (одинаковая площадь), высота следует за ней. */
         .miro-partner-chip img { height: auto; max-width: 100%; max-height: 92px; object-fit: contain; }
+        /* Главный партнёр группы: отдельный первый ряд по центру, крупнее остальных, с тёплым акцентом сверху; остальные знаки ниже в четыре колонки. */
+        .miro-partners-featured { display: flex; justify-content: center; margin-bottom: 14px; }
+        .miro-partner-chip--featured { width: min(100%, 440px); min-height: 180px; padding: 28px 32px; border-color: var(--miro-hairline-strong); border-radius: 20px; background: linear-gradient(180deg, var(--miro-pink) 0, #fff 46%); box-shadow: 0 16px 36px rgba(33, 20, 15, .08), inset 0 3px 0 var(--miro-coral-strong); }
+        .miro-partner-chip--featured img { max-height: 120px; }
+        .miro-partners-strip--rest { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
         /* «Наш вклад в цифрах»: одна сетка из десяти цифр. Заголовок и подзаголовок — общие .miro-section__head, как в соседних
            секциях; цифры — шрифтом заголовков (как «500+» на первом экране), подписи — основным. Цифры считает js/impact.js. */
@@ -630,6 +635,7 @@
             .miro-footer__top { grid-template-columns: repeat(3, 1fr); }
             .miro-footer__brand { grid-column: 1 / -1; }
             .miro-partners-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .miro-partners-strip--rest { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
 
         @media (max-width: 767px) {

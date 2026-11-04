@@ -13,7 +13,19 @@
     <p class="account-login-muted text-sm leading-6">{{ __('participant.verification.text', ['email' => $user->email]) }}</p>
     <p class="account-login-muted mt-2 text-xs">{{ __('participant.verification.spam') }}</p>
 
-    <form method="POST" action="{{ route('account.verification.resend') }}" class="mt-5">
+    {{-- Код из письма: вводят там же, где регистрировались (письмо можно открыть на телефоне и прочитать код) --}}
+    <form method="POST" action="{{ route('account.verification.code') }}" class="mt-5 text-left" novalidate>
+        @csrf
+        <label for="code" class="account-login-label text-center">{{ __('participant.verification.code_label') }}</label>
+        <input id="code" name="code" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="5" autocomplete="one-time-code"
+               autocapitalize="off" spellcheck="false" placeholder="•••••" value="{{ old('code') }}"
+               class="account-login-input account-login-code @error('code') is-invalid @enderror">
+        <p class="account-login-hint text-center">{{ __('participant.verification.code_hint') }}</p>
+        @error('code')<p class="account-login-fielderror text-center" role="alert">{{ $message }}</p>@enderror
+        <button type="submit" class="account-login-button account-login-button--big mt-3">{{ __('participant.verification.code_button') }}</button>
+    </form>
+
+    <form method="POST" action="{{ route('account.verification.resend') }}" class="mt-4">
         @csrf
         <button type="submit" class="account-login-button account-login-button--ghost">{{ __('participant.verification.resend') }}</button>
     </form>

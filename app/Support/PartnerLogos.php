@@ -5,7 +5,8 @@ namespace App\Support;
 /**
  * Логотипы партнёров для главной и страницы «Партнёры»: две группы, у знаков нет ни подписей, ни ссылок. Файлы лежат в
  * public/themes/miro/images/partners/home (обрезанные прозрачные WebP). ratio — ширина к высоте знака: по ней считается
- * ширина картинки, чтобы узкие надписи и квадратные эмблемы занимали на странице примерно одну площадь.
+ * ширина картинки, чтобы узкие надписи и квадратные эмблемы занимали на странице примерно одну площадь. Знак с отметкой
+ * featured главная выводит крупнее и отдельным первым рядом по центру, остальные знаки группы идут рядом ниже.
  */
 final class PartnerLogos
 {
@@ -17,10 +18,10 @@ final class PartnerLogos
                 'title' => ['ru' => 'Международные партнёры', 'en' => 'International partners', 'ro' => 'Parteneri internaționali'],
                 'description' => ['ru' => 'Международные организации, поддерживающие развитие, устойчивость и расширение возможностей сообщества.', 'en' => 'International organisations supporting the community’s development, resilience and opportunities.', 'ro' => 'Organizații internaționale care susțin dezvoltarea, reziliența și oportunitățile comunității.'],
                 'logos' => [
-                    ['file' => 'intl-netherlands', 'ratio' => 2.37, 'alt' => 'Kingdom of the Netherlands'],
-                    ['file' => 'intl-un-women', 'ratio' => 0.96, 'alt' => 'UN Women Moldova'],
+                    ['file' => 'intl-netherlands', 'ratio' => 2.37, 'alt' => 'Kingdom of the Netherlands', 'featured' => true],
                     ['file' => 'intl-un-moldova', 'ratio' => 0.91, 'alt' => 'United Nations Moldova'],
                     ['file' => 'intl-undp', 'ratio' => 0.49, 'alt' => 'UNDP'],
+                    ['file' => 'intl-un-women', 'ratio' => 0.96, 'alt' => 'UN Women Moldova'],
                     ['file' => 'intl-nrc', 'ratio' => 3.93, 'alt' => 'Norwegian Refugee Council'],
                 ],
             ],

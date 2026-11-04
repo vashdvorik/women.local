@@ -49,6 +49,32 @@ class EmailVerificationController extends Controller
     }
 
     /**
+     * Ввод 5-значного кода из письма на этой же странице: результат тот же, что у ссылки. Код живёт 15 минут, неверно можно
+     * ввести 5 раз (потом нужен новый), плюс ограничение частоты запросов в маршруте.
+     */
+    public function code(Request $request): RedirectResponse
+    {
+        /** @var BotUser $user */
+        $user = Auth::guard('participant')->user();
+
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->route('account.onboarding');
+        }
+
+        $code = preg_replace('/\D/', '', (string) $request->input('code'));
+
+        if (strlen($code) !== 5) {
+            return back()->withErrors(['code' => __('participant.verification.code_short')]);
+        }
+
+        return match ($user->checkEmailCode($code)) {
+            'ok' => redirect()->route('account.onboarding')->with('success', __('participant.verification.verified')),
+            'wrong' => back()->withErrors(['code' => __('participant.verification.code_wrong', ['left' => $user->emailCodeAttemptsLeft()])]),
+            default => back()->withErrors(['code' => __('participant.verification.code_expired')]),
+        };
+    }
+
+    /**
      * Смена почты, пока она не подтверждена: человек ошибся адресом при регистрации. Письмо уходит на новый адрес, а старые
      * ссылки перестают действовать (подпись ссылки зависит от адреса).
      */
@@ -98,6 +124,11 @@ class EmailVerificationController extends Controller
             return redirect()->route('account.onboarding')->with('success', __('participant.verification.verified'));
         }
 
-        return redirect()->route('account.login')->with('success', __('participant.verification.verified'));
+        // Другой браузер (письмо открыли на телефоне, а регистрировались на компьютере): сессии здесь нет, поэтому просим
+        // войти, подставляем почту и на странице входа прячем «Я здесь впервые», чтобы человек не регистрировался заново.
+        return redirect()->route('account.login')
+            ->withInput(['email' => (string) $user->email])
+            ->with('success', __('participant.verification.verified_login'))
+            ->with('email_verified', true);
     }
 }

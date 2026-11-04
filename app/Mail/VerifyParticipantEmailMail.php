@@ -16,6 +16,7 @@ class VerifyParticipantEmailMail extends Mailable
         public readonly BotUser $user,
         public readonly string $url,
         public readonly string $language = 'ru',
+        public readonly ?string $code = null,
     ) {}
 
     public function envelope(): Envelope
@@ -34,6 +35,9 @@ class VerifyParticipantEmailMail extends Mailable
                 'button' => __('participant.mail.verify.button', [], $this->language),
                 'note' => __('participant.mail.verify.note', [], $this->language),
                 'url' => $this->url,
+                'code' => $this->code,
+                'codeLine' => __('participant.mail.verify.code_line', [], $this->language),
+                'codeNote' => __('participant.mail.verify.code_note', ['minutes' => \App\Models\BotUser::EMAIL_CODE_MINUTES], $this->language),
             ],
         );
     }

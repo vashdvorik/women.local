@@ -94,11 +94,12 @@
                         {{-- Кнопки и плашка «500+» — один блок одной ширины (на широких экранах кнопки делят ширину плашки поровну) --}}
                         <div class="miro-hero__cta">
                         <div class="miro-hero__actions">
-                            <a href="{{ route('account.login') }}" target="_blank" rel="noopener" class="miro-button miro-button--primary miro-button--brand">
+                            <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button miro-button--primary miro-button--brand">
                                 <span data-lang="ru">Присоединиться</span><span data-lang="en">Join the Platform</span><span data-lang="ro">Alătură-te platformei</span>
                             </a>
-                            <a href="{{ route('experts') }}" class="miro-button miro-button--secondary">
-                                <span data-lang="ru">Наши эксперты</span><span data-lang="en">Our Experts</span><span data-lang="ro">Experții noștri</span>
+                            {{-- Вторая кнопка первого экрана ведёт на вход: «Войти» в шапке прячется на узких экранах (в меню), а эта видна всегда --}}
+                            <a href="{{ route('account.login') }}" target="_blank" rel="noopener" class="miro-button miro-button--secondary">
+                                <span data-lang="ru">Я уже участница. Войти</span><span data-lang="en">Already a member? Log in</span><span data-lang="ro">Sunt deja membră. Intră</span>
                             </a>
                         </div>
                         <div class="miro-proof">
@@ -471,10 +472,20 @@
                     <h2><span data-lang="ru">Наши партнёры</span><span data-lang="en">Our partners</span><span data-lang="ro">Partenerii noștri</span></h2>
                 </div>
                 @foreach(\App\Support\PartnerLogos::groups() as $group)
+                    @php
+                        $featuredLogo = collect($group['logos'])->firstWhere('featured', true);
+                        $otherLogos = collect($group['logos'])->reject(fn (array $logo): bool => ! empty($logo['featured']))->values();
+                    @endphp
                     <div class="miro-partners-group">
                         <h3 class="miro-partners-group__title"><span data-lang="ru">{{ $group['title']['ru'] }}</span><span data-lang="en">{{ $group['title']['en'] }}</span><span data-lang="ro">{{ $group['title']['ro'] }}</span></h3>
-                        <div class="miro-partners-strip">
-                            @foreach($group['logos'] as $logo)
+                        {{-- Знак с отметкой featured (PartnerLogos): первый ряд, по центру, крупнее и с акцентом; остальные ниже --}}
+                        @if($featuredLogo)
+                            <div class="miro-partners-featured">
+                                <div class="miro-partner-chip miro-partner-chip--featured"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/partners/home/' . $featuredLogo['file'] . '.webp') }}" alt="{{ $featuredLogo['alt'] }}" width="{{ \App\Support\PartnerLogos::width($featuredLogo['ratio'], 26000, 270) }}"></div>
+                            </div>
+                        @endif
+                        <div class="miro-partners-strip{{ $featuredLogo ? ' miro-partners-strip--rest' : '' }}">
+                            @foreach($otherLogos as $logo)
                                 <div class="miro-partner-chip"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/partners/home/' . $logo['file'] . '.webp') }}" alt="{{ $logo['alt'] }}" width="{{ \App\Support\PartnerLogos::width($logo['ratio']) }}" loading="lazy"></div>
                             @endforeach
                         </div>

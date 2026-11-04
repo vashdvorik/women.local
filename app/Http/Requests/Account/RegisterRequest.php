@@ -31,6 +31,16 @@ class RegisterRequest extends FormRequest
         ];
     }
 
+    /** Почта уже есть: запоминаем её, чтобы кнопка «Войти» на странице регистрации подставила её в форму входа. */
+    protected function failedValidation(Validator $validator): void
+    {
+        if ($validator->errors()->first('email') === __('participant.validation.email_taken')) {
+            session()->put('login_email', (string) $this->input('email'));
+        }
+
+        parent::failedValidation($validator);
+    }
+
     public function withValidator(Validator $validator): void
     {
         EmailTypo::guard($validator, (string) $this->input('email'), __('participant.validation.email_typo'));

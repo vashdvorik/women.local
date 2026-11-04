@@ -28,6 +28,10 @@
             <div class="miro-container">
                 {{-- Знаки без подписей и ссылок: данные и размеры — App\Support\PartnerLogos (те же, что на главной). --}}
                 @foreach ($partnerGroups as $index => $group)
+                    @php
+                        $featuredLogo = collect($group['logos'])->firstWhere('featured', true);
+                        $otherLogos = collect($group['logos'])->reject(fn (array $logo): bool => ! empty($logo['featured']))->values();
+                    @endphp
                     <section class="miro-partners-group">
                         <div class="miro-partners-group__head">
                             <div class="miro-partners-group__heading">
@@ -35,8 +39,16 @@
                                 <p><span data-lang="ru">{{ $group['description']['ru'] }}</span><span data-lang="en">{{ $group['description']['en'] }}</span><span data-lang="ro">{{ $group['description']['ro'] }}</span></p>
                             </div>
                         </div>
-                        <div class="miro-partners-grid">
-                            @foreach ($group['logos'] as $logo)
+                        {{-- Знак с отметкой featured (PartnerLogos): первый ряд, по центру, крупнее и с акцентом; остальные ниже --}}
+                        @if ($featuredLogo)
+                            <div class="miro-partners-featured">
+                                <article class="miro-partner-card miro-partner-card--{{ $index === 0 ? 'coral' : 'pink' }} miro-partner-card--featured">
+                                    <div class="miro-partner-card__logo"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/partners/home/' . $featuredLogo['file'] . '.webp') }}" alt="{{ $featuredLogo['alt'] }}" width="{{ \App\Support\PartnerLogos::width($featuredLogo['ratio'], 30000, 300) }}"></div>
+                                </article>
+                            </div>
+                        @endif
+                        <div class="miro-partners-grid{{ $featuredLogo ? ' miro-partners-grid--rest' : '' }}">
+                            @foreach ($otherLogos as $logo)
                                 <article class="miro-partner-card miro-partner-card--{{ $index === 0 ? 'coral' : 'pink' }}">
                                     <div class="miro-partner-card__logo"><img src="{{ asset_v('themes/public/' . ($publicTheme ?? 'miro2') . '/images/partners/home/' . $logo['file'] . '.webp') }}" alt="{{ $logo['alt'] }}" width="{{ \App\Support\PartnerLogos::width($logo['ratio'], 12000, 190) }}" loading="lazy"></div>
                                 </article>

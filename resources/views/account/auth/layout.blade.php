@@ -67,8 +67,8 @@
             border: 1px solid var(--login-border-strong);
             border-radius: 14px;
             background: #fff;
-            padding: 12px 14px;
-            font-size: 15px;
+            padding: 13px 14px;
+            font-size: 16px;
             color: var(--login-ink);
         }
         .account-login-input::placeholder { color: #B5A59C; }
@@ -82,6 +82,20 @@
             padding: 13px 20px; font-size: 14px; font-weight: 600; transition: background .15s;
         }
         .account-login-button:hover { background: var(--login-primary-hover); }
+        .account-login-button--big { padding: 16px 22px; font-size: 16px; }
+        .account-login-card--new { background: var(--login-surface); border-color: var(--login-border-strong); }
+        .account-login-balance { text-wrap: balance; }
+        .account-login-choice { margin-bottom: 8px; text-align: center; font-size: 18px; font-weight: 700; color: var(--login-ink); }
+        .account-login-firsttime { margin-bottom: 14px; border: 1px solid var(--login-border-strong); border-radius: 18px; background: var(--login-surface); padding: 16px; text-align: center; font-size: 14px; color: var(--login-ink); }
+        .account-login-firsttime p { margin-bottom: 12px; }
+        .account-login-code { text-align: center; font-size: 28px; font-weight: 700; letter-spacing: 12px; padding: 14px 10px 14px 22px; }
+        .account-login-pw { position: relative; }
+        .account-login-pw .account-login-input { padding-right: 84px; }
+        .account-login-pw__toggle { position: absolute; top: 50%; right: 8px; transform: translateY(-50%); border-radius: 10px; padding: 8px 10px; font-size: 13px; font-weight: 700; color: var(--login-focus); background: transparent; }
+        .account-login-pw__toggle:hover { background: var(--login-accent); }
+        .account-login-switch { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 14px; border: 1px solid var(--login-border-strong); border-radius: 9999px; background: var(--login-surface); padding: 12px 16px; font-size: 14px; color: var(--login-ink); }
+        .account-login-switch b { color: var(--login-focus); }
+        .account-login-switch:hover { background: var(--login-accent); }
         .account-login-button--ghost { background: #fff; color: var(--login-ink); border: 1px solid var(--login-border-strong); }
         .account-login-button--ghost:hover { background: var(--login-accent); }
         .account-login-link { color: var(--login-focus); font-weight: 600; }
@@ -100,7 +114,7 @@
         .account-steps__line { width: 28px; height: 1px; align-self: center; background: var(--login-border-strong); }
     </style>
 </head>
-<body class="account-login-page flex min-h-screen items-center justify-center px-4 py-10 public-theme-{{ $publicTheme }}">
+<body class="account-login-page flex min-h-screen items-center justify-center px-4 pb-10 pt-20 sm:py-10 public-theme-{{ $publicTheme }}">
     <div class="account-login-languages fixed right-4 top-4 flex rounded-full p-1 shadow-sm">
         @foreach(['ru' => 'RU', 'en' => 'EN', 'ro' => 'RO'] as $locale => $label)
             <a href="{{ route('language.switch', $locale) }}"

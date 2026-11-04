@@ -37,7 +37,10 @@ class PublicPartnersTest extends TestCase
         $response = $this->get('/');
 
         $response->assertOk()->assertSeeInOrder(['Международные партнёры', 'Партнёры и вдохновители']);
-        $this->assertSame(20, substr_count($response->getContent(), 'class="miro-partner-chip"'));
+        // 20 знаков: главный партнёр первой группы выведен отдельным крупным знаком, остальные 19 идут обычными
+        $this->assertSame(19, substr_count($response->getContent(), 'class="miro-partner-chip"'));
+        $this->assertSame(1, substr_count($response->getContent(), 'miro-partner-chip miro-partner-chip--featured'));
+        $this->assertStringContainsString('class="miro-partners-strip miro-partners-strip--rest"', $response->getContent());
     }
 
     public function test_every_logo_file_exists(): void

@@ -53,11 +53,12 @@ class BotUser extends Model implements AuthenticatableContract, CanResetPassword
     // только сервисы и контроллеры входа через forceFill().
     // Тариф (plan, plan_ends_at, plan_notified_stage) намеренно не в $fillable: его меняет только
     // App\Services\Subscriptions\SubscriptionService, чтобы ни форма профиля, ни бот не могли выдать себе доступ.
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = ['password', 'remember_token', 'email_code_hash'];
 
     protected $casts = [
         'telegram_id'          => 'integer',
         'email_verified_at'    => 'datetime',
+        'email_code_expires_at' => 'datetime',
         'profile_completed_at' => 'datetime',
         'password'             => 'hashed',
         'approved_at'          => 'datetime',
@@ -139,7 +140,15 @@ class BotUser extends Model implements AuthenticatableContract, CanResetPassword
         return $this->telegram_id !== null;
     }
 
-    /** Письмо со ссылкой подтверждения почты (действует сутки), на языке, на котором участница открыла сайт. */
+    /** Сколько минут действует код из письма и сколько раз его можно ввести неверно. */
+    public const EMAIL_CODE_MINUTES = 15;
+    public const EMAIL_CODE_MAX_ATTEMPTS = 5;
+
+    /**
+     * Письмо подтверждения почты на языке, на котором участница открыла сайт: кнопка-ссылка (действует сутки) и рядом
+     * 5-значный код (15 минут). Код вводят на странице «Подтвердите почту» там же, где регистрировались. Каждая отправка
+     * выпускает новый код и обнуляет попытки; в базе лежит только его хеш.
+     */
     public function sendEmailVerification(): void
     {
         $url = URL::temporarySignedRoute('account.verification.verify', now()->addDay(), [
@@ -147,7 +156,52 @@ class BotUser extends Model implements AuthenticatableContract, CanResetPassword
             'hash' => sha1((string) $this->email),
         ]);
 
-        Mail::to($this->email)->send(new VerifyParticipantEmailMail($this, $url, app()->getLocale()));
+        $code = str_pad((string) random_int(0, 99999), 5, '0', STR_PAD_LEFT);
+
+        $this->forceFill([
+            'email_code_hash' => $this->emailCodeHash($code),
+            'email_code_expires_at' => now()->addMinutes(self::EMAIL_CODE_MINUTES),
+            'email_code_attempts' => 0,
+        ])->save();
+
+        Mail::to($this->email)->send(new VerifyParticipantEmailMail($this, $url, app()->getLocale(), $code));
+    }
+
+    /** Хеш привязан к адресу: после смены почты прежний код недействителен. */
+    private function emailCodeHash(string $code): string
+    {
+        return hash_hmac('sha256', $this->getKey().'|'.$this->email.'|'.$code, (string) config('app.key'));
+    }
+
+    /**
+     * Проверка кода из письма: 'ok' (почта подтверждена), 'wrong' (неверный, попытка засчитана), 'expired' (кода нет,
+     * срок вышел или попытки закончились: нужен новый).
+     */
+    public function checkEmailCode(string $code): string
+    {
+        if ($this->email_code_hash === null
+            || $this->email_code_expires_at === null
+            || $this->email_code_expires_at->isPast()
+            || $this->email_code_attempts >= self::EMAIL_CODE_MAX_ATTEMPTS) {
+            return 'expired';
+        }
+
+        if (! hash_equals($this->email_code_hash, $this->emailCodeHash($code))) {
+            $this->forceFill(['email_code_attempts' => $this->email_code_attempts + 1])->save();
+
+            return $this->email_code_attempts >= self::EMAIL_CODE_MAX_ATTEMPTS ? 'expired' : 'wrong';
+        }
+
+        $this->forceFill(['email_code_hash' => null, 'email_code_expires_at' => null, 'email_code_attempts' => 0])->save();
+        $this->markEmailAsVerified();
+
+        return 'ok';
+    }
+
+    /** Сколько попыток ввода кода осталось. */
+    public function emailCodeAttemptsLeft(): int
+    {
+        return max(0, self::EMAIL_CODE_MAX_ATTEMPTS - (int) $this->email_code_attempts);
     }
 
     public function sendPasswordResetNotification($token): void

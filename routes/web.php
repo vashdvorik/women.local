@@ -175,6 +175,7 @@ Route::middleware([RequireAccountAuth::class, \App\Http\Middleware\TrackCabinetA
         // Шаги до кабинета: подтверждение почты и анкета (RequireAccountAuth пускает сюда, пока они не пройдены).
         Route::get('/email/verify', [EmailVerificationController::class, 'notice'])->name('verification.notice');
         Route::post('/email/verify/resend', [EmailVerificationController::class, 'resend'])->middleware('throttle:3,1')->name('verification.resend');
+        Route::post('/email/verify/code', [EmailVerificationController::class, 'code'])->middleware('throttle:10,1')->name('verification.code');
         Route::post('/email/verify/change', [EmailVerificationController::class, 'changeEmail'])->middleware('throttle:5,1')->name('verification.change');
         Route::get('/onboarding', [OnboardingController::class, 'show'])->name('onboarding');
         Route::post('/onboarding', [OnboardingController::class, 'store'])->name('onboarding.store');

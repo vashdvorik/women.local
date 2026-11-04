@@ -68,4 +68,17 @@ class PublicLandingSectionsTest extends TestCase
             );
         }
     }
+
+    public function test_every_join_button_on_the_landing_leads_to_the_registration_and_login_buttons_to_the_login(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        // Все кнопки «Присоединиться» (первый экран и остальные) ведут на регистрацию, а не на вход
+        preg_match_all('#<a href="([^"]+)"[^>]*miro-button--primary[^>]*>\s*<span data-lang="ru">Присоединиться</span>#u', $html, $joins);
+        $this->assertNotEmpty($joins[1]);
+        $this->assertSame([route('account.register')], array_values(array_unique($joins[1])));
+
+        preg_match_all('#<a href="([^"]+)"[^>]*>\s*<span data-lang="ru">Войти</span>#u', $html, $logins);
+        $this->assertSame([route('account.login')], array_values(array_unique($logins[1])));
+    }
 }

@@ -214,15 +214,28 @@ html.miro-page .miro-director-note__copy > div[data-lang] > p:last-child { margi
    текстом: контраст текста 7,5:1, кнопки с фоном 6,5:1. Размер 50 px и тень в тон; при наведении чуть темнее и приподнимается. */
 html.miro-page .miro-hero--image .miro-hero__actions .miro-button--primary,
 html.miro-page #register-cta .miro-button--primary {
-    min-height: 50px;
-    padding: 14px 32px;
+    min-height: 54px;
+    padding: 16px 36px;
     border-color: var(--miro2-caramel-deep);
     background: var(--miro2-caramel-deep);
-    box-shadow: 0 12px 24px -12px rgba(116, 71, 47, .7);
-    font-size: 15px;
-    font-weight: 600;
+    /* Тень в тон и светлое кольцо-ореол вокруг: кнопка отделяется от фона и фото и считывается как главная */
+    box-shadow: 0 14px 28px -12px rgba(116, 71, 47, .8), 0 0 0 5px rgba(230, 188, 149, .55);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: .01em;
+    gap: 10px;
     transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
 }
+/* Стрелка подсказывает, что это следующий шаг; при наведении сдвигается вперёд */
+html.miro-page .miro-hero--image .miro-hero__actions .miro-button--primary::after,
+html.miro-page #register-cta .miro-button--primary::after {
+    content: "→";
+    font-size: 1.15em;
+    line-height: 1;
+    transition: transform .2s ease;
+}
+html.miro-page .miro-hero--image .miro-hero__actions .miro-button--primary:hover::after,
+html.miro-page #register-cta .miro-button--primary:hover::after { transform: translateX(4px); }
 html.miro-page .miro-hero--image .miro-hero__actions .miro-button--primary,
 html.miro-page .miro-hero--image .miro-hero__actions .miro-button--primary span,
 html.miro-page #register-cta .miro-button--primary,
@@ -231,10 +244,10 @@ html.miro-page .miro-hero--image .miro-hero__actions .miro-button--primary:hover
 html.miro-page #register-cta .miro-button--primary:hover {
     border-color: #5E3825;
     background: #5E3825;
-    box-shadow: 0 16px 28px -12px rgba(94, 56, 37, .75);
+    box-shadow: 0 18px 30px -12px rgba(94, 56, 37, .8), 0 0 0 7px rgba(230, 188, 149, .6);
     transform: translateY(-2px);
 }
-html.miro-page .miro-hero--image .miro-hero__actions .miro-button--secondary { min-height: 50px; }
+html.miro-page .miro-hero--image .miro-hero__actions .miro-button--secondary { min-height: 54px; }
 @media (prefers-reduced-motion: reduce) {
     html.miro-page .miro-hero--image .miro-hero__actions .miro-button--primary:hover,
     html.miro-page #register-cta .miro-button--primary:hover { transform: none; }

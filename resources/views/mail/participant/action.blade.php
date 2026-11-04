@@ -11,6 +11,12 @@
             <tr><td style="padding:24px 32px;">
                 <a href="{{ $url }}" style="display:inline-block;background:#2A1913;color:#FFFFFF;text-decoration:none;font-weight:bold;font-size:15px;padding:14px 28px;border-radius:999px;">{{ $button }}</a>
             </td></tr>
+            @if(! empty($code))
+            {{-- Код для ввода на странице подтверждения (тот же результат, что у кнопки): удобно, когда письмо читают на телефоне, а регистрировались на компьютере --}}
+            <tr><td style="padding:0 32px 4px;font-size:15px;line-height:1.5;">{{ $codeLine }}</td></tr>
+            <tr><td style="padding:4px 32px 4px;"><span style="display:inline-block;background:#F1E3DA;color:#2A1913;font-family:'Courier New',monospace;font-weight:bold;font-size:32px;letter-spacing:10px;padding:12px 22px 12px 32px;border-radius:14px;">{{ $code }}</span></td></tr>
+            <tr><td style="padding:4px 32px 20px;font-size:13px;line-height:1.5;color:#756158;">{{ $codeNote }}</td></tr>
+            @endif
             <tr><td style="padding:0 32px 8px;font-size:13px;line-height:1.5;color:#756158;">{{ $note }}</td></tr>
             <tr><td style="padding:0 32px 24px;font-size:12px;line-height:1.5;color:#8C776E;word-break:break-all;">{{ $url }}</td></tr>
             <tr><td style="padding:16px 32px 28px;border-top:1px solid #E9DCD5;font-size:12px;color:#8C776E;">{{ __('participant.mail.footer', [], $locale) }}</td></tr>
