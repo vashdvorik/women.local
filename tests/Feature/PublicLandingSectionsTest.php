@@ -78,7 +78,9 @@ class PublicLandingSectionsTest extends TestCase
         $this->assertNotEmpty($joins[1]);
         $this->assertSame([route('account.register')], array_values(array_unique($joins[1])));
 
-        preg_match_all('#<a href="([^"]+)"[^>]*>\s*<span data-lang="ru">Войти</span>#u', $html, $logins);
+        // Вход: «Личный кабинет» в шапке и «Вход для участниц» на первом экране
+        preg_match_all('#<a href="([^"]+)"[^>]*>\s*<span data-lang="ru">(?:Личный кабинет|Вход для участниц)</span>#u', $html, $logins);
+        $this->assertGreaterThanOrEqual(2, count($logins[1]));
         $this->assertSame([route('account.login')], array_values(array_unique($logins[1])));
     }
 }

@@ -832,3 +832,16 @@ html.lite .miro-directions__grid > .miro-direction-card::after { display: none; 
 @media (min-width: 1024px) {
     .miro-contact-section h2 { max-width: none; }
 }
+
+/* Кнопка «Личный кабинет» в шапке не переносится на вторую строку */
+.miro-nav__actions .miro-button { white-space: nowrap; }
+
+/* Ноутбуки и окна не на весь экран: пунктов меню много, а отступ между ними 24 px, из-за чего меню наползало на логотип и язык.
+   До 1200 px кнопки «Личный кабинет» в шапке нет, места чуть больше: отступ 10 px. От 1201 до 1380 px кнопка есть, а места
+   меньше всего: отступ растёт вместе с шириной окна (от 4 px до обычных 24 px). */
+@media (min-width: 1024px) and (max-width: 1200px) {
+    .miro-nav .miro-nav__links { gap: 10px; }
+}
+@media (min-width: 1201px) and (max-width: 1380px) {
+    .miro-nav .miro-nav__links { gap: clamp(4px, calc(4px + (100vw - 1210px) * .2), 24px); }
+}

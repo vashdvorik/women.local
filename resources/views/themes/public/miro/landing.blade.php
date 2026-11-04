@@ -48,7 +48,7 @@
                         <button type="button" data-locale="ro">RO</button>
                     </div>
                     <a href="{{ route('account.login') }}" target="_blank" rel="noopener" class="miro-button miro-button--secondary">
-                        <span data-lang="ru">Войти</span><span data-lang="en">Log in</span><span data-lang="ro">Intră</span>
+                        <span data-lang="ru">Личный кабинет</span><span data-lang="en">My account</span><span data-lang="ro">Contul meu</span>
                     </a>
                     <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button miro-button--primary miro-button--brand">
                         <span data-lang="ru">Присоединиться</span><span data-lang="en">Get started</span><span data-lang="ro">Începe</span>
@@ -62,7 +62,7 @@
                     <button type="button" data-locale="ro">RO</button>
                 </div>
                 <a href="{{ route('account.login') }}" target="_blank" rel="noopener" class="miro-button miro-button--secondary miro-button--small">
-                    <span data-lang="ru">Войти</span><span data-lang="en">Log in</span><span data-lang="ro">Intră</span>
+                    <span data-lang="ru">Личный кабинет</span><span data-lang="en">My account</span><span data-lang="ro">Contul meu</span>
                 </a>
                 <a href="{{ $botUrl }}" target="_blank" rel="noopener" class="miro-button miro-button--primary miro-button--small">
                     <span data-lang="ru">Присоединиться</span><span data-lang="en">Get started</span><span data-lang="ro">Începe</span>
@@ -98,7 +98,7 @@
                             </a>
                             {{-- Вторая кнопка первого экрана ведёт на вход: «Войти» в шапке прячется на узких экранах (в меню), а эта видна всегда --}}
                             <a href="{{ route('account.login') }}" target="_blank" rel="noopener" class="miro-button miro-button--secondary">
-                                <span data-lang="ru">Я уже участница. Войти</span><span data-lang="en">Already a member? Log in</span><span data-lang="ro">Sunt deja membră. Intră</span>
+                                <span data-lang="ru">Вход для участниц</span><span data-lang="en">Member login</span><span data-lang="ro">Intrare pentru membre</span>
                             </a>
                         </div>
                         <div class="miro-proof">
