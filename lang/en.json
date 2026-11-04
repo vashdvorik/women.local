@@ -28,10 +28,7 @@
     "Сохраняются сообщения на языке «:language». Другие языки не затрагиваются.": "Messages in the “:language” language are being saved. Other languages are not affected.",
     "Сохранить (:language)": "Save (:language)",
     "Инфопанель": "Dashboard",
-    "Профили ждут решения": "Profiles awaiting a decision",
-    "Открыть очередь профилей": "Open the profile queue",
     "Очередь пуста": "The queue is empty",
-    "Профили участниц · :count одобрено": "Participant profiles · :count approved",
     "Статистика": "Statistics",
     "Настройки кабинетов": "Cabinet settings",
     "Ключ сохранён. Введите новый только для замены.": "Key saved. Enter a new one only to replace it.",
@@ -624,8 +621,6 @@
     "Тег </:tag> закрыт не там: теги должны закрываться в обратном порядке (<b><i>…</i></b>).": "The </:tag> tag is closed in the wrong place: tags must be closed in reverse order (<b><i>…</i></b>).",
     "У ссылки должен быть адрес вида <a href=\"https://…\">текст</a> (допустимы http, https, tg и mailto), и больше никаких параметров.": "A link must have an address like <a href=\"https://…\">text</a> (http, https, tg and mailto are allowed) and no other parameters.",
     "У тега <:tag> не должно быть параметров.": "The <:tag> tag must not have parameters.",
-    "Ожидают решения": "Awaiting a decision",
-    "Отклонено": "Rejected",
     "Заполнили бизнес-профиль": "Completed the business profile",
     "Указали описание бизнеса и запрос к сообществу": "Entered a business description and a request to the community",
     "Готовы к AI-рекомендациям": "Ready for AI recommendations",
@@ -1020,7 +1015,6 @@
     "<b class=\"text-ink\">«Участницы»</b> — профили, инициативы, вопросы AI-менеджеру, статистика; <b class=\"text-ink\">«Пакеты и оплата»</b> — цены, заявки, платежи; <b class=\"text-ink\">«Контент»</b> — новости, возможности и обучение, проекты, эксперты, медиатека; <b class=\"text-ink\">«Общение»</b> — рассылка в Telegram, обращения, подписчики; <b class=\"text-ink\">«Настройки»</b> — сайта и кабинетов.": "<b class=\"text-ink\">“Members”</b> — profiles, initiatives, questions to the AI manager, statistics; <b class=\"text-ink\">“Plans and payments”</b> — prices, requests, payments; <b class=\"text-ink\">“Content”</b> — news, opportunities and learning, projects, experts, media library; <b class=\"text-ink\">“Communication”</b> — Telegram broadcasts, messages, subscribers; <b class=\"text-ink\">“Settings”</b> — of the site and of the cabinets.",
     "Числа в кружках — сколько записей ждёт вашего решения. Те же очереди собраны на этой странице: нажмите карточку, чтобы открыть нужный список.": "The numbers in the circles show how many items are waiting for your decision. The same queues are gathered on this page: click a card to open the list.",
     "У каждого раздела один пункт меню. Новая запись — кнопка <b class=\"text-ink\">«Добавить»</b> вверху списка; чтобы изменить запись, нажмите <b class=\"text-ink\">«Изменить»</b> в её строке. Кнопка <b class=\"text-ink\">«Удалить»</b> спросит подтверждение.": "Each section has one menu item. A new record is the <b class=\"text-ink\">“Add”</b> button at the top of the list; to change a record, click <b class=\"text-ink\">“Edit”</b> in its row. The <b class=\"text-ink\">“Delete”</b> button asks for confirmation.",
-    "Новая участница регистрируется на сайте, заполняет анкету и выбирает пакет. Анкета попадает в <b class=\"text-ink\">«Профили участниц»</b>. Одобрение — скрытая проверка: участнице оно не сообщается, а другие участницы видят её профиль только после одобрения (и при действующем пакете). Отказ уходит ей уведомлением.": "A new member registers on the site, fills in her profile and chooses a plan. The profile goes to <b class=\"text-ink\">“Member profiles”</b>. Approval is a hidden check: the member is not told about it, and other members see her profile only after approval (and with a current plan). A rejection is sent to her as a notice.",
     "Инициативы, которые участницы публикуют в кабинете, сначала попадают в <b class=\"text-ink\">«Инициативы участниц»</b>. Пока инициатива не одобрена, её видит только автор.": "Initiatives that members publish in the cabinet go to <b class=\"text-ink\">“Participant initiatives”</b> first. Until an initiative is approved, only its author sees it.",
     "<b class=\"text-ink\">«Возможности/обучение»</b> — карточки для сайта и кабинета. Галочками в форме выбирается, где карточка показывается: на открытом сайте, в «Возможностях» кабинета, в «Обучении». <b class=\"text-ink\">«Обучающие видео»</b> — отдельные видео для раздела «Обучение» в кабинете.": "<b class=\"text-ink\">“Opportunities/learning”</b> — cards for the site and the cabinet. The checkboxes in the form choose where a card is shown: on the public site, in the cabinet’s “Opportunities”, in “Learning”. <b class=\"text-ink\">“Educational videos”</b> — separate videos for the “Learning” section of the cabinet.",
     "<b class=\"text-ink\">«Медиатека»</b> объединяет фотоальбомы, видео и каталоги, которые выпустила организация.": "<b class=\"text-ink\">“Media library”</b> combines photo albums, videos and catalogues issued by the organisation.",
@@ -1218,5 +1212,7 @@
     "AI-менеджер: модель": "AI manager: model",
     "AI-менеджер: temperature": "AI manager: temperature",
     "AI-менеджер: максимум токенов": "AI manager: maximum tokens",
-    "AI-менеджер: тайм-аут": "AI manager: timeout"
+    "AI-менеджер: тайм-аут": "AI manager: timeout",
+    "Профили участниц · :count видимы другим": "Participant profiles · :count visible to others",
+    "Новая участница регистрируется на сайте, заполняет анкету и выбирает пакет. Анкета попадает в <b class=\"text-ink\">«Профили участниц»</b>. После первой оплаты (или подарка пакета) профиль сам становится видимым другим участницам. Видимость, <b class=\"text-ink\">«Режим невидимки»</b> и блокировку вы меняете в списке профилей: у каждой кнопки есть подсказка.": "A new participant signs up on the site, fills in her profile and chooses a plan. The profile appears in <b class=\"text-ink\">“Participant profiles”</b>. After the first payment (or a plan gift) the profile becomes visible to other participants by itself. You change visibility, <b class=\"text-ink\">“Invisible mode”</b> and blocking in the profile list: every button has a hint."
 }

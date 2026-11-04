@@ -180,9 +180,10 @@ class AdminMenuTest extends TestCase
 
         $content = $this->actingAsAdmin()->get(route('admin.events.index'))->assertOk()->getContent();
 
-        $this->assertStringContainsString('<span class="nav-counter" title="Ждут решения">2</span>', $content, 'профили');
+        // Профили «Скрыты от других» очередью не считаются: числа у «Профилей участниц» нет, в сумме их тоже нет
+        $this->assertStringNotContainsString('<span class="nav-counter" title="Ждут решения">2</span>', $content, 'профили не очередь');
         $this->assertStringContainsString('<span class="nav-counter" title="Ждут решения">1</span>', $content, 'инициативы');
-        $this->assertStringContainsString('<span class="nav-counter" title="Требует внимания">3</span>', $content, 'сумма на инфопанели');
+        $this->assertStringContainsString('<span class="nav-counter" title="Требует внимания">1</span>', $content, 'сумма на инфопанели');
     }
 
     public function test_no_counter_when_nothing_waits_for_a_decision(): void
@@ -193,19 +194,19 @@ class AdminMenuTest extends TestCase
     public function test_the_dashboard_gathers_all_queues_in_one_place(): void
     {
         BotUser::factory()->pending()->count(2)->create();
-        BotUser::factory()->approved()->count(3)->create();
+        $author = BotUser::factory()->approved()->count(3)->create()->first();
+        Opportunity::create(['bot_user_id' => $author->id, 'type' => 'event', 'title' => 'Пост', 'body' => 'Текст', 'status' => 'pending']);
 
         $this->actingAsAdmin()->get(route('admin.dashboard'))
             ->assertOk()
             ->assertSee('Требует внимания')
-            ->assertSee('Профили ждут решения')
+            ->assertDontSee('Профили ждут решения')
             ->assertSee('Инициативы участниц ждут решения')
             ->assertSee('Новые заявки на пакет')
             ->assertSee('Платежи на разбор')
             ->assertSee('Вопросы AI-менеджеру без ответа')
             ->assertSee('Непрочитанные обращения')
-            ->assertSee('Профили участниц · 3 одобрено')
-            ->assertSee(route('admin.profiles.index', ['status' => 'pending']), false)
+            ->assertSee('Профили участниц · 3 видимы другим')
             ->assertSee(route('admin.member-posts.index', ['status' => 'pending']), false)
             ->assertSee(route('admin.plan-requests.index'), false)
             ->assertSee(route('admin.learning-videos.create'), false);
@@ -249,7 +250,9 @@ class AdminMenuTest extends TestCase
 
     public function test_a_collapsed_group_still_shows_how_many_items_wait_inside(): void
     {
-        BotUser::factory()->pending()->count(2)->create();
+        $author = BotUser::factory()->approved()->create();
+        Opportunity::create(['bot_user_id' => $author->id, 'type' => 'event', 'title' => 'Пост', 'body' => 'Текст', 'status' => 'pending']);
+        Opportunity::create(['bot_user_id' => $author->id, 'type' => 'event', 'title' => 'Пост 2', 'body' => 'Текст', 'status' => 'pending']);
 
         $content = $this->actingAsAdmin()->get(route('admin.events.index'))->assertOk()->getContent();
 

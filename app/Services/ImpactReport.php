@@ -149,9 +149,9 @@ class ImpactReport
     private function presentation(array $d): array
     {
         $statusRows = [
-            ['label' => __('Одобрено'), 'value' => $d['approvedCount'], 'percent' => $d['approvalRate'], 'tone' => 'success'],
-            ['label' => __('Ожидают решения'), 'value' => $d['pendingCount'], 'percent' => $this->percent($d['pendingCount'], $d['totalApplications']), 'tone' => 'warning'],
-            ['label' => __('Отклонено'), 'value' => $d['rejectedCount'], 'percent' => $this->percent($d['rejectedCount'], $d['totalApplications']), 'tone' => 'error'],
+            ['label' => __('Видимы другим'), 'value' => $d['approvedCount'], 'percent' => $d['approvalRate'], 'tone' => 'success'],
+            ['label' => __('Скрыты от других'), 'value' => $d['pendingCount'], 'percent' => $this->percent($d['pendingCount'], $d['totalApplications']), 'tone' => 'warning'],
+            ['label' => __('Заблокированы'), 'value' => $d['rejectedCount'], 'percent' => $this->percent($d['rejectedCount'], $d['totalApplications']), 'tone' => 'error'],
         ];
 
         $qualityRows = [

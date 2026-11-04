@@ -32,7 +32,6 @@ class DashboardController extends Controller
             'approvedProfiles' => BotUser::approved()->count(),
             // Очереди: у каждой своя карточка со ссылкой на нужный список
             'queues' => [
-                ['label' => __('Профили ждут решения'), 'count' => BotUser::pending()->count(), 'url' => route('admin.profiles.index', ['status' => 'pending']), 'open' => __('Открыть очередь профилей')],
                 ['label' => __('Инициативы участниц ждут решения'), 'count' => Opportunity::pending()->count(), 'url' => route('admin.member-posts.index', ['status' => 'pending']), 'open' => __('Открыть очередь инициатив')],
                 ['label' => __('Новые заявки на пакет'), 'count' => PlanRequest::where('status', PlanRequest::STATUS_NEW)->count(), 'url' => route('admin.plan-requests.index'), 'open' => __('Позвонить участницам')],
                 ['label' => __('Платежи на разбор'), 'count' => Payment::where('status', Payment::STATUS_VERIFYING)->where('updated_at', '<=', now()->subMinutes(15))->count(), 'url' => route('admin.payments.index'), 'open' => __('Разобрать платежи')],

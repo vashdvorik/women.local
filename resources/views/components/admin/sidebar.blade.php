@@ -10,8 +10,8 @@
         request()->routeIs('admin.albums.*', 'admin.videos.*', 'admin.posts.*', 'admin.catalogs.*') ? 'media' : null,
     ]));
 
-    // Что ждёт решения администратора: числа стоят рядом с пунктами, а их сумма — на «Инфопанели».
-    $pendingProfiles = \App\Models\BotUser::pending()->count();
+    // Что ждёт решения администратора: числа стоят рядом с пунктами, а их сумма — на «Инфопанели». Профили сюда не входят:
+    // «видимость другим» и блокировка выставляются администратором по желанию, очереди анкет больше нет.
     $pendingMemberPosts = \App\Models\Opportunity::pending()->count();
 
     // Новые заявки на закрытые пакеты: менеджеру нужно позвонить.
@@ -26,7 +26,7 @@
     // Непрочитанные обращения из формы «Связаться с нами» на странице «Контакты».
     $unreadContacts = \App\Models\ContactMessage::unread()->count();
 
-    $attention = $pendingProfiles + $pendingMemberPosts + $newPlanRequests + $managerQuestions + $problemPayments + $unreadContacts;
+    $attention = $pendingMemberPosts + $newPlanRequests + $managerQuestions + $problemPayments + $unreadContacts;
 @endphp
 
 <aside {{ $attributes->merge(['class' => 'admin-sidebar']) }}>
@@ -49,12 +49,11 @@
         </a>
 
         {{-- ======================== Участницы ======================== --}}
-        <x-admin.nav-group group="people" :label="__('Участницы')" :count="$pendingProfiles + $pendingMemberPosts + $managerQuestions" />
+        <x-admin.nav-group group="people" :label="__('Участницы')" :count="$pendingMemberPosts + $managerQuestions" />
         <div class="nav-collapsible" data-group="people" x-init="$nextTick(() => $el.style.maxHeight = '')" :class="open.people ? '' : 'nav-collapsible--closed'">
         <a href="{{ route('admin.profiles.index') }}"
            class="nav-link @if(request()->routeIs('admin.profiles.*')) nav-link--active @endif">
             <x-admin.nav-icon name="users" /><span>{{ __('Профили участниц') }}</span>
-            @if($pendingProfiles > 0)<span class="nav-counter" title="{{ __('Ждут решения') }}">{{ $pendingProfiles }}</span>@endif
         </a>
         <a href="{{ route('admin.member-posts.index') }}"
            class="nav-link @if(request()->routeIs('admin.member-posts.*')) nav-link--active @endif">
