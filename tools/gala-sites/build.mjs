@@ -138,8 +138,8 @@ function hero(site) {
     : `<a class="btn" href="${LINKS.register}" target="_blank" rel="noopener">${L(UI.btn.join)}</a>
        <a class="btn btn--ghost" href="${LINKS.regulations}" target="_blank" rel="noopener">${L(UI.btn.regulations)}</a>`;
   return `
-<header class="hero${site.status === 'upcoming' ? ' hero--announce' : ' hero--past'}" id="top">
-  ${site.status === 'upcoming' ? '' : `<div class="hero__bg"><img src="assets/img/hero.webp" alt="" fetchpriority="high" decoding="async"></div>`}
+<header class="hero${site.status === 'upcoming' ? ' hero--announce' : ' hero--past'}${site.hero ? ' hero--fade' : ''}" id="top">
+  ${site.status === 'upcoming' ? '' : `<div class="hero__bg"><img src="${site.hero ?? 'assets/img/hero.webp'}" alt="" fetchpriority="high" decoding="async"></div>`}
   <div class="hero__shade"></div>
   <div class="hero__glow hero__glow--a"></div>
   <div class="hero__glow hero__glow--b"></div>
@@ -487,7 +487,7 @@ function page(site, all) {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Prata&display=swap" rel="stylesheet">
-${site.status === 'upcoming' ? '' : `<link rel="preload" as="image" href="assets/img/hero.webp">`}
+${site.status === 'upcoming' ? '' : `<link rel="preload" as="image" href="${site.hero ?? 'assets/img/hero.webp'}">`}
 <link rel="stylesheet" href="assets/style.css?v=${V.css}">
 </head>
 <body>
@@ -589,6 +589,7 @@ for (const site of sites) {
   const dir = path.join(root, `gala${site.year}`);
   fs.mkdirSync(path.join(dir, 'assets'), { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), page(site, [...sites].sort((a, b) => b.year - a.year)));
+  if (site.heroFile) fs.copyFileSync(path.join(here, site.heroFile), path.join(dir, site.hero));
   fs.writeFileSync(path.join(dir, 'assets', 'style.css'), styleCss);
   fs.writeFileSync(path.join(dir, 'assets', 'script.js'), scriptJs);
   if (site.status === 'past') {

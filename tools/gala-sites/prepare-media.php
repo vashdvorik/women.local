@@ -100,8 +100,6 @@ foreach ([2025 => ['05', '01', '09', '08', '14', '17'], 2024 => ['07', '04', '02
         resizeTo("{$root}/public/themes/public/miro/images/albums/gala-premiya-{$year}/{$name}.webp", "{$root}/gala2026/assets/img/past-{$year}-{$name}.webp", 760, 72);
     }
 }
-resizeTo("{$root}/public/themes/public/miro/images/albums/gala-premiya-2025/05.webp", "{$root}/gala2025/assets/img/hero.webp", 1800, 72);
-resizeTo("{$root}/public/themes/public/miro/images/albums/gala-premiya-2024/07.webp", "{$root}/gala2024/assets/img/hero.webp", 1800, 72);
 
 // ---------------------------------------------------------------- карточки «другие церемонии» на сайтах прошлых лет
 $cards = [

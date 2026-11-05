@@ -84,7 +84,7 @@
         if (progress && max > 0) progress.style.transform = 'scaleX(' + Math.min(1, y / max).toFixed(4) + ')';
         if (toTop) toTop.classList.toggle('is-shown', y > window.innerHeight * 0.9);
         // Лёгкий параллакс первого экрана (только transform)
-        if (hero && !reduce && !root.classList.contains('lite') && window.innerWidth > 720 && window.innerWidth / window.innerHeight > 1.25 && window.innerHeight > 520 && y < window.innerHeight * 1.2) {
+        if (hero && !reduce && !root.classList.contains('lite') && window.innerWidth > 720 && window.innerWidth / window.innerHeight > 1.55 && window.innerHeight > 520 && y < window.innerHeight * 1.2) {
             if (heroBg) heroBg.style.transform = 'translate3d(0,' + (y * 0.18).toFixed(1) + 'px,0)';
             if (heroContent) heroContent.style.transform = 'translate3d(0,' + (y * -0.06).toFixed(1) + 'px,0)';
         }

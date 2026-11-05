@@ -4,6 +4,8 @@ export default {
   domain: 'gala2025.innovation.md',
   accent: 'gold',
   status: 'past',
+  heroFile: 'src/hero-2025.jpg',
+  hero: 'assets/img/hero.jpg',
   title: { ru: 'Женщина Года 2025', en: 'Woman of the Year 2025', ro: 'Femeia Anului 2025' },
   eyebrow: { ru: 'Гала Премия', en: 'Gala Award', ro: 'Gala premiilor' },
   date: { ru: '12 марта 2026', en: '12 March 2026', ro: '12 martie 2026' },

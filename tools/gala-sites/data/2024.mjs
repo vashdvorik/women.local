@@ -4,6 +4,8 @@ export default {
   domain: 'gala2024.innovation.md',
   accent: 'rose',
   status: 'past',
+  heroFile: 'src/hero-2024.jpg', // исходное фото первого экрана копируется без сжатия
+  hero: 'assets/img/hero.jpg',
   title: { ru: 'Женщина Года 2024', en: 'Woman of the Year 2024', ro: 'Femeia Anului 2024' },
   eyebrow: { ru: 'Гала Премия', en: 'Gala Award', ro: 'Gala premiilor' },
   date: { ru: '4 марта 2025', en: '4 March 2025', ro: '4 martie 2025' },
