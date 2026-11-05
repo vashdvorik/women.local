@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://gala2024.innovation.md/sitemap.xml

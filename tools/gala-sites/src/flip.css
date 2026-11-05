@@ -1,0 +1,83 @@
+/* Каталог с перелистыванием (js/catalog.js). Книга растягивается по ширине колонки; под ней панель управления. */
+.miro-catalog__lead { max-width: 720px; margin: 0 0 24px; color: var(--miro-slate); font-size: 17px; line-height: 1.6; }
+
+/* --z — приближение (1 — обычный размер), --base — самая большая ширина книги без приближения: не выше колонки и так, чтобы
+   целиком помещалась по высоте экрана. Приближение растягивает книгу в --z раз, а видимая область (viewport) прокручивается. */
+.miro-flip { --z: 1; --unit-h: 100vh; --base: min(1280px, calc((var(--unit-h) - 200px) * var(--r, .7071) * 2)); margin: 8px auto 28px; }
+@supports (height: 100svh) { .miro-flip { --unit-h: 100svh; } }
+/* Одна страница (телефон): ширина листа считается так, чтобы лист и панель под ним помещались на первом экране вместе с шапкой
+   страницы, а по бокам оставались поля: за них (и за панель) можно взяться пальцем и прокрутить сайт. Разворот (планшет,
+   компьютер) считается как раньше. */
+.miro-flip.is-portrait { --base: min(1280px, max(260px, calc((var(--unit-h) - 380px) * var(--r, .7071)))); }
+.miro-flip__stage { display: flex; justify-content: center; width: 100%; padding: 8px 0 4px; }
+/* touch-action без pinch-zoom: щипок двумя пальцами внутри рамки не масштабирует сайт (им управляет скрипт и приближает лист) */
+.miro-flip__viewport { width: 100%; touch-action: pan-y; }
+.miro-flip__viewport.is-pinching { overflow: hidden; }
+.miro-flip__fit { width: calc(100% * var(--z)); max-width: calc(var(--base) * var(--z)); margin: 0 auto; }
+.miro-flip__book { width: 100%; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.miro-flip__page { overflow: hidden; background: #fff; }
+.miro-flip__page img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; background: #fff; }
+.miro-flip__first { display: block; max-width: 420px; width: 100%; margin: 0 auto; border-radius: 8px; box-shadow: 0 14px 34px rgba(33, 20, 15, .16); }
+
+.miro-flip__bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; margin-top: 18px; }
+.miro-flip__bar[hidden] { display: none; }
+.miro-flip__hint { max-width: 420px; margin: 14px auto 0; color: var(--miro-steel, #8C776E); font-size: 13px; line-height: 1.5; text-align: center; }
+.miro-flip__hint[hidden] { display: none; }
+.miro-flip__count { min-width: 92px; text-align: center; color: var(--miro-ink-deep); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.miro-flip__btn { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; height: 44px; padding: 0 16px; border: 1px solid var(--miro-hairline-strong, #D8C5BA); border-radius: 9999px; background: #fff; color: var(--miro-ink-deep); font: inherit; font-size: 14px; font-weight: 500; line-height: 1; cursor: pointer; text-decoration: none; transition: border-color .2s ease, background-color .2s ease; }
+.miro-flip__btn:hover { border-color: #74472F; background: #FAF2EE; }
+.miro-flip__btn:focus-visible { outline: 2px solid #74472F; outline-offset: 2px; }
+.miro-flip__btn--text { padding: 0 20px; }
+.miro-flip__btn[hidden] { display: none; }
+.miro-flip__btn:disabled { opacity: .4; cursor: default; }
+.miro-flip__btn:disabled:hover { border-color: var(--miro-hairline-strong, #D8C5BA); background: #fff; }
+.miro-flip__icon { margin-right: 8px; font-size: 20px; font-weight: 400; line-height: 1; }
+
+/* Приближено: видимая область прокручивается (колесом, пальцем или перетаскиванием мышью), листание по касанию и клику
+   отключено, чтобы не мешало, — листают кнопками и стрелками. Рамка остаётся такой высоты, какой была без приближения
+   (--frame-h запоминает скрипт): растёт только лист внутри неё. */
+.miro-flip.is-zoomed .miro-flip__viewport { overflow: auto; height: var(--frame-h, auto); touch-action: pan-x pan-y; -webkit-overflow-scrolling: touch; cursor: grab; }
+.miro-flip.is-zoomed .miro-flip__viewport.is-dragging { cursor: grabbing; user-select: none; -webkit-user-select: none; }
+.miro-flip.is-zoomed .miro-flip__book { pointer-events: none; }
+
+/* На весь экран (настоящий или, где браузер не умеет, во всё окно): книга по центру на светлом фоне, панель под ней */
+.miro-flip.is-full { --base: min(calc(100vw - 32px), calc((var(--unit-h) - 120px) * var(--r, .7071) * 2)); display: flex; flex-direction: column; justify-content: center; margin: 0; padding: 16px; background: #FAF2EE; }
+/* Одна страница на экране (телефон): лист во всю ширину экрана, без полей, подсказка про прокрутку сайта не нужна */
+.miro-flip.is-full.is-portrait { --base: min(100vw, calc((var(--unit-h) - 150px) * var(--r, .7071))); padding: 12px 0; }
+.miro-flip.is-full.is-portrait .miro-flip__bar { padding: 0 12px; }
+.miro-flip.is-full .miro-flip__hint { display: none; }
+.miro-flip.is-pseudo-full { position: fixed; inset: 0; z-index: 9999; overflow: auto; }
+html.miro-flip-lock, html.miro-flip-lock body { overflow: hidden; }
+
+@media (max-width: 767px) {
+    .miro-flip__bar { gap: 8px; }
+    .miro-flip__btn--text { padding: 0 14px; }
+    /* Телефон: «Приблизить» и «Уменьшить» — круглые кнопки «+» и «−» без подписи (подпись остаётся для чтения с экрана),
+       чтобы обе помещались в один ряд со стрелками и панель не меняла высоту при приближении */
+    .miro-flip__btn--zoom { padding: 0; min-width: 44px; }
+    .miro-flip__btn--zoom .miro-flip__icon { margin-right: 0; font-size: 24px; }
+    .miro-flip__btn--zoom .miro-flip__label { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+    .miro-flip__count { min-width: 64px; }
+}
+
+/* Особая карточка каталога (страница «Публикации»): обложка в виде книги с корешком и стопкой листов, название, число
+   страниц и две кнопки. Ширина колонки небольшая, чтобы обложка в пропорциях страницы не вырастала на пол-экрана. */
+.miro-catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 270px)); gap: 32px 28px; justify-content: start; margin: 0 0 44px; }
+.miro-catalog-card { display: flex; flex-direction: column; min-width: 0; }
+.miro-catalog-card__cover { position: relative; display: block; padding: 6px 10px 10px 0; text-decoration: none; }
+.miro-catalog-card__book { position: relative; display: block; width: 100%; aspect-ratio: 3 / 4; overflow: hidden; border-radius: 3px 10px 10px 3px; background: #F1E3DA; box-shadow: 5px 5px 0 -1px #fff, 5px 5px 0 0 var(--miro-hairline-strong, #D8C5BA), 10px 10px 0 -1px #fff, 10px 10px 0 0 var(--miro-hairline, #E9DCD5), 0 18px 32px rgba(33, 20, 15, .16); transition: transform .35s cubic-bezier(.22, 1, .36, 1), box-shadow .35s ease; }
+.miro-catalog-card__book::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(33, 20, 15, .28) 0, rgba(255, 255, 255, .22) 2.5%, rgba(33, 20, 15, 0) 7%); pointer-events: none; }
+.miro-catalog-card__book img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.miro-catalog-card:hover .miro-catalog-card__book { transform: translateY(-4px); }
+.miro-catalog-card__badge { position: absolute; z-index: 2; top: 18px; left: 10px; padding: 5px 11px; border-radius: 9999px; background: rgba(255, 255, 255, .94); color: #74472F; font-size: 12px; font-weight: 600; line-height: 1.2; box-shadow: 0 2px 8px rgba(33, 20, 15, .12); }
+.miro-catalog-card__body { display: flex; flex: 1; flex-direction: column; padding: 18px 4px 0; }
+.miro-catalog-card__title { margin: 0; font-size: 19px; font-weight: 600; line-height: 1.3; }
+.miro-catalog-card__title a { color: var(--miro-ink-deep, #21140F); text-decoration: none; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.miro-catalog-card__title a:hover { color: #74472F; }
+.miro-catalog-card__text { margin: 8px 0 0; color: var(--miro-slate, #756158); font-size: 14px; line-height: 1.5; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
+.miro-catalog-card__meta { margin: 10px 0 0; color: var(--miro-steel, #8C776E); font-size: 13px; font-weight: 600; }
+.miro-catalog-card__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 16px; }
+
+@media (max-width: 560px) {
+    .miro-catalog-grid { grid-template-columns: minmax(0, 300px); justify-content: center; }
+}
