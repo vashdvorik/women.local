@@ -551,3 +551,13 @@ body { background: var(--milk); color: var(--text); }
     .hero--fade .hero__bg img { -webkit-mask-image: linear-gradient(180deg, #000 0, #000 88%, transparent 100%); mask-image: linear-gradient(180deg, #000 0, #000 88%, transparent 100%); }
 }
 .hero--fade .hero__bg { inset: 0; }
+
+/* Большой экран (от 1700 px): фото показывается целиком по высоте первого экрана (низ не обрезается), по ширине подгоняется под свои пропорции 3:2,
+   а пустые поля слева и справа мягко растворяются в фоне страницы. Расчёт: ширина = высота × 1,5, не больше окна и не больше 2000 px. */
+@media (min-width: 1700px) and (min-aspect-ratio: 31/20) and (min-height: 521px) {
+    .hero--fade .hero__bg img {
+        width: auto; height: min(100%, 1333px); max-width: 100%; aspect-ratio: 3 / 2; object-fit: cover; object-position: 50% 0;
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%), linear-gradient(180deg, #000 0, #000 86%, transparent 100%);
+        mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%), linear-gradient(180deg, #000 0, #000 86%, transparent 100%);
+    }
+}
