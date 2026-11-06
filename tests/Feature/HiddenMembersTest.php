@@ -74,6 +74,21 @@ class HiddenMembersTest extends TestCase
         $this->assertNotContains($hidden->id, $found);
     }
 
+    public function test_cached_recommendations_drop_a_member_who_became_unavailable_so_open_profile_never_gives_404(): void
+    {
+        $me = $this->member('Я', embedding: [1.0, 0.0]);
+        $stays = $this->member('Остаётся', embedding: [0.9, 0.1]);
+        $leaves = $this->member('Уходит', embedding: [1.0, 0.0]);
+
+        $matcher = app(MatchingService::class);
+        $this->assertEqualsCanonicalizing([$stays->id, $leaves->id], $matcher->topMatches($me, 10)->pluck('user.id')->all());
+
+        // После того как подбор попал в кеш, её сделали невидимкой, и её страница другим закрыта
+        $leaves->forceFill(['is_hidden' => true])->save();
+
+        $this->assertSame([$stays->id], $matcher->topMatches($me, 10)->pluck('user.id')->all());
+    }
+
     public function test_the_cabinet_home_does_not_show_other_members_at_all_and_never_a_hidden_one(): void
     {
         $viewer = $this->member('Зрительница');

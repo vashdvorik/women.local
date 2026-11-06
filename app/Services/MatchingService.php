@@ -21,11 +21,19 @@ class MatchingService
         $n ??= (int) config('ai.matches_count', 5);
         $ttl = (int) config('ai.matches_cache_ttl', 86400);
 
-        return Cache::remember(
-            "matches:{$user->id}",
-            $ttl,
-            fn () => $this->compute($user, $n)
-        );
+        $key = "matches:{$user->id}";
+        $matches = Cache::remember($key, $ttl, fn () => $this->compute($user, $n));
+
+        // Подбор лежит в кеше сутки, а за это время участница могла стать невидимкой, уйти на «Скрыта от других», быть
+        // заблокированной или остаться без тарифа. Её страница другим уже закрыта (404), поэтому такие строки из кеша
+        // убираем и подбор считаем заново: иначе «Открыть профиль» ведёт на «Страница не найдена».
+        $ids = $matches->map(fn (array $match): int => (int) $match['user']->getKey())->all();
+        if ($ids !== [] && BotUser::discoverable()->whereIn('id', $ids)->count() !== count($ids)) {
+            Cache::forget($key);
+            $matches = Cache::remember($key, $ttl, fn () => $this->compute($user, $n));
+        }
+
+        return $matches;
     }
 
     /**
