@@ -36,6 +36,9 @@ class SiteSetting extends Model
     /** Почта менеджера, на которую приходят заявки на закрытые тарифы. */
     public const PLAN_REQUEST_EMAIL_KEY = 'plan_request_email';
 
+    /** Почта команды: сюда приходят письма из формы «Связаться с нами» (страница «Контакты»), она же показана на сайте. */
+    public const CONTACT_EMAIL_KEY = 'contact_email';
+
     /** Какому тарифу показывать метку «Самый популярный» на странице «Подписка»; пока не выбрано, это Active. */
     public const SUBSCRIPTION_POPULAR_KEY = 'subscription_popular';
 
@@ -235,6 +238,28 @@ class SiteSetting extends Model
         ]]);
 
         Cache::forget(self::SUBSCRIPTION_POPULAR_KEY);
+    }
+
+    /**
+     * Почта команды для формы «Контакты» и для подвала сайта. Пока в админке не задана, берётся config site.contacts.email.
+     * Значение из админки хранится в кеше без срока и сбрасывается при сохранении.
+     */
+    public static function contactEmail(): string
+    {
+        $stored = Cache::rememberForever(self::CONTACT_EMAIL_KEY, function (): string {
+            $email = self::settingValue(self::CONTACT_EMAIL_KEY)['email'] ?? '';
+
+            return is_string($email) ? trim($email) : '';
+        });
+
+        return $stored !== '' ? $stored : trim((string) config('site.contacts.email'));
+    }
+
+    public static function setContactEmail(string $email): void
+    {
+        self::updateOrCreate(['key' => self::CONTACT_EMAIL_KEY], ['value' => ['email' => mb_strtolower(trim($email))]]);
+
+        Cache::forget(self::CONTACT_EMAIL_KEY);
     }
 
     /** Почта менеджера для заявок на закрытые тарифы; пока не задана, пусто. */

@@ -1214,5 +1214,17 @@
     "AI-менеджер: максимум токенов": "AI manager: maximum tokens",
     "AI-менеджер: тайм-аут": "AI manager: timeout",
     "Профили участниц · :count видимы другим": "Participant profiles · :count visible to others",
-    "Новая участница регистрируется на сайте, заполняет анкету и выбирает пакет. Анкета попадает в <b class=\"text-ink\">«Профили участниц»</b>. После первой оплаты (или подарка пакета) профиль сам становится видимым другим участницам. Видимость, <b class=\"text-ink\">«Режим невидимки»</b> и блокировку вы меняете в списке профилей: у каждой кнопки есть подсказка.": "A new participant signs up on the site, fills in her profile and chooses a plan. The profile appears in <b class=\"text-ink\">“Participant profiles”</b>. After the first payment (or a plan gift) the profile becomes visible to other participants by itself. You change visibility, <b class=\"text-ink\">“Invisible mode”</b> and blocking in the profile list: every button has a hint."
+    "Новая участница регистрируется на сайте, заполняет анкету и выбирает пакет. Анкета попадает в <b class=\"text-ink\">«Профили участниц»</b>. После первой оплаты (или подарка пакета) профиль сам становится видимым другим участницам. Видимость, <b class=\"text-ink\">«Режим невидимки»</b> и блокировку вы меняете в списке профилей: у каждой кнопки есть подсказка.": "A new participant signs up on the site, fills in her profile and chooses a plan. The profile appears in <b class=\"text-ink\">“Participant profiles”</b>. After the first payment (or a plan gift) the profile becomes visible to other participants by itself. You change visibility, <b class=\"text-ink\">“Invisible mode”</b> and blocking in the profile list: every button has a hint.",
+    "Сюда приходят письма из формы «Связаться с нами» на странице «Контакты». Этот же адрес показан посетителям на странице «Контакты» и внизу сайта.": "Messages from the “Contact us” form on the Contacts page arrive here. The same address is shown to visitors on the Contacts page and at the bottom of the site.",
+    "Почта команды": "Team email",
+    "Например: team@example.com. Обращения из формы в любом случае сохраняются в разделе «Обращения».": "For example: team@example.com. Messages from the form are always saved in the “Messages” section as well.",
+    "Проверка отправки: на сохранённый адрес уйдёт короткое тестовое письмо. Если оно не придёт, смотрите «Отслеживание доставки» на хостинге и папку «Спам».": "Delivery check: a short test email will be sent to the saved address. If it does not arrive, check “Track Delivery” on the hosting and the Spam folder.",
+    "Отправить проверочное письмо": "Send a test email",
+    "почта команды": "team email",
+    "Почта сохранена: письма из формы теперь идут на :email.": "Saved: messages from the form now go to :email.",
+    "Сначала сохраните почту команды.": "Save the team email first.",
+    "Проверка почты сайта: если вы читаете это письмо, отправка работает.": "Site email check: if you are reading this message, sending works.",
+    "Проверка почты сайта": "Site email check",
+    "Письмо не отправилось: :reason": "The email was not sent: :reason",
+    "Письмо передано почтовому серверу и отправлено на :email. Проверьте почту и папку «Спам».": "The email was handed to the mail server and sent to :email. Check the inbox and the Spam folder."
 }

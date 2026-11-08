@@ -371,6 +371,8 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::get('settings', [Admin\SettingController::class, 'edit'])->name('settings.edit');
         Route::put('settings', [Admin\SettingController::class, 'update'])->name('settings.update');
         Route::put('settings/theme', [Admin\ThemeSettingController::class, 'site'])->name('settings.theme');
+        Route::put('settings/contacts', [Admin\SettingController::class, 'updateContacts'])->name('settings.contacts');
+        Route::post('settings/contacts/test', [Admin\SettingController::class, 'testContacts'])->name('settings.contacts.test');
 
         // «Настройки кабинетов» — тема кабинета, AI, база знаний. Раньше у кабинетов была своя инфопанель: старый адрес
         // ведёт на общую (админка теперь одна, раздел страницы определяет App\Support\AdminSection).

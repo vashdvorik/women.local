@@ -79,7 +79,7 @@ class PublicFooterTest extends TestCase
         foreach (['/', '/events', '/contact'] as $url) {
             // «Кабинет участницы» и почта — именно в таком порядке и ничего кроме них (телефона в подвале нет).
             $this->assertSame(
-                [route('account.login'), 'mailto:womenplatform@gmail.com'],
+                [route('account.login'), 'mailto:womenplatformhub@gmail.com'],
                 $this->contactHrefs($url),
                 $url,
             );
@@ -90,7 +90,7 @@ class PublicFooterTest extends TestCase
         preg_match('#<footer class="miro-footer".*?</footer>#s', $html, $m);
 
         $this->assertStringNotContainsString('tel:', $m[0]);
-        $this->assertStringContainsString('<span data-lang="ru">Почта:</span><span data-lang="en">Email:</span><span data-lang="ro">E-mail:</span> <a href="mailto:womenplatform@gmail.com">womenplatform@gmail.com</a>', $m[0]);
+        $this->assertStringContainsString('<span data-lang="ru">Почта:</span><span data-lang="en">Email:</span><span data-lang="ro">E-mail:</span> <a href="mailto:womenplatformhub@gmail.com">womenplatformhub@gmail.com</a>', $m[0]);
     }
 
     public function test_an_empty_email_in_the_config_drops_that_line_from_the_footer(): void

@@ -58,7 +58,7 @@ class ContactFormTest extends TestCase
         $this->assertNull($contact->mail_error);
         $this->assertNull($contact->read_at);
 
-        Mail::assertSent(ContactMessageMail::class, fn (ContactMessageMail $mail) => $mail->hasTo('womenplatform@gmail.com')
+        Mail::assertSent(ContactMessageMail::class, fn (ContactMessageMail $mail) => $mail->hasTo('womenplatformhub@gmail.com')
             && $mail->hasReplyTo('anna@example.test')
             && str_contains($mail->render(), 'Хотим предложить совместный проект')
             && str_contains($mail->render(), 'Ассоциация «Весна», директор'));
@@ -154,7 +154,7 @@ class ContactFormTest extends TestCase
         Mail::assertSent(ContactMessageMail::class, function (ContactMessageMail $mail) {
             $subject = $mail->envelope()->subject;
 
-            return ! str_contains($subject, "\n") && ! str_contains($subject, "\r") && $mail->hasTo('womenplatform@gmail.com');
+            return ! str_contains($subject, "\n") && ! str_contains($subject, "\r") && $mail->hasTo('womenplatformhub@gmail.com');
         });
     }
 }

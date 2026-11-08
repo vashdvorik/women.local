@@ -5,6 +5,7 @@ namespace App\Http\Controllers\PublicSite;
 use App\Http\Controllers\Controller;
 use App\Mail\ContactMessageMail;
 use App\Models\ContactMessage;
+use App\Models\SiteSetting;
 use App\Support\ContactForm;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ use Throwable;
 
 /**
  * Форма «Связаться с нами» на странице «Контакты». Обращение сначала сохраняется в базе (раздел «Обращения» в админке),
- * затем уходит письмом на почту команды (config site.contacts.email). Если почта недоступна, обращение всё равно не
+ * затем уходит письмом на почту команды (SiteSetting::contactEmail(): задаётся в админке, «Настройки сайта → Почта», пока пусто, берётся config site.contacts.email). Если почта недоступна, обращение всё равно не
  * теряется: причина записывается в mail_error, а посетительница видит обычное «Сообщение отправлено».
  *
  * Защита без капчи: скрытое поле-приманка, метка времени формы (ContactForm) и не больше трёх обращений в час с одного
@@ -75,7 +76,7 @@ class ContactController extends Controller
         ]);
 
         try {
-            Mail::to(config('site.contacts.email'))->send(new ContactMessageMail($contact));
+            Mail::to(SiteSetting::contactEmail())->send(new ContactMessageMail($contact));
             $contact->forceFill(['mail_sent_at' => now(), 'mail_error' => null])->save();
         } catch (Throwable $e) {
             report($e);

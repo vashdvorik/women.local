@@ -41,7 +41,7 @@ return [
     */
 
     'contacts' => [
-        'email' => 'womenplatform@gmail.com',
+        'email' => 'womenplatformhub@gmail.com',
         // Куда бот отправляет участницу, если помощник не знает ответа (подставляется в инструкцию помощника и в тексты бота).
         'telegram' => '@lesnichenkoP',
     ],

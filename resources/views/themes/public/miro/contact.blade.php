@@ -40,7 +40,7 @@
                             <h3><span data-lang="ru">Электронная почта</span><span data-lang="en">Email</span><span data-lang="ro">Email</span></h3>
                             <p><span data-lang="ru">Будем рады идеям и предложениям: о сотрудничестве, партнёрстве, совместных проектах и мероприятиях. Расскажите, чем вы занимаетесь и чем мы могли бы быть друг другу полезны.</span><span data-lang="en">We would love to hear your ideas and proposals: about cooperation, partnerships, joint projects and events. Tell us what you do and how we could be useful to each other.</span><span data-lang="ro">Ne vor bucura ideile și propunerile dvs.: despre colaborare, parteneriate, proiecte comune și evenimente. Spuneți-ne cu ce vă ocupați și cum am putea fi de folos unii altora.</span></p>
                             <div class="miro-contact-card__links">
-                                <a href="mailto:{{ config('site.contacts.email') }}">{{ config('site.contacts.email') }}</a>
+                                <a href="mailto:{{ \App\Models\SiteSetting::contactEmail() }}">{{ \App\Models\SiteSetting::contactEmail() }}</a>
                             </div>
                         </article>
                         <article class="miro-contact-card">

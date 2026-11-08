@@ -17,7 +17,7 @@
             <div>
                 <h4><span data-lang="ru">Контакты</span><span data-lang="en">Contact</span><span data-lang="ro">Contact</span></h4>
                 @php
-                    $footerEmail = config('site.contacts.email');
+                    $footerEmail = \App\Models\SiteSetting::contactEmail();
                 @endphp
                 <ul>
                     <li><a href="{{ route('account.login') }}" target="_blank" rel="noopener"><span data-lang="ru">Кабинет участницы</span><span data-lang="en">Participant cabinet</span><span data-lang="ro">Cabinetul membrei</span></a></li>
