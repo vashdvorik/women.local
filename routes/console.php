@@ -19,6 +19,9 @@ Schedule::command('subscriptions:notify')->dailyAt('09:00')->withoutOverlapping(
 // Регистрации без подтверждённой почты старше 30 дней удаляются: опечатка в адресе не должна занимать его навсегда.
 Schedule::command('accounts:purge-unverified')->dailyAt('04:30')->withoutOverlapping(30);
 
+// Резервная копия: база данных и все загруженные на сайт фото и файлы, на сервер и на Google Диск (rclone). Подключение: docs/BACKUP.md.
+Schedule::command('backup:run')->dailyAt('03:30')->withoutOverlapping(240);
+
 // «Пульс»: раз в минуту отмечаем, что cron жив. Админка по нему предупреждает, если cron на хостинге перестал работать.
 Schedule::call(fn () => SchedulerHealth::beat())->everyMinute()->name('scheduler-heartbeat');
 
