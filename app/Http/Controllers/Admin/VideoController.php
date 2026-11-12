@@ -47,8 +47,8 @@ class VideoController extends Controller
                 'youtube_url' => $request->validated('youtube_url'),
                 'event_date' => $request->validated('event_date'),
                 'cover_path' => \App\Support\Blocks::normalizePath($request->validated('cover_path')),
-                // Новое видео встаёт в конец сортировки (AGENTS.md §15).
-                'position' => (Video::max('position') ?? 0) + 1,
+                // Новое видео встаёт первым: позиция на единицу меньше самой первой (может быть и ≤ 0, колонка знаковая).
+                'position' => (Video::min('position') ?? 1) - 1,
             ]);
 
             $this->syncTitles($video, $request->validated('translations', []));

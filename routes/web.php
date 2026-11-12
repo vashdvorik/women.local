@@ -300,6 +300,7 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
 
         // Карточки публичного сайта: эксперты и события (плоские карточки с переводами, как проекты).
         Route::get('experts', [Admin\ExpertController::class, 'index'])->name('experts.index');
+        Route::post('experts/reorder', [Admin\ExpertController::class, 'reorder'])->name('experts.reorder');
         Route::get('experts/create', [Admin\ExpertController::class, 'create'])->name('experts.create');
         Route::post('experts', [Admin\ExpertController::class, 'store'])->name('experts.store');
         Route::get('experts/{expert}/edit', [Admin\ExpertController::class, 'edit'])->name('experts.edit');
@@ -316,6 +317,7 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::post('events/{event}/move', [Admin\EventController::class, 'move'])->name('events.move');
 
         Route::get('projects', [Admin\ProjectController::class, 'index'])->name('projects.index');
+        Route::post('projects/reorder', [Admin\ProjectController::class, 'reorder'])->name('projects.reorder');
         Route::get('projects/create', [Admin\ProjectController::class, 'create'])->name('projects.create');
         Route::post('projects', [Admin\ProjectController::class, 'store'])->name('projects.store');
         Route::get('projects/{project}/edit', [Admin\ProjectController::class, 'edit'])->name('projects.edit');

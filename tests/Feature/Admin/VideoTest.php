@@ -36,7 +36,7 @@ class VideoTest extends TestCase
         ])->assertSessionHasErrors('youtube_url');
     }
 
-    public function test_new_video_goes_to_the_end_and_can_move_up(): void
+    public function test_new_video_goes_first_and_can_move_down(): void
     {
         $first = Video::create(['youtube_id' => 'aaaaaaaaaaa', 'youtube_url' => 'x', 'position' => 1]);
 
@@ -44,10 +44,21 @@ class VideoTest extends TestCase
             'youtube_url' => 'https://youtu.be/bbbbbbbbbbb',
         ]);
         $second = Video::where('youtube_id', 'bbbbbbbbbbb')->first();
-        $this->assertGreaterThan($first->position, $second->position);
+        $this->assertLessThan($first->position, $second->position);
 
-        $this->actingAsAdmin()->post(route('admin.videos.move', $second), ['direction' => 'up']);
+        // Следующее новое видео снова первое, перед предыдущим
+        $this->actingAsAdmin()->post(route('admin.videos.store'), [
+            'youtube_url' => 'https://youtu.be/ccccccccccc',
+        ]);
+        $third = Video::where('youtube_id', 'ccccccccccc')->first();
+        $this->assertSame(
+            [$third->id, $second->id, $first->id],
+            Video::orderBy('position')->pluck('id')->all(),
+        );
 
-        $this->assertLessThan($first->fresh()->position, $second->fresh()->position);
+        // Кнопки порядка по-прежнему работают
+        $this->actingAsAdmin()->post(route('admin.videos.move', $third), ['direction' => 'down']);
+
+        $this->assertGreaterThan($second->fresh()->position, $third->fresh()->position);
     }
 }

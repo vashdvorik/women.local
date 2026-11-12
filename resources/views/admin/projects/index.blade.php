@@ -9,22 +9,30 @@
             <a href="{{ route('admin.projects.create') }}" class="btn-primary mt-4">{{ __('Добавить проект') }}</a>
         </div>
     @else
-        <div class="overflow-x-auto">
+        <p class="text-reading text-ink-muted">
+            {{ __('Перетащите проект за значок слева (или нажмите стрелки), чтобы поменять порядок на сайте.') }}
+        </p>
+
+        <div x-data="rowReorder(@js(route('admin.projects.reorder')), @js(['saving' => __('Сохраняем порядок…'), 'saved' => __('Порядок сохранён.'), 'error' => __('Не удалось сохранить порядок. Обновите страницу и попробуйте ещё раз.')]))" class="overflow-x-auto">
+            <p class="text-reading text-ink-muted min-h-[1.5rem]" role="status" aria-live="polite" x-text="message()"></p>
             <table class="data-table">
                 <thead>
                     <tr>
+                        <th class="w-28">{{ __('Порядок') }}</th>
                         <th class="w-24"></th>
                         <th>{{ __('Название') }}</th>
                         <th class="w-40">{{ __('Категория') }}</th>
                         <th class="w-28">{{ __('Языки') }}</th>
                         <th class="w-24">{{ __('На сайте') }}</th>
-                        <th class="w-28">{{ __('Порядок') }}</th>
                         <th class="w-40"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody x-ref="body" @dragover="over($event)" @drop.prevent>
                     @foreach($projects as $project)
-                        <tr>
+                        <tr data-id="{{ $project->id }}" @dragstart="start($event)" @dragend="end()">
+                            <td>
+                                <x-admin.reorder-handle />
+                            </td>
                             <td>
                                 @if($project->imageUrl())
                                     <img src="{{ $project->imageUrl() }}" alt="" class="w-20 rounded-sm"
@@ -51,22 +59,6 @@
                             </td>
                             <td>
                                 <x-admin.status-badge :status="$project->is_published ? 'published' : 'draft'" />
-                            </td>
-                            <td>
-                                <div class="flex gap-1">
-                                    <form method="POST" action="{{ route('admin.projects.move', $project) }}">
-                                        @csrf<input type="hidden" name="direction" value="up">
-                                        <button class="btn-icon" @disabled($loop->first) title="{{ __('Вверх') }}" aria-label="{{ __('Вверх') }}">
-                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 12V4M4 8l4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                                        </button>
-                                    </form>
-                                    <form method="POST" action="{{ route('admin.projects.move', $project) }}">
-                                        @csrf<input type="hidden" name="direction" value="down">
-                                        <button class="btn-icon" @disabled($loop->last) title="{{ __('Вниз') }}" aria-label="{{ __('Вниз') }}">
-                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 4v8M4 8l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                                        </button>
-                                    </form>
-                                </div>
                             </td>
                             <td>
                                 <div class="flex items-center justify-end gap-2">

@@ -9,23 +9,31 @@
             <a href="{{ route('admin.experts.create') }}" class="btn-primary mt-4">{{ __('Добавить эксперта') }}</a>
         </div>
     @else
-        <div class="overflow-x-auto">
+        <p class="text-reading text-ink-muted">
+            {{ __('Перетащите эксперта за значок слева (или нажмите стрелки), чтобы поменять порядок на сайте.') }}
+        </p>
+
+        <div x-data="rowReorder(@js(route('admin.experts.reorder')), @js(['saving' => __('Сохраняем порядок…'), 'saved' => __('Порядок сохранён.'), 'error' => __('Не удалось сохранить порядок. Обновите страницу и попробуйте ещё раз.')]))" class="overflow-x-auto">
+            <p class="text-reading text-ink-muted min-h-[1.5rem]" role="status" aria-live="polite" x-text="message()"></p>
             <table class="data-table">
                 <thead>
                     <tr>
+                        <th class="w-28">{{ __('Порядок') }}</th>
                         <th class="w-20"></th>
                         <th>{{ __('Имя') }}</th>
                         <th>{{ __('Должность') }}</th>
                         <th class="w-28">{{ __('Языки') }}</th>
                         <th class="w-28">{{ __('На сайте') }}</th>
-                        <th class="w-28">{{ __('Порядок') }}</th>
                         <th class="w-40"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody x-ref="body" @dragover="over($event)" @drop.prevent>
                     @foreach($experts as $expert)
                         @php $ru = $expert->rawTranslation('ru'); @endphp
-                        <tr>
+                        <tr data-id="{{ $expert->id }}" @dragstart="start($event)" @dragend="end()">
+                            <td>
+                                <x-admin.reorder-handle />
+                            </td>
                             <td>
                                 @if($expert->photoUrl())
                                     <img src="{{ $expert->photoUrl() }}" alt="" class="h-12 w-12 rounded-sm object-cover">
@@ -43,10 +51,6 @@
                                 {{ $expert->translations->pluck('locale')->map(fn ($l) => strtoupper($l))->join(' · ') }}
                             </td>
                             <td><x-admin.status-badge :status="$expert->is_published ? 'published' : 'draft'" /></td>
-                            <td>
-                                <x-admin.move-buttons :action="route('admin.experts.move', $expert)"
-                                                      :first="$loop->first" :last="$loop->last" />
-                            </td>
                             <td>
                                 <div class="flex items-center justify-end gap-2">
                                     <a href="{{ route('admin.experts.edit', $expert) }}" class="btn-quiet">{{ __('Изменить') }}</a>

@@ -52,8 +52,8 @@ class LearningVideoController extends Controller
                 'youtube_url' => $request->validated('youtube_url'),
                 'cover_path' => Blocks::normalizePath($request->validated('cover_path')),
                 'is_published' => $request->boolean('is_published'),
-                // Новое видео встаёт в конец списка.
-                'position' => (LearningVideo::max('position') ?? 0) + 1,
+                // Новое видео встаёт первым: позиция на единицу меньше самой первой (колонка знаковая, ≤ 0 допустимо).
+                'position' => (LearningVideo::min('position') ?? 1) - 1,
             ]);
 
             $this->syncTexts($video, $request->validated('translations', []));

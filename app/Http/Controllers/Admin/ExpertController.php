@@ -9,6 +9,7 @@ use App\Models\Expert;
 use App\Support\Blocks;
 use App\Support\CardTone;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +25,19 @@ class ExpertController extends Controller
         $experts = Expert::with('translations')->ordered()->get();
 
         return view('admin.experts.index', compact('experts'));
+    }
+
+    /** Порядок экспертов на сайте: приходит списком id в новом порядке (перетаскивание и кнопки в списке). */
+    public function reorder(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => ['integer', 'exists:experts,id'],
+        ]);
+
+        Expert::applyOrder($data['ids']);
+
+        return response()->json(['ok' => true]);
     }
 
     public function create(): View

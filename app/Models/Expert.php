@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasManualOrder;
 use App\Models\Concerns\HasTranslations;
 use App\Support\CardTone;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Expert extends Model
 {
+    use HasManualOrder;
     use HasTranslations;
 
     protected $fillable = [

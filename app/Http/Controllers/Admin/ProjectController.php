@@ -11,6 +11,7 @@ use App\Support\Blocks;
 use App\Support\EventEditorData;
 use App\Support\Locales;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +29,19 @@ class ProjectController extends Controller
         $projects = Project::with('translations')->orderBy('position')->orderBy('id')->get();
 
         return view('admin.projects.index', compact('projects'));
+    }
+
+    /** Порядок проектов на сайте: приходит списком id в новом порядке (перетаскивание и кнопки в списке). */
+    public function reorder(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => ['integer', 'exists:projects,id'],
+        ]);
+
+        Project::applyOrder($data['ids']);
+
+        return response()->json(['ok' => true]);
     }
 
     public function create(): View

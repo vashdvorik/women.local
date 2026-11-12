@@ -72,14 +72,14 @@ class LearningVideoTest extends TestCase
         $this->actingAsAdmin()->get(route('admin.events.index'))->assertSee(route('admin.learning-videos.index'), false);
     }
 
-    public function test_a_video_is_created_with_texts_in_three_languages_and_goes_to_the_end(): void
+    public function test_a_video_is_created_with_texts_in_three_languages_and_goes_first(): void
     {
         $this->make('aaaaaaaaaaa', 'Первое видео', position: 5);
 
         $this->actingAsAdmin()->post(route('admin.learning-videos.store'), $this->payload())->assertRedirect(route('admin.learning-videos.index'));
 
         $video = LearningVideo::where('youtube_id', 'dQw4w9WgXcQ')->firstOrFail();
-        $this->assertSame(6, $video->position);
+        $this->assertSame(4, $video->position);
         $this->assertTrue($video->is_published);
         $this->assertSame('Как вести финансы', $video->rawTranslation('ru')->title);
         $this->assertSame('Основы учёта для небольшого бизнеса.', $video->rawTranslation('ru')->description);
