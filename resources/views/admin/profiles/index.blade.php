@@ -8,11 +8,7 @@
 @endphp
 
 <x-layouts.admin :title="__('Профили участниц')">
-    <div class="space-y-4"
-         x-data="{ ids: [], all: false, open: false,
-                   pageIds: @js($profiles->pluck('id')->map(fn ($id) => (string) $id)->all()),
-                   toggleAll() { this.ids = this.all ? [...this.pageIds] : []; },
-                   sync() { this.all = this.ids.length === this.pageIds.length && this.pageIds.length > 0; } }">
+    <div class="space-y-4">
 
         {{-- Памятка: три независимые вещи, которые часто путают --}}
         <details class="card text-reading">
@@ -21,7 +17,6 @@
                 <li><span class="font-semibold text-ink">{{ __('Видима другим / Скрыта от других.') }}</span> {{ __('Показывать ли профиль другим участницам в каталоге, поиске, подборе контактов и AI-помощнике. Работает, только пока у неё действует платный пакет. Участнице ничего не отправляется, на её кабинет и рассылки не влияет. После регистрации профиль скрыт; после первой оплаты или подарка пакета он становится видимым сам, дальше решает администратор.') }}</li>
                 <li><span class="font-semibold text-ink">{{ __('Режим невидимки.') }}</span> {{ __('Для администраторов, спонсоров и партнёров: человек пользуется платформой, получает рассылки, но другие его не видят и не находят, а инициативы он публиковать не может. Сильнее, чем «Скрыта от других»: перекрывает «Видима другим».') }}</li>
                 <li><span class="font-semibold text-ink">{{ __('Заблокировать / Разблокировать.') }}</span> {{ __('Единственное, что закрывает вход в кабинет. Блокировать можно любую участницу в любое время. Ей придёт уведомление, рассылки прекратятся, профиль пропадёт из каталога; данные и платежи сохраняются. Разблокировка возвращает всё как было, уведомления нет.') }}</li>
-                <li><span class="font-semibold text-ink">{{ __('Удалить.') }}</span> {{ __('Профиль стирается из базы безвозвратно.') }}</li>
             </ul>
         </details>
 
@@ -61,9 +56,6 @@
                 <a href="{{ route('admin.profiles.export', array_filter(['status' => $status, 'q' => $search, 'hidden' => $onlyHidden ? 1 : null, 'plan' => $planFilter])) }}" class="btn-secondary">
                     {{ __('Выгрузить в файл') }}
                 </a>
-                <button type="button" class="btn-danger" x-show="ids.length > 0" x-cloak @click="open = true">
-                    {{ __('Удалить выбранные') }} (<span x-text="ids.length"></span>)
-                </button>
             </div>
         </div>
 
@@ -78,10 +70,6 @@
                 <table class="data-table [&_td]:!px-2 [&_th]:!px-2">
                     <thead>
                         <tr>
-                            <th class="w-10">
-                                <input type="checkbox" x-model="all" @change="toggleAll()" aria-label="{{ __('Выбрать все') }}"
-                                       class="rounded border-hairline text-accent focus:ring-accent-soft">
-                            </th>
                             <th class="min-w-[11rem]"><x-admin.sort-link column="full_name" :label="__('Имя')" /></th>
                             <th class="whitespace-nowrap">{{ __('Почта и телефон') }}</th>
                             <th class="whitespace-nowrap">{{ __('Пакет') }}</th>
@@ -93,11 +81,6 @@
                     <tbody>
                         @foreach($profiles as $profile)
                             <tr>
-                                <td>
-                                    <input type="checkbox" name="ids[]" value="{{ $profile->id }}" form="bulk-form"
-                                           x-model="ids" @change="sync()" aria-label="{{ __('Выбрать') }}"
-                                           class="rounded border-hairline text-accent focus:ring-accent-soft">
-                                </td>
                                 <td>
                                     <a href="{{ route('admin.profiles.show', $profile) }}" class="table-link">
                                         {{ $profile->full_name ?: __('Без имени') }}
@@ -130,11 +113,6 @@
                                     <div class="flex items-center justify-end gap-2 whitespace-nowrap">
                                         <a href="{{ route('admin.profiles.edit', $profile) }}" class="btn-quiet">{{ __('Изменить') }}</a>
                                         <x-admin.profile-moderation :profile="$profile" part="lock" />
-                                        <x-admin.delete-button
-                                            :action="route('admin.profiles.destroy', $profile)"
-                                            :subject="$profile->full_name ?: __('Без имени')"
-                                            :noun="__('профиль')"
-                                            :compact="true" />
                                     </div>
                                 </td>
                             </tr>
@@ -145,28 +123,5 @@
 
             {{ $profiles->links() }}
         @endif
-
-        {{-- Массовое удаление: чекбоксы таблицы привязаны к форме атрибутом form. --}}
-        <form id="bulk-form" method="POST" action="{{ route('admin.profiles.bulk-destroy') }}">
-            @csrf
-            @method('DELETE')
-        </form>
-
-        <template x-teleport="body">
-            <div x-show="open" x-transition.opacity class="modal-backdrop" hidden
-                 @keydown.escape.window="open = false" @click.self="open = false">
-                <div class="modal" @click.stop>
-                    <p class="modal__title">{{ __('Удалить выбранные профили?') }}</p>
-                    <p class="text-reading text-ink-muted mt-2">
-                        {{ __('Будет удалено профилей:') }} <b class="text-ink" x-text="ids.length"></b>.
-                        {{ __('Вместе с ними удалятся их публикации в кабинете. Действие необратимо.') }}
-                    </p>
-                    <div class="flex justify-end gap-3 mt-6">
-                        <button type="button" @click="open = false" class="btn-quiet">{{ __('Отмена') }}</button>
-                        <button type="submit" form="bulk-form" class="btn-primary">{{ __('Удалить') }}</button>
-                    </div>
-                </div>
-            </div>
-        </template>
     </div>
 </x-layouts.admin>

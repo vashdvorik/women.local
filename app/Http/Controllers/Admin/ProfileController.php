@@ -246,23 +246,4 @@ class ProfileController extends Controller
 
         return back()->with('success', __('Участница разблокирована: вход в кабинет снова открыт.'));
     }
-
-    public function destroy(BotUser $profile): RedirectResponse
-    {
-        $profile->delete();
-
-        return redirect()->route('admin.profiles.index')->with('success', __('Профиль удалён.'));
-    }
-
-    public function bulkDestroy(Request $request): RedirectResponse
-    {
-        $ids = $request->validate([
-            'ids' => ['required', 'array', 'min:1'],
-            'ids.*' => ['integer'],
-        ], [], ['ids' => __('профили')])['ids'];
-
-        $deleted = BotUser::query()->whereIn('id', $ids)->delete();
-
-        return redirect()->route('admin.profiles.index')->with('success', __('Удалено профилей: :count.', ['count' => $deleted]));
-    }
 }

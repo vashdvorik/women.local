@@ -142,12 +142,5 @@
                 <x-admin.profile-moderation :profile="$profile" :page="true" />
             </div>
         </div>
-
-        <div class="flex flex-wrap items-center gap-2">
-            <x-admin.delete-button
-                :action="route('admin.profiles.destroy', $profile)"
-                :subject="$profile->full_name ?: __('Без имени')"
-                :noun="__('профиль')" />
-        </div>
     </div>
 </x-layouts.admin>

@@ -338,7 +338,6 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         // Профили участниц из Telegram-бота: модерация (раньше — Filament BotUserResource).
         Route::get('profiles', [Admin\ProfileController::class, 'index'])->name('profiles.index');
         Route::get('profiles/export.csv', [Admin\ProfileController::class, 'export'])->name('profiles.export');
-        Route::delete('profiles', [Admin\ProfileController::class, 'bulkDestroy'])->name('profiles.bulk-destroy');
         Route::get('profiles/{profile}', [Admin\ProfileController::class, 'show'])->name('profiles.show');
         Route::get('profiles/{profile}/edit', [Admin\ProfileController::class, 'edit'])->name('profiles.edit');
         Route::put('profiles/{profile}', [Admin\ProfileController::class, 'update'])->name('profiles.update');
@@ -347,7 +346,6 @@ Route::middleware(['admin.locale', 'auth', 'admin.email', 'admin.flush-public-ca
         Route::post('profiles/{profile}/unapprove', [Admin\ProfileController::class, 'unapprove'])->name('profiles.unapprove');
         Route::post('profiles/{profile}/block', [Admin\ProfileController::class, 'block'])->name('profiles.block');
         Route::post('profiles/{profile}/unblock', [Admin\ProfileController::class, 'unblock'])->name('profiles.unblock');
-        Route::delete('profiles/{profile}', [Admin\ProfileController::class, 'destroy'])->name('profiles.destroy');
 
         // Посты участниц из кабинета: премодерация.
         Route::get('member-posts', [Admin\MemberPostController::class, 'index'])->name('member-posts.index');

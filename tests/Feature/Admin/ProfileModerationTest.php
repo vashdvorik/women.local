@@ -230,25 +230,15 @@ class ProfileModerationTest extends TestCase
             ->assertSee('@maria_ok');
     }
 
-    public function test_delete_and_bulk_delete_remove_profiles(): void
+    public function test_profiles_cannot_be_deleted_from_the_admin_only_blocked(): void
     {
-        [$a, $b, $keep] = BotUser::factory()->count(3)->create();
+        $profile = BotUser::factory()->approved()->create();
 
-        $this->actingAsAdmin()->delete(route('admin.profiles.destroy', $a))->assertRedirect(route('admin.profiles.index'));
-        $this->assertModelMissing($a);
+        $this->assertFalse(\Illuminate\Support\Facades\Route::has('admin.profiles.destroy'));
+        $this->assertFalse(\Illuminate\Support\Facades\Route::has('admin.profiles.bulk-destroy'));
 
-        $this->actingAsAdmin()
-            ->delete(route('admin.profiles.bulk-destroy'), ['ids' => [$b->id]])
-            ->assertRedirect(route('admin.profiles.index'));
-
-        $this->assertModelMissing($b);
-        $this->assertModelExists($keep);
-    }
-
-    public function test_bulk_delete_requires_a_selection(): void
-    {
-        $this->actingAsAdmin()
-            ->delete(route('admin.profiles.bulk-destroy'), ['ids' => []])
-            ->assertSessionHasErrors('ids');
+        $this->actingAsAdmin()->get(route('admin.profiles.index'))->assertOk()->assertDontSee('Удалить выбранные');
+        $this->actingAsAdmin()->get(route('admin.profiles.show', $profile))->assertOk()->assertDontSee('Удалить');
+        $this->assertModelExists($profile);
     }
 }
