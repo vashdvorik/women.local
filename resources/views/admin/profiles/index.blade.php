@@ -27,30 +27,38 @@
 
         <div class="tabs">
             @foreach($tabs as $key => [$label, $count])
-                <a href="{{ route('admin.profiles.index', array_filter(['status' => $key, 'q' => $search])) }}"
+                <a href="{{ route('admin.profiles.index', array_filter(['status' => $key, 'q' => $search, 'plan' => $planFilter])) }}"
                    class="tab @if($status === (string) $key && ! $onlyHidden) tab--active @endif">
                     {{ $label }}<span class="text-ink-faint">{{ $count }}</span>
                 </a>
             @endforeach
             {{-- Режим невидимки: администратор, спонсоры, партнёры. --}}
-            <a href="{{ route('admin.profiles.index', array_filter(['hidden' => 1, 'q' => $search])) }}"
+            <a href="{{ route('admin.profiles.index', array_filter(['hidden' => 1, 'q' => $search, 'plan' => $planFilter])) }}"
                class="tab @if($onlyHidden) tab--active @endif">
                 {{ __('Режим невидимки') }}<span class="text-ink-faint">{{ $hiddenCount }}</span>
             </a>
         </div>
 
         <div class="flex flex-wrap items-center justify-between gap-3">
-            <form method="GET" class="flex gap-2 w-full max-w-sm">
+            <form method="GET" class="flex flex-wrap gap-2 w-full max-w-xl">
                 @if($status !== '') <input type="hidden" name="status" value="{{ $status }}"> @endif
                 @if($onlyHidden) <input type="hidden" name="hidden" value="1"> @endif
                 <input type="search" name="q" value="{{ $search }}" placeholder="{{ __('Поиск по имени или @username') }}"
-                       class="field-input">
+                       class="field-input min-w-[12rem] flex-1">
+                <select name="plan" class="field-input w-auto" aria-label="{{ __('Пакет') }}" onchange="this.form.submit()">
+                    <option value="">{{ __('Все пакеты') }}</option>
+                    @foreach(\App\Enums\Plan::paid() as $p)
+                        <option value="{{ $p->value }}" @selected($planFilter === $p->value)>{{ $p->shortTitle() }}</option>
+                    @endforeach
+                    <option value="expired" @selected($planFilter === 'expired')>{{ __('Пакет истёк') }}</option>
+                    <option value="none" @selected($planFilter === 'none')>{{ __('Без пакета') }}</option>
+                </select>
                 <button type="submit" class="btn-secondary">{{ __('Найти') }}</button>
             </form>
 
             <div class="flex flex-wrap items-center gap-2">
                 {{-- Файл с теми же участницами, что на экране (вкладка и поиск учитываются) --}}
-                <a href="{{ route('admin.profiles.export', array_filter(['status' => $status, 'q' => $search, 'hidden' => $onlyHidden ? 1 : null])) }}" class="btn-secondary">
+                <a href="{{ route('admin.profiles.export', array_filter(['status' => $status, 'q' => $search, 'hidden' => $onlyHidden ? 1 : null, 'plan' => $planFilter])) }}" class="btn-secondary">
                     {{ __('Выгрузить в файл') }}
                 </a>
                 <button type="button" class="btn-danger" x-show="ids.length > 0" x-cloak @click="open = true">
@@ -62,7 +70,7 @@
         @if($profiles->isEmpty())
             <div class="card text-center">
                 <p class="text-reading text-ink-muted">
-                    {{ ($search !== '' || $status !== '' || $onlyHidden) ? __('Ничего не найдено.') : __('Профилей пока нет.') }}
+                    {{ ($search !== '' || $status !== '' || $onlyHidden || $planFilter !== '') ? __('Ничего не найдено.') : __('Профилей пока нет.') }}
                 </p>
             </div>
         @else
@@ -76,6 +84,7 @@
                             </th>
                             <th class="min-w-[11rem]"><x-admin.sort-link column="full_name" :label="__('Имя')" /></th>
                             <th class="whitespace-nowrap">{{ __('Почта и телефон') }}</th>
+                            <th class="whitespace-nowrap">{{ __('Пакет') }}</th>
                             <th class="whitespace-nowrap" title="{{ __('Нажмите на переключатель: перед изменением откроется окно с пояснением.') }}"><x-admin.sort-link column="status" :label="__('Видимость')" /></th>
                             <th class="hidden whitespace-nowrap xl:table-cell"><x-admin.sort-link column="created_at" :label="__('Дата заявки')" /></th>
                             <th></th>
@@ -96,6 +105,20 @@
                                 </td>
                                 <td class="text-ink-muted">
                                     {{ $profile->email }}@if($profile->phone)<br>{{ $profile->phone }}@endif
+                                </td>
+                                <td class="whitespace-nowrap">
+                                    @php
+                                        $stored = \App\Enums\Plan::fromStored($profile->plan);
+                                        $active = $profile->currentPlan()->isPaid();
+                                    @endphp
+                                    @if(! $stored->isPaid())
+                                        <span class="text-ink-faint">{{ __('Без пакета') }}</span>
+                                    @else
+                                        <span class="font-semibold {{ $active ? 'text-ink' : 'text-ink-faint line-through' }}">{{ $stored->shortTitle() }}</span>
+                                        <span class="block text-caption {{ $active ? 'text-ink-muted' : 'text-ink-faint' }}">
+                                            {{ $active ? __('до') : __('истёк') }} {{ $profile->plan_ends_at?->format('d.m.Y') }}
+                                        </span>
+                                    @endif
                                 </td>
                                 <td>
                                     <div class="flex flex-col items-start gap-1.5 py-1.5">

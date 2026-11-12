@@ -26,6 +26,16 @@ class ProfileController extends Controller
 
     private const SORTABLE = ['full_name', 'status', 'created_at'];
 
+    /** Фильтр по пакету: три платных действующих, «истёк» и «без пакета». */
+    private const PLAN_FILTERS = ['community', 'active', 'private', 'expired', 'none'];
+
+    private function planFilter(Request $request): string
+    {
+        $plan = $request->string('plan')->toString();
+
+        return in_array($plan, self::PLAN_FILTERS, true) ? $plan : '';
+    }
+
     /**
      * Участницы списка: только те, кто заполнил анкету (пока человек не прошёл регистрацию до конца, проверять нечего),
      * с фильтрами вкладки и поиска. Список и выгрузка берут их отсюда, чтобы файл совпадал с тем, что на экране.
@@ -40,6 +50,19 @@ class ProfileController extends Controller
             ->whereNotNull('profile_completed_at')
             ->when($status !== '', fn ($q) => $q->where('status', $status))
             ->when($request->boolean('hidden'), fn ($q) => $q->where('is_hidden', true))
+            ->when($this->planFilter($request) !== '', function ($q) use ($request) {
+                $plan = $this->planFilter($request);
+                $paid = array_map(fn (Plan $p) => $p->value, Plan::paid());
+
+                match ($plan) {
+                    // Действующий пакет: тариф записан и срок не вышел.
+                    'community', 'active', 'private' => $q->where('plan', $plan)->where('plan_ends_at', '>', now()),
+                    // Пакет был, но срок закончился.
+                    'expired' => $q->whereIn('plan', $paid)->where(fn ($w) => $w->whereNull('plan_ends_at')->orWhere('plan_ends_at', '<=', now())),
+                    // Пакета нет вообще или он уже не действует.
+                    default => $q->where(fn ($w) => $w->whereNotIn('plan', $paid)->orWhereNull('plan')),
+                };
+            })
             ->when($search !== '', fn ($q) => $q->where(fn ($w) => $w
                 ->where('full_name', 'like', "%{$search}%")
                 ->orWhere('email', 'like', "%{$search}%")
@@ -71,6 +94,7 @@ class ProfileController extends Controller
             'search' => $search,
             'counts' => $counts,
             'onlyHidden' => $onlyHidden,
+            'planFilter' => $this->planFilter($request),
             'hiddenCount' => BotUser::query()->whereNotNull('profile_completed_at')->where('is_hidden', true)->count(),
         ]);
     }
